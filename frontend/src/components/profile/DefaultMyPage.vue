@@ -31,7 +31,7 @@
           </ul>
         </div>
       </div>
-      <div class="main">
+      <div class="main second-main">
         <slot />
       </div>
     </div>
@@ -90,6 +90,11 @@ const setListItemColor = (path: String) => {
 
 .main {
   width: 100%;
+}
+
+.second-main {
+  box-shadow: 2px 2px 17px rgb(186, 186, 186);
+  border-radius: 16px;
 }
 
 .img {
