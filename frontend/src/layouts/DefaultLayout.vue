@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="wrap">
     <DefaultHeader />
     <RouterView />
     <DefaultFooter />
@@ -12,4 +12,10 @@ import DefaultHeader from '@/layouts/DefaultHeader.vue';
 import DefaultFooter from '@/layouts/DefaultFooter.vue';
 </script>
 
-<style scoped></style>
+<style scoped>
+#wrap {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 150px;
+}
+</style>
