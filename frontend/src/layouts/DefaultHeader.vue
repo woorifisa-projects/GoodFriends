@@ -7,7 +7,7 @@
       </div>
       <div id="login">
         <div v-if="!isLogin">
-          <button @click="loginBtnOnClick">login</button>
+          <button @click="onClickLoginBtn">login</button>
         </div>
         <div v-else>
           <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">000님</button>
@@ -36,7 +36,7 @@ const isPopoverOpen = ref(false);
 const popover = ref<Element>();
 const popoverBtn = ref<Element>();
 
-const loginBtnOnClick = () => {
+const onClickLoginBtn = () => {
   // TODO: login 구현후 수정
   isLogin.value = true;
 };
@@ -57,16 +57,15 @@ const onClickProfileBtn = (event: MouseEvent) => {
 
 const closePopover = (event: MouseEvent) => {
   const target: Element = event.target as Element;
-  if (
-    target.parentElement === popover.value?.parentElement ||
-    target.parentElement === popover.value?.childNodes[0] ||
-    target.parentElement === popover.value?.childNodes[1]
-  ) {
+  if (event.target === popoverBtn.value || target.parentElement === popover.value?.parentElement) {
     return;
   }
-  if (event.target !== popoverBtn.value) {
-    isPopoverOpen.value = false;
+  if (popover.value === undefined) return;
+  for (let i = 0; i < popover.value.childNodes.length; i++) {
+    if (target.parentElement === popover.value?.childNodes[i]) return;
   }
+
+  isPopoverOpen.value = false;
 };
 
 const openPopover = () => {
