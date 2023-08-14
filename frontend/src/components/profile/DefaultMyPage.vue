@@ -15,13 +15,19 @@
         <div class="list">
           <span>나의 정보</span>
           <ul>
-            <li>프로필</li>
+            <li :style="setListItemColor('/profile')">
+              <router-link to="/profile"> 프로필 </router-link>
+            </li>
           </ul>
           <span>나의 거래</span>
           <ul>
-            <li>판매목록</li>
-            <li>구매목록</li>
-            <li>거래후기</li>
+            <li
+              v-for="(item, index) in navList"
+              v-bind:key="index"
+              :style="setListItemColor(item.path)"
+            >
+              <router-link :to="item.path">{{ item.name }}</router-link>
+            </li>
           </ul>
         </div>
       </div>
@@ -32,7 +38,31 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
+const route = useRoute();
+
+// TODO: 페이지 생성시 path 수정
+const navList = [
+  {
+    name: '판매목록',
+    path: '/'
+  },
+  {
+    name: '구매목록',
+    path: '/'
+  },
+  {
+    name: '거래후기',
+    path: '/'
+  }
+];
+
+const setListItemColor = (path: String) => {
+  if (route.path === path) return 'background: #7f7f7fd5';
+  return '';
+};
+</script>
 
 <style scoped>
 .profile {
@@ -103,5 +133,11 @@
 
   background: lightgray;
   border-radius: 8px;
+}
+
+a {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 </style>
