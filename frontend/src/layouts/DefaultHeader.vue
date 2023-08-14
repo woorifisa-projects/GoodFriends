@@ -18,7 +18,7 @@
             <div class="content">
               <div>nickname</div>
               <div>mypage</div>
-              <div>logout</div>
+              <div @click="onClickLogoutBtn">logout</div>
             </div>
           </div>
         </div>
@@ -38,7 +38,12 @@ const popoverBtn = ref<Element>();
 
 const loginBtnOnClick = () => {
   // TODO: login 구현후 수정
-  isLogin.value = !isLogin.value;
+  isLogin.value = true;
+};
+
+const onClickLogoutBtn = () => {
+  // TODO: login 구현후 수정
+  isLogin.value = false;
 };
 
 const onClickProfileBtn = (event: MouseEvent) => {
