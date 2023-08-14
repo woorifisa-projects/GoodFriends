@@ -165,8 +165,17 @@ watchEffect(() => {
 }
 .content > div {
   width: 100%;
-  border-bottom: 1px solid black;
+  border: 1px solid black;
+  border-radius: 10px;
   font-size: 18px;
   text-align: center;
+  background: lightblue;
+  cursor: pointer;
+}
+
+.content > div:first-child {
+  border: none;
+  background: transparent;
+  cursor: text;
 }
 </style>
