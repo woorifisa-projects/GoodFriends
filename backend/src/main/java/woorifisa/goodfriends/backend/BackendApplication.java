@@ -1,4 +1,4 @@
-package woorifisa.sut.backend;
+package woorifisa.goodfriends.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
