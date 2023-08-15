@@ -46,11 +46,11 @@ const route = useRoute();
 const navList = [
   {
     name: '판매목록',
-    path: '/'
+    path: '/profile/purchase'
   },
   {
     name: '구매목록',
-    path: '/'
+    path: '/profile/sell'
   },
   {
     name: '거래후기',
@@ -94,6 +94,7 @@ const setListItemColor = (path: String) => {
 
 .second-main {
   box-shadow: 2px 2px 17px rgb(186, 186, 186);
+  height: 500px;
   border-radius: 16px;
 }
 
