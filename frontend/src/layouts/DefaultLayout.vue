@@ -1,7 +1,7 @@
 <template>
   <div id="wrap">
     <DefaultHeader />
-    <RouterView />
+    <RouterView id="main" />
     <DefaultFooter />
   </div>
 </template>
@@ -17,5 +17,10 @@ import DefaultFooter from '@/layouts/DefaultFooter.vue';
   min-height: 100%;
   position: relative;
   padding-bottom: 150px;
+}
+
+#main {
+  width: 100%;
+  padding: 10px 200px;
 }
 </style>

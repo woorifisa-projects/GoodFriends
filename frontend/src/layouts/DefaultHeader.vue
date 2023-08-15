@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="title">logo</div>
+    <div class="title" @click="() => router.push('/')">logo</div>
     <div class="wrap">
       <div>
         <button>판매하기</button>
@@ -17,7 +17,7 @@
             </div>
             <div class="content">
               <div>nickname</div>
-              <div>mypage</div>
+              <div @click="onClickMyProfile">mypage</div>
               <div @click="onClickLogoutBtn">logout</div>
             </div>
           </div>
@@ -28,6 +28,7 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import { ref, watchEffect } from 'vue';
 
 // TODO: login 구현후 수정
@@ -53,6 +54,11 @@ const onClickProfileBtn = (event: MouseEvent) => {
   } else {
     openPopover();
   }
+};
+
+const onClickMyProfile = () => {
+  isPopoverOpen.value = false;
+  router.push('/profile');
 };
 
 const closePopover = (event: MouseEvent) => {
@@ -104,6 +110,7 @@ watchEffect(() => {
 .title {
   font-size: 24px;
   font-weight: 400;
+  cursor: pointer;
 }
 .wrap {
   display: flex;
