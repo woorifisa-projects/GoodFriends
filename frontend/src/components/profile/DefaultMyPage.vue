@@ -94,7 +94,7 @@ const setListItemColor = (path: String) => {
 
 .second-main {
   box-shadow: 2px 2px 17px rgb(186, 186, 186);
-  height: 500px;
+  min-height: 500px;
   border-radius: 16px;
 }
 
@@ -116,6 +116,8 @@ const setListItemColor = (path: String) => {
   width: 100%;
   margin: 10px;
   padding: 10px;
+
+  height: 480px;
 
   background: white;
   box-shadow: 2px 2px 17px rgb(186, 186, 186);
