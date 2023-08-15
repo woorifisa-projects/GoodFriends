@@ -45,11 +45,11 @@ const route = useRoute();
 // TODO: 페이지 생성시 path 수정
 const navList = [
   {
-    name: '판매목록',
+    name: '구매목록',
     path: '/profile/purchase'
   },
   {
-    name: '구매목록',
+    name: '판매목록',
     path: '/profile/sell'
   },
   {
