@@ -8,6 +8,7 @@ build/
 ### Backend ###
 backend/gradle/wrapper/*
 .DS_Store
+backend/src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
