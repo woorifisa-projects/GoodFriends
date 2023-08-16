@@ -15,7 +15,8 @@ public class AdminService {
     @Value("${jwt.secret}") //lombok 아닌 springframework annotation
     private String secretKey;
 
-    private Long expireTimeMs = 1000 * 60 * 60l; // 1시간
+    @Value("${jwt.expiretime}")
+    private Long expireTimeMs;
 
     public AdminService(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
