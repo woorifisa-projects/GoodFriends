@@ -1,9 +1,15 @@
 package woorifisa.goodfriends.backend.user.domain;
 
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class) // 3, 4
 public class User {
 
     @Id
@@ -17,6 +23,12 @@ public class User {
     private Nickname nickname;
 
     private int ban;
+
+    @CreatedDate // 1
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate // 1
+    private LocalDateTime lastModifiedAt;
 
     protected User() {
     }
