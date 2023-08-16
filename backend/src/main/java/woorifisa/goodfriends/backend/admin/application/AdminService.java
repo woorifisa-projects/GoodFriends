@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
-import woorifisa.goodfriends.backend.global.config.utils.JwtTokenUtil;
+import woorifisa.goodfriends.backend.global.config.utils.JwtTokenProvider;
 
 @Service
 public class AdminService {
@@ -33,7 +33,7 @@ public class AdminService {
         }
 
         // 앞에서 Exception 안났으면 토큰 발행 구현해야함
-        String token = JwtTokenUtil.createToken(selectedAdmin.getAdminId(), secretKey, expireTimeMs);
+        String token = JwtTokenProvider.createToken(selectedAdmin.getAdminId(), secretKey, expireTimeMs);
 
         return token;
     }
