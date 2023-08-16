@@ -1,6 +1,6 @@
 package woorifisa.goodfriends.backend.auth.dto;
 
-public class OAuthConfig {
+public class GoogleOAuthClient {
 
     private String clientId;
     private String clientSecret;

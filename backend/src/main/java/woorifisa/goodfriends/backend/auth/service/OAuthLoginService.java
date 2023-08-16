@@ -2,14 +2,15 @@ package woorifisa.goodfriends.backend.auth.service;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import woorifisa.goodfriends.backend.auth.dto.OAuthConfig;
-
+import woorifisa.goodfriends.backend.auth.dto.GoogleOAuthClient;
+@Slf4j
 @Service
 public class OAuthLoginService {
 
@@ -24,28 +25,28 @@ public class OAuthLoginService {
     //소셜 로그인 메서드
     public void socialLogin(String code, String registrationId) {
 
-        System.out.println("code = " + code);
-        System.out.println("registrationId = " + registrationId);
+
+        log.info("code = " + code);
+        log.info("registrationId = " + registrationId);
 
         String accessToken = getAccessToken(code, registrationId);
-        System.out.println("accessToken = " + accessToken);
+        log.info("accessToken = " + accessToken);
 
         JsonNode userResourceNode = getUserResource(accessToken,registrationId);
-        System.out.println("userResourceNode= " + userResourceNode);
+        log.info("userResourceNode= " + userResourceNode);
 
         String id = userResourceNode.get("id").asText();
         String email = userResourceNode.get("email").asText();
         String nickname = userResourceNode.get("name").asText();
-        System.out.println(id);
-        System.out.println(email);
-        System.out.println(nickname);
-
+        log.info(id);
+        log.info(email);
+        log.info(nickname);
     }
 
     //OAuth 값 세팅
-    public OAuthConfig getOAuthConfig(String registrationId) {
+    public GoogleOAuthClient getOAuthConfig(String registrationId) {
 
-        OAuthConfig config = new OAuthConfig();
+        GoogleOAuthClient config = new GoogleOAuthClient();
 
         config.setClientId(env.getProperty("oauth2." + registrationId + ".client-id"));
         config.setClientSecret(env.getProperty("oauth2." + registrationId + ".client-secret"));
@@ -57,7 +58,7 @@ public class OAuthLoginService {
 
     //액세스 토큰 가져오기
     private String getAccessToken(String authorizationCode, String registrationId) {
-        OAuthConfig config = getOAuthConfig(registrationId);
+        GoogleOAuthClient config = getOAuthConfig(registrationId);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
