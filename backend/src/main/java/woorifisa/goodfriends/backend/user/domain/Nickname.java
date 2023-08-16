@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.user.domain;
 
 import lombok.Getter;
+import woorifisa.goodfriends.backend.user.exception.InvalidNicknameException;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -21,6 +22,14 @@ public class Nickname {
     }
 
     public Nickname(String value) {
+        validateNickname(value);
         this.value = value;
+    }
+
+    private void validateNickname(String value) {
+        if(value.length() < MIN_LENGTH || value.length() > MAX_LENGTH
+                || !PATTERN.matcher(value).matches()) {
+            throw new InvalidNicknameException();
+        }
     }
 }
