@@ -15,18 +15,11 @@ import woorifisa.goodfriends.backend.global.config.utils.JwtFilter;
 @EnableWebSecurity
 public class AuthenticationConfig {
 
-    private final AdminService adminService;
-
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public AuthenticationConfig(AdminService adminService) {
-        this.adminService = adminService;
-    }
-
     // SpringSecurity 적용하면 모든 api에 인증이 필요하다고 default로 호출됨
     // 로그인이나 회원가입같이 인증받지 않고 접속해야하는 부분 설정할 수 있는 부분
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -37,7 +30,7 @@ public class AuthenticationConfig {
                 .antMatchers("/admin/login").permitAll() // 로그인은 언제나 가능
                 .antMatchers(HttpMethod.POST, "/admin/**").authenticated()
                 .and()
-                .addFilterBefore(new JwtFilter(adminService, secretKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }

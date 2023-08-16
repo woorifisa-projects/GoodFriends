@@ -17,11 +17,9 @@ import java.util.List;
 
 public class JwtFilter extends OncePerRequestFilter { // 매번 인증해야하기 때문에
 
-    private final AdminService adminService;
     private final String secretKey;
 
-    public JwtFilter(AdminService adminService, String secretKey) {
-        this.adminService = adminService;
+    public JwtFilter(String secretKey) {
         this.secretKey = secretKey;
     }
 
