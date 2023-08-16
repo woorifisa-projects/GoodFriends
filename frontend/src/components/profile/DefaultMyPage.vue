@@ -45,12 +45,12 @@ const route = useRoute();
 // TODO: 페이지 생성시 path 수정
 const navList = [
   {
-    name: '판매목록',
-    path: '/'
+    name: '구매목록',
+    path: '/profile/purchase'
   },
   {
-    name: '구매목록',
-    path: '/'
+    name: '판매목록',
+    path: '/profile/sell'
   },
   {
     name: '거래후기',
@@ -94,6 +94,7 @@ const setListItemColor = (path: String) => {
 
 .second-main {
   box-shadow: 2px 2px 17px rgb(186, 186, 186);
+  min-height: 500px;
   border-radius: 16px;
 }
 
@@ -115,6 +116,8 @@ const setListItemColor = (path: String) => {
   width: 100%;
   margin: 10px;
   padding: 10px;
+
+  height: 480px;
 
   background: white;
   box-shadow: 2px 2px 17px rgb(186, 186, 186);
