@@ -26,7 +26,7 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      name: 'adim page',
+      name: 'admin page',
       component: AdminLogin
     }
   ]
