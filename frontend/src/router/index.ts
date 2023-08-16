@@ -20,7 +20,7 @@ const router = createRouter({
         { path: 'profile', name: 'profile', component: ProfileView },
         { path: 'profile/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/sell', name: 'sell', component: SellView },
-        { path: 'product/add/:id', name: 'add product', component: AddProduct },
+        { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct }
       ]
     },
