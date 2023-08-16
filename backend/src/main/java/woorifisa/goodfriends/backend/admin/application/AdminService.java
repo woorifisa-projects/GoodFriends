@@ -9,6 +9,7 @@ import woorifisa.goodfriends.backend.global.config.utils.JwtTokenUtil;
 
 @Service
 public class AdminService {
+
     private final AdminRepository adminRepository;
 
     @Value("${jwt.secret}") //lombok 아닌 springframework annotation

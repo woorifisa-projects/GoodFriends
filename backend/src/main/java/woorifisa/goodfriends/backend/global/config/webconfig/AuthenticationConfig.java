@@ -22,6 +22,7 @@ public class AuthenticationConfig {
     // 로그인이나 회원가입같이 인증받지 않고 접속해야하는 부분 설정할 수 있는 부분
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
         return httpSecurity
                 .httpBasic().disable() // 토큰 인증할 것이므로 disable
                 .csrf().disable()
