@@ -1,10 +1,15 @@
 package woorifisa.goodfriends.backend.admin.domain;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Admin {
 
     @Id
@@ -15,17 +20,13 @@ public class Admin {
 
     private String password;
 
-    public Admin() {
-    }
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    public Admin(Long id, String adminId, String password) {
-        this.id = id;
-        this.adminId = adminId;
-        this.password = password;
-    }
+    @LastModifiedDate
+    private LocalDateTime lastModifiedAt;
 
-    public Long getId() {
-        return id;
+    protected Admin() {
     }
 
     public String getAdminId() {
