@@ -7,6 +7,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 
 public class JwtTokenUtil {
+    public static boolean isExpired(String token, String secretKey) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+                .getBody().getExpiration().before(new Date());
+    }
+
     public static String createToken(String adminId, String secretKey, Long expireTimeMs) {
         Claims claims = Jwts.claims(); // claims : JWT에서 제공하는 저장 공간으로, 일종의 map
         // claims에 관리자 아이디 정보 넣어주기 (key, value)형태로 저장

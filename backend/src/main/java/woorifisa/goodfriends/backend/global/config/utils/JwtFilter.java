@@ -36,9 +36,14 @@ public class JwtFilter extends OncePerRequestFilter { // 매번 인증해야하�
             return;
         }
 
-        // token 꺼내기 구현해야함
+        // token 꺼내기
+        String token = authorization.split(" ")[1];
 
-        // token 만료 여부 확인 구현해야함
+        // token 만료 여부 확인
+        if(JwtTokenUtil.isExpired(token, secretKey)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // adminId를 token에서 꺼내기 구현해야함
         String adminId = "";
