@@ -45,8 +45,8 @@ public class JwtFilter extends OncePerRequestFilter { // 매번 인증해야하�
             return;
         }
 
-        // adminId를 token에서 꺼내기 구현해야함
-        String adminId = "";
+        // adminId를 token에서 꺼내기
+        String adminId = JwtTokenUtil.getAdminId(token, secretKey);
 
         // 권한 부여
         // token에 있는 adminId를 꺼내서 아래와 같이 넣어주면 controller에서 adminId 사용 가능
