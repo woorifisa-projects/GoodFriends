@@ -9,6 +9,9 @@ build/
 backend/gradle/wrapper/*
 .DS_Store
 backend/src/main/resources/application.yml
+backend/src/main/resources/application-db.yml
+backend/src/main/resources/application-oauth.yml
+backend/src/main/resources/application-local.properties
 
 ### STS ###
 .apt_generated
