@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.global.config.utils;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,11 +28,15 @@ public class JwtFilter extends OncePerRequestFilter { // 매번 인증해야하�
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // token 안보내면 block 구현해야함
+        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 
+        // token 안보내면 block
+        if(authorization == null || !authorization.startsWith("Bearer ")){
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // token 꺼내기 구현해야함
-
 
         // token 만료 여부 확인 구현해야함
 
