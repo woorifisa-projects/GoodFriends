@@ -34,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios';
 import { ref } from 'vue';
 
 const userId = ref('');
@@ -44,6 +45,47 @@ const submit = () => {
     return;
   }
   // TODO: login api 연결 필요
+  const API = "http://localhost:8080/admin/login"
+
+  axios.post(API,{
+    // 로그인 창에서 클라이언트가 입력하는 데이터
+    "adminId" : userId.value,
+    "password" : userPw.value
+  },
+  {
+    headers : {
+      // 클라이언트가 서버에게 요청하는 타입
+      "Content-Type" : "application/json;charset=UTF-8",
+      // 클라이언트가 서버에게 보내는 타입
+      'Accept' : 'application/json',
+      // CORS 에러 방지 - 프론트 주소 적거나 '*'로 모든 주소 허용
+      'Access-Control-Allow-Origin' : 'http://localhost:5173'
+    }
+  })
+  .then((response) => {
+    
+    if(response.headers['authorization'] === response.data.token){
+      window.alert("이미 로그인된 상태입니다.")
+      return;
+    }
+
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${response.data.token}`
+
+    window.alert('로그인 되었습니다');
+
+    return response.data;
+
+  })
+  .catch((e) => {
+    console.log(e.response.data);
+
+    window.alert("아이디 혹은 비밀번호를 확인하세요");
+
+    return "아이디 혹은 비밀번호를 확인하세요";
+  })
+  
   return;
 };
 </script>
