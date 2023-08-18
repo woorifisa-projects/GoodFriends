@@ -43,14 +43,15 @@
         <div class="category">
           <span for="category">카테고리</span>
           <select name="" id="" v-model="selectedCategory">
-            <option v-for="category in categories" :key="category.id" :value="category.name">
+            <option disabled value="0">선택해주세요</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">
               {{ category.name }}
             </option>
           </select>
         </div>
         <div class="date">
           <span for="date">등록 날짜</span>
-          <input type="date" />
+          <input type="date" :value="dateFormat(registerDate)" @change="onChangeDate" />
         </div>
       </div>
     </div>
@@ -60,13 +61,10 @@
 <script setup lang="ts">
 import type { category } from '@/types/product';
 import { ref } from 'vue';
+import { dateFormat } from '@/utils/format';
 
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
-  {
-    id: 0,
-    name: 'null'
-  },
   {
     id: 1,
     name: '가전'
@@ -92,10 +90,15 @@ const categories = ref<Array<category>>([
 const inputPrice = ref(0);
 const inputName = ref('');
 const inputContent = ref('');
-const selectedCategory = ref(0);
+const selectedCategory = ref('0');
 const inputImage = ref<Array<File>>([]);
 const previewImg = ref<Array<string>>([]);
+const registerDate = ref(new Date());
 
+const onChangeDate = (event: Event) => {
+  const date = (event.target as HTMLInputElement).value;
+  registerDate.value = new Date(date);
+};
 const uploadImage = (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
   if (!fileList) return;
