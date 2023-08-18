@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import type { category } from '@/types/product';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
@@ -99,15 +99,20 @@ const previewImg = ref<Array<string>>([]);
 const uploadImage = (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
   if (!fileList) return;
-  inputImage.value.push(...fileList);
 
   Promise.all(
-    inputImage.value.map((img) => {
+    Array.from(fileList).map((img) => {
       return new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.addEventListener('load', (e) => {
-          if (!e.target?.result) return;
-          if (previewImg.value.includes(e.target.result.toString())) return;
+          if (
+            !e.target?.result ||
+            inputImage.value.includes(img) ||
+            previewImg.value.includes(e.target.result?.toString())
+          )
+            return;
+
+          inputImage.value.push(img);
           resolve(e.target?.result?.toString());
         });
         reader.addEventListener('error', reject);
