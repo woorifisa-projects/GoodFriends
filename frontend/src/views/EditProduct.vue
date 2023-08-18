@@ -102,6 +102,7 @@ const test = (event: Event) => {
         const reader = new FileReader();
         reader.addEventListener('load', (e) => {
           if (!e.target?.result) return;
+          if (previewImg.value.includes(e.target.result.toString())) return;
           resolve(e.target?.result?.toString());
         });
         reader.addEventListener('error', reject);
