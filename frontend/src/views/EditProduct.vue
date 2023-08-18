@@ -14,8 +14,8 @@
           <textarea name="" id="explain" cols="30" rows="10" v-model="inputContent"></textarea>
         </div>
         <div class="buttons">
-          <button>임시저장</button>
-          <button>등록하기</button>
+          <button @click="save">임시저장</button>
+          <button @click="submit">등록하기</button>
         </div>
       </div>
       <div class="select-detail">
@@ -135,6 +135,14 @@ const uploadImage = (event: Event) => {
 
 const onClickDeleteBtn = (index: number) => {
   previewImg.value.splice(index, 1);
+};
+
+const submit = (e: Event) => {
+  console.log('등록하기 버튼 클릭');
+};
+
+const save = (e: Event) => {
+  console.log('임시저장 버튼 클릭');
 };
 </script>
 
@@ -317,11 +325,19 @@ const onClickDeleteBtn = (index: number) => {
   width: 100%;
 }
 .buttons {
-  background-color: lightgreen;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 24px;
+  gap: 24px;
+  padding: 0 32px;
 }
 
 .buttons > button {
-  background-color: transparent;
+  flex: 1;
+  font-size: 24px;
+  padding: 8px 24px;
+  border: 1px solid rgb(110, 110, 110);
+  border-radius: 12px;
 }
 
 input[type='number']::-webkit-outer-spin-button,
