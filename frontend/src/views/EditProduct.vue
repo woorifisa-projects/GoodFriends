@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import type { category } from '@/types/product';
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
@@ -111,12 +111,12 @@ const uploadImage = (event: Event) => {
             previewImg.value.includes(e.target.result?.toString())
           )
             return;
+          // TODO: 이미지 유효성 검사
 
           inputImage.value.push(img);
           resolve(e.target?.result?.toString());
         });
         reader.addEventListener('error', reject);
-        // TODO: 이미지 유효성 검사
         reader.readAsDataURL(img);
       })
         .then((res) => {
@@ -124,7 +124,7 @@ const uploadImage = (event: Event) => {
         })
         .catch((err) => {
           // TODO: error 처리
-          console.log('err');
+          console.log('err', err);
         });
     })
   );
