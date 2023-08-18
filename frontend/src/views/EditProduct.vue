@@ -23,13 +23,14 @@
           <label for="image">이미지</label>
           <input type="file" multiple accept="image/png, image/gif, image/jpeg" @change="test" />
           <div class="image-wrap">
-            <div></div>
-            <img src="" alt="" />
+            <div class="img" v-for="(img, index) in previewImg" :key="index">
+              <img :src="img.toString()" alt="" />
+            </div>
           </div>
         </div>
         <div class="category">
           <label for="category">카테고리</label>
-          <select name="" id="">
+          <select name="" id="" v-model="selectedCategory">
             <option v-for="category in categories" :key="category.id" :value="category.name">
               {{ category.name }}
             </option>
@@ -80,11 +81,35 @@ const inputPrice = ref(0);
 const inputName = ref('');
 const inputContent = ref('');
 const selectedCategory = ref(0);
-const inputImage = ref([]);
+const inputImage = ref<Array<File>>([]);
+const previewImg = ref<Array<string>>([]);
 
-const test = (e) => {
-  console.log(e);
-  console.log(e.target.files);
+const test = (event: Event) => {
+  const fileList: FileList | null = (event.target as HTMLInputElement).files;
+  if (!fileList) return;
+  inputImage.value.push(...fileList);
+
+  Promise.all(
+    inputImage.value.map((img) => {
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', (e) => {
+          if (!e.target?.result) return;
+          resolve(e.target?.result?.toString());
+        });
+        reader.addEventListener('error', reject);
+        // TODO: 이미지 유효성 검사
+        reader.readAsDataURL(img);
+      })
+        .then((res) => {
+          previewImg.value.push(res);
+        })
+        .catch((err) => {
+          // TODO: error 처리
+          console.log('err');
+        });
+    })
+  );
 };
 </script>
 
