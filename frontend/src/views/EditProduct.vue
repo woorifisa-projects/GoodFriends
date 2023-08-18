@@ -20,16 +20,23 @@
       </div>
       <div class="select-detail">
         <div class="image">
-          <label for="image">이미지</label>
-          <input type="file" multiple accept="image/png, image/gif, image/jpeg" @change="test" />
+          <span for="image">이미지</span>
+          <label for="image">업로드</label>
+          <input
+            id="image"
+            type="file"
+            multiple
+            accept="image/png, image/gif, image/jpeg"
+            @change="test"
+          />
           <div class="image-wrap">
             <div class="img" v-for="(img, index) in previewImg" :key="index">
-              <img :src="img.toString()" alt="" />
+              <img :src="img" alt="" />
             </div>
           </div>
         </div>
         <div class="category">
-          <label for="category">카테고리</label>
+          <span for="category">카테고리</span>
           <select name="" id="" v-model="selectedCategory">
             <option v-for="category in categories" :key="category.id" :value="category.name">
               {{ category.name }}
@@ -37,7 +44,7 @@
           </select>
         </div>
         <div class="date">
-          <label for="date">등록 날짜</label>
+          <span for="date">등록 날짜</span>
           <input type="date" />
         </div>
       </div>
@@ -219,7 +226,7 @@ const test = (event: Event) => {
 
   padding: 24px;
 }
-.select-detail label {
+.select-detail span {
   border-bottom: 1px solid black;
   font-size: 24px;
 }
@@ -229,7 +236,49 @@ const test = (event: Event) => {
   font-size: 18px;
   margin-top: 12px;
 }
+.image {
+  width: 100%;
+}
+.image label {
+  margin-top: 12px;
+  display: inline-block;
 
+  width: fit-content;
+  padding: 10px 15px;
+
+  color: #ffffff;
+  background-color: #5467d4;
+  border: 1px solid #ebebeb;
+  border-radius: 0.25em;
+
+  cursor: pointer;
+}
+.image-wrap {
+  border: 1px solid rgb(195, 195, 195);
+  box-shadow: 1px 1px 10px rgba(176, 176, 176, 0.578);
+
+  margin-top: 8px;
+  padding: 6px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  overflow-x: auto;
+
+  height: 140px;
+}
+.img {
+  width: 100px;
+  height: 100px;
+  border: 1px solid gray;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.img > img {
+  width: 100%;
+  height: 100%;
+}
 .buttons {
   background-color: lightgreen;
 }
@@ -242,5 +291,16 @@ input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 </style>
