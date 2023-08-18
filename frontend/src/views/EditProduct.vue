@@ -27,7 +27,7 @@
             type="file"
             multiple
             accept="image/png, image/gif, image/jpeg"
-            @change="test"
+            @change="uploadImage"
           />
           <div class="image-wrap">
             <div class="img" v-for="(img, index) in previewImg" :key="index">
@@ -91,7 +91,7 @@ const selectedCategory = ref(0);
 const inputImage = ref<Array<File>>([]);
 const previewImg = ref<Array<string>>([]);
 
-const test = (event: Event) => {
+const uploadImage = (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
   if (!fileList) return;
   inputImage.value.push(...fileList);
