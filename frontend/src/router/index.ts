@@ -6,7 +6,7 @@ import PurchaseView from '@/views/PurchaseView.vue';
 import SellView from '@/views/SellView.vue';
 import AdminLogin from '@/views/AdminLogin.vue';
 import AddProduct from '@/views/AddProduct.vue';
-import EditProduct from '@/views/EditProduct.vue';
+import EditProduct from '@/views/EditProductView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
