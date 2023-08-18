@@ -30,8 +30,13 @@
             @change="uploadImage"
           />
           <div class="image-wrap">
-            <div class="img" v-for="(img, index) in previewImg" :key="index">
-              <img :src="img" alt="" />
+            <div class="image-card" v-for="(img, index) in previewImg" :key="index">
+              <div class="upload-img">
+                <img :src="img" alt="" />
+              </div>
+              <div class="delete-btn" @click="onClickDeleteBtn(index)">
+                <img src="@/assets/images/delete.png" alt="" />
+              </div>
             </div>
           </div>
         </div>
@@ -118,6 +123,10 @@ const uploadImage = (event: Event) => {
         });
     })
   );
+};
+
+const onClickDeleteBtn = (index: number) => {
+  previewImg.value.splice(index, 1);
 };
 </script>
 
@@ -269,16 +278,35 @@ const uploadImage = (event: Event) => {
 
   height: 140px;
 }
-.img {
+.image-card {
+  position: relative;
+}
+.image-wrap img {
+  width: 100%;
+  height: 100%;
+}
+.upload-img {
   width: 100px;
   height: 100px;
   border: 1px solid gray;
   border-radius: 12px;
   overflow: hidden;
 }
-.img > img {
+
+.delete-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 16px;
+
+  cursor: pointer;
+}
+
+.delete-btn > img {
   width: 100%;
-  height: 100%;
 }
 .buttons {
   background-color: lightgreen;
