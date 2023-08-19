@@ -75,12 +75,6 @@ const props = defineProps({
   }
 });
 
-// TODO: typesciprt 기반으로 emit 작성
-const emit = defineEmits(['submit']);
-// <{
-//   (e: 'change', id: number): void
-//   (e: 'update', value: string): void
-// }>
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
   {
@@ -135,18 +129,23 @@ const onClickDeleteBtn = (index: number) => {
 };
 
 const submit = () => {
-  emit('submit', {
-    price: inputPrice.value,
-    name: inputName.value,
-    content: inputContent.value,
-    category: selectedCategory.value,
-    image: inputImage.value,
-    date: registerDate.value
-  });
+  if (props.type === 'edit') {
+    // TODO: edit 관련 API 호출
+    console.log('저장 버튼 클릭(EDIT)');
+  } else if (props.type === 'add') {
+    // TODO: add 관련 API 호출
+    console.log('저장 버튼 클릭(ADD)');
+  }
 };
 
 const save = (e: Event) => {
-  console.log('임시저장 버튼 클릭');
+  if (props.type === 'edit') {
+    // TODO: edit 관련 API 호출
+    console.log('임시저장 버튼 클릭(EDIT)');
+  } else if (props.type === 'add') {
+    // TODO: add 관련 API 호출
+    console.log('임시저장 버튼 클릭(ADD)');
+  }
 };
 </script>
 
