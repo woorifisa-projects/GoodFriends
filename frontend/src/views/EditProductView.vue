@@ -1,5 +1,5 @@
 <template>
-  <EditProduct @submit="submit" />
+  <EditProduct @submit="submit" type="edit" />
 </template>
 
 <script setup lang="ts">

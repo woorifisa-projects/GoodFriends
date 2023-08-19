@@ -63,9 +63,24 @@ import type { category } from '@/types/product';
 import { ref } from 'vue';
 import { dateFormat } from '@/utils/format';
 import { uploadFile } from '@/utils/File';
+import { useRoute } from 'vue-router';
 
+const props = defineProps({
+  type: {
+    type: String,
+    validator(value: string) {
+      return ['edit', 'add'].includes(value);
+    },
+    required: true
+  }
+});
+
+// TODO: typesciprt 기반으로 emit 작성
 const emit = defineEmits(['submit']);
-
+// <{
+//   (e: 'change', id: number): void
+//   (e: 'update', value: string): void
+// }>
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
   {
@@ -98,6 +113,12 @@ const inputImage = ref<Array<File>>([]);
 const previewImg = ref<Array<string>>([]);
 const registerDate = ref(new Date());
 
+if (props.type === 'edit') {
+  const route = useRoute();
+  const id = route.params.id;
+
+  // TODO: API 요청 -> price, name, content, category, image, date 가져오기
+}
 const onChangeDate = (event: Event) => {
   const date = (event.target as HTMLInputElement).value;
   registerDate.value = new Date(date);
@@ -113,7 +134,7 @@ const onClickDeleteBtn = (index: number) => {
   previewImg.value.splice(index, 1);
 };
 
-const submit = (e: Event) => {
+const submit = () => {
   emit('submit', {
     price: inputPrice.value,
     name: inputName.value,
