@@ -1,6 +1,6 @@
 export const PRODUCT = {
   PRICE: '가격',
-  DESCRIPTION: '상세 설명',
+  DESCRIPTION: '상세 내용',
   TEMPORARY: '임시 저장',
   DELETE: '삭제하기',
   EDIT: '수정하기',
@@ -9,5 +9,6 @@ export const PRODUCT = {
   UPLOAD: '업로드',
   CATEGORY: '카테고리',
   PLEASE_SELECT: '선택해주세요',
-  CREATE_AT: '등록 날짜'
+  CREATE_AT: '등록 날짜',
+  REPORT: '신고하기'
 };
