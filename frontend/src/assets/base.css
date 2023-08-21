@@ -110,3 +110,7 @@ a {
   text-decoration-line: none;
   color: black;
 }
+
+textarea {
+  resize: none;
+}
