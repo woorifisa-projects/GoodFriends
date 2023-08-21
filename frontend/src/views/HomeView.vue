@@ -37,7 +37,12 @@
         </label>
       </div>
       <div class="card-list">
-        <div class="card" v-for="product in products" :key="product.id">
+        <div
+          @click="onClickProductCard(product.id)"
+          class="card"
+          v-for="product in products"
+          :key="product.id"
+        >
           <div class="img">
             <img :src="product.image" alt="임시 이미지" />
           </div>
@@ -232,6 +237,10 @@ const onClickAddProduct = () => {
   router.push('/product/add');
 };
 
+const onClickProductCard = (id: number) => {
+  router.push(`product/${id}`);
+};
+
 setInterval(() => {
   onClickBannerBtn('next');
 }, 3000);
@@ -368,6 +377,8 @@ setInterval(() => {
 
   box-shadow: 1px 1px 10px rgb(196, 196, 196);
   border-radius: 12px;
+
+  cursor: pointer;
 }
 .card > .img {
   width: 250px;
