@@ -34,56 +34,31 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
+import { login } from '@/apis/adminLogin';
+import router from '@/router';
 import { ref } from 'vue';
 
 const userId = ref('');
 const userPw = ref('');
 
-const submit = () => {
+const submit = async () => {
   if (!userId.value || !userPw.value) {
     return;
   }
 
   // TODO: login api 연결 필요
-  const api = "http://localhost:8080/admin/login"
-  
-  const loginResult = login(api);
+  // console.log(userId.value, userPw.value);
+  const loginResult = await login(userId.value, userPw.value);
 
-  return loginResult;
+  if(loginResult === true) {
+    router.push('/');
+  }
+  else {
+    alert("아아디 또는 비밀번호를 확인해주세요");
+  }
+
 };
 
-const login = (api = "") => {
-  axios.post(api,{
-    // 로그인 창에서 클라이언트가 입력하는 데이터
-    "adminId" : userId.value,
-    "password" : userPw.value
-  },
-  {
-    headers : {
-      // 클라이언트가 서버에게 요청하는 타입
-      "Content-Type" : "application/json;charset=UTF-8",
-      // 클라이언트가 서버에게 보내는 타입
-      'Accept' : 'application/json'
-    }
-  })
-  .then((response) => {
-    
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${response.data.token}`
-
-    alert('로그인 되었습니다');
-
-    location.href = "http://localhost:5173/admin";
-  })
-  .catch((e) => {
-
-    console.log(e.response.data);
-
-    alert("아이디 혹은 비밀번호를 확인하세요");
-  })
-}
 </script>
 
 <style scoped>
