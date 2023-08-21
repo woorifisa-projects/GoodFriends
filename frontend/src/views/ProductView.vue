@@ -5,13 +5,13 @@
         <img src="@/assets/tmp/images/image.png" alt="" />
       </div>
       <div class="info">
-        <div class="wrap-btn">
-          <button>수정하기</button>
-          <button>삭제하기</button>
+        <div v-if="isWriter" class="wrap-btn">
+          <button @click="onClickEditBtn">수정하기</button>
+          <button @click="onClickDelete">삭제하기</button>
         </div>
-        <!-- <div div class="wrap-btn">
-          <button>신고하기</button>
-        </div> -->
+        <div v-else class="wrap-btn">
+          <button @click="onClickReport">신고하기</button>
+        </div>
         <div class="detail-info">
           <div class="name">0000 팝니다~</div>
           <div class="price">100000 원</div>
@@ -31,7 +31,29 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import router from '@/router';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+const id = ref(route.params.id);
+// TODO: 작성자 인지 아닌지 -> API 연결 필요
+const isWriter = ref(Math.random() < 0.5);
+
+const onClickEditBtn = () => {
+  router.push('/product/edit/' + id.value);
+};
+
+const onClickDelete = () => {
+  // TODO: delete
+};
+
+const onClickReport = () => {
+  // TODO: 신고하기
+};
+</script>
 
 <style scoped>
 .product-page {
@@ -108,6 +130,7 @@
   font-weight: 600;
 }
 .date {
+  font-size: 14px;
   text-align: end;
   padding-right: 42px;
 }
