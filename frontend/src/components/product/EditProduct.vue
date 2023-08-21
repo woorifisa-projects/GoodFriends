@@ -14,8 +14,9 @@
           <textarea name="" id="explain" cols="30" rows="10" v-model="inputContent"></textarea>
         </div>
         <div class="buttons">
-          <button @click="save">임시저장</button>
-          <button @click="submit">등록하기</button>
+          <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">삭제하기</button>
+          <button v-else @click="save">임시저장</button>
+          <button class="submit-btn" @click="submit">{{props.type === 'edit' ? '수정하기' : '등록하기'}}</button>
         </div>
       </div>
       <div class="select-detail">
@@ -131,7 +132,7 @@ const onClickDeleteBtn = (index: number) => {
 const submit = () => {
   if (props.type === 'edit') {
     // TODO: edit 관련 API 호출
-    console.log('저장 버튼 클릭(EDIT)');
+    console.log('수정 버튼 클릭(EDIT)');
   } else if (props.type === 'add') {
     // TODO: add 관련 API 호출
     console.log('저장 버튼 클릭(ADD)');
@@ -139,14 +140,19 @@ const submit = () => {
 };
 
 const save = (e: Event) => {
-  if (props.type === 'edit') {
-    // TODO: edit 관련 API 호출
-    console.log('임시저장 버튼 클릭(EDIT)');
-  } else if (props.type === 'add') {
+  if (props.type === 'add') {
     // TODO: add 관련 API 호출
-    console.log('임시저장 버튼 클릭(ADD)');
+    console.log('임시저장 버튼 클릭');
   }
 };
+
+const remove = () => {
+  if(props.type === 'edit') {
+    // TODO: 현재 게시물 삭제 API 호출
+    console.log('삭제 버튼 클릭');
+  }
+}
+
 </script>
 
 <style scoped>
@@ -341,6 +347,16 @@ const save = (e: Event) => {
   padding: 8px 24px;
   border: 1px solid rgb(110, 110, 110);
   border-radius: 12px;
+}
+
+.remove-btn {
+  color: #ffffff;
+  background-color: rgb(110, 110, 110);
+}
+
+.submit-btn {
+  color: #ffffff;
+  background-color: #5467d4;
 }
 
 input[type='number']::-webkit-outer-spin-button,
