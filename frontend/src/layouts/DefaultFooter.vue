@@ -1,6 +1,8 @@
 <template>
   <div id="footer">
-    <div class="logo">logo</div>
+    <div class="logo">
+      <img :src="LOGO_IMG" alt="" />
+    </div>
     <ul class="links">
       <li>
         <a href="https://github.com/woorifisa/GoodFriends"> link1</a>
@@ -22,7 +24,9 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { LOGO_IMG } from '@/constants/images';
+</script>
 
 <style scoped>
 #footer {
@@ -41,7 +45,11 @@
   background: #f2f3f3;
 }
 .logo {
-  font-size: 32px;
+  width: 200px;
+  overflow: hidden;
+}
+.logo > img {
+  width: 100%;
 }
 
 #footer > ul {
