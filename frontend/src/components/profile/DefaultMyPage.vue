@@ -13,13 +13,13 @@
     <div class="wrap">
       <div class="side">
         <div class="list">
-          <span>나의 정보</span>
+          <span>{{ PROFILE_SIDEBAR.MY_INFO }}</span>
           <ul>
             <li :style="setListItemColor('/profile')">
-              <router-link to="/profile"> 프로필 </router-link>
+              <router-link to="/profile"> {{ PROFILE_SIDEBAR.PROFILE }} </router-link>
             </li>
           </ul>
-          <span>나의 거래</span>
+          <span>{{ PROFILE_SIDEBAR.DEAL }}</span>
           <ul>
             <li
               v-for="(item, index) in navList"
@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import { PROFILE_SIDEBAR } from '@/constants/strings/profile';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 

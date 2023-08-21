@@ -2,29 +2,29 @@
   <DefaultMyPage>
     <div class="profile_main">
       <div class="btn_wrap">
-        <button>탈퇴</button>
-        <button>수정</button>
+        <button>{{ PROFILE.WITHDRAWAL }}</button>
+        <button>{{ PROFILE.EDIT }}</button>
       </div>
       <div class="profile_detail_wrap">
         <div class="profile_detail">
           <div class="item">
-            <div>이메일</div>
+            <div>{{ PROFILE.EMAIL }}</div>
             <div>00@0000.com</div>
           </div>
           <div class="item">
-            <div>닉네임</div>
+            <div>{{ PROFILE.NICKNAME }}</div>
             <div>00</div>
           </div>
           <div class="item">
-            <div>성별</div>
+            <div>{{ PROFILE.GENDER }}</div>
             <div>00</div>
           </div>
           <div class="item">
-            <div>핸드폰</div>
+            <div>{{ PROFILE.PHONE_NUMBER }}</div>
             <div>000-0000-0000</div>
           </div>
           <div class="item">
-            <div>주소</div>
+            <div>{{ PROFILE.ADDRESS }}</div>
             <div>00시 00구</div>
           </div>
         </div>
@@ -34,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+import { PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
 </script>
 
