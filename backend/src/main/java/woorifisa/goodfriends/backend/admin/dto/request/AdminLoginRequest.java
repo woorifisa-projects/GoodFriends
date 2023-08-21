@@ -6,6 +6,9 @@ public class AdminLoginRequest {
 
     private String password;
 
+    public AdminLoginRequest() {
+    }
+
     public AdminLoginRequest(String adminId, String password) {
         this.adminId = adminId;
         this.password = password;

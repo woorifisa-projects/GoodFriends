@@ -7,8 +7,12 @@ import SellView from '@/views/SellView.vue';
 import AdminLogin from '@/views/AdminLogin.vue';
 import AddProduct from '@/views/AddProduct.vue';
 import EditProduct from '@/views/EditProductView.vue';
+import ProductView from '@/views/ProductView.vue';
 
 const router = createRouter({
+  scrollBehavior() {
+    return { top: 0 };
+  },
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -20,6 +24,7 @@ const router = createRouter({
         { path: 'profile', name: 'profile', component: ProfileView },
         { path: 'profile/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/sell', name: 'sell', component: SellView },
+        { path: 'product/:id', name: 'product', component: ProductView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct }
       ]
