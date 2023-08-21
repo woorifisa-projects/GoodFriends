@@ -57,8 +57,7 @@
 import type { category } from '@/types/product';
 import { computed, ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
-import banner1 from '@/assets/tmp/images/banner1.jpg';
-import banner2 from '@/assets/tmp/images/banner2.jpg';
+import { getBannerList } from '@/utils/image';
 
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
@@ -185,8 +184,10 @@ const products = ref([
 const categoryPageNumber = ref(0);
 const viewCategoryNumber = ref(8);
 const selectedCategoryId = ref(1);
-const bannerList = ref([banner1, banner2]);
+const bannerList = ref<Array<string>>([]);
 const viewBanner = ref(0);
+
+bannerList.value = getBannerList();
 
 const onClickBannerBtn = (flag: string) => {
   if (flag === 'next') {
