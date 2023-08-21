@@ -15,7 +15,7 @@ import woorifisa.goodfriends.backend.global.config.utils.JwtFilter;
 @EnableWebSecurity
 public class AuthenticationConfig {
 
-    @Value("${jwt.secret}")
+    @Value("${oauth2.jwt.secret}")
     private String secretKey;
 
     // SpringSecurity 적용하면 모든 api에 인증이 필요하다고 default로 호출됨
