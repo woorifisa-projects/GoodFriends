@@ -20,10 +20,6 @@ public class ProductSaveResponse {
 
     private int sellPrice;
 
-    private LocalDateTime createdDate;
-
-    private LocalDateTime lastModifiedDate;
-
     public ProductSaveResponse(Long id, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
         this.id = id;
         this.productCategories = productCategories;
@@ -31,8 +27,6 @@ public class ProductSaveResponse {
         this.status = status;
         this.description = description;
         this.sellPrice = sellPrice;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     public ProductSaveResponse(Product newProduct) {
@@ -42,8 +36,6 @@ public class ProductSaveResponse {
         this.status = newProduct.getStatus();
         this.description = newProduct.getDescription();
         this.sellPrice = newProduct.getSellPrice();
-        this.createdDate = newProduct.getCreatedDate();
-        this.lastModifiedDate = newProduct.getLastModifiedDate();
     }
 
     public Long getId() {
@@ -68,13 +60,5 @@ public class ProductSaveResponse {
 
     public int getSellPrice() {
         return sellPrice;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
     }
 }
