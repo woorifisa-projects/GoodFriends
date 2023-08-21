@@ -34,18 +34,31 @@
 </template>
 
 <script setup lang="ts">
+import { login } from '@/apis/adminLogin';
+import router from '@/router';
 import { ref } from 'vue';
 
 const userId = ref('');
 const userPw = ref('');
 
-const submit = () => {
+const submit = async () => {
   if (!userId.value || !userPw.value) {
     return;
   }
+
   // TODO: login api 연결 필요
-  return;
+  // console.log(userId.value, userPw.value);
+  const loginResult = await login(userId.value, userPw.value);
+
+  if(loginResult === true) {
+    router.push('/');
+  }
+  else {
+    alert("아아디 또는 비밀번호를 확인해주세요");
+  }
+
 };
+
 </script>
 
 <style scoped>

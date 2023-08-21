@@ -20,12 +20,6 @@ public class Admin {
 
     private String password;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime lastModifiedAt;
-
     protected Admin() {
     }
 
