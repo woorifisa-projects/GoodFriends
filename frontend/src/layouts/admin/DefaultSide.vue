@@ -7,7 +7,7 @@
           
           <div class = "logo">
           <div class = "logo-name">
-            <button @click = "onClickMangeLog">GoodFriends</button>
+            <button class = "logo-name-btn" @click = "onClickMangeLog">GoodFriends</button>
           </div>
           <div class = "logo-admin">
             관리자
@@ -63,15 +63,16 @@ const onClickManegeDeclaration = () => {
     padding-top:100px;
     
 }
-.logo{
+.logo,.logo-name-btn{
     color : whitesmoke;
-    padding-left: 20px;
+    padding-left: 10px;
     font-size: 21px;
     font-weight: bold;
 }
 
 .logo-admin{
     padding-top: 30px;
+    padding-left: 10px;
 }
 .admin-menu-ul{
     padding-top: 50px;
