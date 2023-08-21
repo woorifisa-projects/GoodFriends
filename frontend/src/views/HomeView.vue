@@ -319,8 +319,6 @@ setInterval(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-
-  z-index: -1;
 }
 .search-bar > input {
   width: 80%;
