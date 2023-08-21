@@ -27,7 +27,7 @@ public class Nickname {
     }
 
     private void validateNickname(String value) {
-        if(value.length() < MIN_LENGTH || value.length() > MAX_LENGTH
+        if (value.length() < MIN_LENGTH || value.length() > MAX_LENGTH
                 || !PATTERN.matcher(value).matches()) {
             throw new InvalidNicknameException();
         }

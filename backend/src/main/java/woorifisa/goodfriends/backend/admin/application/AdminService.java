@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.admin.application;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
@@ -12,10 +13,10 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
 
-    @Value("${jwt.secret}") //lombok 아닌 springframework annotation
+    @Value("${oauth2.jwt.secret}") //lombok 아닌 springframework annotation
     private String secretKey;
 
-    @Value("${jwt.expiretime}")
+    @Value("${oauth2.jwt.expire-length}")
     private Long expireTimeMs;
 
     public AdminService(AdminRepository adminRepository) {
