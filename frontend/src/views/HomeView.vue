@@ -13,7 +13,9 @@
     </div>
     <div class="main">
       <div class="category">
-        <button @click="onClickPrevCategory">뒤로</button>
+        <button @click="onClickPrevCategory">
+          <span class="material-icons-outlined"> arrow_back_ios </span>
+        </button>
         <ul>
           <li v-for="category in viewCategory" :key="category.id">
             <button
@@ -24,7 +26,9 @@
             </button>
           </li>
         </ul>
-        <button @click="onClickNextCategory">앞으로</button>
+        <button @click="onClickNextCategory">
+          <span class="material-icons-outlined"> arrow_forward_ios </span>
+        </button>
       </div>
       <div class="search-bar">
         <input type="text" id="search" @keyup.enter="onClickSearch" />
@@ -215,6 +219,7 @@ const onClickSearch = () => {
 
 const onClickCategory = (id: number) => {
   selectedCategoryId.value = id;
+  // TODO: 카테고리별 상품 출력
 };
 
 const viewCategory = computed(() => {
@@ -286,31 +291,35 @@ setInterval(() => {
   background-color: lightgray;
 }
 .category > ul {
-  background-color: skyblue;
-  border: 1px solid rgba(0, 0, 0, 0.32);
+  width: 950px;
+  background-color: rgb(232, 249, 255);
+  border: 1px solid rgba(135, 135, 135, 0.32);
   border-radius: 12px;
 
   display: flex;
   flex-wrap: nowrap;
   gap: 12px;
+  justify-content: center;
 
   padding: 12px;
 }
 .category > ul > li {
-  width: 100%;
+  width: fit-content;
 }
 .category > ul > li > button {
-  background-color: lightblue;
+  background-color: rgb(166, 209, 245);
 
   width: 105px;
   padding: 16px 0;
 
-  border: 1px solid black;
-  border-radius: 8px;
+  border: 1px solid rgba(66, 66, 66, 0.605);
+  border-radius: 6px;
 }
 
 .category > ul > li > .selected {
-  background-color: blue;
+  background-color: rgb(102, 154, 226);
+  color: white;
+  box-shadow: inset 1px 1px 10px rgba(133, 133, 133, 0.827);
 }
 .search-bar {
   position: relative;
@@ -395,15 +404,15 @@ setInterval(() => {
 }
 .add-button {
   position: sticky;
-  bottom: 12px;
+  bottom: 24px;
   right: 0;
   text-align: end;
 }
 .add-button > button {
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.576);
   background-color: lightblue;
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
 }
 </style>
