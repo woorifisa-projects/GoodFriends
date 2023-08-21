@@ -6,7 +6,10 @@
         <button @click="onClickPrevCategory">뒤로</button>
         <ul>
           <li v-for="category in viewCategory" :key="category.id">
-            <button>
+            <button
+              :class="category.id === selectedCategoryId ? `selected` : ``"
+              @click="onClickCategory(category.id)"
+            >
               {{ category.name }}
             </button>
           </li>
@@ -49,7 +52,7 @@ import image from '@/assets/tmp/images/image.png';
 const categories = ref<Array<category>>([
   {
     id: 1,
-    name: '1'
+    name: '전체'
   },
   {
     id: 2,
@@ -169,6 +172,7 @@ const products = ref([
 
 const categoryPageNumber = ref(0);
 const viewCategoryNumber = ref(8);
+const selectedCategoryId = ref(1);
 
 const onClickPrevCategory = () => {
   categoryPageNumber.value -= 1;
@@ -183,6 +187,10 @@ const onClickNextCategory = () => {
 
 const onClickSearch = () => {
   // TODO: 상품 검색
+};
+
+const onClickCategory = (id: number) => {
+  selectedCategoryId.value = id;
 };
 
 const viewCategory = computed(() => {
@@ -249,6 +257,10 @@ const viewCategory = computed(() => {
 
   border: 1px solid black;
   border-radius: 8px;
+}
+
+.category > ul > li > .selected {
+  background-color: blue;
 }
 .search-bar {
   position: relative;
