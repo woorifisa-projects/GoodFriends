@@ -1,6 +1,16 @@
 <template>
   <div class="main-page">
-    <div class="banner">배너</div>
+    <div class="banner">
+      <button @click="onClickBannerBtn('prev')">
+        <span class="material-icons-outlined"> arrow_back_ios </span>
+      </button>
+      <div class="banner-img">
+        <img :src="bannerList[viewBanner]" alt="배너" />
+      </div>
+      <button @click="onClickBannerBtn('next')">
+        <span class="material-icons-outlined"> arrow_forward_ios </span>
+      </button>
+    </div>
     <div class="main">
       <div class="category">
         <button @click="onClickPrevCategory">뒤로</button>
@@ -47,6 +57,8 @@
 import type { category } from '@/types/product';
 import { computed, ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
+import banner1 from '@/assets/tmp/images/banner1.jpg';
+import banner2 from '@/assets/tmp/images/banner2.jpg';
 
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
@@ -173,6 +185,17 @@ const products = ref([
 const categoryPageNumber = ref(0);
 const viewCategoryNumber = ref(8);
 const selectedCategoryId = ref(1);
+const bannerList = ref([banner1, banner2]);
+const viewBanner = ref(0);
+
+const onClickBannerBtn = (flag: string) => {
+  if (flag === 'next') {
+    viewBanner.value = (viewBanner.value + 1) % bannerList.value.length;
+  } else if (flag === 'prev') {
+    viewBanner.value -= 1;
+    if (viewBanner.value === 0) viewBanner.value = bannerList.value.length - 1;
+  }
+};
 
 const onClickPrevCategory = () => {
   categoryPageNumber.value -= 1;
@@ -197,6 +220,10 @@ const viewCategory = computed(() => {
   const start = categoryPageNumber.value * viewCategoryNumber.value;
   return categories.value.slice(start, start + viewCategoryNumber.value);
 });
+
+setInterval(() => {
+  onClickBannerBtn('next');
+}, 3000);
 </script>
 
 <style scoped>
@@ -205,9 +232,31 @@ const viewCategory = computed(() => {
   height: 100%;
 }
 .banner {
-  background-color: blue;
   width: 100%;
   height: 240px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(109, 109, 109, 0.155);
+}
+.banner > button {
+  position: absolute;
+  background-color: transparent;
+}
+.banner > button:first-child {
+  left: 0;
+}
+.banner > button:last-child {
+  right: 0;
+}
+.banner-img {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.banner-img > img {
+  height: 100%;
+  object-fit: cover;
 }
 .main {
   width: 100%;
