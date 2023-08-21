@@ -31,10 +31,10 @@
     </div>
     <div class="product-user">
       <div class="img">
-        <img src="@/assets/tmp/images/image.png" alt="" />
+        <img :src="user.image" alt="" />
       </div>
-      <div>name</div>
-      <div>gender</div>
+      <div>{{ user.name }}</div>
+      <div>{{ user.gender }}</div>
     </div>
     <div class="product-detail">상세 내용</div>
   </div>
@@ -62,6 +62,12 @@ const product = ref({
   images: [image, banner1]
 });
 const viewImage = ref(0);
+// TODO: API 연결
+const user = ref({
+  image: image,
+  name: 'name',
+  gender: 'gender'
+});
 
 const onClickBannerBtn = (flag: string) => {
   if (flag === 'next') {
