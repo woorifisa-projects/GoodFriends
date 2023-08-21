@@ -6,23 +6,27 @@
           <input type="text" id="title" placeholder="제목을 입력해주세요" v-model="inputName" />
         </div>
         <div class="price detail">
-          <label for="price">가격</label>
+          <label for="price">{{ PRODUCT.PRICE }}</label>
           <input type="number" id="price" v-model="inputPrice" />
         </div>
         <div class="explain detail">
-          <label for="explain">상세 설명</label>
+          <label for="explain">{{ PRODUCT.DESCRIPTION }}</label>
           <textarea name="" id="explain" cols="30" rows="10" v-model="inputContent"></textarea>
         </div>
         <div class="buttons">
-          <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">삭제하기</button>
-          <button v-else @click="save">임시저장</button>
-          <button class="submit-btn" @click="submit">{{props.type === 'edit' ? '수정하기' : '등록하기'}}</button>
+          <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">
+            {{ PRODUCT.DELETE }}
+          </button>
+          <button v-else @click="save">{{ PRODUCT.TEMPORARY }}</button>
+          <button class="submit-btn" @click="submit">
+            {{ props.type === 'edit' ? PRODUCT.EDIT : PRODUCT.SUBMIT }}
+          </button>
         </div>
       </div>
       <div class="select-detail">
         <div class="image">
-          <span for="image">이미지</span>
-          <label for="image">업로드</label>
+          <span for="image">{{ PRODUCT.IMAGE }}</span>
+          <label for="image">{{ PRODUCT.UPLOAD }}</label>
           <input
             id="image"
             type="file"
@@ -42,17 +46,17 @@
           </div>
         </div>
         <div class="category">
-          <span for="category">카테고리</span>
+          <span for="category">{{ PRODUCT.CATEGORY }}</span>
           <select name="" id="" v-model="selectedCategory">
-            <option disabled value="0">선택해주세요</option>
+            <option disabled value="0">{{ PRODUCT.PLEASE_SELECT }}</option>
             <option v-for="category in categories" :key="category.id" :value="category.id">
               {{ category.name }}
             </option>
           </select>
         </div>
         <div class="date">
-          <span for="date">등록 날짜</span>
-          <input type="date" :value="dateFormat(registerDate)" @change="onChangeDate" />
+          <span for="date">{{ PRODUCT.CREATE_AT }}</span>
+          <input type="date" :value="dateFormat(registerDate)" @change="onChangeDate" disabled />
         </div>
       </div>
     </div>
@@ -65,6 +69,7 @@ import { ref } from 'vue';
 import { dateFormat } from '@/utils/format';
 import { uploadFile } from '@/utils/File';
 import { useRoute } from 'vue-router';
+import { PRODUCT } from '@/constants/strings/product';
 
 const props = defineProps({
   type: {
@@ -147,12 +152,11 @@ const save = (e: Event) => {
 };
 
 const remove = () => {
-  if(props.type === 'edit') {
+  if (props.type === 'edit') {
     // TODO: 현재 게시물 삭제 API 호출
     console.log('삭제 버튼 클릭');
   }
-}
-
+};
 </script>
 
 <style scoped>
