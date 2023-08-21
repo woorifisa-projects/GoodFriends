@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 public class User {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -25,6 +24,7 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Embedded
     private Nickname nickname;
 
     private int ban;
@@ -38,7 +38,7 @@ public class User {
     protected User() {
     }
 
-    public User(final String email, final Nickname nickname, int ban) {
+    public User(String email, Nickname nickname, int ban) {
         validateEmail(email);
 
         this.email = email;
@@ -46,9 +46,17 @@ public class User {
         this.ban = ban;
     }
 
+    public User(String email, String nickname, int ban) {
+        validateEmail(email);
+
+        this.email = email;
+        this.nickname = new Nickname(nickname); // 문자열로부터 Nickname 객체 생성
+        this.ban = ban;
+    }
+
     private void validateEmail(final String email) {
         Matcher matcher = EMAIL_PATTERN.matcher(email);
-        if(!matcher.matches()) {
+        if (!matcher.matches()) {
             throw new InvalidUserException();
         }
     }
@@ -68,5 +76,4 @@ public class User {
     public int getBan() {
         return ban;
     }
-
 }
