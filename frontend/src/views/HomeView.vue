@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="add-button">
-      <button>
+      <button @click="onClickAddProduct">
         <span class="material-icons-outlined"> add </span>
       </button>
     </div>
@@ -62,6 +62,7 @@ import type { category } from '@/types/product';
 import { computed, ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
 import { getBannerList } from '@/utils/image';
+import router from '@/router';
 
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
@@ -226,6 +227,10 @@ const viewCategory = computed(() => {
   const start = categoryPageNumber.value * viewCategoryNumber.value;
   return categories.value.slice(start, start + viewCategoryNumber.value);
 });
+
+const onClickAddProduct = () => {
+  router.push('/product/add');
+};
 
 setInterval(() => {
   onClickBannerBtn('next');
