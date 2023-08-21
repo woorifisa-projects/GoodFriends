@@ -1,13 +1,17 @@
 <template>
   <div class="header">
-    <div class="title" @click="() => router.push('/')">logo</div>
+    <div class="title" @click="goPage(LOGO.path)">
+      <img :src="LOGO.image" alt="" />
+    </div>
     <div class="wrap">
       <div>
-        <button>판매하기</button>
+        <button @click="goPage(SELL.path)">{{ SELL.title }}</button>
       </div>
       <div id="login">
         <div v-if="!isLogin">
-          <button @click="onClickLoginBtn">login</button>
+          <button @click="onClickLoginBtn">
+            <span class="material-icons-outlined"> login </span>
+          </button>
         </div>
         <div v-else>
           <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">000님</button>
@@ -17,8 +21,8 @@
             </div>
             <div class="content">
               <div>nickname</div>
-              <div @click="onClickMyProfile">mypage</div>
-              <div @click="onClickLogoutBtn">logout</div>
+              <div @click="onClickMyProfile">{{ POPOVER.MY_PAGE }}</div>
+              <div @click="onClickLogoutBtn">{{ POPOVER.LOGOUT }}</div>
             </div>
           </div>
         </div>
@@ -28,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import { LOGO, POPOVER, SELL } from '@/constants/strings/header';
 import router from '@/router';
 import { ref, watchEffect } from 'vue';
 
@@ -36,6 +41,10 @@ const isLogin = ref(true);
 const isPopoverOpen = ref(false);
 const popover = ref<Element>();
 const popoverBtn = ref<Element>();
+
+const goPage = (path: string) => {
+  router.push(path);
+};
 
 const onClickLoginBtn = () => {
   // TODO: login 구현후 수정
@@ -110,9 +119,13 @@ watchEffect(() => {
 }
 
 .title {
-  font-size: 24px;
-  font-weight: 400;
   cursor: pointer;
+  width: 200px;
+  overflow: hidden;
+}
+.title img {
+  width: 100%;
+  object-fit: cover;
 }
 .wrap {
   display: flex;
