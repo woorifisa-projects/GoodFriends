@@ -15,17 +15,17 @@
       </div>
       <div class="info">
         <div v-if="isWriter" class="wrap-btn">
-          <button @click="onClickEditBtn">수정하기</button>
-          <button @click="onClickDelete">삭제하기</button>
+          <button @click="onClickEditBtn">{{ PRODUCT.EDIT }}</button>
+          <button @click="onClickDelete">{{ PRODUCT.DELETE }}</button>
         </div>
         <div v-else class="wrap-btn">
-          <button @click="onClickReport">신고하기</button>
+          <button @click="onClickReport">{{ PRODUCT.REPORT }}</button>
         </div>
         <div class="detail-info">
           <div class="name">{{ product.title }}~</div>
           <div class="price">{{ product.price }}원</div>
           <div class="category">{{ product.category }}</div>
-          <div class="date">등록날짜: {{ product.createdAt }}</div>
+          <div class="date">{{ PRODUCT.CREATE_AT }}: {{ product.createdAt }}</div>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
       <div>{{ user.name }}</div>
       <div>{{ user.gender }}</div>
     </div>
-    <div class="product-detail">상세 내용</div>
+    <div class="product-detail">{{ product.description }}</div>
   </div>
 </template>
 
@@ -46,6 +46,7 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import image from '@/assets/tmp/images/image.png';
 import banner1 from '@/assets/tmp/images/banner1.jpeg';
+import { PRODUCT } from '@/constants/strings/product';
 
 const route = useRoute();
 

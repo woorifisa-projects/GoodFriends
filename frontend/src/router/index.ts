@@ -5,7 +5,7 @@ import ProfileView from '@/views/ProfileView.vue';
 import PurchaseView from '@/views/PurchaseView.vue';
 import SellView from '@/views/SellView.vue';
 import AdminLogin from '@/views/AdminLogin.vue';
-import AddProduct from '@/views/AddProduct.vue';
+import AddProduct from '@/views/AddProductView.vue';
 import EditProduct from '@/views/EditProductView.vue';
 import ProductView from '@/views/ProductView.vue';
 
