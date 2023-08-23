@@ -22,7 +22,7 @@ public class Product {
     @JoinColumn(name = "user_id") // 외래 키로 사용할 컬럼 지정
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_categories_id")
     private ProductCategory productCategories;
 
@@ -45,7 +45,8 @@ public class Product {
     private LocalDateTime lastModifiedDate;
 
     @Builder
-    public Product(User user, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public Product(Long id, User user, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
         this.user = user;
         this.productCategories = productCategories;
         this.title = title;
@@ -53,6 +54,7 @@ public class Product {
         this.description = description;
         this.sellPrice = sellPrice;
     }
+
 
     public Product() {
     }

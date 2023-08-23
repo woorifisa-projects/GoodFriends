@@ -5,12 +5,11 @@ import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Service
 public class ProductService {
@@ -40,5 +39,23 @@ public class ProductService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .build());
+    }
+
+    public ProductUpdateResponse showSelectedProduct(Long id) {
+        Product selectedProduct = productRepository.findById(id).orElseThrow();
+
+        return new ProductUpdateResponse(selectedProduct);
+    }
+
+    public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) {
+        Product updatedProduct = productRepository.save(Product.builder()
+                        .id(id)
+                        .title(request.getTitle())
+                        .productCategories(request.getProductCategories())
+                        .status(request.getStatus())
+                        .description(request.getDescription())
+                        .sellPrice(request.getSellPrice())
+                        .build());
+        return new ProductUpdateResponse(updatedProduct);
     }
 }
