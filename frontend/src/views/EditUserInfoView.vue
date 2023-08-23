@@ -1,7 +1,7 @@
 <template>
   <div class="editUserInfo-Page">
     <div class="editUserInfo-Grid">
-      <div class="page-logo">사용자 정보 수정</div>
+      <div class="page-logo">{{ ADMIN.EDITUSERTITLE }}</div>
       <div class="totlaUserInfo">
         <div class="userInfo1">
           <div class="user-img"><img src="@/assets/tmp/images/image.png" alt="profile img" /></div>
@@ -37,8 +37,8 @@
       </div>
       <div class="work-buttons">
         <div class="work-buttons-1">
-          <button class="work-btn" @click="clickSuspend">활동 정지</button>
-          <button class="work-btn" @click="clickEdit">수정 완료</button>
+          <button class="work-btn" @click="clickSuspend">{{ ADMIN.SUSPEND }}</button>
+          <button class="work-btn" @click="clickEdit">{{ ADMIN.EDIT }}</button>
         </div>
       </div>
     </div>
