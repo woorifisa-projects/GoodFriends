@@ -42,4 +42,9 @@ public class ProductController {
         return ResponseEntity.ok().body(response);
     }
 
+    @DeleteMapping("/delete/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
+        productService.deleteById(productId);
+        return ResponseEntity.ok().body(productId+": delete");
+    }
 }
