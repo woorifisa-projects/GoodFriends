@@ -1,7 +1,7 @@
 <template>
   <div class="editUserInfo-Page">
     <div class="editUserInfo-Grid">
-      <div class="page-logo">{{ ADMIN.EDITUSERTITLE }}</div>
+      <div class="page-logo">{{ ADMIN.EDIT_USER_TITLE }}</div>
       <div class="totlaUserInfo">
         <div class="userInfo1">
           <div class="user-img"><img src="@/assets/tmp/images/image.png" alt="profile img" /></div>
