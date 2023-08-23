@@ -6,30 +6,31 @@
         <div class="userInfo1">
           <div class="user-img"><img src="@/assets/tmp/images/image.png" alt="profile img" /></div>
           <div class="userInfo1-1">
-            <div class="userInfo1-1-detail">신고당한 횟수 &nbsp;3</div>
-            <div class="userInfo1-1-detail">인증 뱃지 👊</div>
-            <div class="userInfo1-1-detail">평점 1.2</div>
+            <!-- TODO: ban, amark, average -->
+            <div class="userInfo1-1-detail">{{ ADMIN.BAN }}&nbsp;3</div>
+            <div class="userInfo1-1-detail">{{ ADMIN.MARK }}&nbsp;👊</div>
+            <div class="userInfo1-1-detail">{{ ADMIN.AVERRAGE }} 1.2</div>
           </div>
         </div>
         <div class="userInfo2">
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">이메일&nbsp;</div>
+            <div class="userInfo2-detailInfo">{{ ADMIN.EMAIL }}&nbsp;</div>
             <input class="input-user" v-model="email" />
           </div>
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">닉네임&nbsp;</div>
+            <div class="userInfo2-detailInfo">{{ ADMIN.NICKNAME }}&nbsp;</div>
             <input class="input-user" v-model="nickname" />
           </div>
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">성별&nbsp;</div>
+            <div class="userInfo2-detailInfo">{{ ADMIN.SEX }}&nbsp;</div>
             <input class="input-user" v-model="sex" />
           </div>
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">연락처&nbsp;</div>
+            <div class="userInfo2-detailInfo">{{ ADMIN.PHONE }}&nbsp;</div>
             <input class="input-user" v-model="phone" />
           </div>
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">주소&nbsp;</div>
+            <div class="userInfo2-detailInfo">{{ ADMIN.ADDRESS }}&nbsp;</div>
             <input class="input-user" v-model="address" />
           </div>
         </div>
@@ -45,12 +46,13 @@
 </template>
 
 <script setup lang="ts">
+import { ADMIN } from '@/constants/strings/admin';
 import { ref } from 'vue';
 
 //신고당한 횟수, 인증마크, 평점
 const banCount = ref();
 const authMark = ref();
-const grade = ref();
+const average = ref();
 
 //이메일, 닉네임, 성별, 연락처, 주소
 const email = ref();
