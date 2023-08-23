@@ -24,8 +24,11 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Embedded
-    private Nickname nickname;
+    @Column(name = "nickname", nullable = false)
+    private String nickname;
+
+    @Column(name = "profile_image_url", nullable = false)
+    private String profileImageUrl;
 
     private int ban;
 
@@ -38,19 +41,10 @@ public class User {
     protected User() {
     }
 
-    public User(String email, Nickname nickname, int ban) {
-        validateEmail(email);
-
+    public User(String email, String nickname, String profileImageUrl, int ban) {
         this.email = email;
         this.nickname = nickname;
-        this.ban = ban;
-    }
-
-    public User(String email, String nickname, int ban) {
-        validateEmail(email);
-
-        this.email = email;
-        this.nickname = new Nickname(nickname); // 문자열로부터 Nickname 객체 생성
+        this.profileImageUrl = profileImageUrl;
         this.ban = ban;
     }
 
@@ -69,8 +63,12 @@ public class User {
         return email;
     }
 
-    public Nickname getNickname() {
+    public String getNickname() {
         return nickname;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
     public int getBan() {
