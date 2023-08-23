@@ -23,4 +23,16 @@ import DefaultFooter from '@/layouts/DefaultFooter.vue';
   width: 100%;
   padding: 10px 200px;
 }
+
+@media screen and (max-width: 1023px) {
+  #main {
+    padding: 10px 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #main {
+    padding: 10px 0;
+  }
+}
 </style>

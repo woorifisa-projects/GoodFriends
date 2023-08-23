@@ -97,4 +97,13 @@ import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
   display: flex;
   align-items: center;
 }
+
+@media screen and (max-width: 1023px) {
+}
+
+@media screen and (max-width: 767px) {
+  .profile_detail_wrap {
+    padding: 0 12px;
+  }
+}
 </style>
