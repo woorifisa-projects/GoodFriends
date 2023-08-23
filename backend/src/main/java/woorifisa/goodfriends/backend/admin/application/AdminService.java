@@ -13,10 +13,10 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
 
-    @Value("${oauth2.jwt.secret}") //lombok 아닌 springframework annotation
+    @Value("${security.jwt.token.secret-key}") //lombok 아닌 springframework annotation
     private String secretKey;
 
-    @Value("${oauth2.jwt.expire-length}")
+    @Value("${security.jwt.token.access.expire-length}")
     private Long expireTimeMs;
 
     public AdminService(AdminRepository adminRepository) {
