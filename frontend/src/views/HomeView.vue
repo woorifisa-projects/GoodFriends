@@ -30,6 +30,20 @@
           <span class="material-icons-outlined"> arrow_forward_ios </span>
         </button>
       </div>
+      <div class="category small-category">
+        <ul v-if="smallCategoryIsOpen">
+          <li v-for="category in categories" :key="category.id">
+            <button
+              :class="category.id === selectedCategoryId ? `selected` : ``"
+              @click="onClickCategory(category.id)"
+            >
+              {{ category.name }}
+            </button>
+          </li>
+        </ul>
+        <div v-else>카테고리 열기</div>
+        <button @click="openCategory">{{ smallCategoryIsOpen ? `닫기` : `열기` }}</button>
+      </div>
       <div class="search-bar">
         <input type="text" id="search" @keyup.enter="onClickSearch" />
         <label @click="onClickSearch">
@@ -37,21 +51,7 @@
         </label>
       </div>
       <div class="card-list">
-        <div
-          @click="onClickProductCard(product.id)"
-          class="card"
-          v-for="product in products"
-          :key="product.id"
-        >
-          <div class="img">
-            <img :src="product.image" alt="임시 이미지" />
-          </div>
-          <div class="detail">
-            <p class="title">{{ product.title }}</p>
-            <p class="address">{{ product.address }}</p>
-            <p class="price">{{ product.price }}원</p>
-          </div>
-        </div>
+        <ProductCardVue :products="products" @click="onClickProductCard" />
       </div>
     </div>
     <div class="add-button">
@@ -68,6 +68,7 @@ import { computed, ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
 import { getBannerList } from '@/utils/image';
 import router from '@/router';
+import ProductCardVue from '@/components/ProductCard.vue';
 
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
@@ -196,6 +197,12 @@ const viewCategoryNumber = ref(8);
 const selectedCategoryId = ref(1);
 const bannerList = ref<Array<string>>([]);
 const viewBanner = ref(0);
+const smallCategoryIsOpen = ref(false);
+
+const openCategory = () => {
+  console.log('!');
+  smallCategoryIsOpen.value = !smallCategoryIsOpen.value;
+};
 
 bannerList.value = getBannerList();
 
@@ -283,6 +290,7 @@ setInterval(() => {
   height: 100%;
   margin-top: 24px;
 }
+
 .category {
   width: 100%;
   padding: 20px;
@@ -335,6 +343,9 @@ setInterval(() => {
   color: white;
   box-shadow: inset 1px 1px 10px rgba(133, 133, 133, 0.827);
 }
+.small-category {
+  display: none;
+}
 .search-bar {
   position: relative;
   width: 100%;
@@ -368,56 +379,6 @@ setInterval(() => {
   justify-items: center;
   gap: 24px;
 }
-.card {
-  box-sizing: content-box;
-  background-color: white;
-  padding: 12px;
-  width: 250px;
-  height: 350px;
-
-  box-shadow: 1px 1px 10px rgb(196, 196, 196);
-  border-radius: 12px;
-
-  cursor: pointer;
-}
-.card > .img {
-  width: 250px;
-  height: 250px;
-  overflow: hidden;
-
-  background-color: white;
-
-  border: 1px solid black;
-  border-radius: 12px;
-}
-.card > .img > img {
-  width: 100%;
-}
-.detail {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-
-  text-align: center;
-}
-.detail > p {
-  width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.detail > .title {
-  font-size: 24px;
-  font-weight: 600;
-
-  border-bottom: 1px solid black;
-}
-.detail > .address {
-  font-size: 16px;
-}
-.detail > .price {
-  text-align: right;
-}
 .add-button {
   position: sticky;
   bottom: 24px;
@@ -430,5 +391,50 @@ setInterval(() => {
   border-radius: 50%;
   width: 64px;
   height: 64px;
+}
+
+@media screen and (max-width: 1200px) {
+  .card-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .card-list {
+    grid-template-columns: 1fr 1fr;
+  }
+  .category {
+    display: none;
+  }
+  .small-category {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    width: 100%;
+  }
+  .small-category > ul {
+    width: fit-content;
+    flex-wrap: wrap;
+  }
+  .small-category > div {
+    width: 100%;
+    background-color: rgb(232, 249, 255);
+    border: 1px solid rgba(135, 135, 135, 0.32);
+    border-radius: 12px;
+    padding: 12px 24px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    justify-content: right;
+  }
+  .add-button {
+    padding-right: 24px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .card-list {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

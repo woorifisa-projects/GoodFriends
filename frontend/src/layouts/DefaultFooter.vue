@@ -73,4 +73,13 @@ import { LOGO_IMG } from '@/constants/images';
 .icon {
   height: 100%;
 }
+
+@media screen and (max-width: 1023px) {
+  #footer {
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+}
 </style>
