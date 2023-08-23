@@ -85,4 +85,21 @@ const onClick = (item: Item) => {
   line-height: 58px;
   font-size: 24px;
 }
+
+@media screen and (max-width: 1023px) {
+  .detail {
+    height: 60px;
+  }
+  .detail > div {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .item > .img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+}
 </style>
