@@ -4,16 +4,26 @@
       <div class="sidebar-inner">
         <div class="logo">
           <div class="logo-name">
-            <button class="logo-name-btn" @click="onClickMangeLog">GoodFriends</button>
+            <button class="logo-name-btn" @click="onClickMangeLog">{{ ADMIN_SIDEBAR.LOGO }}</button>
           </div>
-          <div class="logo-admin">관리자</div>
+          <div class="logo-admin">{{ ADMIN_SIDEBAR.MANAGER }}</div>
         </div>
         <div class="admin-menu">
           <ul class="admin-menu-ul">
-            <li><button @click="onClickMangeLog">로그 관리</button></li>
-            <li><button @click="onClickManegeUser">사용자 관리</button></li>
-            <li><button @click="onClickManegeProduct">상품 관리</button></li>
-            <li><button @click="onClickManegeDeclaration">신고 관리</button></li>
+            <li>
+              <button @click="onClickMangeLog">{{ ADMIN_SIDEBAR.MANAGE_LOG }}</button>
+            </li>
+            <li>
+              <button @click="onClickManegeUser">{{ ADMIN_SIDEBAR.MANAGE_USER }}</button>
+            </li>
+            <li>
+              <button @click="onClickManegeProduct">{{ ADMIN_SIDEBAR.MANAGE_PRODUCT }}</button>
+            </li>
+            <li>
+              <button @click="onClickManegeDeclaration">
+                {{ ADMIN_SIDEBAR.MANAGE_DECLAREATION }}
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -23,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import { ADMIN, ADMIN_SIDEBAR } from '@/constants/strings/admin';
 import router from '@/router';
 
 //TODO: 페이지 이동
