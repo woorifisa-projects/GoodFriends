@@ -379,4 +379,46 @@ input[type='file'] {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+@media screen and (max-width: 1023px) {
+  .form-product {
+    margin-top: 64px;
+  }
+  .input-detail input,
+  .input-detail textarea {
+    font-size: 18px;
+  }
+
+  .input-detail label {
+    font-size: 14px;
+  }
+
+  .buttons > button {
+    font-size: 18px;
+  }
+
+  .select-detail span {
+    border-bottom: 1px solid black;
+    font-size: 18px;
+  }
+
+  .select-detail input,
+  .select-detail select {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .select-detail > div {
+    padding: 12px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .form {
+    flex-direction: column-reverse;
+  }
+  .image-wrap {
+    height: 120px;
+  }
+}
 </style>
