@@ -8,6 +8,7 @@ import AdminLogin from '@/views/AdminLogin.vue';
 import AddProduct from '@/views/AddProductView.vue';
 import EditProduct from '@/views/EditProductView.vue';
 import ProductView from '@/views/ProductView.vue';
+import NotFoundView from '@/views/NotFoundView.vue';
 
 const router = createRouter({
   scrollBehavior() {
@@ -26,7 +27,16 @@ const router = createRouter({
         { path: 'profile/sell', name: 'sell', component: SellView },
         { path: 'product/:id', name: 'product', component: ProductView },
         { path: 'product/add', name: 'add product', component: AddProduct },
-        { path: 'product/edit/:id', name: 'edit product', component: EditProduct }
+        { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
+        {
+          path: '/404',
+          name: 'notFound',
+          component: NotFoundView
+        },
+        {
+          path: '/:pathMatch(.*)*',
+          redirect: '/404'
+        }
       ]
     },
     {
