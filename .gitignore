@@ -12,6 +12,7 @@ backend/src/main/resources/application.yml
 backend/src/main/resources/application-db.yml
 backend/src/main/resources/application-oauth.yml
 backend/src/main/resources/application-local.properties
+backend/gradlew
 
 ### STS ###
 .apt_generated
