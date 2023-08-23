@@ -2,13 +2,13 @@ package woorifisa.goodfriends.backend.auth.dto;
 
 import woorifisa.goodfriends.backend.user.domain.User;
 
-public class OAuthMember {
+public class OAuthUser {
 
     private final String email;
     private final String nickname;
     private final String profileImageUrl;
 
-    public OAuthMember(String email, String nickname, String profileImageUrl) {
+    public OAuthUser(String email, String nickname, String profileImageUrl) {
         this.email = email;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
