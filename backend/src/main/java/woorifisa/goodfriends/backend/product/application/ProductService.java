@@ -58,4 +58,8 @@ public class ProductService {
                         .build());
         return new ProductUpdateResponse(updatedProduct);
     }
+
+    public void deleteById(Long productId) {
+        productRepository.deleteById(productId);
+    }
 }
