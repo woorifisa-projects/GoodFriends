@@ -41,11 +41,10 @@ public class User {
     protected User() {
     }
 
-    public User(String email, String nickname, String profileImageUrl, int ban) {
+    public User(String email, String nickname, String profileImageUrl) {
         this.email = email;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
-        this.ban = ban;
     }
 
     private void validateEmail(final String email) {

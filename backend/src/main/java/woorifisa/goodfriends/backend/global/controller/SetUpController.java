@@ -19,8 +19,8 @@ public class SetUpController {
 
     @GetMapping("/")
     public List<User> setup() {
-        User user1 = new User("goodfriends.admin@gmail.com", "관리자", "admin_image", 0);
-        User user2 = new User("fancy@gmail.com", "팬시", "fancy_image", 0);
+        User user1 = new User("goodfriends.admin@gmail.com", "관리자", "admin_image");
+        User user2 = new User("fancy@gmail.com", "팬시", "fancy_image");
 
         userRepository.save(user1);
         userRepository.save(user2);
