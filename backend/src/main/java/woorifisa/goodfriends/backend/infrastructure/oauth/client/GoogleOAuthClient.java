@@ -44,7 +44,7 @@ public class GoogleOAuthClient implements OAuthClient {
 
     // 인가 코드와 리다이렉트 URI를 인자로 받아 사용자 정보를 가져오는 작업을 수행합니다.
     @Override
-    public OAuthUser getOAuthmember(final String code, final String redirectUri) {
+    public OAuthUser getOAuthUser(final String code, final String redirectUri) {
         GoogleTokenResponse googleTokenResponse = requestGoogleToken(code, redirectUri); // 1
         String payload = getPayload(googleTokenResponse.getIdToken()); // 2
         UserInfo userInfo = parseUserInfo(payload);
