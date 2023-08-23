@@ -56,4 +56,17 @@ button {
   font-size: 24px;
   box-shadow: 1px 1px 10px rgba(155, 155, 155, 0.47);
 }
+
+@media screen and (max-width: 767px) {
+  .img {
+    font-size: 100px;
+    font-weight: 800;
+  }
+  .text {
+    font-size: 24px;
+  }
+  button {
+    font-size: 18px;
+  }
+}
 </style>
