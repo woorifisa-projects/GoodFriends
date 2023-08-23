@@ -13,22 +13,26 @@
     <div class="wrap">
       <div class="side">
         <div class="list">
-          <span>{{ PROFILE_SIDEBAR.MY_INFO }}</span>
-          <ul>
-            <li :style="setListItemColor('/profile')">
-              <router-link to="/profile"> {{ PROFILE_SIDEBAR.PROFILE }} </router-link>
-            </li>
-          </ul>
-          <span>{{ PROFILE_SIDEBAR.DEAL }}</span>
-          <ul>
-            <li
-              v-for="(item, index) in navList"
-              v-bind:key="index"
-              :style="setListItemColor(item.path)"
-            >
-              <router-link :to="item.path">{{ item.name }}</router-link>
-            </li>
-          </ul>
+          <div class="list-item">
+            <span>{{ PROFILE_SIDEBAR.MY_INFO }}</span>
+            <ul>
+              <li :style="setListItemColor('/profile')">
+                <router-link to="/profile"> {{ PROFILE_SIDEBAR.PROFILE }} </router-link>
+              </li>
+            </ul>
+          </div>
+          <div class="list-item">
+            <span>{{ PROFILE_SIDEBAR.DEAL }}</span>
+            <ul>
+              <li
+                v-for="(item, index) in navList"
+                v-bind:key="index"
+                :style="setListItemColor(item.path)"
+              >
+                <router-link :to="item.path">{{ item.name }}</router-link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="main second-main">
@@ -83,10 +87,10 @@ const setListItemColor = (path: String) => {
 }
 
 .side {
-  /* TODO: 반응형 추가할시 수정 */
   width: 350px;
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
 .main {
@@ -119,17 +123,18 @@ const setListItemColor = (path: String) => {
   padding: 10px;
 
   height: 480px;
-
+  position: sticky;
+  top: 120px;
   background: white;
   box-shadow: 2px 2px 17px rgb(186, 186, 186);
   border-radius: 16px;
 }
 
-.list > span {
+.list-item > span {
   font-size: 24px;
 }
 
-.list > ul {
+.list-item > ul {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -137,7 +142,7 @@ const setListItemColor = (path: String) => {
   margin: 20px 0;
 }
 
-.list > ul > li {
+.list-item > ul > li {
   padding: 8px 16px;
 
   background: lightgray;
@@ -148,5 +153,41 @@ a {
   display: block;
   width: 100%;
   height: 100%;
+}
+
+@media screen and (max-width: 1023px) {
+}
+
+@media screen and (max-width: 767px) {
+  .wrap {
+    flex-direction: column;
+  }
+  .wrap > div {
+    margin: 12px 0;
+  }
+
+  .side {
+    width: 100%;
+  }
+  .list {
+    width: 100%;
+    margin: 10px;
+    padding: 10px;
+
+    height: fit-content;
+
+    background: white;
+    box-shadow: 2px 2px 17px rgb(186, 186, 186);
+    border-radius: 16px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+  .list-item > ul {
+    flex-direction: row;
+  }
+  .list span {
+    display: none;
+  }
 }
 </style>

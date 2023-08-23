@@ -204,4 +204,16 @@ watchEffect(() => {
   background: transparent;
   cursor: text;
 }
+
+@media screen and (max-width: 1023px) {
+  .header {
+    padding: 0;
+  }
+  .popover {
+    right: 10px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+}
 </style>
