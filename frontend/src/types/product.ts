@@ -10,3 +10,10 @@ export interface productEdit {
   category: number;
   date: Date;
 }
+export interface product {
+  id: number;
+  image: string;
+  title: string;
+  address: string;
+  price: number;
+}
