@@ -133,7 +133,8 @@ const onClickReport = () => {
 
 .imgs > img {
   width: 100%;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
 }
 .info {
   flex: 2;
@@ -216,5 +217,47 @@ const onClickReport = () => {
   margin-top: 32px;
   margin-bottom: 42px;
   padding: 24px;
+}
+
+@media screen and (max-width: 1023px) {
+  .info {
+    flex: 1;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .product-info {
+    flex-direction: column;
+    align-items: center;
+  }
+  .imgs {
+    width: 350px;
+    max-height: 350px;
+    overflow: hidden;
+  }
+  .info {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.339);
+    box-shadow: none;
+  }
+  .detail-info {
+    font-size: 16px;
+    gap: 12px;
+  }
+  .name {
+    font-size: 32px;
+  }
+  .price {
+    font-size: 18px;
+  }
+  .product-user {
+    padding-left: 10%;
+  }
+  .product-detail {
+    padding: 0 10%;
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.339);
+  }
 }
 </style>
