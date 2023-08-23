@@ -20,6 +20,7 @@
         </div>
         <div v-else class="wrap-btn">
           <button @click="onClickReport">{{ PRODUCT.REPORT }}</button>
+          <button @click="onClickOrder">{{ PRODUCT.ORDER }}</button>
         </div>
         <div class="detail-info">
           <div class="name">{{ product.title }}~</div>
@@ -37,6 +38,38 @@
       <div>{{ user.gender }}</div>
     </div>
     <div class="product-detail">{{ product.description }}</div>
+    <CommonModalVue
+      :is-visible="isVisible"
+      @updateVisible="(status: boolean) => (isVisible = status)"
+    >
+      <div class="modal">
+        <div class="modal-title">{{ ORDER_MODAL.TIME }}</div>
+        <div class="modal-date">
+          <div class="modal-text">
+            <p v-for="(text, index) in ORDER_MODAL.CONTENTS" :key="index">
+              {{ text }}
+            </p>
+          </div>
+          <div class="modal-input">
+            <span>{{ ORDER_MODAL.DATE }} </span>
+            <input type="date" />
+            ~
+            <input type="date" />
+          </div>
+          <div class="modal-input">
+            <span>{{ ORDER_MODAL.TIME }} </span>
+            <input type="time" />
+            ~
+            <input type="time" />
+          </div>
+        </div>
+        <div class="modal-requirement">
+          <label for="requirement"> {{ ORDER_MODAL.REQUIREMENT }}</label>
+          <textarea name="" id="" cols="30" rows="10"></textarea>
+        </div>
+        <button @click="onClickOrderSubmit">{{ ORDER_MODAL.SUBMIT }}</button>
+      </div>
+    </CommonModalVue>
   </div>
 </template>
 
@@ -46,7 +79,8 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import image from '@/assets/tmp/images/image.png';
 import banner1 from '@/assets/tmp/images/banner1.jpeg';
-import { PRODUCT } from '@/constants/strings/product';
+import { ORDER_MODAL, PRODUCT } from '@/constants/strings/product';
+import CommonModalVue from '@/components/CommonModal.vue';
 
 const route = useRoute();
 
@@ -69,6 +103,7 @@ const user = ref({
   name: 'name',
   gender: 'gender'
 });
+const isVisible = ref(false);
 
 const onClickBannerBtn = (flag: string) => {
   if (flag === 'next') {
@@ -87,6 +122,14 @@ const onClickDelete = () => {
 
 const onClickReport = () => {
   // TODO: 신고하기
+};
+
+const onClickOrder = () => {
+  isVisible.value = true;
+};
+
+const onClickOrderSubmit = () => {
+  // TODO: 주문서 제출
 };
 </script>
 
@@ -218,7 +261,64 @@ const onClickReport = () => {
   margin-bottom: 42px;
   padding: 24px;
 }
+.modal {
+  width: 100%;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;
+
+  font-size: 24px;
+  overflow: auto;
+}
+.modal > .modal-title {
+  width: 100%;
+  border-bottom: 1px solid black;
+  font-size: 48px;
+  font-weight: 700;
+}
+.modal-date {
+  display: flex;
+  flex-direction: column;
+}
+.modal-date > .modal-text {
+  margin: 12px 0;
+}
+.modal-input {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+.modal-input > span {
+  width: 60px;
+}
+.modal > .modal-requirement {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+}
+.modal-requirement > label {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+.modal-requirement > textarea {
+  padding: 12px;
+  font-size: 18px;
+}
+.modal > button {
+  margin-top: 12px;
+  padding: 12px 18px;
+
+  border: 1px solid rgba(130, 130, 130, 0.732);
+  box-shadow: 1px 1px 10px rgba(145, 145, 145, 0.524);
+}
+.modal > button:active {
+  background-color: rgb(219, 219, 219);
+}
 @media screen and (max-width: 1023px) {
   .info {
     flex: 1;
