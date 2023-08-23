@@ -13,7 +13,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import woorifisa.goodfriends.backend.auth.application.OAuthClient;
-import woorifisa.goodfriends.backend.auth.dto.OAuthMember;
+import woorifisa.goodfriends.backend.auth.dto.OAuthUser;
 import woorifisa.goodfriends.backend.global.config.properties.GoogleProperties;
 import woorifisa.goodfriends.backend.infrastructure.dto.GoogleTokenResponse;
 import woorifisa.goodfriends.backend.infrastructure.oauth.dto.UserInfo;
@@ -44,12 +44,12 @@ public class GoogleOAuthClient implements OAuthClient {
 
     // 인가 코드와 리다이렉트 URI를 인자로 받아 사용자 정보를 가져오는 작업을 수행합니다.
     @Override
-    public OAuthMember getOAuthmember(final String code, final String redirectUri) {
+    public OAuthUser getOAuthmember(final String code, final String redirectUri) {
         GoogleTokenResponse googleTokenResponse = requestGoogleToken(code, redirectUri); // 1
         String payload = getPayload(googleTokenResponse.getIdToken()); // 2
         UserInfo userInfo = parseUserInfo(payload);
 
-        return new OAuthMember(userInfo.getEmail(), userInfo.getName(), userInfo.getPicture()); // OAuthMember 객체에 사용자의 이메일, 이름 및 프로필 사진 정보를 담아 반환합니다.
+        return new OAuthUser(userInfo.getEmail(), userInfo.getName(), userInfo.getPicture()); // OAuthMember 객체에 사용자의 이메일, 이름 및 프로필 사진 정보를 담아 반환합니다.
     }
 
     // 1-1

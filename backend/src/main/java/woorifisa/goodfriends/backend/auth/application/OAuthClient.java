@@ -1,7 +1,7 @@
 package woorifisa.goodfriends.backend.auth.application;
 
-import woorifisa.goodfriends.backend.auth.dto.OAuthMember;
+import woorifisa.goodfriends.backend.auth.dto.OAuthUser;
 
 public interface OAuthClient {
-    OAuthMember getOAuthmember(final String code, final String redirectUri);
+    OAuthUser getOAuthmember(final String code, final String redirectUri);
 }
