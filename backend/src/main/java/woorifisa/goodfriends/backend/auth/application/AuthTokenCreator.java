@@ -20,4 +20,10 @@ public class AuthTokenCreator implements TokenCreator {
 
         return new AuthToken(id, accessToken);
     }
+
+    @Override
+    public Long extractPayLoad(String accessToken) {
+        tokenProvider.validateToken(accessToken);
+        return Long.valueOf(tokenProvider.getPayload(accessToken));
+    }
 }
