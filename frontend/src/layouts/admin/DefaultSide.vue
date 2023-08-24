@@ -55,6 +55,7 @@ const onClickManegeDeclaration = () => {};
 
 #main {
   width: 100%;
+  padding: 20px;
 }
 .sidebar {
   /* position: relative; */
