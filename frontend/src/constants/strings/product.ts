@@ -11,7 +11,9 @@ export const PRODUCT = {
   PLEASE_SELECT: '선택해주세요',
   CREATE_AT: '등록 날짜',
   REPORT: '신고하기',
-  ORDER: '주문하기'
+  ORDER: '주문하기',
+  VIEW_ORDER: '주문서 보기',
+  DEAL: '거래하기'
 };
 
 export const ORDER_MODAL = {
