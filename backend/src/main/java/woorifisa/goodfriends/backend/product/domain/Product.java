@@ -45,7 +45,7 @@ public class Product {
     private LocalDateTime lastModifiedDate;
 
     @Builder
-    public Product(Long id, User user, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public Product(Long id, User user, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice, LocalDateTime createdDate) {
         this.id = id;
         this.user = user;
         this.productCategories = productCategories;
@@ -53,6 +53,7 @@ public class Product {
         this.status = status;
         this.description = description;
         this.sellPrice = sellPrice;
+        this.createdDate = createdDate;
     }
 
 
