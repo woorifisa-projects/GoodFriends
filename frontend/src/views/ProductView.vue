@@ -52,9 +52,17 @@
           </div>
           <div class="modal-input">
             <span>{{ ORDER_MODAL.DATE }} </span>
-            <input type="date" />
+            <input
+              type="date"
+              :value="dateFormat(wantedDate[0])"
+              @change="onChangeDate($event, 0)"
+            />
             ~
-            <input type="date" />
+            <input
+              type="date"
+              :value="dateFormat(wantedDate[1])"
+              @change="onChangeDate($event, 1)"
+            />
           </div>
           <div class="modal-input">
             <span>{{ ORDER_MODAL.TIME }} </span>
@@ -81,6 +89,8 @@ import image from '@/assets/tmp/images/image.png';
 import banner1 from '@/assets/tmp/images/banner1.jpeg';
 import { ORDER_MODAL, PRODUCT } from '@/constants/strings/product';
 import CommonModalVue from '@/components/CommonModal.vue';
+import { dateFormat } from '@/utils/format';
+import { compareDate } from '@/utils/date';
 
 const route = useRoute();
 
@@ -103,7 +113,8 @@ const user = ref({
   name: 'name',
   gender: 'gender'
 });
-const isVisible = ref(false);
+const isVisible = ref(true);
+const wantedDate = ref([new Date(), new Date()]);
 
 const onClickBannerBtn = (flag: string) => {
   if (flag === 'next') {
@@ -128,7 +139,20 @@ const onClickOrder = () => {
   isVisible.value = true;
 };
 
+const onChangeDate = (event: Event, index: number) => {
+  const date = (event.target as HTMLInputElement).value;
+  wantedDate.value[index] = new Date(date);
+};
 const onClickOrderSubmit = () => {
+  console.log(wantedDate.value, new Date());
+  const currentDate = new Date();
+  if (
+    compareDate(currentDate, wantedDate.value[0]) < 0 ||
+    compareDate(wantedDate.value[0], wantedDate.value[1]) < 0
+  ) {
+    alert('날짜를 정확히 입력해주세요');
+    return;
+  }
   isVisible.value = false;
   // TODO: 주문서 제출
 };
@@ -293,6 +317,7 @@ const onClickOrderSubmit = () => {
   justify-content: flex-start;
   align-items: center;
   gap: 12px;
+  margin-top: 12px;
 }
 .modal-input > span {
   width: 60px;
@@ -320,6 +345,19 @@ const onClickOrderSubmit = () => {
 .modal > button:active {
   background-color: rgb(219, 219, 219);
 }
+
+input[type='date'],
+input[type='time'] {
+  background-color: skyblue;
+  padding: 13px;
+  font-family: 'Roboto Mono', monospace;
+  color: #ffffff;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+
 @media screen and (max-width: 1023px) {
   .info {
     flex: 1;
