@@ -3,6 +3,7 @@ package woorifisa.goodfriends.backend.product.application;
 import org.springframework.stereotype.Service;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
+import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
@@ -33,7 +34,7 @@ public class ProductService {
         return productRepository.save(Product.builder()
                 .user(user)
                 .title(request.getTitle())
-                .status(request.getStatus())
+                .status(ProductStatus.SALE)
                 .productCategories(request.getProductCategories())
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
