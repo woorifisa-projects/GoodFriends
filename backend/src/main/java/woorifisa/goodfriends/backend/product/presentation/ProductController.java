@@ -8,6 +8,7 @@ import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 
 import java.net.URI;
 import java.util.List;
@@ -33,6 +34,12 @@ public class ProductController {
     public ResponseEntity<List<ProductViewAllResponse>> viewAllProduct() {
         List<ProductViewAllResponse> responses = productService.viewAllProduct();
         return ResponseEntity.ok().body(responses);
+    }
+
+    @GetMapping("/view/{productId}")
+    public ResponseEntity<ProductViewOneResponse> viewOneProduct(@PathVariable Long productId) {
+        ProductViewOneResponse response = productService.viewOneProduct(productId);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/edit/{productId}")
