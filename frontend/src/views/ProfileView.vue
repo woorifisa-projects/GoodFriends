@@ -3,7 +3,7 @@
     <div class="profile_main">
       <div class="btn_wrap">
         <button>{{ PROFILE.WITHDRAWAL }}</button>
-        <button>{{ PROFILE.EDIT }}</button>
+        <button @click="onClickEdit">{{ PROFILE.EDIT }}</button>
       </div>
       <div class="profile_detail_wrap">
         <div class="profile_detail">
@@ -36,6 +36,11 @@
 <script setup lang="ts">
 import { PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
+import router from '@/router';
+
+const onClickEdit = () => {
+  router.push('profile/edit');
+};
 </script>
 
 <style scoped>
