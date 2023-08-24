@@ -9,6 +9,7 @@ import AddProduct from '@/views/AddProductView.vue';
 import EditProduct from '@/views/EditProductView.vue';
 import ProductView from '@/views/ProductView.vue';
 import NotFoundView from '@/views/NotFoundView.vue';
+import OrderView from '@/views/OrderView.vue';
 
 const router = createRouter({
   scrollBehavior() {
@@ -26,6 +27,7 @@ const router = createRouter({
         { path: 'profile/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/sell', name: 'sell', component: SellView },
         { path: 'product/:id', name: 'product', component: ProductView },
+        { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
         {
