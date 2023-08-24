@@ -17,6 +17,7 @@
         <div v-if="isWriter" class="wrap-btn">
           <button @click="onClickEditBtn">{{ PRODUCT.EDIT }}</button>
           <button @click="onClickDelete">{{ PRODUCT.DELETE }}</button>
+          <button @click="router.push(`${id}/order`)">{{ PRODUCT.VIEW_ORDER }}</button>
         </div>
         <div v-else class="wrap-btn">
           <button @click="onClickReport">{{ PRODUCT.REPORT }}</button>
@@ -72,7 +73,7 @@ const user = ref({
   name: 'name',
   gender: 'gender'
 });
-const isVisible = ref(true);
+const isVisible = ref(false);
 
 const onClickBannerBtn = (flag: string) => {
   if (flag === 'next') {
