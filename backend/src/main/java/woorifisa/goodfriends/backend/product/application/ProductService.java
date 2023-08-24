@@ -2,7 +2,6 @@ package woorifisa.goodfriends.backend.product.application;
 
 import org.springframework.stereotype.Service;
 import woorifisa.goodfriends.backend.product.domain.Product;
-import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
@@ -43,18 +42,20 @@ public class ProductService {
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
         Product selectedProduct = productRepository.findById(id).orElseThrow();
-
         return new ProductUpdateResponse(selectedProduct);
     }
 
     public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) {
+        Product selectedProduct = productRepository.findById(id).orElseThrow();
         Product updatedProduct = productRepository.save(Product.builder()
                         .id(id)
+                        .user(selectedProduct.getUser())
                         .title(request.getTitle())
                         .productCategories(request.getProductCategories())
                         .status(request.getStatus())
                         .description(request.getDescription())
                         .sellPrice(request.getSellPrice())
+                        .createdDate(selectedProduct.getCreatedDate())
                         .build());
         return new ProductUpdateResponse(updatedProduct);
     }
