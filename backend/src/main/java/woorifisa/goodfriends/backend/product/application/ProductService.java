@@ -7,9 +7,13 @@ import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductSearchResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -39,6 +43,18 @@ public class ProductService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .build());
+    }
+
+    public List<ProductSearchResponse> viewAllProduct() {
+        List<Product> products = productRepository.findAll();
+        List<ProductSearchResponse> productSearchResponses = products.stream()
+                .map(product -> {
+                    ProductSearchResponse productSearchResponse = new ProductSearchResponse(
+                            product.getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice());
+                    return productSearchResponse;
+                })
+                .collect(Collectors.toList());
+        return productSearchResponses;
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {

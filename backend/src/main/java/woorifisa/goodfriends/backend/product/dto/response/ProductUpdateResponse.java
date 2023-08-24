@@ -18,6 +18,9 @@ public class ProductUpdateResponse {
 
     private int sellPrice;
 
+    public ProductUpdateResponse() {
+    }
+
     public ProductUpdateResponse(Long id, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice) {
         this.id = id;
         this.productCategories = productCategories;
