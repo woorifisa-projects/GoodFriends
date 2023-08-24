@@ -34,14 +34,14 @@ export const checkTime = (time: string) => {
 };
 
 export const compareTime = (time1: string, time2: string) => {
-  const [time1H, time1M] = time1.split(':');
-  const [time2H, time2M] = time2.split(':');
+  const [time1H, time1M] = time1.split(':').map(Number);
+  const [time2H, time2M] = time2.split(':').map(Number);
 
   if (time1H < time2H) return 1;
   if (time1H > time2H) return -1;
 
   if (time1M < time2M) return 1;
-  if (time1H > time2M) return -1;
+  if (time1M > time2M) return -1;
 
   return 0;
 };

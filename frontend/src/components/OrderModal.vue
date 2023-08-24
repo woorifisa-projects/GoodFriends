@@ -91,12 +91,14 @@ const onChangeDate = (event: Event, index: number) => {
 };
 
 const onChangeTime = (event: Event, index: number) => {
-  const time = (event.target as HTMLInputElement).value;
+  const time = (event.target as HTMLInputElement).value.replace(/\D/g, '');
+  if (time.length === 0) return '';
 
   const hours = time.slice(0, 2);
   const minute = time.slice(2, 4);
 
-  wantedTime.value[index] = hours + ':' + minute;
+  //   hours + ':' + minute
+  wantedTime.value[index] = `0${hours}`.slice(-2) + ':' + `${minute}00`.slice(0, 2);
 };
 </script>
 
