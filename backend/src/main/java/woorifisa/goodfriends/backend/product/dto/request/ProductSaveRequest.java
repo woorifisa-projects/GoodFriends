@@ -1,11 +1,9 @@
 package woorifisa.goodfriends.backend.product.dto.request;
 
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
-import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public class ProductSaveRequest {
 
@@ -13,8 +11,6 @@ public class ProductSaveRequest {
     private String title;
 
     ProductCategory productCategories;
-
-    private ProductStatus status;
 
     @NotBlank(message = "상품 설명을 입력해 주세요.")
     private String description;
@@ -24,10 +20,9 @@ public class ProductSaveRequest {
     public ProductSaveRequest() {
     }
 
-    public ProductSaveRequest(String title, ProductCategory productCategories, ProductStatus status, String description, int sellPrice) {
+    public ProductSaveRequest(String title, ProductCategory productCategories, String description, int sellPrice) {
         this.title = title;
         this.productCategories = productCategories;
-        this.status = status;
         this.description = description;
         this.sellPrice = sellPrice;
     }
@@ -40,9 +35,6 @@ public class ProductSaveRequest {
         return productCategories;
     }
 
-    public ProductStatus getStatus() {
-        return status;
-    }
 
     public String getDescription() {
         return description;
