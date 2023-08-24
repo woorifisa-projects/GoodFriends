@@ -129,6 +129,7 @@ const onClickOrder = () => {
 };
 
 const onClickOrderSubmit = () => {
+  isVisible.value = false;
   // TODO: 주문서 제출
 };
 </script>
