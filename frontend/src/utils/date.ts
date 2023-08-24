@@ -21,3 +21,27 @@ export const compareDate = (date1: Date, date2: Date) => {
 
   return 0;
 };
+
+export const checkTime = (time: string) => {
+  const [mm, ss] = time.split(':');
+
+  if (mm === '' || ss === '') return false;
+
+  if (Number(mm) >= 24 || Number(mm) < 0) return false;
+  if (Number(ss) > 60 || Number(ss) < 0) return false;
+
+  return true;
+};
+
+export const compareTime = (time1: string, time2: string) => {
+  const [time1H, time1M] = time1.split(':');
+  const [time2H, time2M] = time2.split(':');
+
+  if (time1H < time2H) return 1;
+  if (time1H > time2H) return -1;
+
+  if (time1M < time2M) return 1;
+  if (time1H > time2M) return -1;
+
+  return 0;
+};

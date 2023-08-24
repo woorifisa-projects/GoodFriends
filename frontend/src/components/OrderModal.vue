@@ -16,9 +16,19 @@
         </div>
         <div class="modal-input">
           <span>{{ ORDER_MODAL.TIME }} </span>
-          <input type="time" />
+          <input
+            type="text"
+            :value="wantedTime[0]"
+            @change="onChangeTime($event, 0)"
+            placeholder="00:00"
+          />
           ~
-          <input type="time" />
+          <input
+            type="text"
+            :value="wantedTime[1]"
+            @change="onChangeTime($event, 1)"
+            placeholder="00:00"
+          />
         </div>
       </div>
       <div class="modal-requirement">
@@ -34,7 +44,7 @@
 import CommonModalVue from '@/components/CommonModal.vue';
 import { ORDER_MODAL } from '@/constants/strings/product';
 import { dateFormat } from '@/utils/format';
-import { compareDate } from '@/utils/date';
+import { checkTime, compareDate, compareTime } from '@/utils/date';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -51,15 +61,24 @@ const props = defineProps({
 const emits = defineEmits(['update:isVisible']);
 
 const wantedDate = ref([new Date(), new Date()]);
+const wantedTime = ref(['', '']);
 
 const onClickOrderSubmit = () => {
-  console.log(wantedDate.value, new Date());
   const currentDate = new Date();
   if (
     compareDate(currentDate, wantedDate.value[0]) < 0 ||
     compareDate(wantedDate.value[0], wantedDate.value[1]) < 0
   ) {
-    alert('날짜를 정확히 입력해주세요');
+    alert(ORDER_MODAL.ALERT_DATE);
+    return;
+  }
+  if (
+    !checkTime(wantedTime.value[0]) ||
+    !checkTime(wantedTime.value[1]) ||
+    compareTime(wantedTime.value[0], wantedTime.value[1]) < 0
+  ) {
+    console.log(checkTime(wantedTime.value[0]));
+    alert(ORDER_MODAL.ALERT_TIME);
     return;
   }
   emits('update:isVisible', false);
@@ -69,6 +88,15 @@ const onClickOrderSubmit = () => {
 const onChangeDate = (event: Event, index: number) => {
   const date = (event.target as HTMLInputElement).value;
   wantedDate.value[index] = new Date(date);
+};
+
+const onChangeTime = (event: Event, index: number) => {
+  const time = (event.target as HTMLInputElement).value;
+
+  const hours = time.slice(0, 2);
+  const minute = time.slice(2, 4);
+
+  wantedTime.value[index] = hours + ':' + minute;
 };
 </script>
 
@@ -134,7 +162,7 @@ const onChangeDate = (event: Event, index: number) => {
 }
 
 input[type='date'],
-input[type='time'] {
+input[type='text'] {
   background-color: skyblue;
   padding: 13px;
   font-family: 'Roboto Mono', monospace;
@@ -143,5 +171,8 @@ input[type='time'] {
   border: none;
   outline: none;
   border-radius: 5px;
+}
+input[type='text'] {
+  width: 100px;
 }
 </style>
