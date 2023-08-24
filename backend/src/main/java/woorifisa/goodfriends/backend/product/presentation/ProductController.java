@@ -6,7 +6,7 @@ import woorifisa.goodfriends.backend.product.application.ProductService;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductSearchResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 
 import java.net.URI;
@@ -30,8 +30,8 @@ public class ProductController {
     }
 
     @GetMapping("/view")
-    public ResponseEntity<List<ProductSearchResponse>> viewAllProduct() {
-        List<ProductSearchResponse> responses = productService.viewAllProduct();
+    public ResponseEntity<List<ProductViewAllResponse>> viewAllProduct() {
+        List<ProductViewAllResponse> responses = productService.viewAllProduct();
         return ResponseEntity.ok().body(responses);
     }
 
