@@ -2,9 +2,9 @@
   <div class="order-page">
     <div class="product-info">
       <div class="img">
-        <img src="@/assets/tmp/images/image.png" alt="" />
+        <img :src="product.image" alt="" />
       </div>
-      <div class="title">title</div>
+      <div class="title">{{ product.title }}</div>
     </div>
     <div class="order-list">
       <ul>
@@ -25,7 +25,7 @@
               {{ order.requirement }}
             </div>
             <div class="btn">
-              <button>거래하기</button>
+              <button @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
             </div>
           </div>
         </li>
@@ -38,6 +38,7 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import image from '@/assets/tmp/images/image.png';
+import { PRODUCT } from '@/constants/strings/product';
 const route = useRoute();
 
 const id = ref(route.params.id);
@@ -100,10 +101,18 @@ const orderList = ref([
   }
 ]);
 
+const product = ref({
+  image,
+  title: 'title'
+});
+
 const onClickItem = (event: Event) => {
-  //   const date = (event.target as HTMLInputElement).value;
   const target = event.target as HTMLDivElement;
   target.classList.toggle('open');
+};
+
+const onClickDeal = () => {
+  // TODO: api
 };
 </script>
 
