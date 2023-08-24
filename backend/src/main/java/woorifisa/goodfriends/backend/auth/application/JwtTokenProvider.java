@@ -8,6 +8,8 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -21,17 +23,17 @@ import woorifisa.goodfriends.backend.auth.exception.InvalidTokenException;
 public class JwtTokenProvider implements TokenProvider {
 
     private final SecretKey key;
-    private final long accessTokenValidityInMilliseconds;
+    private final long accessTokenValidityInMinutes; // 변경: 분 단위로 유효 기간 설정
 
     public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") final String secretKey,
-                            @Value("${security.jwt.token.access.expire-length}") final long accessTokenValidityInMilliseconds) {
+                            @Value("${security.jwt.token.access.expire-length}") final long accessTokenValidityInMinutes) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-        this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds;
+        this.accessTokenValidityInMinutes = accessTokenValidityInMinutes;
     }
 
     @Override
     public String createAccessToken(String payload) {
-        return createToken(payload, accessTokenValidityInMilliseconds);
+        return createToken(payload, TimeUnit.MINUTES.toMillis(accessTokenValidityInMinutes));
     }
 
     public String createToken(final String payload, final Long validityInMilliseconds) {
