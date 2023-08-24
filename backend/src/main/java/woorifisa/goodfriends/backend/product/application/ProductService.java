@@ -34,7 +34,7 @@ public class ProductService {
         return productRepository.save(Product.builder()
                 .user(user)
                 .title(request.getTitle())
-                .status(ProductStatus.SALE)
+                .status(ProductStatus.SELL)
                 .productCategories(request.getProductCategories())
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
