@@ -109,7 +109,6 @@ import type { category } from '@/types/product';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
-import { PRODUCT } from '@/constants/strings/product';
 import { uploadFile } from '@/utils/File';
 
 const previewImg = ref<Array<string>>([]);
@@ -151,6 +150,7 @@ const props = defineProps({
   }
 });
 
+// TODO: 이미지 관련 작업 백엔드 연동시 재확인 필요
 const uploadImage = (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
   if (!fileList) return;
