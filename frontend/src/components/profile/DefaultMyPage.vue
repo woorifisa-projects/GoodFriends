@@ -139,7 +139,6 @@ const onClickEditName = () => {
   width: 350px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   position: relative;
 }
