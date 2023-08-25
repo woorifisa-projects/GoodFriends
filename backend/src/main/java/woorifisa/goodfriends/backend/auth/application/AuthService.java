@@ -44,4 +44,10 @@ public class AuthService {
         eventPublisher.publishEvent(new UserSavedEvent(saveUser.getId()));
         return saveUser;
     }
+
+    public Long extractMemberId(String accessToken) {
+        Long userId = tokenCreator.extractPayLoad(accessToken);
+        userRepository.validateExistById(userId);
+        return userId;
+    }
 }
