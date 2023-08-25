@@ -13,6 +13,8 @@ import DefaultSide from '@/layouts/admin/DefaultSide.vue';
 import EditUserInfoView from '@/views/EditUserInfoView.vue';
 import EditProductByAdminView from '@/views/EditProductByAdminView.vue';
 import AddProductByAdminView from '@/views/AddProductByAdminView.vue';
+import OrderView from '@/views/OrderView.vue';
+
 
 const router = createRouter({
   scrollBehavior() {
@@ -30,6 +32,7 @@ const router = createRouter({
         { path: 'profile/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/sell', name: 'sell', component: SellView },
         { path: 'product/:id', name: 'product', component: ProductView },
+        { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
         {

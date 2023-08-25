@@ -17,9 +17,11 @@
         <div v-if="isWriter" class="wrap-btn">
           <button @click="onClickEditBtn">{{ PRODUCT.EDIT }}</button>
           <button @click="onClickDelete">{{ PRODUCT.DELETE }}</button>
+          <button @click="router.push(`${id}/order`)">{{ PRODUCT.VIEW_ORDER }}</button>
         </div>
         <div v-else class="wrap-btn">
           <button @click="onClickReport">{{ PRODUCT.REPORT }}</button>
+          <button @click="onClickOrder">{{ PRODUCT.ORDER }}</button>
         </div>
         <div class="detail-info">
           <div class="name">{{ product.title }}~</div>
@@ -37,6 +39,7 @@
       <div>{{ user.gender }}</div>
     </div>
     <div class="product-detail">{{ product.description }}</div>
+    <OrderModal v-model:is-visible="isVisible" :product-id="0" />
   </div>
 </template>
 
@@ -44,6 +47,7 @@
 import router from '@/router';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import OrderModal from '@/components/OrderModal.vue';
 import image from '@/assets/tmp/images/image.png';
 import banner1 from '@/assets/tmp/images/banner1.jpeg';
 import { PRODUCT } from '@/constants/strings/product';
@@ -69,6 +73,7 @@ const user = ref({
   name: 'name',
   gender: 'gender'
 });
+const isVisible = ref(false);
 
 const onClickBannerBtn = (flag: string) => {
   if (flag === 'next') {
@@ -87,6 +92,10 @@ const onClickDelete = () => {
 
 const onClickReport = () => {
   // TODO: 신고하기
+};
+
+const onClickOrder = () => {
+  isVisible.value = true;
 };
 </script>
 
@@ -218,7 +227,6 @@ const onClickReport = () => {
   margin-bottom: 42px;
   padding: 24px;
 }
-
 @media screen and (max-width: 1023px) {
   .info {
     flex: 1;

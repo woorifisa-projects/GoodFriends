@@ -2,10 +2,9 @@ package woorifisa.goodfriends.backend.product.dto.response;
 
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
+import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
-import java.time.LocalDateTime;
-
-public class ProductSaveResponse {
+public class ProductUpdateResponse {
 
     private Long id;
 
@@ -13,24 +12,28 @@ public class ProductSaveResponse {
 
     private String title;
 
+    private ProductStatus status;
+
     private String description;
 
     private int sellPrice;
 
-    public ProductSaveResponse(Long id, ProductCategory productCategories, String title, String description, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public ProductUpdateResponse(Long id, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice) {
         this.id = id;
         this.productCategories = productCategories;
         this.title = title;
+        this.status = status;
         this.description = description;
         this.sellPrice = sellPrice;
     }
 
-    public ProductSaveResponse(Product newProduct) {
-        this.id = newProduct.getId();
-        this.productCategories = newProduct.getProductCategories();
-        this.title = newProduct.getTitle();
-        this.description = newProduct.getDescription();
-        this.sellPrice = newProduct.getSellPrice();
+    public ProductUpdateResponse(Product product){
+        this.id = product.getId();
+        this.productCategories = product.getProductCategories();
+        this.title = product.getTitle();
+        this.status = product.getStatus();
+        this.description = product.getDescription();
+        this.sellPrice = product.getSellPrice();
     }
 
     public Long getId() {
@@ -43,6 +46,10 @@ public class ProductSaveResponse {
 
     public String getTitle() {
         return title;
+    }
+
+    public ProductStatus getStatus() {
+        return status;
     }
 
     public String getDescription() {
