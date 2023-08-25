@@ -14,7 +14,6 @@ import EditUserInfoView from '@/views/EditUserInfoView.vue';
 import EditProductByAdminView from '@/views/EditProductByAdminView.vue';
 import AddProductByAdminView from '@/views/AddProductByAdminView.vue';
 import OrderView from '@/views/OrderView.vue';
-import EditProfileView from '@/views/EditProfileView.vue';
 
 
 const router = createRouter({
@@ -30,7 +29,6 @@ const router = createRouter({
       children: [
         { path: '/', name: 'home', component: HomeView },
         { path: 'profile', name: 'profile', component: ProfileView },
-        { path: 'profile/edit', name: 'edit profile', component: EditProfileView },
         { path: 'profile/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/sell', name: 'sell', component: SellView },
         { path: 'product/:id', name: 'product', component: ProductView },
