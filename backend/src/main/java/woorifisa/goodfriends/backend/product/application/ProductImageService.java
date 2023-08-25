@@ -35,4 +35,11 @@ public class ProductImageService {
         return savedImageUrl;
     }
 
+    public void deleteByProductId(Long productId) throws MalformedURLException {
+        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
+        for(ProductImage productImage : productImages){
+            s3Service.deleteFile(productImage.getImageUrl());
+        }
+    }
+
 }

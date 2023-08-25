@@ -33,4 +33,13 @@ public class S3Service {
         // 저장된 파일의 s3 url 반환
         return amazonS3.getUrl(bucket, uniqueFileName).toString();
     }
+
+    public void deleteFile(String imageUrl) throws MalformedURLException {
+        URL s3Url = new URL(imageUrl);
+        String bucket = s3Url.getHost().split("\\.")[0];
+        String objectFileName = s3Url.getPath().substring(1);
+
+        amazonS3.deleteObject(bucket, objectFileName);
+    }
+
 }
