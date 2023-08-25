@@ -2,8 +2,22 @@
   <div class="profile">
     <div class="wrap">
       <div class="side">
-        <div class="img">
-          <img src="@/assets/tmp/images/image.png" alt="profile img" />
+        <div class="img-wrap">
+          <div class="img">
+            <img :src="user.image" alt="profile img" />
+          </div>
+          <div class="profile-img-upload">
+            <input type="file" id="profile-image" @change="onClickProfileImageUpload" />
+            <label for="profile-image">
+              <span class="material-icons-outlined"> photo_camera </span>
+            </label>
+          </div>
+        </div>
+        <div class="name">
+          <input type="text" v-model="modifiedName" :disabled="isEditButtonDisabled" />
+          <button @click="onClickEditName">
+            <span class="material-icons-outlined"> edit </span>
+          </button>
         </div>
       </div>
       <div class="main">
@@ -44,10 +58,20 @@
 
 <script setup lang="ts">
 import { PROFILE_SIDEBAR } from '@/constants/strings/profile';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import image from '@/assets/tmp/images/image.png';
+import { uploadFile } from '@/utils/File';
 const route = useRoute();
 
-// TODO: 페이지 생성시 path 수정
+const isEditButtonDisabled = ref(true);
+
+const user = ref({
+  image,
+  name: 'name'
+});
+
+const modifiedName = ref(user.value.name);
 const navList = [
   {
     name: '구매목록',
@@ -66,6 +90,31 @@ const navList = [
 const setListItemColor = (path: String) => {
   if (route.path === path) return 'background: #7f7f7fd5';
   return '';
+};
+
+const onClickProfileImageUpload = async (event: Event) => {
+  // TODO: 이미지 유효성 검사 및 저장
+  const fileList: FileList | null = (event.target as HTMLInputElement).files;
+  if (!fileList) return;
+
+  const uploadImageFile: Array<File> = [];
+  const previewImg: Array<string> = [];
+  await uploadFile('ima', fileList, previewImg, 0, uploadImageFile);
+
+  user.value.image = previewImg[0];
+};
+
+const onClickEditName = () => {
+  if (isEditButtonDisabled.value) {
+    isEditButtonDisabled.value = false;
+  } else {
+    // TODO: 유효성 검사
+    if (!modifiedName.value.length) {
+      alert('닉네임은 최소 한 글자 이상 작성하셔야 합니다!');
+    }
+    user.value.name = modifiedName.value;
+    isEditButtonDisabled.value = true;
+  }
 };
 </script>
 
@@ -89,10 +138,47 @@ const setListItemColor = (path: String) => {
 .side {
   width: 350px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   position: relative;
 }
+.side > .name {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 10px;
 
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
+.name > input {
+  border: none;
+  border-radius: 12px;
+  background-color: white;
+  text-align: center;
+  font-size: 18px;
+  animation: blink 1s ease infinite alternate;
+}
+.name > input:focus {
+  border: none;
+}
+@keyframes blink {
+  0% {
+    border: 1px solid black;
+  }
+  100% {
+    border: 1px solid transparent;
+  }
+}
+.name > input:disabled {
+  animation: none;
+}
+.name > button {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  background-color: transparent;
+}
 .main {
   width: 100%;
 }
@@ -102,7 +188,11 @@ const setListItemColor = (path: String) => {
   min-height: 500px;
   border-radius: 16px;
 }
-
+.img-wrap {
+  width: 180px;
+  height: 180px;
+  position: relative;
+}
 .img {
   width: 180px;
   height: 180px;
@@ -116,7 +206,26 @@ const setListItemColor = (path: String) => {
 .img > img {
   height: 100%;
 }
+.img-wrap > .profile-img-upload {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 
+  background-color: transparent;
+  width: 60px;
+  height: 60px;
+}
+.profile-img-upload > input[type='file'] {
+  visibility: hidden;
+}
+.img-wrap > .profile-img-upload > label > span {
+  background-color: white;
+  border: 1px solid rgba(138, 138, 138, 0.529);
+  border-radius: 50%;
+  padding: 2px;
+  transform: scale(1.5);
+  cursor: pointer;
+}
 .list {
   width: 100%;
   margin: 10px;

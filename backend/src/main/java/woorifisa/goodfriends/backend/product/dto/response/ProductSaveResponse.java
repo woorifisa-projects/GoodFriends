@@ -17,6 +17,9 @@ public class ProductSaveResponse {
 
     private int sellPrice;
 
+    public ProductSaveResponse() {
+    }
+
     public ProductSaveResponse(Long id, ProductCategory productCategories, String title, String description, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
         this.id = id;
         this.productCategories = productCategories;

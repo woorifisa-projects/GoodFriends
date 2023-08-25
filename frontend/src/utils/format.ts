@@ -5,3 +5,12 @@ export const dateFormat = (date: Date) => {
 
   return `${year}-${`0${month + 1}`.slice(-2)}-${`0${day}`.slice(-2)}`;
 };
+
+export const phoneNumberFormat = (number: string): string => {
+  if (number.length > 8) {
+    return number.slice(0, 3) + '-' + number.slice(3, 7) + '-' + number.slice(7, 11);
+  } else if (number.length > 4) {
+    return number.slice(0, 3) + '-' + number.slice(3);
+  }
+  return number;
+};
