@@ -8,8 +8,13 @@ import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -39,6 +44,22 @@ public class ProductService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .build());
+    }
+
+    public List<ProductViewAllResponse> viewAllProduct() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(product -> {
+                    ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
+                            product.getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice());
+                    return productViewAllResponse;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public ProductViewOneResponse viewOneProduct(Long id) {
+        Product product = productRepository.findById(id).orElseThrow();
+        return new ProductViewOneResponse(product.getId(), product.getUser(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedDate(), product.getLastModifiedDate());
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
