@@ -54,7 +54,7 @@ const user = ref({
   email: '00@000.com',
   gender: 'woman',
   birthday: '2000-02-24',
-  phone: '000-0000-0000',
+  phone: '010-1234-1234',
   address: '00시00구'
 });
 
