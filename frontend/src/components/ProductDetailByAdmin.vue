@@ -3,6 +3,27 @@
     <div class="edit-product-total">
       <div class="edit-product-grid">
         <div class="product-Info-UP">
+          <div class="image-total">
+            <div class="image">
+              <div class="image-wrap">
+                <div class="image-card" v-for="(img, index) in previewImg" :key="index">
+                  <div class="upload-img">
+                    <img :src="img" alt="" />
+                  </div>
+                  <div class="delete-btn" @click="onClickDeleteBtn(index)">
+                    <img src="@/assets/images/delete.png" alt="" />
+                  </div>
+                </div>
+              </div>
+              <input
+                id="image"
+                type="file"
+                multiple
+                accept="image/png, image/gif, image/jpeg"
+                @change="uploadImage"
+              />
+            </div>
+          </div>
           <div class="product-title-total">
             <div class="product-Info-total">
               <div class="product-Info">{{ ADMIN_PRODUCT.PRODUCT_TITLE }}</div>
@@ -88,22 +109,11 @@ import type { category } from '@/types/product';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
+import { PRODUCT } from '@/constants/strings/product';
+import { uploadFile } from '@/utils/File';
 
-const props = defineProps({
-  type: {
-    type: String,
-    validator(value: string) {
-      return ['edit', 'add'].includes(value);
-    },
-    required: true
-  }
-});
-
-// TODO: API 요청 -> price, name, content, category, image, date 가져오기
-const route = useRoute();
-const id = route.params.id;
-// -------------------------
-
+const previewImg = ref<Array<string>>([]);
+const inputImage = ref<Array<File>>([]);
 const inputProductTitle = ref('');
 const inputProductPrice = ref(0);
 const inputProductDate = ref('');
@@ -131,6 +141,30 @@ const categories = ref<Array<category>>([
     name: '악세사리 '
   }
 ]);
+const props = defineProps({
+  type: {
+    type: String,
+    validator(value: string) {
+      return ['edit', 'add'].includes(value);
+    },
+    required: true
+  }
+});
+
+const uploadImage = (event: Event) => {
+  const fileList: FileList | null = (event.target as HTMLInputElement).files;
+  if (!fileList) return;
+  uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
+};
+
+const onClickDeleteBtn = (index: number) => {
+  previewImg.value.splice(index, 1);
+};
+
+// TODO: API 요청 -> price, name, content, category, image, date 가져오기
+const route = useRoute();
+const id = route.params.id;
+// -------------------------
 
 const clickEdit = () => {
   // TODO: 현재 게시물 수정 API 호출
@@ -154,7 +188,58 @@ const clickCancle = () => {
   display: flex;
   justify-content: center;
 }
+.image-total {
+  width: 100%;
+  height: 145px;
+  display: flex;
+  justify-content: center;
+}
+.image {
+  width: 100%;
+  height: 100%;
+  display: flex;
 
+  flex-direction: column;
+}
+.image-wrap {
+  border: 1px solid rgb(195, 195, 195);
+  box-shadow: 1px 1px 10px rgba(176, 176, 176, 0.578);
+
+  padding: 6px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  overflow-x: auto;
+
+  height: 125px;
+}
+.image-card {
+  position: relative;
+}
+.image-wrap img {
+  width: 100%;
+  height: 100%;
+}
+.upload-img {
+  width: 100px;
+  height: 100px;
+  border: 1px solid gray;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.delete-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 16px;
+
+  cursor: pointer;
+}
 .page-title {
   font-size: 20px;
   width: 600px;
@@ -169,11 +254,6 @@ const clickCancle = () => {
 }
 .product-Info-total {
   width: 100px;
-}
-.image {
-  width: 100px;
-  height: 100px;
-  padding: 20px;
 }
 
 .product-sellinfo-toal {
@@ -211,7 +291,7 @@ const clickCancle = () => {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 40px;
+  padding: 35px;
 }
 .product-butns {
   display: flex;

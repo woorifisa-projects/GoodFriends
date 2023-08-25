@@ -4,11 +4,6 @@
       <div class="edit-product-grid">
         <div class="page-title-total">
           <div class="page-title">{{ ADMIN_PRODUCT.PRODUCT_TITLE_ADD }}</div>
-          <div class="image">
-            <div class="product-images">
-              <img src="@/assets/tmp/images/image.png" alt="profile img" />
-            </div>
-          </div>
         </div>
         <div class="product-Info-UP">
           <div class="detail-layout">
@@ -63,12 +58,6 @@ import { ADMIN_PRODUCT } from '@/constants/strings/admin';
 }
 .product-Info-total {
   width: 100px;
-}
-.image {
-  width: 170px;
-  height: 170px;
-  display: flex;
-  justify-content: center;
 }
 .product-images {
   width: 100%;

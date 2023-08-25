@@ -53,8 +53,8 @@ const router = createRouter({
       name: 'In admin page',
       component: DefaultSide,
       children:[
-        {path: 'product/edit/:id',name: 'edit product', component:EditProductByAdminView},
-        {path: 'product/add',name: 'add product', component:AddProductByAdminView}
+        {path: 'product/edit/:id',name: 'admin edit product', component:EditProductByAdminView},
+        {path: 'product/add',name: 'admin add product', component:AddProductByAdminView}
       ]
     }
   ]

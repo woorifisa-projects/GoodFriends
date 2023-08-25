@@ -5,11 +5,6 @@
         <div class="page-title-total">
           <!-- TODO:  상품 수정시 제목 변수 할당 필요-->
           <div class="page-title">OOO 상품 수정</div>
-          <div class="image">
-            <div class="product-images">
-              <img src="@/assets/tmp/images/image.png" alt="profile img" />
-            </div>
-          </div>
         </div>
         <div class="product-Info-UP">
           <div class="detail-layout">
@@ -64,12 +59,7 @@ import Detail from '@/components/ProductDetailByAdmin.vue';
 .product-Info-total {
   width: 100px;
 }
-.image {
-  width: 170px;
-  height: 170px;
-  display: flex;
-  justify-content: center;
-}
+
 .product-images {
   width: 100%;
   height: 100%;
