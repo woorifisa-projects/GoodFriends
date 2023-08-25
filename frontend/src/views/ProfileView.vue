@@ -9,15 +9,15 @@
         <div class="profile_detail">
           <div class="item">
             <label>{{ PROFILE.EMAIL }}</label>
-            <input v-model="user.email" type="email" :disabled="isDisabled" />
+            <input v-model="user.email" type="email" disabled />
           </div>
           <div class="item">
             <label>{{ PROFILE.BIRTHDAY }}</label>
-            <input type="text" v-model="user.birthday" :disabled="isDisabled" />
+            <input type="text" v-model="userInputInfo.birthday" :disabled="isDisabled" />
           </div>
           <div class="item">
             <label>{{ PROFILE.GENDER }}</label>
-            <select name="gender" id="gender" v-model="user.gender" :disabled="isDisabled">
+            <select name="gender" id="gender" v-model="userInputInfo.gender" :disabled="isDisabled">
               <option value="default">default</option>
               <option value="man">man</option>
               <option value="woman">woman</option>
@@ -25,11 +25,17 @@
           </div>
           <div class="item">
             <label>{{ PROFILE.PHONE_NUMBER }}</label>
-            <input type="text" v-model="user.phone" :disabled="isDisabled" />
+            <input
+              type="text"
+              :value="userInputInfo.phone"
+              :disabled="isDisabled"
+              @change="onChangePhoneNumber"
+              @input="onInputPhoneNumber"
+            />
           </div>
           <div class="item">
             <label>{{ PROFILE.ADDRESS }}</label>
-            <input type="text" v-model="user.address" :disabled="isDisabled" />
+            <input type="text" v-model="userInputInfo.address" :disabled="isDisabled" />
           </div>
         </div>
       </div>
@@ -41,24 +47,56 @@
 import { PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
 import { ref } from 'vue';
+import { checkBirthday, checkPhoneNumber } from '@/utils/validation';
+import { phoneNumberFormat } from '@/utils/format';
 
 const user = ref({
   email: '00@000.com',
-  gender: 'man',
-  birthday: 'yyyy-mm-dd',
+  gender: 'woman',
+  birthday: '2000-02-24',
   phone: '000-0000-0000',
   address: '00시00구'
 });
+
+const userInputInfo = ref({
+  gender: user.value.gender,
+  birthday: user.value.birthday,
+  phone: user.value.phone,
+  address: user.value.address
+});
 const isDisabled = ref(true);
+
 const onClickEdit = () => {
   if (isDisabled.value) {
     isDisabled.value = false;
   } else if (!isDisabled.value) {
-    // TODO: 유효성 검사
+    if (!checkBirthday(userInputInfo.value.birthday)) {
+      alert('생년월일을 정확히 입력해주세요');
+      return;
+    }
+    if (!checkPhoneNumber(userInputInfo.value.phone)) {
+      console.log(userInputInfo.value.phone);
+      alert('핸드폰정보를 정확히 입력해주세요');
+      return;
+    }
     // TODO: API
 
+    user.value = { ...userInputInfo.value, ...user.value };
     isDisabled.value = true;
   }
+};
+
+const onChangePhoneNumber = (event: Event) => {
+  const value = (event.target as HTMLInputElement).value;
+
+  userInputInfo.value.phone = value.replace(/[^0-9-]/, '');
+};
+const onInputPhoneNumber = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const number = target.value.match(/\d+/g)?.join('');
+
+  if (!number) return;
+  target.value = phoneNumberFormat(number);
 };
 </script>
 
