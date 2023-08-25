@@ -6,7 +6,6 @@ build/
 !**/src/test/**/build/
 
 ### Backend ###
-backend/gradle/wrapper/*
 .DS_Store
 backend/src/main/resources/application.yml
 backend/src/main/resources/application-db.yml
