@@ -3,8 +3,7 @@
     <div class="edit-product-total">
       <div class="edit-product-grid">
         <div class="page-title-total">
-          <!-- TODO:  상품 수정시 제목 변수 할당 필요-->
-          <div class="page-title">OOO 상품 수정</div>
+          <div class="page-title">{{ ADMIN_PRODUCT.PRODUCT_TITLE_ADD }}</div>
           <div class="image">
             <div class="product-images">
               <img src="@/assets/tmp/images/image.png" alt="profile img" />
@@ -13,7 +12,7 @@
         </div>
         <div class="product-Info-UP">
           <div class="detail-layout">
-            <Detail type="edit" />
+            <Detail type="add" />
           </div>
         </div>
       </div>
@@ -24,6 +23,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Detail from '@/components/ProductDetailByAdmin.vue';
+import { ADMIN_PRODUCT } from '@/constants/strings/admin';
 </script>
 
 <style scoped>

@@ -9,6 +9,10 @@ import AddProduct from '@/views/AddProductView.vue';
 import EditProduct from '@/views/EditProductView.vue';
 import ProductView from '@/views/ProductView.vue';
 import NotFoundView from '@/views/NotFoundView.vue';
+import DefaultSide from '@/layouts/admin/DefaultSide.vue';
+import EditUserInfoView from '@/views/EditUserInfoView.vue';
+import EditProductByAdminView from '@/views/EditProductByAdminView.vue';
+import AddProductByAdminView from '@/views/AddProductByAdminView.vue';
 
 const router = createRouter({
   scrollBehavior() {
@@ -43,6 +47,15 @@ const router = createRouter({
       path: '/admin',
       name: 'admin page',
       component: AdminLogin
+    },
+    {
+      path: '/admin',
+      name: 'In admin page',
+      component: DefaultSide,
+      children:[
+        {path: 'product/edit/:id',name: 'edit product', component:EditProductByAdminView},
+        {path: 'product/add',name: 'add product', component:AddProductByAdminView}
+      ]
     }
   ]
 });

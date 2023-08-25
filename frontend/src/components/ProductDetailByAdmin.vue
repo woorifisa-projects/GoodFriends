@@ -18,7 +18,7 @@
             </div>
             <div class="product-Info-Detail">
               <select name="" class="seelct-category" v-model="selectedCategory">
-                <option disabled value="0">선택해주세요</option>
+                <option disabled value="0">{{ ADMIN_PRODUCT.PRODCUT_DEFAULT_CATEGORY }}</option>
                 <option v-for="category in categories" :key="category.id" :value="category.id">
                   {{ category.name }}
                 </option>
@@ -98,17 +98,16 @@ const props = defineProps({
     required: true
   }
 });
-if (props.type === 'edit') {
-  const route = useRoute();
-  const id = route.params.id;
 
-  // TODO: API 요청 -> price, name, content, category, image, date 가져오기
-}
+// TODO: API 요청 -> price, name, content, category, image, date 가져오기
+const route = useRoute();
+const id = route.params.id;
+// -------------------------
 
-const inputProductTitle = ref();
-const inputProductPrice = ref();
-const inputProductDate = ref();
-const inputProductDes = ref();
+const inputProductTitle = ref('');
+const inputProductPrice = ref(0);
+const inputProductDate = ref('');
+const inputProductDes = ref('');
 const selectedCategory = ref('0');
 const categories = ref<Array<category>>([
   {
@@ -133,17 +132,27 @@ const categories = ref<Array<category>>([
   }
 ]);
 
-const clickEdit = () => {};
-const clickDelete = () => {};
-const clickAdd = () => {};
-const clickCancle = () => {};
+const clickEdit = () => {
+  // TODO: 현재 게시물 수정 API 호출
+  console.log('수정 버튼 클릭');
+};
+const clickDelete = () => {
+  // TODO: 현재 게시물 삭제 API 호출
+  console.log('삭제 버튼 클릭');
+};
+const clickAdd = () => {
+  // TODO: 현재 게시물 등록 API 호출
+  console.log('등록 버튼 클릭');
+};
+const clickCancle = () => {
+  // TODO: 이전 페이지 이동
+};
 </script>
 
 <style scoped>
 .edit-product-total {
   display: flex;
   justify-content: center;
-  padding: 20px;
 }
 
 .page-title {
