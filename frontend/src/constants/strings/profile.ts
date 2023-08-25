@@ -14,3 +14,13 @@ export const PROFILE = {
   ADDRESS: '주소',
   BIRTHDAY: '생년월일'
 };
+
+export const ALERT = {
+  PHONE: '핸드폰 번호를 정확히 입력해주세요',
+  BIRTHDAY: '생년월일을 정확히 입력해주세요'
+};
+
+export const PLACEHOLDER = {
+  BIRTHDAY: '생년월일은 8글자, yyyy-mm-dd 형식으로 입력해주세요',
+  PHONE: '핸드폰 번호를 작성해주세요'
+};

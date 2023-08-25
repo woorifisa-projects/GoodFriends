@@ -13,7 +13,12 @@
           </div>
           <div class="item">
             <label>{{ PROFILE.BIRTHDAY }}</label>
-            <input type="text" v-model="userInputInfo.birthday" :disabled="isDisabled" />
+            <input
+              type="text"
+              v-model="userInputInfo.birthday"
+              :disabled="isDisabled"
+              :placeholder="PLACEHOLDER.BIRTHDAY"
+            />
           </div>
           <div class="item">
             <label>{{ PROFILE.GENDER }}</label>
@@ -31,6 +36,7 @@
               :disabled="isDisabled"
               @change="onChangePhoneNumber"
               @input="onInputPhoneNumber"
+              :placeholder="PLACEHOLDER.PHONE"
             />
           </div>
           <div class="item">
@@ -44,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { PROFILE } from '@/constants/strings/profile';
+import { ALERT, PLACEHOLDER, PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
 import { ref } from 'vue';
 import { checkBirthday, checkPhoneNumber } from '@/utils/validation';
@@ -71,12 +77,12 @@ const onClickEdit = () => {
     isDisabled.value = false;
   } else if (!isDisabled.value) {
     if (!checkBirthday(userInputInfo.value.birthday)) {
-      alert('생년월일을 정확히 입력해주세요');
+      alert(ALERT.BIRTHDAY);
       return;
     }
     if (!checkPhoneNumber(userInputInfo.value.phone)) {
       console.log(userInputInfo.value.phone);
-      alert('핸드폰정보를 정확히 입력해주세요');
+      alert(ALERT.PHONE);
       return;
     }
     // TODO: API
