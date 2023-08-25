@@ -3,29 +3,45 @@
     <div class="profile_main">
       <div class="btn_wrap">
         <button>{{ PROFILE.WITHDRAWAL }}</button>
-        <button>{{ PROFILE.EDIT }}</button>
+        <button @click="onClickEdit">{{ PROFILE.EDIT }}</button>
       </div>
       <div class="profile_detail_wrap">
         <div class="profile_detail">
           <div class="item">
-            <div>{{ PROFILE.EMAIL }}</div>
-            <div>00@0000.com</div>
+            <label>{{ PROFILE.EMAIL }}</label>
+            <input v-model="user.email" type="email" disabled />
           </div>
           <div class="item">
-            <div>{{ PROFILE.NICKNAME }}</div>
-            <div>00</div>
+            <label>{{ PROFILE.BIRTHDAY }}</label>
+            <input
+              type="text"
+              v-model="userInputInfo.birthday"
+              :disabled="isDisabled"
+              :placeholder="PLACEHOLDER.BIRTHDAY"
+            />
           </div>
           <div class="item">
-            <div>{{ PROFILE.GENDER }}</div>
-            <div>00</div>
+            <label>{{ PROFILE.GENDER }}</label>
+            <select name="gender" id="gender" v-model="userInputInfo.gender" :disabled="isDisabled">
+              <option value="default">default</option>
+              <option value="man">man</option>
+              <option value="woman">woman</option>
+            </select>
           </div>
           <div class="item">
-            <div>{{ PROFILE.PHONE_NUMBER }}</div>
-            <div>000-0000-0000</div>
+            <label>{{ PROFILE.PHONE_NUMBER }}</label>
+            <input
+              type="text"
+              :value="userInputInfo.phone"
+              :disabled="isDisabled"
+              @change="onChangePhoneNumber"
+              @input="onInputPhoneNumber"
+              :placeholder="PLACEHOLDER.PHONE"
+            />
           </div>
           <div class="item">
-            <div>{{ PROFILE.ADDRESS }}</div>
-            <div>00시 00구</div>
+            <label>{{ PROFILE.ADDRESS }}</label>
+            <input type="text" v-model="userInputInfo.address" :disabled="isDisabled" />
           </div>
         </div>
       </div>
@@ -34,8 +50,60 @@
 </template>
 
 <script setup lang="ts">
-import { PROFILE } from '@/constants/strings/profile';
+import { ALERT, PLACEHOLDER, PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
+import { ref } from 'vue';
+import { checkBirthday, checkPhoneNumber } from '@/utils/validation';
+import { phoneNumberFormat } from '@/utils/format';
+
+const user = ref({
+  email: '00@000.com',
+  gender: 'woman',
+  birthday: '2000-02-24',
+  phone: '010-1234-1234',
+  address: '00시00구'
+});
+
+const userInputInfo = ref({
+  gender: user.value.gender,
+  birthday: user.value.birthday,
+  phone: user.value.phone,
+  address: user.value.address
+});
+const isDisabled = ref(true);
+
+const onClickEdit = () => {
+  if (isDisabled.value) {
+    isDisabled.value = false;
+  } else if (!isDisabled.value) {
+    if (!checkBirthday(userInputInfo.value.birthday)) {
+      alert(ALERT.BIRTHDAY);
+      return;
+    }
+    if (!checkPhoneNumber(userInputInfo.value.phone)) {
+      console.log(userInputInfo.value.phone);
+      alert(ALERT.PHONE);
+      return;
+    }
+    // TODO: API
+
+    user.value = { ...userInputInfo.value, ...user.value };
+    isDisabled.value = true;
+  }
+};
+
+const onChangePhoneNumber = (event: Event) => {
+  const value = (event.target as HTMLInputElement).value;
+
+  userInputInfo.value.phone = value.replace(/[^0-9-]/, '');
+};
+const onInputPhoneNumber = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const number = target.value.match(/\d+/g)?.join('');
+
+  if (!number) return;
+  target.value = phoneNumberFormat(number);
+};
 </script>
 
 <style scoped>
@@ -82,10 +150,11 @@ import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
   border-radius: 24px;
   display: flex;
   overflow: hidden;
+  align-items: center;
   gap: 16px;
 }
 
-.item > div:first-child {
+.item > label {
   height: 100%;
   width: 100px;
   padding: 16px;
@@ -93,9 +162,21 @@ import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
   text-align: center;
 }
 
-.item > div:last-of-type {
+.item > input,
+.item > select {
+  width: 50%;
   display: flex;
   align-items: center;
+  border: none;
+  border: 1px solid black;
+  height: fit-content;
+  padding: 12px;
+}
+.item > input:disabled,
+.item > select:disabled {
+  background-color: white;
+  color: black;
+  border: none;
 }
 
 @media screen and (max-width: 1023px) {
