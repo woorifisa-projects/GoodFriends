@@ -164,6 +164,7 @@ const onInputPhoneNumber = (event: Event) => {
 
 .item > input,
 .item > select {
+  width: 50%;
   display: flex;
   align-items: center;
   border: none;
@@ -177,11 +178,6 @@ const onInputPhoneNumber = (event: Event) => {
   color: black;
   border: none;
 }
-/* 
-.item > input:active,
-.item > select:active {
-  border: 1px solid black;
-} */
 
 @media screen and (max-width: 1023px) {
 }
