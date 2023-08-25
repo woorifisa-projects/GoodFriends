@@ -11,5 +11,6 @@ export const PROFILE = {
   NICKNAME: '닉네임',
   GENDER: '성별',
   PHONE_NUMBER: '핸드폰',
-  ADDRESS: '주소'
+  ADDRESS: '주소',
+  BIRTHDAY: '생년월일'
 };

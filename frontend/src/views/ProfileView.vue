@@ -8,24 +8,28 @@
       <div class="profile_detail_wrap">
         <div class="profile_detail">
           <div class="item">
-            <div>{{ PROFILE.EMAIL }}</div>
-            <div>00@0000.com</div>
+            <label>{{ PROFILE.EMAIL }}</label>
+            <input v-model="user.email" type="email" :disabled="isDisabled" />
           </div>
           <div class="item">
-            <div>{{ PROFILE.NICKNAME }}</div>
-            <div>00</div>
+            <label>{{ PROFILE.BIRTHDAY }}</label>
+            <input type="text" v-model="user.birthday" :disabled="isDisabled" />
           </div>
           <div class="item">
-            <div>{{ PROFILE.GENDER }}</div>
-            <div>00</div>
+            <label>{{ PROFILE.GENDER }}</label>
+            <select name="gender" id="gender" v-model="user.gender" :disabled="isDisabled">
+              <option value="default">default</option>
+              <option value="man">man</option>
+              <option value="woman">woman</option>
+            </select>
           </div>
           <div class="item">
-            <div>{{ PROFILE.PHONE_NUMBER }}</div>
-            <div>000-0000-0000</div>
+            <label>{{ PROFILE.PHONE_NUMBER }}</label>
+            <input type="text" v-model="user.phone" :disabled="isDisabled" />
           </div>
           <div class="item">
-            <div>{{ PROFILE.ADDRESS }}</div>
-            <div>00시 00구</div>
+            <label>{{ PROFILE.ADDRESS }}</label>
+            <input type="text" v-model="user.address" :disabled="isDisabled" />
           </div>
         </div>
       </div>
@@ -36,10 +40,25 @@
 <script setup lang="ts">
 import { PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
-import router from '@/router';
+import { ref } from 'vue';
 
+const user = ref({
+  email: '00@000.com',
+  gender: 'man',
+  birthday: 'yyyy-mm-dd',
+  phone: '000-0000-0000',
+  address: '00시00구'
+});
+const isDisabled = ref(true);
 const onClickEdit = () => {
-  router.push('profile/edit');
+  if (isDisabled.value) {
+    isDisabled.value = false;
+  } else if (!isDisabled.value) {
+    // TODO: 유효성 검사
+    // TODO: API
+
+    isDisabled.value = true;
+  }
 };
 </script>
 
@@ -87,10 +106,11 @@ const onClickEdit = () => {
   border-radius: 24px;
   display: flex;
   overflow: hidden;
+  align-items: center;
   gap: 16px;
 }
 
-.item > div:first-child {
+.item > label {
   height: 100%;
   width: 100px;
   padding: 16px;
@@ -98,10 +118,26 @@ const onClickEdit = () => {
   text-align: center;
 }
 
-.item > div:last-of-type {
+.item > input,
+.item > select {
   display: flex;
   align-items: center;
+  border: none;
+  border: 1px solid black;
+  height: fit-content;
+  padding: 12px;
 }
+.item > input:disabled,
+.item > select:disabled {
+  background-color: white;
+  color: black;
+  border: none;
+}
+/* 
+.item > input:active,
+.item > select:active {
+  border: 1px solid black;
+} */
 
 @media screen and (max-width: 1023px) {
 }
