@@ -55,12 +55,13 @@ const onClickManegeDeclaration = () => {};
 
 #main {
   width: 100%;
+  padding: 10px;
 }
 .sidebar {
   /* position: relative; */
   display: flex;
   flex-direction: column;
-  width: 170px;
+  width: 200px;
   height: 100%;
   background-color: dodgerblue;
 }
