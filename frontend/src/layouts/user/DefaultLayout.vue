@@ -17,6 +17,7 @@ import DefaultFooter from '@/layouts/user/DefaultFooter.vue';
   min-height: 100%;
   position: relative;
   padding-bottom: 150px;
+  font-family: 'LINESeedKR-Rg';
 }
 
 #main {

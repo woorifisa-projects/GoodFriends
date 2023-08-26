@@ -54,7 +54,12 @@ button {
   padding: 16px;
   border-radius: 12px;
   font-size: 24px;
-  box-shadow: 1px 1px 10px rgba(155, 155, 155, 0.47);
+
+  transition: all 0.5s ease;
+}
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 1px 1px 10px rgba(155, 155, 155, 0.237);
 }
 
 @media screen and (max-width: 767px) {

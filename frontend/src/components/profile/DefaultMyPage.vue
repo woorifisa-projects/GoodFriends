@@ -162,6 +162,15 @@ const onClickEditName = () => {
 .name > input:focus {
   border: none;
 }
+.list-item > span {
+  font-family: 'LINESeedKR-Bd';
+}
+.list-item li {
+  transition: all 0.5s ease;
+}
+.list-item li:hover {
+  transform: scale(1.05);
+}
 @keyframes blink {
   0% {
     border: 1px solid black;
@@ -189,13 +198,13 @@ const onClickEditName = () => {
   border-radius: 16px;
 }
 .img-wrap {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
   position: relative;
 }
 .img {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
 
   border: 1px solid black;
   border-radius: 100%;
@@ -255,6 +264,9 @@ const onClickEditName = () => {
   padding: 8px 16px;
 
   background: lightgray;
+  /* background-color: #c8e4b2; */
+  border: 1px solid black;
+
   border-radius: 8px;
 }
 
