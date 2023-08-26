@@ -1,15 +1,12 @@
 <template>
   <div class="filter">
-    <div
-      v-for="status in props.productStatus"
-      :key="status.id"
-      @click="emits('click', status.value)"
-    >
+    <div v-for="status in props.productStatus" :key="status.id">
       <input
         type="radio"
         :id="status.value"
         name="filter"
         :checked="checkedStatus === status.value"
+        @change="emits('click', status.value)"
       />
       <label :for="status.value">
         {{ status.name }}
