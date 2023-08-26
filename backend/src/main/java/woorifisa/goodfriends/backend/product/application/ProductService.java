@@ -1,7 +1,9 @@
 package woorifisa.goodfriends.backend.product.application;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import woorifisa.goodfriends.backend.product.domain.Product;
+import woorifisa.goodfriends.backend.product.domain.ProductImageRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
@@ -22,9 +24,12 @@ public class ProductService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    public ProductService(UserRepository userRepository, ProductRepository productRepository) {
+    private final ProductImageRepository productImageRepository;
+
+    public ProductService(UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.productImageRepository = productImageRepository;
     }
 
     public ProductSaveResponse saveProduct(Long userId, ProductSaveRequest request) {
@@ -50,9 +55,15 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
         return products.stream()
                 .map(product -> {
-                    ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
-                            product.getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice());
-                    return productViewAllResponse;
+                    List<String> images = productImageRepository.findOneImageUrlByProductId(product.getId(), PageRequest.of(0,1));
+                    String image = "";
+
+                    if(!images.isEmpty()){
+                        image = images.get(0);
+                    }
+
+                    return new ProductViewAllResponse(
+                            product.getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
                 })
                 .collect(Collectors.toList());
     }

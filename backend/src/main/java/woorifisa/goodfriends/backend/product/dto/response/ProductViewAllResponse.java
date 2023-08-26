@@ -2,6 +2,8 @@ package woorifisa.goodfriends.backend.product.dto.response;
 
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
+import java.util.List;
+
 public class ProductViewAllResponse {
 
     private Long id;
@@ -14,15 +16,18 @@ public class ProductViewAllResponse {
 
     private int sellPrice;
 
+    private String image;
+
     public ProductViewAllResponse() {
     }
 
-    public ProductViewAllResponse(Long id, int productCategoryId, String title, ProductStatus status, int sellPrice) {
+    public ProductViewAllResponse(Long id, int productCategoryId, String title, ProductStatus status, int sellPrice, String image) {
         this.id = id;
         this.productCategoryId = productCategoryId;
         this.title = title;
         this.status = status;
         this.sellPrice = sellPrice;
+        this.image = image;
     }
 
     public Long getId() {
@@ -43,5 +48,9 @@ public class ProductViewAllResponse {
 
     public int getSellPrice() {
         return sellPrice;
+    }
+
+    public String getImageUrl() {
+        return image;
     }
 }

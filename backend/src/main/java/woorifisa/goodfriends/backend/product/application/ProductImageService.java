@@ -11,6 +11,7 @@ import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductImageService {
@@ -27,7 +28,7 @@ public class ProductImageService {
     }
 
     public String saveImage(Long productId, MultipartFile multipartFile) throws IOException {
-        String uniqueFileName = FileUtils.generateUniqueFileName(multipartFile.getOriginalFilename());
+        String uniqueFileName = FileUtils.generateUniqueFileName(Objects.requireNonNull(multipartFile.getOriginalFilename(), "파일명을 변경할 파일이 없습니다."));
         String savedImageUrl = s3Service.saveFile(multipartFile, uniqueFileName);
 
         productImageRepository.save(new ProductImage(productRepository.findById(productId).orElseThrow(), savedImageUrl));
