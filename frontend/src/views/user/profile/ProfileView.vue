@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { ALERT, PLACEHOLDER, PROFILE } from '@/constants/strings/profile';
-import DefaultMyPage from '../components/profile/DefaultMyPage.vue';
+import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { ref } from 'vue';
 import { checkBirthday, checkPhoneNumber } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
