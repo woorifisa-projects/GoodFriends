@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import ItemList from '@/components/profile/ItemList.vue';
-import type { Item } from '@/types/Profile';
+import type { Item } from '@/types/profile';
 
 import { ref } from 'vue';
 

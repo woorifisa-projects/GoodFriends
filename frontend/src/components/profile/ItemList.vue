@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Item } from '@/types/Profile';
+import type { Item } from '@/types/profile';
 
 const props = defineProps({
   items: {
