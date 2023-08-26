@@ -66,7 +66,7 @@ const emits = defineEmits(['click']);
   height: 100%;
 }
 .filter > div > input:checked + label {
-  background-color: rgb(106, 127, 232);
+  background-color: rgb(36, 71, 246);
   color: white;
 }
 .filter > div > label {
