@@ -67,7 +67,7 @@
 import type { category } from '@/types/product';
 import { ref } from 'vue';
 import { dateFormat } from '@/utils/format';
-import { uploadFile } from '@/utils/File';
+import { uploadFile } from '@/utils/file';
 import { useRoute } from 'vue-router';
 import { PRODUCT } from '@/constants/strings/product';
 

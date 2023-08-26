@@ -109,7 +109,7 @@ import type { category } from '@/types/product';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
-import { uploadFile } from '@/utils/File';
+import { uploadFile } from '@/utils/file';
 
 const previewImg = ref<Array<string>>([]);
 const inputImage = ref<Array<File>>([]);
