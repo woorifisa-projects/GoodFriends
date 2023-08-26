@@ -113,8 +113,6 @@ watchEffect(() => {
   background: white;
   box-shadow: 2px 2px 10px rgba(202, 202, 202, 0.389);
 
-  font-family: 'IBM Plex Sans KR', sans-serif;
-
   z-index: 99;
 }
 
@@ -136,6 +134,7 @@ watchEffect(() => {
 
 .wrap button {
   font-size: 16px;
+  font-family: 'LINESeedKR-Bd';
 }
 
 #login {

@@ -268,6 +268,7 @@ const remove = () => {
 .select-detail span {
   border-bottom: 1px solid black;
   font-size: 24px;
+  font-family: 'LINESeedKR-Bd';
 }
 
 .select-detail input,

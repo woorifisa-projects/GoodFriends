@@ -40,6 +40,11 @@ const emits = defineEmits(['click']);
   border-radius: 12px;
 
   cursor: pointer;
+
+  transition: all 0.5s ease;
+}
+.card:hover {
+  transform: scale(1.05);
 }
 .card > .img {
   width: 250px;

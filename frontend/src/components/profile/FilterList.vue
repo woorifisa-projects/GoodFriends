@@ -33,11 +33,16 @@ const emits = defineEmits(['click']);
 </script>
 
 <style scoped>
+/* 
+#f6f4f9
+#fca3b9
+#fcd752
+ */
 .filter {
   width: 100%;
   padding: 18px 24px 0px 24px;
   display: flex;
-  justify-content: center;
+  flex-direction: row-reverse;
   gap: 24px;
 }
 
@@ -48,13 +53,14 @@ const emits = defineEmits(['click']);
   border-radius: 12px;
 }
 .filter > div {
-  flex: 1;
-  background-color: lightblue;
+  width: 80px;
+  /*  */
+  background-color: #fdffae;
+  color: black;
   text-align: center;
   border-radius: 12px;
   overflow: hidden;
   min-width: fit-content;
-  width: 50px;
   height: 40px;
   display: flex;
   align-items: center;
@@ -66,8 +72,9 @@ const emits = defineEmits(['click']);
   height: 100%;
 }
 .filter > div > input:checked + label {
-  background-color: rgb(36, 71, 246);
-  color: white;
+  /*  */
+  background-color: #aac8a7;
+  color: black;
 }
 .filter > div > label {
   display: block;
@@ -75,5 +82,6 @@ const emits = defineEmits(['click']);
   width: 100%;
   padding: 12px;
   cursor: pointer;
+  font-family: 'LINESeedKR-Bd';
 }
 </style>
