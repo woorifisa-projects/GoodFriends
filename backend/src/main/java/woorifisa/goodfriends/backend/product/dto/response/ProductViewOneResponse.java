@@ -4,6 +4,7 @@ import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ProductViewOneResponse {
 
@@ -23,10 +24,12 @@ public class ProductViewOneResponse {
 
     private LocalDateTime lastModifiedDate;
 
+    private List<String> imageUrls;
+
     public ProductViewOneResponse() {
     }
 
-    public ProductViewOneResponse(Long id, User user, int productCategoryId, String title, ProductStatus status, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    public ProductViewOneResponse(Long id, User user, int productCategoryId, String title, ProductStatus status, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls) {
         this.id = id;
         this.user = user;
         this.productCategoryId = productCategoryId;
@@ -35,6 +38,7 @@ public class ProductViewOneResponse {
         this.sellPrice = sellPrice;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
+        this.imageUrls = imageUrls;
     }
 
     public Long getId() {
@@ -61,11 +65,8 @@ public class ProductViewOneResponse {
         return sellPrice;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
 }
