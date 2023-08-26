@@ -2,10 +2,10 @@ package woorifisa.goodfriends.backend.product.application;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import woorifisa.goodfriends.backend.product.domain.Product;
-import woorifisa.goodfriends.backend.product.domain.ProductImageRepository;
-import woorifisa.goodfriends.backend.product.domain.ProductRepository;
-import woorifisa.goodfriends.backend.product.domain.ProductStatus;
+import org.springframework.web.multipart.MultipartFile;
+import woorifisa.goodfriends.backend.global.application.S3Service;
+import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
+import woorifisa.goodfriends.backend.product.domain.*;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
@@ -15,29 +15,40 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
     private final UserRepository userRepository;
+
     private final ProductRepository productRepository;
 
     private final ProductImageRepository productImageRepository;
 
-    public ProductService(UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository) {
+    private final S3Service s3Service;
+
+    public ProductService(UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
+        this.s3Service = s3Service;
     }
 
-    public ProductSaveResponse saveProduct(Long userId, ProductSaveRequest request) {
+    public ProductSaveResponse saveProduct(Long userId, ProductSaveRequest request) throws IOException {
         User foundUser = userRepository.getById(userId);
 
         Product newProduct = createProduct(foundUser, request);
 
-        return new ProductSaveResponse(newProduct);
+        List<String> savedImageUrls = saveImages(newProduct.getId(), request.getImageUrls());
+
+        return new ProductSaveResponse(newProduct, savedImageUrls);
     }
 
     private Product createProduct(User user, ProductSaveRequest request) {
@@ -49,6 +60,25 @@ public class ProductService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .build());
+    }
+
+    private String saveImage(Long productId, MultipartFile image) throws IOException {
+        String uniqueFileName = FileUtils.generateUniqueFileName(Objects.requireNonNull(image.getOriginalFilename(), "파일명을 변경할 파일이 없습니다."));
+        String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
+
+        productImageRepository.save(new ProductImage(productRepository.findById(productId).orElseThrow(), savedImageUrl));
+
+        return savedImageUrl;
+    }
+
+    private List<String> saveImages(Long productId, List<MultipartFile> images) throws IOException {
+        List<String> savedImages = new ArrayList<>();
+        for(MultipartFile image : images) {
+            if(!image.isEmpty()) {
+                savedImages.add(saveImage(productId, image));
+            }
+        }
+        return savedImages;
     }
 
     public List<ProductViewAllResponse> viewAllProduct() {
@@ -77,25 +107,41 @@ public class ProductService {
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
         Product selectedProduct = productRepository.findById(id).orElseThrow();
-        return new ProductUpdateResponse(selectedProduct);
+        List<String> images = productImageRepository.findAllImageUrlByProductId(id);
+        return new ProductUpdateResponse(selectedProduct, images);
     }
 
-    public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) {
+    @Transactional
+    public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) throws IOException {
         Product selectedProduct = productRepository.findById(id).orElseThrow();
+
+        deleteImageByProductId(id);
+        productImageRepository.deleteByProductId(id);
+
+        List<String> savedImageUrls = saveImages(id, request.getImageUrls());
+
         Product updatedProduct = productRepository.save(Product.builder()
                         .id(id)
                         .user(selectedProduct.getUser())
                         .title(request.getTitle())
                         .productCategories(request.getProductCategories())
-                        .status(request.getStatus())
+                        .status(selectedProduct.getStatus())
                         .description(request.getDescription())
                         .sellPrice(request.getSellPrice())
                         .createdDate(selectedProduct.getCreatedDate())
                         .build());
-        return new ProductUpdateResponse(updatedProduct);
+
+        return new ProductUpdateResponse(updatedProduct, savedImageUrls);
     }
 
-    public void deleteById(Long productId) {
+    public void deleteImageByProductId(Long productId) throws MalformedURLException {
+        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
+        for(ProductImage productImage : productImages){
+            s3Service.deleteFile(productImage.getImageUrl());
+        }
+    }
+    public void deleteById(Long productId) throws MalformedURLException {
+        deleteImageByProductId(productId);
         productRepository.deleteById(productId);
     }
 }
