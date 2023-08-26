@@ -70,7 +70,9 @@ public class ProductService {
 
     public ProductViewOneResponse viewOneProduct(Long id) {
         Product product = productRepository.findById(id).orElseThrow();
-        return new ProductViewOneResponse(product.getId(), product.getUser(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedDate(), product.getLastModifiedDate());
+        List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
+
+        return new ProductViewOneResponse(product.getId(), product.getUser(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedDate(), product.getLastModifiedDate(), images);
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
