@@ -12,12 +12,12 @@
     <ul class="icons">
       <li>
         <a href="https://github.com/woorifisa/GoodFriends">
-          <img class="icon" src="../assets/images/github.png" alt="github icon" />
+          <img class="icon" src="@/assets/images/github.png" alt="github icon" />
         </a>
       </li>
       <li>
         <a href="https://github.com/woorifisa/GoodFriends">
-          <img class="icon" src="../assets/images/blog.png" alt="blog icon" />
+          <img class="icon" src="@/assets/images/blog.png" alt="blog icon" />
         </a>
       </li>
     </ul>
