@@ -17,3 +17,8 @@ export interface product {
   address: string;
   price: number;
 }
+export interface filter {
+  id: number;
+  name: string;
+  value: string;
+}
