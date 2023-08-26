@@ -37,7 +37,7 @@ const productStatus = [
   },
   {
     id: 2,
-    name: '예약',
+    name: '예약중',
     value: 'reservation'
   },
   {
