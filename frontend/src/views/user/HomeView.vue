@@ -211,7 +211,9 @@ const onClickBannerBtn = (flag: string) => {
     viewBanner.value = (viewBanner.value + 1) % bannerList.value.length;
   } else if (flag === 'prev') {
     viewBanner.value -= 1;
-    if (viewBanner.value === 0) viewBanner.value = bannerList.value.length - 1;
+    if (viewBanner.value < 0) {
+      viewBanner.value = bannerList.value.length - 1;
+    }
   }
 };
 
@@ -259,8 +261,9 @@ setInterval(() => {
   height: 100%;
 }
 .banner {
-  width: 100%;
-  height: 240px;
+  box-sizing: content-box;
+  max-width: 1300px;
+  height: 300px;
   position: relative;
   display: flex;
   align-items: center;
