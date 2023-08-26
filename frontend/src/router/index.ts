@@ -17,6 +17,7 @@ import DefaultSide from '@/layouts/admin/DefaultSide.vue';
 import EditUserInfoView from '@/views/admin/EditUserInfoView.vue';
 import EditProductByAdminView from '@/views/admin/EditProductByAdminView.vue';
 import AddProductByAdminView from '@/views/admin/AddProductByAdminView.vue';
+import MangageLog from '@/views/admin/ManageLogView.vue';
 
 const router = createRouter({
   scrollBehavior() {
@@ -58,6 +59,7 @@ const router = createRouter({
       name: 'In admin page',
       component: DefaultSide,
       children: [
+        { path: 'log', name: 'admin log', component: MangageLog },
         { path: 'product/edit/:id', name: 'admin edit product', component: EditProductByAdminView },
         { path: 'product/add', name: 'admin add product', component: AddProductByAdminView }
       ]
