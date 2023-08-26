@@ -61,7 +61,7 @@ import { PROFILE_SIDEBAR } from '@/constants/strings/profile';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import image from '@/assets/tmp/images/image.png';
-import { uploadFile } from '@/utils/File';
+import { uploadFile } from '@/utils/file';
 const route = useRoute();
 
 const isEditButtonDisabled = ref(true);
