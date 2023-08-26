@@ -37,7 +37,9 @@ import { ADMIN, ADMIN_SIDEBAR } from '@/constants/strings/admin';
 import router from '@/router';
 
 //TODO: 페이지 이동
-const onClickMangeLog = () => {};
+const onClickMangeLog = () => {
+  router.push('/admin/log');
+};
 
 const onClickManegeUser = () => {};
 
@@ -55,6 +57,7 @@ const onClickManegeDeclaration = () => {};
 
 #main {
   width: 100%;
+  height: 100%;
   padding: 10px;
 }
 .sidebar {

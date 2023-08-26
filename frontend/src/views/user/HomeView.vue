@@ -63,12 +63,12 @@
 </template>
 
 <script setup lang="ts">
-import type { category } from '@/types/product';
 import { computed, ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
 import { getBannerList } from '@/utils/image';
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
+import type { category } from '@/types/product';
 
 // TODO: 수정 -> 서버로부터
 const categories = ref<Array<category>>([
@@ -200,7 +200,6 @@ const viewBanner = ref(0);
 const smallCategoryIsOpen = ref(false);
 
 const openCategory = () => {
-  console.log('!');
   smallCategoryIsOpen.value = !smallCategoryIsOpen.value;
 };
 
@@ -211,7 +210,9 @@ const onClickBannerBtn = (flag: string) => {
     viewBanner.value = (viewBanner.value + 1) % bannerList.value.length;
   } else if (flag === 'prev') {
     viewBanner.value -= 1;
-    if (viewBanner.value === 0) viewBanner.value = bannerList.value.length - 1;
+    if (viewBanner.value < 0) {
+      viewBanner.value = bannerList.value.length - 1;
+    }
   }
 };
 
@@ -259,8 +260,9 @@ setInterval(() => {
   height: 100%;
 }
 .banner {
-  width: 100%;
-  height: 240px;
+  box-sizing: content-box;
+  max-width: 1300px;
+  height: 300px;
   position: relative;
   display: flex;
   align-items: center;

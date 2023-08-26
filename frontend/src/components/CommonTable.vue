@@ -67,6 +67,8 @@ thead {
   font-weight: bold;
   color: #fff;
   background: #73685d;
+  position: sticky;
+  top: 0;
 }
 
 td,
@@ -112,7 +114,8 @@ a {
 
   tbody {
     overflow-x: auto;
-    overflow-y: hidden;
+    max-height: 100%;
+    overflow-y: scroll;
     position: relative;
     white-space: nowrap;
   }
