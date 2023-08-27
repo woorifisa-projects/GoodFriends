@@ -28,7 +28,7 @@ import Detail from '@/components/ProductDetailByAdmin.vue';
 }
 .edit-product-grid {
   width: 600px;
-  height: 700px;
+  height: 670px;
   display: flex;
   flex-direction: column;
   justify-content: normal;

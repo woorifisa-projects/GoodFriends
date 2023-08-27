@@ -1,13 +1,13 @@
 <template>
   <div class="editUserInfo-Page">
     <div class="editUserInfo-Grid">
-      <div class="page-logo">{{ ADMIN.EDIT_USER_TITLE }}</div>
+      <div class="page-logo">{{ nickname }}님의 {{ ADMIN.EDIT_USER_TITLE }}</div>
       <div class="totlaUserInfo">
         <div class="userInfo1">
           <div class="user-img"><img src="@/assets/tmp/images/image.png" alt="profile img" /></div>
           <div class="userInfo1-1">
             <!-- TODO: ban, amark, average -->
-            <div class="userInfo1-1-detail">{{ ADMIN.BAN }}&nbsp;3</div>
+            <div class="userInfo1-1-detail">{{ ADMIN.BAN }}&nbsp;{{ banCount }}</div>
             <div class="userInfo1-1-detail">{{ ADMIN.MARK }}&nbsp;👊</div>
             <div class="userInfo1-1-detail">{{ ADMIN.AVERRAGE }} 1.2</div>
           </div>
@@ -49,14 +49,17 @@
 import { ADMIN } from '@/constants/strings/admin';
 import { ref } from 'vue';
 
+const { item } = history.state;
+// console.log(item); // 전달 받은 데이터 확인용
+
 //신고당한 횟수, 인증마크, 평점
-const banCount = ref();
+const banCount = ref(item.count);
 const authMark = ref();
 const average = ref();
 
 //이메일, 닉네임, 성별, 연락처, 주소
-const email = ref();
-const nickname = ref();
+const email = ref(item.email);
+const nickname = ref(item.nickname);
 const sex = ref();
 const phone = ref();
 const address = ref();
