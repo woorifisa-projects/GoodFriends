@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in props.data" :key="item.id" @click="onClickTr(item.id)">
+      <tr v-for="item in props.data" :key="item.id" @click="onClickTr(item)">
         <td v-for="key in props.dataKey" :key="`${item.id}-${key}`">
           <span>{{ item[key] }} </span>
         </td>
@@ -38,8 +38,8 @@ const props = defineProps({
 
 const emits = defineEmits(['click']);
 
-const onClickTr = (id: number) => {
-  emits('click', id);
+const onClickTr = (item: dataType) => {
+  emits('click', item);
 };
 </script>
 
