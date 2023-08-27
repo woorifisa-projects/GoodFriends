@@ -65,8 +65,11 @@ th {
 
 thead {
   font-weight: bold;
-  color: #fff;
-  background: #73685d;
+  /* color: #fff; */
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  background: lightskyblue;
   position: sticky;
   top: 0;
 }
@@ -75,11 +78,13 @@ td,
 th {
   padding: 1em 0.5em;
   vertical-align: middle;
+  text-align: center;
 }
 
 td {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: #fff;
+  text-align: center;
 }
 
 a {
