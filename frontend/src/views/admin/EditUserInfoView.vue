@@ -52,6 +52,7 @@ import { ref } from 'vue';
 const { item } = history.state;
 // console.log(item); // 전달 받은 데이터 확인용
 
+//TODO: 향후 데이터 받을 시 수정필요!
 //신고당한 횟수, 인증마크, 평점
 const banCount = ref(item.count);
 const authMark = ref();

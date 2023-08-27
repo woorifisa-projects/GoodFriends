@@ -21,7 +21,7 @@ import type { dataType } from '@/types/table';
 
 const onClickDetailUser = (item: dataType) => {
   router.push({
-    name: 'admin manage user detail', // Assuming 'userDetail' is the name of the target route
+    name: 'admin manage user detail',
     params: { id: item.id },
     state: { item }
   });
