@@ -60,6 +60,7 @@ const router = createRouter({
       component: DefaultSide,
       children: [
         { path: 'log', name: 'admin log', component: MangageLog },
+        { path: 'manage/user', name: 'admin manage user', component: MangageLog },
         { path: 'product/edit/:id', name: 'admin edit product', component: EditProductByAdminView },
         { path: 'product/add', name: 'admin add product', component: AddProductByAdminView }
       ]

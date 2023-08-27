@@ -28,7 +28,7 @@ import { ADMIN_PRODUCT } from '@/constants/strings/admin';
 }
 .edit-product-grid {
   width: 600px;
-  height: 700px;
+  height: 670px;
   display: flex;
   flex-direction: column;
   justify-content: normal;

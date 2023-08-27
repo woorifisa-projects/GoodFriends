@@ -1,7 +1,9 @@
 <template>
   <div id="wrap">
     <div class="header">
-      <button><span class="material-icons-outlined"> density_medium </span></button>
+      <button @click="onClikeSidebarIcon">
+        <span class="material-icons-outlined"> density_medium </span>
+      </button>
       <button @click="onClickLogout">로그아웃</button>
     </div>
     <div class="total-body">
@@ -49,6 +51,16 @@
 <script setup lang="ts">
 import { ADMIN, ADMIN_SIDEBAR } from '@/constants/strings/admin';
 import router from '@/router';
+
+const onClikeSidebarIcon = () => {
+  const con = document.getElementsByClassName('sidebar')[0] as HTMLElement;
+
+  if (con.style.display === 'none') {
+    con.style.display = 'block';
+  } else {
+    con.style.display = 'none';
+  }
+};
 
 //TODO: 페이지 이동
 const onClickLogout = () => {
