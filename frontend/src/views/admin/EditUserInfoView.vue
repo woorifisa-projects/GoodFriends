@@ -116,7 +116,7 @@ const clickEdit = () => {};
   display: flex;
 }
 .userInfo2-detailInfo {
-  width: 45px;
+  width: 60px;
   height: 30px;
 }
 .input-user::placeholder {
