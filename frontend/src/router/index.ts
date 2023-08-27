@@ -19,6 +19,7 @@ import EditProductByAdminView from '@/views/admin/EditProductByAdminView.vue';
 import AddProductByAdminView from '@/views/admin/AddProductByAdminView.vue';
 import ManageLog from '@/views/admin/ManageLogView.vue';
 import ManageUser from '@/views/admin/ManageUserView.vue';
+
 import ManageDeclaration from '@/views/admin/ManageDeclarationView.vue';
 
 const router = createRouter({

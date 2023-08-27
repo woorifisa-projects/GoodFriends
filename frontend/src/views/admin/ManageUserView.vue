@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import Table from '@/components/CommonTable.vue';
 import router from '@/router';
+
 import type { dataType } from '@/types/table';
 
 const onClickDetailUser = (item: dataType) => {
@@ -25,7 +26,8 @@ const onClickDetailUser = (item: dataType) => {
     state: { item }
   });
 };
-//TODO: api 로그데이터 가져오기
+
+//TODO: api 사용자데이터 가져오기
 const tableDataKey = [
   'user_oauth_id',
   'email',
