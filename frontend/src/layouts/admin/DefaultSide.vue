@@ -16,7 +16,8 @@
               </button>
             </div>
             <div class="logo-admin">{{ ADMIN_SIDEBAR.MANAGER }}</div>
-            <div class="admin-menu">
+          </div>
+          <div class="admin-menu">
             <ul class="admin-menu-ul">
               <li>
                 <button class="side-button" @click="onClickMangeLog">
@@ -40,8 +41,10 @@
               </li>
             </ul>
           </div>
+
           </div>
           
+
         </div>
       </div>
       <RouterView id="main" />

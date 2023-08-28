@@ -19,7 +19,6 @@ import EditProductByAdminView from '@/views/admin/EditProductByAdminView.vue';
 import AddProductByAdminView from '@/views/admin/AddProductByAdminView.vue';
 import ManageLog from '@/views/admin/ManageLogView.vue';
 import ManageUser from '@/views/admin/ManageUserView.vue';
-
 import ManageDeclaration from '@/views/admin/ManageDeclarationView.vue';
 
 const router = createRouter({
@@ -62,6 +61,7 @@ const router = createRouter({
       name: 'In admin page',
       component: DefaultSide,
       children: [
+
         { path: 'log', name: 'admin log', component: ManageLog },
         { path: 'manage/user', name: 'admin manage user', component: ManageUser },
         { path: 'manage/user/:id', name: 'admin manage user detail', component: EditUserInfoView },

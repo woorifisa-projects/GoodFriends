@@ -1,9 +1,11 @@
 package woorifisa.goodfriends.backend.product.dto.request;
 
+import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class ProductSaveRequest {
 
@@ -17,6 +19,8 @@ public class ProductSaveRequest {
     @NotNull(message = "상품 가격을 입력해 주세요.")
     private int sellPrice;
 
+    private List<MultipartFile> imageUrls;
+
     public ProductSaveRequest() {
     }
 
@@ -25,6 +29,14 @@ public class ProductSaveRequest {
         this.productCategories = productCategories;
         this.description = description;
         this.sellPrice = sellPrice;
+    }
+
+    public ProductSaveRequest(String title, ProductCategory productCategories, String description, int sellPrice, List<MultipartFile> imageUrls) {
+        this.title = title;
+        this.productCategories = productCategories;
+        this.description = description;
+        this.sellPrice = sellPrice;
+        this.imageUrls = imageUrls;
     }
 
     public String getTitle() {
@@ -43,4 +55,9 @@ public class ProductSaveRequest {
     public int getSellPrice() {
         return sellPrice;
     }
+
+    public List<MultipartFile> getImageUrls() {
+        return imageUrls;
+    }
+
 }
