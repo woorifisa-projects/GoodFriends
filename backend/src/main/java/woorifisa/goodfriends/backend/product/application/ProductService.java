@@ -63,7 +63,7 @@ public class ProductService {
     }
 
     private String saveImage(Long productId, MultipartFile image) throws IOException {
-        String uniqueFileName = FileUtils.generateUniqueFileName(Objects.requireNonNull(image.getOriginalFilename(), "파일명을 변경할 파일이 없습니다."));
+        String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
         productImageRepository.save(new ProductImage(productRepository.findById(productId).orElseThrow(), savedImageUrl));
