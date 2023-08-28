@@ -1,7 +1,8 @@
 <template>
   <div class="header">
     <div class="title" @click="goPage(LOGO.path)">
-      <img :src="LOGO.image" alt="" />
+      GoodFriend
+      <!-- <img :src="LOGO.image" alt="" /> -->
     </div>
     <div class="wrap">
       <div>
@@ -110,16 +111,29 @@ watchEffect(() => {
   align-items: center;
   justify-content: space-between;
 
-  background: white;
+  background: var(--header-bg);
   box-shadow: 2px 2px 10px rgba(202, 202, 202, 0.389);
 
   z-index: 99;
 }
+.header::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 0;
+  width: 100%;
+  height: 110%;
 
+  background-color: var(--header-back-bg);
+  z-index: -1;
+  filter: blur(20px);
+}
 .title {
   cursor: pointer;
   width: 200px;
   overflow: hidden;
+  font-size: 32px;
+  font-family: 'LINESeedKR-Bd';
 }
 .title img {
   width: 100%;
@@ -133,6 +147,7 @@ watchEffect(() => {
 }
 
 .wrap button {
+  background-color: transparent;
   font-size: 16px;
   font-family: 'LINESeedKR-Bd';
 }
