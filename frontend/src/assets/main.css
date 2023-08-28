@@ -54,16 +54,16 @@ body {
   /* --category-bg: rgb(232, 249, 255); */
   /* --category-item-bg: rgb(166, 209, 245); */
   /* --category-item-point-bg: rgb(102, 154, 226); */
-  --category-item-bg: #c4d7b2;
-  --category-item-point-bg: #99a98f;
+  --category-item-bg: white;
+  --category-item-point-bg: #609966;
   --category-item-point-text: white;
 
   /* --product-add-btn-bg: lightblue; */
-  --product-add-btn-bg: #7c9070;
+  --product-add-btn-bg: #609966;
   --product-add-btn-text: white;
 
   --order-list-item-bg: rgb(253, 253, 253);
-  --order-list-item-border: #609966;
+  --order-list-item-border: #609966c9;
 
   /* --edit-product-point-bg: lightblue;
   --edit-product-btn-1-bg: #5467d4;
@@ -71,7 +71,7 @@ body {
   --edit-product-remove-btn-bg: rgb(110, 110, 110); */
 
   --edit-product-point-bg: #96ceb4;
-  --edit-product-btn-1-bg: #749f82;
+  --edit-product-btn-1-bg: #609966;
   --edit-product-btn-2-bg: white;
   --edit-product-remove-btn-bg: rgb(110, 110, 110);
 }
