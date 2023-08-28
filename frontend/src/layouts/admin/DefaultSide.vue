@@ -41,6 +41,10 @@
               </li>
             </ul>
           </div>
+
+          </div>
+          
+
         </div>
       </div>
       <RouterView id="main" />
@@ -70,7 +74,9 @@ const onClickMangeLog = () => {
   router.push('/admin/log');
 };
 
-const onClickManegeUser = () => {};
+const onClickManegeUser = () => {
+  router.push('/admin/manage/user');
+};
 
 const onClickManegeProduct = () => {};
 
@@ -145,7 +151,8 @@ const onClickManegeDeclaration = () => {
 
 .admin-menu-ul {
   padding-top: 50px;
-  text-align: center;
+  padding-left: 5px; 
+ 
 }
 ul {
   display: flex;
