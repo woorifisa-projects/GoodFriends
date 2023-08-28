@@ -63,10 +63,10 @@ public class ProductService {
     }
 
     private String saveImage(Long productId, MultipartFile image) throws IOException {
-        String uniqueFileName = FileUtils.generateUniqueFileName(Objects.requireNonNull(image.getOriginalFilename(), "파일명을 변경할 파일이 없습니다."));
+        String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
-        productImageRepository.save(new ProductImage(productRepository.findById(productId).orElseThrow(), savedImageUrl));
+        productImageRepository.save(new ProductImage(productRepository.getById(productId), savedImageUrl));
 
         return savedImageUrl;
     }
@@ -85,12 +85,7 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
         return products.stream()
                 .map(product -> {
-                    List<String> images = productImageRepository.findOneImageUrlByProductId(product.getId(), PageRequest.of(0,1));
-                    String image = "";
-
-                    if(!images.isEmpty()){
-                        image = images.get(0);
-                    }
+                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
 
                     return new ProductViewAllResponse(
                             product.getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
@@ -99,21 +94,21 @@ public class ProductService {
     }
 
     public ProductViewOneResponse viewOneProduct(Long id) {
-        Product product = productRepository.findById(id).orElseThrow();
+        Product product = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
-        return new ProductViewOneResponse(product.getId(), product.getUser(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
+        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
-        Product selectedProduct = productRepository.findById(id).orElseThrow();
+        Product selectedProduct = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(id);
         return new ProductUpdateResponse(selectedProduct, images);
     }
 
     @Transactional
     public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) throws IOException {
-        Product selectedProduct = productRepository.findById(id).orElseThrow();
+        Product selectedProduct = productRepository.getById(id);
 
         deleteImageByProductId(id);
         productImageRepository.deleteByProductId(id);
