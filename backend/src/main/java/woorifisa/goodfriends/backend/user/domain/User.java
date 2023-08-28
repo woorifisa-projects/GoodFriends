@@ -1,19 +1,14 @@
 package woorifisa.goodfriends.backend.user.domain;
 
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class) // 3, 4
-public class User {
+public class User extends BaseTimeEntity {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
     @Id
@@ -31,12 +26,6 @@ public class User {
     private String profileImageUrl;
 
     private int ban;
-
-    @CreatedDate // 1
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate // 1
-    private LocalDateTime lastModifiedAt;
 
     protected User() {
     }
