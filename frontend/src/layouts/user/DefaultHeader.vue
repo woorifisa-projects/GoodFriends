@@ -146,7 +146,8 @@ watchEffect(() => {
   top: 100px;
   right: 250px;
 
-  background: wheat;
+  background: var(--popover-bg);
+  box-shadow: 1px 1px 10px rgba(183, 183, 183, 0.779);
   border-radius: 20px;
 
   padding: 20px;
@@ -160,10 +161,11 @@ watchEffect(() => {
 }
 
 .popover::after {
-  border-bottom: 10px solid wheat;
+  border-bottom: 10px solid var(--popover-bg);
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 0px solid transparent;
+
   content: '';
   position: absolute;
   bottom: 300px;
@@ -194,7 +196,8 @@ watchEffect(() => {
   border-radius: 10px;
   font-size: 18px;
   text-align: center;
-  background: lightblue;
+  background: var(--popover-btn-bg);
+  color: var(--popover-btn-text);
   cursor: pointer;
 }
 

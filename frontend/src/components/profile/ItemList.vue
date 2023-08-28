@@ -69,15 +69,16 @@ const onClick = (item: Item) => {
 .detail {
   display: flex;
   justify-content: space-around;
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
   height: 100px;
   width: calc(100% - 100px);
   border-radius: 20px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .detail > div {
-  background-color: rgb(232, 232, 232);
+  /* background-color: rgb(232, 232, 232); */
   width: 100%;
   height: 100%;
   padding: 20px;

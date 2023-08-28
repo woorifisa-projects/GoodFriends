@@ -19,3 +19,44 @@
 body {
   font-family: 'LINESeedKR-Rg', 'LINESeedKR-Bd', sans-serif;
 }
+
+:root {
+  --profile-list-base: rgb(240, 240, 240);
+
+  --profile-list-point-bg: #cc66c7;
+  --profile-list-point-text: white;
+
+  --product-status-filter-base-bg: #fcfdff;
+  --product-status-filter-base-text: black;
+
+  --product-status-filter-point-bg: #9966cc;
+  --product-status-filter-point-text: white;
+
+  --profile-label-bg: #9966cc;
+  --profile-label-text: white;
+
+  --profile-btn-1-bg: rgb(240, 240, 240);
+  --profile-btn-1-text: black;
+
+  --profile-btn-2-bg: #9966cc;
+  --profile-btn-2-text: white;
+
+  --popover-bg: #fff;
+  --popover-btn-bg: lightblue;
+  --popover-btn-text: black;
+
+  --category-bg: rgb(232, 249, 255);
+  --category-item-bg: rgb(166, 209, 245);
+  --category-item-point-bg: rgb(102, 154, 226);
+  --category-item-point-text: white;
+
+  --product-add-btn-bg: lightblue;
+
+  --order-list-item-bg: wheat;
+  --order-list-item-border: rgb(201, 144, 38);
+
+  --edit-product-point-bg: lightblue;
+  --edit-product-btn-1-bg: #5467d4;
+  --edit-product-btn-2-bg: white;
+  --edit-product-remove-btn-bg: rgb(110, 110, 110);
+}
