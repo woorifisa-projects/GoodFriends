@@ -102,7 +102,7 @@ public class ProductService {
         Product product = productRepository.findById(id).orElseThrow();
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
-        return new ProductViewOneResponse(product.getId(), product.getUser(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedDate(), product.getLastModifiedDate(), images);
+        return new ProductViewOneResponse(product.getId(), product.getUser(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
@@ -128,7 +128,7 @@ public class ProductService {
                         .status(selectedProduct.getStatus())
                         .description(request.getDescription())
                         .sellPrice(request.getSellPrice())
-                        .createdDate(selectedProduct.getCreatedDate())
+                        .createdAt(selectedProduct.getCreatedAt())
                         .build());
 
         return new ProductUpdateResponse(updatedProduct, savedImageUrls);
