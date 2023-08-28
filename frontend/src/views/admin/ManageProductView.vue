@@ -5,110 +5,27 @@
       <label @click="onClickSearch">
         <span class="material-icons-outlined"> search </span>
       </label>
-      <label>등록</label>
     </div>
+
     <div class="card-list">
       <ProductCardVue :products="products" @click="onClickProductCard" />
     </div>
+    <div class="add-button">
+      <button @click="onClickAddProduct">
+        <span class="material-icons-outlined"> add </span>
+      </button>
+    </div>
   </div>
-  <!-- <div class="add-button">
-    <button @click="onClickAddProduct">
-      <span class="material-icons-outlined"> add </span>
-    </button>
-  </div> -->
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
-import { getBannerList } from '@/utils/image';
+
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
-import type { category } from '@/types/product';
 
 // TODO: 수정 -> 서버로부터
-const categories = ref<Array<category>>([
-  {
-    id: 1,
-    name: '전체'
-  },
-  {
-    id: 2,
-    name: '2'
-  },
-  {
-    id: 3,
-    name: '3'
-  },
-  {
-    id: 4,
-    name: '4'
-  },
-  {
-    id: 5,
-    name: '5'
-  },
-  {
-    id: 6,
-    name: '6'
-  },
-  {
-    id: 7,
-    name: '7'
-  },
-  {
-    id: 8,
-    name: '8'
-  },
-  {
-    id: 9,
-    name: '9'
-  },
-  {
-    id: 10,
-    name: '10'
-  },
-  {
-    id: 11,
-    name: '11'
-  },
-  {
-    id: 12,
-    name: '12'
-  },
-  {
-    id: 13,
-    name: '13'
-  },
-  {
-    id: 14,
-    name: '14'
-  },
-  {
-    id: 15,
-    name: '15'
-  },
-  {
-    id: 16,
-    name: '16'
-  },
-  {
-    id: 17,
-    name: '17'
-  },
-  {
-    id: 18,
-    name: '18'
-  },
-  {
-    id: 19,
-    name: '19'
-  },
-  {
-    id: 20,
-    name: '20'
-  }
-]);
 
 const products = ref([
   {
@@ -148,55 +65,18 @@ const products = ref([
   }
 ]);
 
-const categoryPageNumber = ref(0);
-const viewCategoryNumber = ref(8);
-const selectedCategoryId = ref(1);
-const bannerList = ref<Array<string>>([]);
-const viewBanner = ref(0);
-const smallCategoryIsOpen = ref(false);
-
-const openCategory = () => {
-  smallCategoryIsOpen.value = !smallCategoryIsOpen.value;
-};
-
-bannerList.value = getBannerList();
-
-const onClickBannerBtn = (flag: string) => {
-  if (flag === 'next') {
-    viewBanner.value = (viewBanner.value + 1) % bannerList.value.length;
-  } else if (flag === 'prev') {
-    viewBanner.value -= 1;
-    if (viewBanner.value < 0) {
-      viewBanner.value = bannerList.value.length - 1;
-    }
-  }
-};
-
 const onClickSearch = () => {
   // TODO: 상품 검색
 };
 
-const onClickCategory = (id: number) => {
-  selectedCategoryId.value = id;
-  // TODO: 카테고리별 상품 출력
-};
-
-const viewCategory = computed(() => {
-  const start = categoryPageNumber.value * viewCategoryNumber.value;
-  return categories.value.slice(start, start + viewCategoryNumber.value);
-});
-
 const onClickAddProduct = () => {
-  router.push('/product/add');
+  router.push('/admin/product/manage/add');
+  //   console.log('admin/product/manage/add');
 };
 
 const onClickProductCard = (id: number) => {
   router.push(`product/${id}`);
 };
-
-setInterval(() => {
-  onClickBannerBtn('next');
-}, 3000);
 </script>
 
 <style scoped>
@@ -241,54 +121,6 @@ setInterval(() => {
   border: 1px solid rgb(173, 173, 173);
   border-radius: 16px;
 }
-
-.category {
-  width: 100%;
-  padding: 20px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-}
-.category > button {
-  font-size: 16px;
-  padding: 12px;
-}
-.category > button:active {
-  opacity: 0.4;
-}
-.category > ul {
-  width: 950px;
-
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 12px;
-  justify-content: center;
-
-  padding: 12px 24px;
-}
-.category > ul > li {
-  width: fit-content;
-}
-.category > ul > li > button {
-  background-color: var(--category-item-bg);
-
-  width: 100px;
-  padding: 16px 0;
-
-  border: 1px solid rgba(66, 66, 66, 0.605);
-  border-radius: 12px;
-}
-
-.category > ul > li > .selected {
-  background-color: var(--category-item-point-bg);
-  color: var(--category-item-point-text);
-  box-shadow: inset 1px 1px 10px rgba(133, 133, 133, 0.827);
-}
-.small-category {
-  display: none;
-}
 .search-bar {
   position: relative;
   width: 100%;
@@ -329,8 +161,8 @@ setInterval(() => {
   text-align: end;
 }
 .add-button > button {
-  border: 1px solid #48583f;
-  background-color: var(--product-add-btn-bg);
+  border: 1px solid dodgerblue;
+  background-color: dodgerblue;
   color: var(--product-add-btn-text);
   border-radius: 50%;
   width: 64px;

@@ -66,8 +66,8 @@ const router = createRouter({
         { path: 'manage/user', name: 'admin manage user', component: ManageUser },
         { path: 'manage/user/:id', name: 'admin manage user detail', component: EditUserInfoView },
         { path: 'product/edit/:id', name: 'admin edit product', component: EditProductByAdminView },
-        { path: 'product/add', name: 'admin add product', component: AddProductByAdminView },
         { path: 'product/manage', name: 'admin manage product', component: ManageProductByAdminView },
+        { path: 'product/manage/add', name: 'admin add product', component: AddProductByAdminView },
         { path: 'declaration', name: 'admin declaration', component: ManageDeclaration }
       ]
     }
