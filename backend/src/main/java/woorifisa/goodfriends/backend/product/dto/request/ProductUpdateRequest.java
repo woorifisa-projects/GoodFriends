@@ -13,7 +13,7 @@ public class ProductUpdateRequest {
     @NotBlank(message = "상품 제목을 입력해 주세요.")
     private String title;
 
-    ProductCategory productCategories;
+    private ProductCategory productCategory;
 
     @NotBlank(message = "상품 설명을 입력해 주세요.")
     private String description;
@@ -26,16 +26,16 @@ public class ProductUpdateRequest {
     public ProductUpdateRequest() {
     }
 
-    public ProductUpdateRequest(String title, ProductCategory productCategories, String description, int sellPrice) {
+    public ProductUpdateRequest(String title, ProductCategory productCategory, String description, int sellPrice) {
         this.title = title;
-        this.productCategories = productCategories;
+        this.productCategory = productCategory;
         this.description = description;
         this.sellPrice = sellPrice;
     }
 
-    public ProductUpdateRequest(String title, ProductCategory productCategories, String description, int sellPrice, List<MultipartFile> imageUrls) {
+    public ProductUpdateRequest(String title, ProductCategory productCategory, String description, int sellPrice, List<MultipartFile> imageUrls) {
         this.title = title;
-        this.productCategories = productCategories;
+        this.productCategory = productCategory;
         this.description = description;
         this.sellPrice = sellPrice;
         this.imageUrls = imageUrls;
@@ -46,8 +46,8 @@ public class ProductUpdateRequest {
         return title;
     }
 
-    public ProductCategory getProductCategories() {
-        return productCategories;
+    public ProductCategory getProductCategory() {
+        return productCategory;
     }
 
     public String getDescription() {

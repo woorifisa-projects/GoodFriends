@@ -19,9 +19,8 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "user_id") // 외래 키로 사용할 컬럼 지정
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_categories_id")
-    private ProductCategory productCategories;
+    @Enumerated
+    private ProductCategory productCategory;
 
     @Column(nullable = false)
     private String title;
@@ -37,7 +36,6 @@ public class Product extends BaseTimeEntity {
 
     protected Product(){
     }
-
     public Long getId() {
         return id;
     }
@@ -46,8 +44,8 @@ public class Product extends BaseTimeEntity {
         return user;
     }
 
-    public ProductCategory getProductCategories() {
-        return productCategories;
+    public ProductCategory getProductCategory() {
+        return productCategory;
     }
 
     public String getTitle() {
@@ -65,5 +63,4 @@ public class Product extends BaseTimeEntity {
     public int getSellPrice() {
         return sellPrice;
     }
-
 }

@@ -56,7 +56,7 @@ public class ProductService {
                 .user(user)
                 .title(request.getTitle())
                 .status(ProductStatus.SELL)
-                .productCategories(request.getProductCategories())
+                .productCategory(request.getProductCategory())
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .build());
@@ -88,7 +88,7 @@ public class ProductService {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
 
                     return new ProductViewAllResponse(
-                            product.getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
+                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
                 })
                 .collect(Collectors.toList());
     }
@@ -97,7 +97,7 @@ public class ProductService {
         Product product = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
-        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
+        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
@@ -119,7 +119,7 @@ public class ProductService {
                         .id(id)
                         .user(selectedProduct.getUser())
                         .title(request.getTitle())
-                        .productCategories(request.getProductCategories())
+                        .productCategory(request.getProductCategory())
                         .status(selectedProduct.getStatus())
                         .description(request.getDescription())
                         .sellPrice(request.getSellPrice())
