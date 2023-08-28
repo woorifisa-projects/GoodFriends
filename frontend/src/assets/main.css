@@ -21,42 +21,57 @@ body {
 }
 
 :root {
+  --header-bg: #f6fbf4a1;
+  --header-back-bg: #f6fbf4;
+
+  --profile-main-color: #749f82;
+
   --profile-list-base: rgb(240, 240, 240);
 
-  --profile-list-point-bg: #cc66c7;
+  --profile-list-point-bg: #425f57;
   --profile-list-point-text: white;
 
   --product-status-filter-base-bg: #fcfdff;
   --product-status-filter-base-text: black;
 
-  --product-status-filter-point-bg: #9966cc;
+  --product-status-filter-point-bg: var(--profile-main-color);
   --product-status-filter-point-text: white;
 
-  --profile-label-bg: #9966cc;
+  --profile-label-bg: var(--profile-main-color);
   --profile-label-text: white;
 
   --profile-btn-1-bg: rgb(240, 240, 240);
   --profile-btn-1-text: black;
 
-  --profile-btn-2-bg: #9966cc;
+  --profile-btn-2-bg: var(--profile-main-color);
   --profile-btn-2-text: white;
 
-  --popover-bg: #fff;
-  --popover-btn-bg: lightblue;
+  --popover-bg: rgb(168, 232, 177);
+  --popover-btn-bg: white;
   --popover-btn-text: black;
 
-  --category-bg: rgb(232, 249, 255);
-  --category-item-bg: rgb(166, 209, 245);
-  --category-item-point-bg: rgb(102, 154, 226);
+  --category-bg: #f3fde8;
+  /* --category-bg: rgb(232, 249, 255); */
+  /* --category-item-bg: rgb(166, 209, 245); */
+  /* --category-item-point-bg: rgb(102, 154, 226); */
+  --category-item-bg: #c4d7b2;
+  --category-item-point-bg: #99a98f;
   --category-item-point-text: white;
 
-  --product-add-btn-bg: lightblue;
+  /* --product-add-btn-bg: lightblue; */
+  --product-add-btn-bg: #7c9070;
+  --product-add-btn-text: white;
 
-  --order-list-item-bg: wheat;
-  --order-list-item-border: rgb(201, 144, 38);
+  --order-list-item-bg: rgb(253, 253, 253);
+  --order-list-item-border: #609966;
 
-  --edit-product-point-bg: lightblue;
+  /* --edit-product-point-bg: lightblue;
   --edit-product-btn-1-bg: #5467d4;
+  --edit-product-btn-2-bg: white;
+  --edit-product-remove-btn-bg: rgb(110, 110, 110); */
+
+  --edit-product-point-bg: #96ceb4;
+  --edit-product-btn-1-bg: #749f82;
   --edit-product-btn-2-bg: white;
   --edit-product-remove-btn-bg: rgb(110, 110, 110);
 }

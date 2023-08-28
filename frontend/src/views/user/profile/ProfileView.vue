@@ -139,7 +139,7 @@ const onInputPhoneNumber = (event: Event) => {
 
   width: 100%;
   border: 1px solid rgb(180, 180, 180);
-  border-radius: 24px;
+  border-radius: 8px;
   display: flex;
   overflow: hidden;
   align-items: center;
