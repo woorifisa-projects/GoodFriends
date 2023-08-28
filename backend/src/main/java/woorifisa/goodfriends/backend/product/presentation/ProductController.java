@@ -30,7 +30,7 @@ public class ProductController {
     public ResponseEntity<ProductSaveResponse> saveProduct(@PathVariable Long userId,
                                                            @RequestPart ProductSaveRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-        ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategories(),request.getDescription(), request.getSellPrice(), multipartFiles);
+        ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
         ProductSaveResponse response = productService.saveProduct(userId, productSaveRequest);
         return ResponseEntity.created(URI.create("/products/" + response.getId())).body(response);
     }
@@ -57,7 +57,7 @@ public class ProductController {
     public ResponseEntity<ProductUpdateResponse> updateProduct(@PathVariable Long productId,
                                                                @RequestPart ProductUpdateRequest request,
                                                                @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-        ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategories(), request.getDescription(), request.getSellPrice(), multipartFiles);
+        ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategory(), request.getDescription(), request.getSellPrice(), multipartFiles);
         ProductUpdateResponse response = productService.updateProduct(productUpdateRequest, productId);
         return ResponseEntity.ok().body(response);
     }

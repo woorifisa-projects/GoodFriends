@@ -10,7 +10,7 @@ public class ProductSaveResponse {
 
     private Long id;
 
-    private ProductCategory productCategories;
+    private ProductCategory productCategory;
 
     private String title;
 
@@ -23,9 +23,9 @@ public class ProductSaveResponse {
     public ProductSaveResponse() {
     }
 
-    public ProductSaveResponse(Long id, ProductCategory productCategories, String title, String description, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls) {
+    public ProductSaveResponse(Long id, ProductCategory productCategory, String title, String description, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls) {
         this.id = id;
-        this.productCategories = productCategories;
+        this.productCategory = productCategory;
         this.title = title;
         this.description = description;
         this.sellPrice = sellPrice;
@@ -34,7 +34,7 @@ public class ProductSaveResponse {
 
     public ProductSaveResponse(Product newProduct, List<String> imageUrls) {
         this.id = newProduct.getId();
-        this.productCategories = newProduct.getProductCategories();
+        this.productCategory = newProduct.getProductCategory();
         this.title = newProduct.getTitle();
         this.description = newProduct.getDescription();
         this.sellPrice = newProduct.getSellPrice();
@@ -45,8 +45,8 @@ public class ProductSaveResponse {
         return id;
     }
 
-    public ProductCategory getProductCategories() {
-        return productCategories;
+    public ProductCategory getProductCategory() {
+        return productCategory;
     }
 
     public String getTitle() {
