@@ -5,7 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@Table(name = "profile_images")
+@Table(name = "product_images")
 @Entity
 public class ProductImage {
 
