@@ -18,6 +18,7 @@ import EditUserInfoView from '@/views/admin/EditUserInfoView.vue';
 import EditProductByAdminView from '@/views/admin/EditProductByAdminView.vue';
 import AddProductByAdminView from '@/views/admin/AddProductByAdminView.vue';
 import MangageLog from '@/views/admin/ManageLogView.vue';
+import ManageDeclaration from '@/views/admin/ManageDeclarationView.vue';
 
 const router = createRouter({
   scrollBehavior() {
@@ -61,7 +62,8 @@ const router = createRouter({
       children: [
         { path: 'log', name: 'admin log', component: MangageLog },
         { path: 'product/edit/:id', name: 'admin edit product', component: EditProductByAdminView },
-        { path: 'product/add', name: 'admin add product', component: AddProductByAdminView }
+        { path: 'product/add', name: 'admin add product', component: AddProductByAdminView },
+        { path: 'declaration', name: 'admin declaration', component: ManageDeclaration }
       ]
     }
   ]
