@@ -1,7 +1,6 @@
 package woorifisa.goodfriends.backend.product.dto.response;
 
 import woorifisa.goodfriends.backend.product.domain.Product;
-import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
 import java.util.List;
@@ -10,7 +9,7 @@ public class ProductUpdateResponse {
 
     private Long id;
 
-    private ProductCategory productCategories;
+    private int productCategoryId;
 
     private String title;
 
@@ -25,9 +24,9 @@ public class ProductUpdateResponse {
     public ProductUpdateResponse() {
     }
 
-    public ProductUpdateResponse(Long id, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice, List<String> imageUrls) {
+    public ProductUpdateResponse(Long id, int productCategoryId, String title, ProductStatus status, String description, int sellPrice, List<String> imageUrls) {
         this.id = id;
-        this.productCategories = productCategories;
+        this.productCategoryId = productCategoryId;
         this.title = title;
         this.status = status;
         this.description = description;
@@ -37,7 +36,7 @@ public class ProductUpdateResponse {
 
     public ProductUpdateResponse(Product product, List<String> imageUrls){
         this.id = product.getId();
-        this.productCategories = product.getProductCategories();
+        this.productCategoryId = product.getProductCategories().getId();
         this.title = product.getTitle();
         this.status = product.getStatus();
         this.description = product.getDescription();
@@ -49,8 +48,8 @@ public class ProductUpdateResponse {
         return id;
     }
 
-    public ProductCategory getProductCategories() {
-        return productCategories;
+    public int getProductCategoryId() {
+        return productCategoryId;
     }
 
     public String getTitle() {

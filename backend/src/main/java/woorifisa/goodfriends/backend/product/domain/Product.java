@@ -1,7 +1,6 @@
 package woorifisa.goodfriends.backend.product.domain;
 
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
 
@@ -16,11 +15,11 @@ public class Product extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // 외래 키로 사용할 컬럼 지정
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_categories_id")
     private ProductCategory productCategories;
 
