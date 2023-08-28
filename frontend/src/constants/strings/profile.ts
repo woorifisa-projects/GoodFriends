@@ -12,7 +12,8 @@ export const PROFILE = {
   GENDER: '성별',
   PHONE_NUMBER: '핸드폰',
   ADDRESS: '주소',
-  BIRTHDAY: '생년월일'
+  BIRTHDAY: '생년월일',
+  GET_ADDRESS: '도로명주소 찾기'
 };
 
 export const ALERT = {
