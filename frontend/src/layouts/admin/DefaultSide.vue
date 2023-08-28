@@ -45,7 +45,9 @@ const onClickManegeUser = () => {};
 
 const onClickManegeProduct = () => {};
 
-const onClickManegeDeclaration = () => {};
+const onClickManegeDeclaration = () => {
+  router.push('admin/declaration');
+};
 </script>
 
 <style scoped>
