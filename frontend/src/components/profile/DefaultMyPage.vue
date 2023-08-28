@@ -30,7 +30,7 @@
           <div class="list-item">
             <span>{{ PROFILE_SIDEBAR.MY_INFO }}</span>
             <ul>
-              <li :style="setListItemColor('/profile')">
+              <li :class="route.path === '/profile' ? 'item cur' : 'item'">
                 <router-link to="/profile"> {{ PROFILE_SIDEBAR.PROFILE }} </router-link>
               </li>
             </ul>
@@ -41,7 +41,7 @@
               <li
                 v-for="(item, index) in navList"
                 v-bind:key="index"
-                :style="setListItemColor(item.path)"
+                :class="route.path === item.path ? 'item cur' : 'item'"
               >
                 <router-link :to="item.path">{{ item.name }}</router-link>
               </li>
@@ -86,11 +86,6 @@ const navList = [
     path: '/'
   }
 ];
-
-const setListItemColor = (path: String) => {
-  if (route.path === path) return 'background: #7f7f7fd5';
-  return '';
-};
 
 const onClickProfileImageUpload = async (event: Event) => {
   // TODO: 이미지 유효성 검사 및 저장
@@ -166,10 +161,10 @@ const onClickEditName = () => {
   font-family: 'LINESeedKR-Bd';
 }
 .list-item li {
-  transition: all 0.5s ease;
+  transition: all 0.3s ease;
 }
 .list-item li:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 @keyframes blink {
   0% {
@@ -260,12 +255,11 @@ const onClickEditName = () => {
   margin: 20px 0;
 }
 
-.list-item > ul > li {
+.item {
   padding: 8px 16px;
 
-  background: lightgray;
-  /* background-color: #c8e4b2; */
-  border: 1px solid black;
+  background: var(--profile-list-base);
+  border: 1px solid lightgray;
 
   border-radius: 8px;
 }
@@ -274,6 +268,13 @@ a {
   display: block;
   width: 100%;
   height: 100%;
+}
+.cur {
+  background-color: var(--profile-list-point-bg);
+}
+
+.cur > a {
+  color: var(--profile-list-point-text);
 }
 
 @media screen and (max-width: 1023px) {

@@ -316,7 +316,7 @@ setInterval(() => {
 }
 .category > ul {
   width: 950px;
-  background-color: rgb(232, 249, 255);
+  background-color: var(--category-bg);
   border: 1px solid rgba(135, 135, 135, 0.32);
   border-radius: 12px;
 
@@ -331,7 +331,7 @@ setInterval(() => {
   width: fit-content;
 }
 .category > ul > li > button {
-  background-color: rgb(166, 209, 245);
+  background-color: var(--category-item-bg);
 
   width: 105px;
   padding: 16px 0;
@@ -341,8 +341,8 @@ setInterval(() => {
 }
 
 .category > ul > li > .selected {
-  background-color: rgb(102, 154, 226);
-  color: white;
+  background-color: var(--category-item-point-bg);
+  color: var(--category-item-point-text);
   box-shadow: inset 1px 1px 10px rgba(133, 133, 133, 0.827);
 }
 .small-category {
@@ -389,7 +389,7 @@ setInterval(() => {
 }
 .add-button > button {
   border: 1px solid rgba(0, 0, 0, 0.576);
-  background-color: lightblue;
+  background-color: var(--product-add-btn-bg);
   border-radius: 50%;
   width: 64px;
   height: 64px;

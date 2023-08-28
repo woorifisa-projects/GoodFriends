@@ -94,7 +94,7 @@ const onInputPhoneNumber = (event: Event) => {
 
 <style scoped>
 .profile_main {
-  /* border: 1px solid red; */
+  height: 100%;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -109,21 +109,25 @@ const onInputPhoneNumber = (event: Event) => {
 }
 
 .btn_wrap > button {
-  background: rgb(240, 240, 240);
+  background-color: var(--profile-btn-1-bg);
+  color: var(--profile-btn-1-text);
   padding: 16px 20px;
   border-radius: 8px;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.48);
 }
 
 .btn_wrap > button:first-child {
-  background: lightblue;
+  background-color: var(--profile-btn-2-bg);
+  color: var(--profile-btn-2-text);
 }
 
 .profile_detail_wrap {
   padding: 0 36px;
+  height: 100%;
 }
 
 .profile_detail {
+  height: 100%;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -131,6 +135,8 @@ const onInputPhoneNumber = (event: Event) => {
 }
 
 .item {
+  flex: 1;
+
   width: 100%;
   border: 1px solid rgb(180, 180, 180);
   border-radius: 24px;
@@ -144,8 +150,13 @@ const onInputPhoneNumber = (event: Event) => {
   height: 100%;
   width: 100px;
   padding: 16px;
-  background: lightblue;
+  background: var(--profile-label-bg);
+  color: var(--profile-label-text);
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'LINESeedKR-Bd';
 }
 
 .item > input,

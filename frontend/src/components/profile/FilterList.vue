@@ -55,8 +55,8 @@ const emits = defineEmits(['click']);
 .filter > div {
   width: 80px;
   /*  */
-  background-color: #fdffae;
-  color: black;
+  background-color: var(--product-status-filter-bg);
+  color: var(--product-status-filter-base-text);
   text-align: center;
   border-radius: 12px;
   overflow: hidden;
@@ -73,8 +73,8 @@ const emits = defineEmits(['click']);
 }
 .filter > div > input:checked + label {
   /*  */
-  background-color: #aac8a7;
-  color: black;
+  background-color: var(--product-status-filter-point-bg);
+  color: var(--product-status-filter-point-text);
 }
 .filter > div > label {
   display: block;
