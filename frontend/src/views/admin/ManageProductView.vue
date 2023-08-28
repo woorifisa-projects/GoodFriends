@@ -71,11 +71,10 @@ const onClickSearch = () => {
 
 const onClickAddProduct = () => {
   router.push('/admin/product/manage/add');
-  //   console.log('admin/product/manage/add');
 };
 
 const onClickProductCard = (id: number) => {
-  router.push(`product/${id}`);
+  router.push(`${id}`);
 };
 </script>
 
@@ -84,34 +83,7 @@ const onClickProductCard = (id: number) => {
   width: 100%;
   height: 100%;
 }
-.banner {
-  box-sizing: content-box;
-  max-width: 1300px;
-  height: 300px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  border: 1px solid rgba(109, 109, 109, 0.155);
-}
-.banner > button {
-  position: absolute;
-  background-color: transparent;
-}
-.banner > button:first-child {
-  left: 0;
-}
-.banner > button:last-child {
-  right: 0;
-}
-.banner-img {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
-.banner-img > img {
-  height: 100%;
-  object-fit: cover;
-}
+
 .main {
   width: 100%;
   max-height: 95vh;
@@ -179,30 +151,7 @@ const onClickProductCard = (id: number) => {
   .card-list {
     grid-template-columns: 1fr 1fr;
   }
-  .category {
-    display: none;
-  }
-  .small-category {
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    width: 100%;
-  }
-  .small-category > ul {
-    width: fit-content;
-    flex-wrap: wrap;
-  }
-  .small-category > div {
-    width: 100%;
-    background-color: rgb(232, 249, 255);
-    border: 1px solid rgba(135, 135, 135, 0.32);
-    border-radius: 12px;
-    padding: 12px 24px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    justify-content: right;
-  }
+
   .add-button {
     padding-right: 24px;
   }
