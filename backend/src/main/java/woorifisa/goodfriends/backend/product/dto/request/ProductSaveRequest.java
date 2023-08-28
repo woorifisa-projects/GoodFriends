@@ -12,7 +12,7 @@ public class ProductSaveRequest {
     @NotBlank(message = "상품 제목을 입력해 주세요.")
     private String title;
 
-    ProductCategory productCategories;
+    private ProductCategory productCategory;
 
     @NotBlank(message = "상품 설명을 입력해 주세요.")
     private String description;
@@ -24,16 +24,16 @@ public class ProductSaveRequest {
     public ProductSaveRequest() {
     }
 
-    public ProductSaveRequest(String title, ProductCategory productCategories, String description, int sellPrice) {
+    public ProductSaveRequest(String title, ProductCategory productCategory, String description, int sellPrice) {
         this.title = title;
-        this.productCategories = productCategories;
+        this.productCategory = productCategory;
         this.description = description;
         this.sellPrice = sellPrice;
     }
 
-    public ProductSaveRequest(String title, ProductCategory productCategories, String description, int sellPrice, List<MultipartFile> imageUrls) {
+    public ProductSaveRequest(String title, ProductCategory productCategory, String description, int sellPrice, List<MultipartFile> imageUrls) {
         this.title = title;
-        this.productCategories = productCategories;
+        this.productCategory = productCategory;
         this.description = description;
         this.sellPrice = sellPrice;
         this.imageUrls = imageUrls;
@@ -43,8 +43,8 @@ public class ProductSaveRequest {
         return title;
     }
 
-    public ProductCategory getProductCategories() {
-        return productCategories;
+    public ProductCategory getProductCategory() {
+        return productCategory;
     }
 
 
