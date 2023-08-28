@@ -43,8 +43,8 @@
           </div>
         </div>
       </div>
+      <RouterView id="main" />
     </div>
-    <RouterView id="main" />
   </div>
 </template>
 
