@@ -1,15 +1,27 @@
 <template>
   <div class="editUserInfo-Page">
     <div class="editUserInfo-Grid">
-      <div class="page-logo">{{ nickname }}&nbsp;{{ ADMIN.EDIT_USER_TITLE }}</div>
+      <div class="page-logo">
+        <span class="page-logo-in-1">{{ nickname }}</span
+        ><span class="page-logo-in-2">{{ ADMIN.EDIT_USER_TITLE }}</span>
+      </div>
       <div class="totlaUserInfo">
         <div class="userInfo1">
           <div class="user-img"><img src="@/assets/tmp/images/image.png" alt="profile img" /></div>
           <div class="userInfo1-1">
             <!-- TODO: ban, amark, average -->
-            <div class="userInfo1-1-detail">{{ ADMIN.BAN }}&nbsp;{{ banCount }}</div>
-            <div class="userInfo1-1-detail">{{ ADMIN.MARK }}&nbsp;👊</div>
-            <div class="userInfo1-1-detail">{{ ADMIN.AVERRAGE }} 1.2</div>
+            <div class="userInfo1-1-detail">
+              <span class="userInfo-in-1">{{ ADMIN.BAN }}</span
+              ><span class="userInfo-in-2">{{ banCount }}</span>
+            </div>
+            <div class="userInfo1-1-detail">
+              <span class="userInfo-in-1">{{ ADMIN.MARK }}</span
+              ><span class="userInfo-in-2">👊</span>
+            </div>
+            <div class="userInfo1-1-detail">
+              <span class="userInfo-in-1">{{ ADMIN.AVERRAGE }}</span
+              ><span class="userInfo-in-2">1.2</span>
+            </div>
           </div>
         </div>
         <div class="userInfo2">
@@ -149,6 +161,10 @@ const clickEdit = () => {};
   justify-content: center;
   align-items: center;
   background-color: aquamarine;
+}
+.page-logo-in-2,
+.userInfo-in-2 {
+  padding-left: 5px;
 }
 .work-buttons {
   width: 600px;
