@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
 
-    @Query(value = "select pi.image_url from profile_images pi where pi.product_id = :productId limit 1", nativeQuery = true)
+    @Query(value = "select pi.image_url from product_images pi where pi.product_id = :productId limit 1", nativeQuery = true)
     String findOneImageUrlByProductId(@Param("productId") Long productId);
 
     @Query("select pi.imageUrl from ProductImage pi where pi.product.id = :productId")
