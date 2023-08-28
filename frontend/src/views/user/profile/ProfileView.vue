@@ -11,15 +11,7 @@
             <label>{{ PROFILE.EMAIL }}</label>
             <input v-model="user.email" type="email" disabled />
           </div>
-          <div class="item">
-            <label>{{ PROFILE.BIRTHDAY }}</label>
-            <input
-              type="text"
-              v-model="userInputInfo.birthday"
-              :disabled="isDisabled"
-              :placeholder="PLACEHOLDER.BIRTHDAY"
-            />
-          </div>
+
           <div class="item">
             <label>{{ PROFILE.GENDER }}</label>
             <select name="gender" id="gender" v-model="userInputInfo.gender" :disabled="isDisabled">
@@ -53,20 +45,18 @@
 import { ALERT, PLACEHOLDER, PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { ref } from 'vue';
-import { checkBirthday, checkPhoneNumber } from '@/utils/validation';
+import { checkPhoneNumber } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
 
 const user = ref({
   email: '00@000.com',
   gender: 'woman',
-  birthday: '2000-02-24',
   phone: '010-1234-1234',
   address: '00시00구'
 });
 
 const userInputInfo = ref({
   gender: user.value.gender,
-  birthday: user.value.birthday,
   phone: user.value.phone,
   address: user.value.address
 });
@@ -76,10 +66,6 @@ const onClickEdit = () => {
   if (isDisabled.value) {
     isDisabled.value = false;
   } else if (!isDisabled.value) {
-    if (!checkBirthday(userInputInfo.value.birthday)) {
-      alert(ALERT.BIRTHDAY);
-      return;
-    }
     if (!checkPhoneNumber(userInputInfo.value.phone)) {
       console.log(userInputInfo.value.phone);
       alert(ALERT.PHONE);
@@ -108,7 +94,7 @@ const onInputPhoneNumber = (event: Event) => {
 
 <style scoped>
 .profile_main {
-  /* border: 1px solid red; */
+  height: 100%;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -123,21 +109,25 @@ const onInputPhoneNumber = (event: Event) => {
 }
 
 .btn_wrap > button {
-  background: rgb(240, 240, 240);
+  background-color: var(--profile-btn-1-bg);
+  color: var(--profile-btn-1-text);
   padding: 16px 20px;
   border-radius: 8px;
   box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.48);
 }
 
 .btn_wrap > button:first-child {
-  background: lightblue;
+  background-color: var(--profile-btn-2-bg);
+  color: var(--profile-btn-2-text);
 }
 
 .profile_detail_wrap {
   padding: 0 36px;
+  height: 100%;
 }
 
 .profile_detail {
+  height: 100%;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -145,9 +135,11 @@ const onInputPhoneNumber = (event: Event) => {
 }
 
 .item {
+  flex: 1;
+
   width: 100%;
   border: 1px solid rgb(180, 180, 180);
-  border-radius: 24px;
+  border-radius: 8px;
   display: flex;
   overflow: hidden;
   align-items: center;
@@ -158,8 +150,13 @@ const onInputPhoneNumber = (event: Event) => {
   height: 100%;
   width: 100px;
   padding: 16px;
-  background: lightblue;
+  background: var(--profile-label-bg);
+  color: var(--profile-label-text);
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'LINESeedKR-Bd';
 }
 
 .item > input,

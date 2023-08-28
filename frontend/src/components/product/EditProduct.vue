@@ -214,14 +214,14 @@ const remove = () => {
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
 
-  background-color: lightblue;
+  background-color: var(--edit-product-point-bg);
 
   border: 1px solid lightgray;
   border-bottom: none;
 }
 
 .input-detail > .price {
-  background-color: lightblue;
+  background-color: var(--edit-product-point-bg);
   border: 1px solid lightgray;
   border-top: none;
   flex-direction: row;
@@ -268,6 +268,7 @@ const remove = () => {
 .select-detail span {
   border-bottom: 1px solid black;
   font-size: 24px;
+  font-family: 'LINESeedKR-Bd';
 }
 
 .select-detail input,
@@ -286,7 +287,7 @@ const remove = () => {
   padding: 10px 15px;
 
   color: #ffffff;
-  background-color: #5467d4;
+  background-color: var(--edit-product-btn-1-bg);
   border: 1px solid #ebebeb;
   border-radius: 0.25em;
 
@@ -355,12 +356,12 @@ const remove = () => {
 
 .remove-btn {
   color: #ffffff;
-  background-color: rgb(110, 110, 110);
+  background-color: var(--edit-product-remove-btn-bg);
 }
 
 .submit-btn {
   color: #ffffff;
-  background-color: #5467d4;
+  background-color: var(--edit-product-btn-1-bg);
 }
 
 input[type='number']::-webkit-outer-spin-button,

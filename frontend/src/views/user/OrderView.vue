@@ -126,7 +126,6 @@ const onClickDeal = () => {
   align-items: center;
   padding: 24px;
 
-  background-color: lightblue;
   border-bottom: 1px solid rgb(166, 166, 166);
 }
 .product-info > .img {
@@ -168,8 +167,8 @@ const onClickDeal = () => {
   z-index: 2;
   height: 80px;
 
-  border: 1px solid rgb(201, 144, 38);
-  background-color: wheat;
+  border: 1px solid var(--order-list-item-border);
+  background-color: var(--order-list-item-bg);
   border-radius: 18px;
   cursor: pointer;
 
