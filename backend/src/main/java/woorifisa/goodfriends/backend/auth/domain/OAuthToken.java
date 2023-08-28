@@ -5,7 +5,7 @@ import woorifisa.goodfriends.backend.user.domain.User;
 import javax.persistence.*;
 
 // 유저 개인별 토큰을 저장하는 엔티티
-@Table(name = "user_oauth_tokens")
+@Table(name = "oauth_tokens")
 @Entity
 public class OAuthToken {
 

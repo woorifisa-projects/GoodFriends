@@ -1,18 +1,16 @@
 package woorifisa.goodfriends.backend.product.domain;
 
-import lombok.Builder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
+@SuperBuilder
 @Table(name = "products")
 @Entity
-@EntityListeners(AuditingEntityListener.class) // 3, 4
-public class Product {
+public class Product extends BaseTimeEntity {
     // 상품 id, 유저 id(외래키), 카데고리 id(외래키), 상품 제목, 상품 상태 여부, 상품 설명, 판매 가격, 생성 일자, 수정 일자
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,26 +36,7 @@ public class Product {
     @Column(nullable = false)
     private int sellPrice;
 
-    @CreatedDate // 1
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate // 1
-    private LocalDateTime lastModifiedDate;
-
-    @Builder
-    public Product(Long id, User user, ProductCategory productCategories, String title, ProductStatus status, String description, int sellPrice, LocalDateTime createdDate) {
-        this.id = id;
-        this.user = user;
-        this.productCategories = productCategories;
-        this.title = title;
-        this.status = status;
-        this.description = description;
-        this.sellPrice = sellPrice;
-        this.createdDate = createdDate;
-    }
-
-
-    public Product() {
+    protected Product(){
     }
 
     public Long getId() {
@@ -88,11 +67,4 @@ public class Product {
         return sellPrice;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
 }
