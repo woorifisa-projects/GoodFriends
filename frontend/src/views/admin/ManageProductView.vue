@@ -74,7 +74,7 @@ const onClickAddProduct = () => {
 };
 
 const onClickProductCard = (id: number) => {
-  router.push(`${id}`);
+  //   router.push(`/admin/product/manage/${id}`);
 };
 </script>
 
