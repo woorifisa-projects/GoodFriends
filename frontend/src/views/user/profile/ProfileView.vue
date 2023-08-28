@@ -33,7 +33,8 @@
           </div>
           <div class="item">
             <label>{{ PROFILE.ADDRESS }}</label>
-            <input type="text" v-model="userInputInfo.address" :disabled="isDisabled" />
+            <input type="text" v-model="userInputInfo.address" disabled />
+            <AddressAPI v-show="!isDisabled" @click="searchAddress" :text="PROFILE.GET_ADDRESS" />
           </div>
         </div>
       </div>
@@ -47,6 +48,7 @@ import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { ref } from 'vue';
 import { checkPhoneNumber } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
+import AddressAPI from '@/components/AddressAPI.vue';
 
 const user = ref({
   email: '00@000.com',
@@ -61,7 +63,10 @@ const userInputInfo = ref({
   address: user.value.address
 });
 const isDisabled = ref(true);
-
+const searchAddress = (data: string) => {
+  console.log(data);
+  userInputInfo.value.address = data;
+};
 const onClickEdit = () => {
   if (isDisabled.value) {
     isDisabled.value = false;
