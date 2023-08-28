@@ -9,7 +9,7 @@ export const PRODUCT = {
   UPLOAD: '업로드',
   CATEGORY: '카테고리',
   PLEASE_SELECT: '선택해주세요',
-  CREATE_AT: '등록 날짜',
+  CREATE_AT: '등록일',
   REPORT: '신고하기',
   ORDER: '주문하기',
   VIEW_ORDER: '주문서 보기',

@@ -41,14 +41,10 @@
               </li>
             </ul>
           </div>
-
-          </div>
-          
-
         </div>
       </div>
-      <RouterView id="main" />
     </div>
+    <RouterView id="main" />
   </div>
 </template>
 
@@ -151,8 +147,7 @@ const onClickManegeDeclaration = () => {
 
 .admin-menu-ul {
   padding-top: 50px;
-  padding-left: 5px; 
- 
+  padding-left: 5px;
 }
 ul {
   display: flex;

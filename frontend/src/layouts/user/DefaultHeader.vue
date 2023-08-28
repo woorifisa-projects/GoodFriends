@@ -1,7 +1,8 @@
 <template>
   <div class="header">
     <div class="title" @click="goPage(LOGO.path)">
-      <img :src="LOGO.image" alt="" />
+      GoodFriend
+      <!-- <img :src="LOGO.image" alt="" /> -->
     </div>
     <div class="wrap">
       <div>
@@ -110,18 +111,29 @@ watchEffect(() => {
   align-items: center;
   justify-content: space-between;
 
-  background: white;
+  background: var(--header-bg);
   box-shadow: 2px 2px 10px rgba(202, 202, 202, 0.389);
-
-  font-family: 'IBM Plex Sans KR', sans-serif;
 
   z-index: 99;
 }
+.header::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 0;
+  width: 100%;
+  height: 110%;
 
+  background-color: var(--header-back-bg);
+  z-index: -1;
+  filter: blur(20px);
+}
 .title {
   cursor: pointer;
   width: 200px;
   overflow: hidden;
+  font-size: 32px;
+  font-family: 'LINESeedKR-Bd';
 }
 .title img {
   width: 100%;
@@ -135,7 +147,9 @@ watchEffect(() => {
 }
 
 .wrap button {
+  background-color: transparent;
   font-size: 16px;
+  font-family: 'LINESeedKR-Bd';
 }
 
 #login {
@@ -147,7 +161,8 @@ watchEffect(() => {
   top: 100px;
   right: 250px;
 
-  background: wheat;
+  background: var(--popover-bg);
+  box-shadow: 1px 1px 10px rgba(183, 183, 183, 0.779);
   border-radius: 20px;
 
   padding: 20px;
@@ -161,10 +176,11 @@ watchEffect(() => {
 }
 
 .popover::after {
-  border-bottom: 10px solid wheat;
+  border-bottom: 10px solid var(--popover-bg);
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 0px solid transparent;
+
   content: '';
   position: absolute;
   bottom: 300px;
@@ -195,7 +211,8 @@ watchEffect(() => {
   border-radius: 10px;
   font-size: 18px;
   text-align: center;
-  background: lightblue;
+  background: var(--popover-btn-bg);
+  color: var(--popover-btn-text);
   cursor: pointer;
 }
 

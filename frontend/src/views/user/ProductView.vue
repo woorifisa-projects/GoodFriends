@@ -183,6 +183,7 @@ const onClickOrder = () => {
   font-weight: 700;
   text-align: center;
   margin-bottom: 24px;
+  font-family: 'LINESeedKR-Bd';
 }
 .price {
   text-align: end;
