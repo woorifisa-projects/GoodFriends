@@ -1,6 +1,5 @@
 package woorifisa.goodfriends.backend.product.domain;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,8 +9,9 @@ import java.util.List;
 
 public interface ProductImageRepository extends JpaRepository<ProductImage, Long> {
 
-    @Query("select pi.imageUrl from ProductImage pi where pi.product.id = :productId")
-    List<String> findOneImageUrlByProductId(@Param("productId") Long productId, Pageable pageable);
+    @Query(value = "select pi.image_url from profile_images pi where pi.product_id = :productId limit 1", nativeQuery = true)
+    String findOneImageUrlByProductId(@Param("productId") Long productId);
+
     @Query("select pi.imageUrl from ProductImage pi where pi.product.id = :productId")
     List<String> findAllImageUrlByProductId(@Param("productId") Long productId);
 

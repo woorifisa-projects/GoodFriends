@@ -85,12 +85,7 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
         return products.stream()
                 .map(product -> {
-                    List<String> images = productImageRepository.findOneImageUrlByProductId(product.getId(), PageRequest.of(0,1));
-                    String image = "";
-
-                    if(!images.isEmpty()){
-                        image = images.get(0);
-                    }
+                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
 
                     return new ProductViewAllResponse(
                             product.getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
