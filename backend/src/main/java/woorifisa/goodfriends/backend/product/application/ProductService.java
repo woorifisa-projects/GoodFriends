@@ -66,7 +66,7 @@ public class ProductService {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
-        productImageRepository.save(new ProductImage(productRepository.findById(productId).orElseThrow(), savedImageUrl));
+        productImageRepository.save(new ProductImage(productRepository.getById(productId), savedImageUrl));
 
         return savedImageUrl;
     }
@@ -94,21 +94,21 @@ public class ProductService {
     }
 
     public ProductViewOneResponse viewOneProduct(Long id) {
-        Product product = productRepository.findById(id).orElseThrow();
+        Product product = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         return new ProductViewOneResponse(product.getId(), product.getUser().getId(), product.getProductCategories().getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
-        Product selectedProduct = productRepository.findById(id).orElseThrow();
+        Product selectedProduct = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(id);
         return new ProductUpdateResponse(selectedProduct, images);
     }
 
     @Transactional
     public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) throws IOException {
-        Product selectedProduct = productRepository.findById(id).orElseThrow();
+        Product selectedProduct = productRepository.getById(id);
 
         deleteImageByProductId(id);
         productImageRepository.deleteByProductId(id);
