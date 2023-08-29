@@ -12,10 +12,12 @@ import woorifisa.goodfriends.backend.global.config.utils.JwtTokenProvider;
 import woorifisa.goodfriends.backend.product.domain.*;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -96,4 +98,17 @@ public class AdminService {
         }
         return savedImages;
     }
+
+    public List<ProductViewAllResponse> viewAllProduct() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(product -> {
+                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
+
+                    return new ProductViewAllResponse(
+                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
+                })
+                .collect(Collectors.toList());
+    }
+
 }

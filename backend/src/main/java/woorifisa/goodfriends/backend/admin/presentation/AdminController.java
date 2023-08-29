@@ -8,13 +8,14 @@ import woorifisa.goodfriends.backend.admin.application.AdminService;
 import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("api/admin/")
 public class AdminController {
 
     private final AdminService adminService;
@@ -30,7 +31,7 @@ public class AdminController {
         return ResponseEntity.ok().body(token);
     }
 
-    @PostMapping("/product")
+    @PostMapping("/product/new")
     public ResponseEntity<ProductSaveResponse> saveProduct(Authentication authentication,
                                                            @RequestPart ProductSaveRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
@@ -39,4 +40,11 @@ public class AdminController {
         ProductSaveResponse response = adminService.saveProduct(adminId, productSaveRequest);
         return ResponseEntity.created(URI.create("/products/" + response.getId())).body(response);
     }
+
+    @GetMapping("/product/view")
+    public ResponseEntity<List<ProductViewAllResponse>> viewAllProduct() {
+        List<ProductViewAllResponse> responses = adminService.viewAllProduct();
+        return ResponseEntity.ok().body(responses);
+    }
+
 }
