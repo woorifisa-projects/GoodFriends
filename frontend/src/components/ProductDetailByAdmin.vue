@@ -110,6 +110,7 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
 import { uploadFile } from '@/utils/file';
+import router from '@/router';
 
 const previewImg = ref<Array<string>>([]);
 const inputImage = ref<Array<File>>([]);
@@ -180,6 +181,7 @@ const clickAdd = () => {
 };
 const clickCancle = () => {
   // TODO: 이전 페이지 이동
+  router.push('/admin/product/manage');
 };
 </script>
 
