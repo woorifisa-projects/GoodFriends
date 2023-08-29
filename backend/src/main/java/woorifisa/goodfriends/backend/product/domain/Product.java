@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.product.domain;
 
 import lombok.experimental.SuperBuilder;
+import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
 
@@ -18,6 +19,10 @@ public class Product extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // 외래 키로 사용할 컬럼 지정
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
 
     @Enumerated
     private ProductCategory productCategory;
@@ -42,6 +47,10 @@ public class Product extends BaseTimeEntity {
 
     public User getUser() {
         return user;
+    }
+
+    public Admin getAdmin() {
+        return admin;
     }
 
     public ProductCategory getProductCategory() {
