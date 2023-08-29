@@ -16,18 +16,23 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String adminId;
+    private String root;
 
     private String password;
 
     protected Admin() {
     }
 
-    public String getAdminId() {
-        return adminId;
+    public Long getId() {
+        return id;
+    }
+
+    public String getRoot() {
+        return root;
     }
 
     public String getPassword() {
         return password;
     }
+
 }

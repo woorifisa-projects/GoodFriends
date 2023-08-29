@@ -1,9 +1,7 @@
 package woorifisa.goodfriends.backend.product.dto.response;
 
-import lombok.Getter;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
-import woorifisa.goodfriends.backend.user.domain.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +11,8 @@ public class ProductViewOneResponse {
     private Long id;
 
     private Long userId;
+
+    private Long adminId;
 
     private ProductCategory productCategory;
 
@@ -31,9 +31,10 @@ public class ProductViewOneResponse {
     public ProductViewOneResponse() {
     }
 
-    public ProductViewOneResponse(Long id, Long userId, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls) {
+    public ProductViewOneResponse(Long id, Long userId, Long adminId, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls) {
         this.id = id;
         this.userId = userId;
+        this.adminId = adminId;
         this.productCategory = productCategory;
         this.title = title;
         this.status = status;
@@ -53,6 +54,10 @@ public class ProductViewOneResponse {
 
     public ProductCategory getProductCategory() {
         return productCategory;
+    }
+
+    public Long getAdminId() {
+        return adminId;
     }
 
     public String getTitle() {

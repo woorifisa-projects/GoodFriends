@@ -1,6 +1,5 @@
 package woorifisa.goodfriends.backend.product.application;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -97,7 +95,11 @@ public class ProductService {
         Product product = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
-        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
+        if(product.getUser() == null){
+            return new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
+        }
+
+        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
