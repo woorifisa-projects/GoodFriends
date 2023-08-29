@@ -19,10 +19,10 @@
           <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">000님</button>
           <div v-if="isPopoverOpen" class="popover" ref="popover">
             <div class="img">
-              <img src="@/assets/tmp/images/image.png" alt="예시 이미지" />
+              <img :src="profileImg" alt="예시 이미지" />
             </div>
             <div class="content">
-              <div>nickname</div>
+              <div>{{ userName }}</div>
               <div @click="onClickMyProfile">{{ POPOVER.MY_PAGE }}</div>
               <div @click="onClickLogoutBtn">{{ POPOVER.LOGOUT }}</div>
             </div>
@@ -36,6 +36,7 @@
 <script setup lang="ts">
 import { LOGO, POPOVER, SELL } from '@/constants/strings/header';
 import router from '@/router';
+import { useUserInfoStore } from '@/stores/userInfo';
 import { ref, watchEffect } from 'vue';
 
 // TODO: login 구현후 수정
@@ -43,6 +44,9 @@ const isLogin = ref(true);
 const isPopoverOpen = ref(false);
 const popover = ref<Element>();
 const popoverBtn = ref<Element>();
+
+const store = useUserInfoStore();
+const { userId, userName, profileImg } = store;
 
 const goPage = (path: string) => {
   router.push(path);
@@ -69,7 +73,8 @@ const onClickProfileBtn = (event: MouseEvent) => {
 
 const onClickMyProfile = () => {
   isPopoverOpen.value = false;
-  router.push('/profile');
+  // TODO: user id로 수정
+  router.push('/profile/' + userId);
 };
 
 const closePopover = (event: MouseEvent) => {
