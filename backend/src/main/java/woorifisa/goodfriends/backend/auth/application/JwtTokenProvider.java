@@ -32,7 +32,12 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public String createAccessToken(String payload) {
+    public String createAccessToken(final String payload) {
+        return createToken(payload, TimeUnit.MINUTES.toMillis(accessTokenValidityInMinutes));
+    }
+
+    @Override
+    public String createRefreshToken(final String payload) {
         return createToken(payload, TimeUnit.MINUTES.toMillis(accessTokenValidityInMinutes));
     }
 
