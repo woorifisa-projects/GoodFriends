@@ -5,6 +5,11 @@ export interface Item {
   path: string;
 }
 
+declare global {
+  interface Window {
+    daum: any;
+  }
+}
 export interface AddressDaum {
   userSelectedType: string;
   roadAddress: string;
