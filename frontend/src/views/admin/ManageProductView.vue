@@ -75,7 +75,7 @@ const onClickAddProduct = () => {
 
 const onClickProductCard = (id: number) => {
   //router.push(`/admin/product/manage/${id}`); //임시코드(사용자-상품수정페이지)
-  router.push('/admin/product/edit/:id');
+  router.push(`/admin/product/edit/${id}`);
 };
 </script>
 
