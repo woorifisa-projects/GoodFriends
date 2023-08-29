@@ -36,7 +36,6 @@
         <img :src="user.image" alt="" />
       </div>
       <div>{{ user.name }}</div>
-      <div>{{ user.gender }}</div>
     </div>
     <div class="product-detail">{{ product.description }}</div>
     <OrderModal v-model:is-visible="isVisible" :product-id="0" />
@@ -70,8 +69,7 @@ const viewImage = ref(0);
 // TODO: API 연결
 const user = ref({
   image: image,
-  name: 'name',
-  gender: 'gender'
+  name: 'name'
 });
 const isVisible = ref(false);
 
@@ -167,6 +165,10 @@ const onClickOrder = () => {
   border-radius: 8px;
   border: 1px solid rgb(159, 159, 159);
   box-shadow: 1px 1px 10px rgba(150, 150, 150, 0.247);
+  transition: all 0.3s ease;
+}
+.wrap-btn > button:hover {
+  transform: scale(1.05);
 }
 .detail-info {
   padding: 24px;

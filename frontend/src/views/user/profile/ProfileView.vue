@@ -13,12 +13,8 @@
           </div>
 
           <div class="item">
-            <label>{{ PROFILE.GENDER }}</label>
-            <select name="gender" id="gender" v-model="userInputInfo.gender" :disabled="isDisabled">
-              <option value="default">default</option>
-              <option value="man">man</option>
-              <option value="woman">woman</option>
-            </select>
+            <label>{{ PROFILE.NICKNAME }}</label>
+            <input type="text" v-model="userInputInfo.name" :disabled="isDisabled" />
           </div>
           <div class="item">
             <label>{{ PROFILE.PHONE_NUMBER }}</label>
@@ -52,13 +48,13 @@ import AddressAPI from '@/components/AddressAPI.vue';
 
 const user = ref({
   email: '00@000.com',
-  gender: 'woman',
+  name: 'han',
   phone: '010-1234-1234',
   address: '00시00구'
 });
 
 const userInputInfo = ref({
-  gender: user.value.gender,
+  name: user.value.name,
   phone: user.value.phone,
   address: user.value.address
 });
@@ -74,6 +70,11 @@ const onClickEdit = () => {
     if (!checkPhoneNumber(userInputInfo.value.phone)) {
       console.log(userInputInfo.value.phone);
       alert(ALERT.PHONE);
+      return;
+    }
+    if (!checkUserName(userInputInfo.value.name)) {
+      alert(ALERT.NAME);
+      // TODO: 중복일 경우 다른 메시지로 알려주기
       return;
     }
     // TODO: API
@@ -94,6 +95,11 @@ const onInputPhoneNumber = (event: Event) => {
 
   if (!number) return;
   target.value = phoneNumberFormat(number);
+};
+const checkUserName = (name: string) => {
+  // TODO: API 중복검사
+  if (name.length < 2) return false;
+  return true;
 };
 </script>
 

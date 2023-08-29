@@ -282,6 +282,7 @@ setInterval(() => {
   width: 100%;
   height: 100%;
   text-align: center;
+  background-color: #198bf3;
 }
 .banner-img > img {
   height: 100%;
@@ -333,12 +334,15 @@ setInterval(() => {
 
   border: 1px solid rgba(66, 66, 66, 0.605);
   border-radius: 12px;
+
+  font-family: 'LINESeedKR-Bd';
+  font-size: 16px;
 }
 
 .category > ul > li > .selected {
   background-color: var(--category-item-point-bg);
   color: var(--category-item-point-text);
-  box-shadow: inset 1px 1px 10px rgba(133, 133, 133, 0.827);
+  /* box-shadow: 1px 1px 10px rgba(176, 176, 176, 0.827); */
 }
 .small-category {
   display: none;
