@@ -42,7 +42,7 @@ public class JwtTokenProvider implements TokenProvider {
 
     @Override
     public String createRefreshToken(final String payload) {
-        return createToken(payload, TimeUnit.MINUTES.toMillis(refreshTokenValidityInMilliseconds));
+        return createToken(payload, TimeUnit.MINUTES.toMillis(accessTokenValidityInMinutes));
     }
 
     public String createToken(final String payload, final Long validityInMilliseconds) {
