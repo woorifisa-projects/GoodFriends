@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in props.data" :key="item.id" @click="onClickTr(item)">
+      <tr class="tr-data" v-for="item in props.data" :key="item.id" @click="onClickTr(item)">
         <td v-for="key in props.dataKey" :key="`${item.id}-${key}`">
           <span>{{ item[key] }} </span>
         </td>
@@ -65,7 +65,6 @@ th {
 
 thead {
   font-weight: bold;
-  /* color: #fff; */
   color: black;
   font-size: 16px;
   font-weight: bold;
@@ -85,6 +84,9 @@ td {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: #fff;
   text-align: center;
+}
+.tr-data:hover {
+  transform: scale(1.02);
 }
 
 a {
