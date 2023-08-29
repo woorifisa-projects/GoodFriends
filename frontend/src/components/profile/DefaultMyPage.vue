@@ -13,14 +13,8 @@
             </label>
           </div>
         </div>
-        <div class="name">
-          <input type="text" v-model="modifiedName" :disabled="isEditButtonDisabled" />
-          <button @click="onClickEditName">
-            <span class="material-icons-outlined"> edit </span>
-          </button>
-        </div>
       </div>
-      <div class="main">
+      <div class="main first-main">
         <!-- 추후 추가 내용 -->
       </div>
     </div>
@@ -30,8 +24,10 @@
           <div class="list-item">
             <span>{{ PROFILE_SIDEBAR.MY_INFO }}</span>
             <ul>
-              <li :class="route.path === '/profile' ? 'item cur' : 'item'">
-                <router-link to="/profile"> {{ PROFILE_SIDEBAR.PROFILE }} </router-link>
+              <li :class="route.path === '/profile/' + user.id ? 'item cur' : 'item'">
+                <router-link :to="`/profile/` + user.id">
+                  {{ PROFILE_SIDEBAR.PROFILE }}
+                </router-link>
               </li>
             </ul>
           </div>
@@ -64,28 +60,26 @@ import image from '@/assets/tmp/images/image.png';
 import { uploadFile } from '@/utils/file';
 const route = useRoute();
 
-const isEditButtonDisabled = ref(true);
-
 const user = ref({
   image,
-  name: 'name'
+  name: 'name',
+  id: route.params.id
 });
 
-const modifiedName = ref(user.value.name);
-const navList = [
+const navList = ref([
   {
     name: '구매목록',
-    path: '/profile/purchase'
+    path: `/profile/${user.value.id}/purchase`
   },
   {
     name: '판매목록',
-    path: '/profile/sell'
+    path: `/profile/${user.value.id}/sell`
   },
   {
     name: '거래후기',
     path: '/'
   }
-];
+]);
 
 const onClickProfileImageUpload = async (event: Event) => {
   // TODO: 이미지 유효성 검사 및 저장
@@ -97,19 +91,6 @@ const onClickProfileImageUpload = async (event: Event) => {
   await uploadFile('ima', fileList, previewImg, 0, uploadImageFile);
 
   user.value.image = previewImg[0];
-};
-
-const onClickEditName = () => {
-  if (isEditButtonDisabled.value) {
-    isEditButtonDisabled.value = false;
-  } else {
-    // TODO: 유효성 검사
-    if (!modifiedName.value.length) {
-      alert('닉네임은 최소 한 글자 이상 작성하셔야 합니다!');
-    }
-    user.value.name = modifiedName.value;
-    isEditButtonDisabled.value = true;
-  }
 };
 </script>
 
@@ -146,17 +127,7 @@ const onClickEditName = () => {
   position: relative;
   justify-content: center;
 }
-.name > input {
-  border: none;
-  border-radius: 12px;
-  background-color: white;
-  text-align: center;
-  font-size: 18px;
-  animation: blink 1s ease infinite alternate;
-}
-.name > input:focus {
-  border: none;
-}
+
 .list-item > span {
   font-family: 'LINESeedKR-Bd';
 }
@@ -166,23 +137,7 @@ const onClickEditName = () => {
 .list-item li:hover {
   transform: scale(1.03);
 }
-@keyframes blink {
-  0% {
-    border: 1px solid black;
-  }
-  100% {
-    border: 1px solid transparent;
-  }
-}
-.name > input:disabled {
-  animation: none;
-}
-.name > button {
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-  background-color: transparent;
-}
+
 .main {
   width: 100%;
 }
@@ -275,6 +230,12 @@ a {
 
 .cur > a {
   color: var(--profile-list-point-text);
+}
+
+.first-main {
+  /* TODO: 이후 거래 횟수 등 데이터 추가할 시 제거 */
+  background: linear-gradient(to bottom, lightgreen, white);
+  border-radius: 16px;
 }
 
 @media screen and (max-width: 1023px) {

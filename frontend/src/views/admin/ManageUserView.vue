@@ -116,8 +116,6 @@ const testData = [
   justify-content: center;
   align-items: center;
 }
-.page-title-in {
-}
 .table {
   width: 100%;
   display: flex;

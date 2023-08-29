@@ -1,7 +1,8 @@
 <template>
   <div class="header">
     <div class="title" @click="goPage(LOGO.path)">
-      GoodFriend
+      <span class="material-icons-outlined"> sentiment_satisfied </span>
+      GoodFriends
       <!-- <img :src="LOGO.image" alt="" /> -->
     </div>
     <div class="wrap">
@@ -18,10 +19,10 @@
           <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">000님</button>
           <div v-if="isPopoverOpen" class="popover" ref="popover">
             <div class="img">
-              <img src="@/assets/tmp/images/image.png" alt="예시 이미지" />
+              <img :src="profileImg" alt="예시 이미지" />
             </div>
             <div class="content">
-              <div>nickname</div>
+              <div>{{ userName }}</div>
               <div @click="onClickMyProfile">{{ POPOVER.MY_PAGE }}</div>
               <div @click="onClickLogoutBtn">{{ POPOVER.LOGOUT }}</div>
             </div>
@@ -35,6 +36,7 @@
 <script setup lang="ts">
 import { LOGO, POPOVER, SELL } from '@/constants/strings/header';
 import router from '@/router';
+import { useUserInfoStore } from '@/stores/userInfo';
 import { ref, watchEffect } from 'vue';
 
 // TODO: login 구현후 수정
@@ -42,6 +44,9 @@ const isLogin = ref(true);
 const isPopoverOpen = ref(false);
 const popover = ref<Element>();
 const popoverBtn = ref<Element>();
+
+const store = useUserInfoStore();
+const { userId, userName, profileImg } = store;
 
 const goPage = (path: string) => {
   router.push(path);
@@ -68,7 +73,8 @@ const onClickProfileBtn = (event: MouseEvent) => {
 
 const onClickMyProfile = () => {
   isPopoverOpen.value = false;
-  router.push('/profile');
+  // TODO: user id로 수정
+  router.push('/profile/' + userId);
 };
 
 const closePopover = (event: MouseEvent) => {
@@ -113,27 +119,25 @@ watchEffect(() => {
 
   background: var(--header-bg);
   box-shadow: 2px 2px 10px rgba(202, 202, 202, 0.389);
-
+  backdrop-filter: blur(10px);
   z-index: 99;
+  user-select: none;
 }
-.header::before {
-  content: '';
-  position: absolute;
-  top: -40px;
-  left: 0;
-  width: 100%;
-  height: 110%;
 
-  background-color: var(--header-back-bg);
-  z-index: -1;
-  filter: blur(20px);
-}
 .title {
   cursor: pointer;
   width: 200px;
   overflow: hidden;
   font-size: 32px;
   font-family: 'LINESeedKR-Bd';
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.title > span {
+  transform: scale(1.8);
 }
 .title img {
   width: 100%;

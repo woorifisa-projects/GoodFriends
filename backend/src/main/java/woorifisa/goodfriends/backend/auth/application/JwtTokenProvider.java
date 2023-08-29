@@ -25,15 +25,24 @@ public class JwtTokenProvider implements TokenProvider {
     private final SecretKey key;
     private final long accessTokenValidityInMinutes; // 변경: 분 단위로 유효 기간 설정
 
+    private final long refreshTokenValidityInMilliseconds;
+
     public JwtTokenProvider(@Value("${security.jwt.token.secret-key}") final String secretKey,
-                            @Value("${security.jwt.token.access.expire-length}") final long accessTokenValidityInMinutes) {
+                            @Value("${security.jwt.token.access.expire-length}") final long accessTokenValidityInMinutes,
+                            @Value("${security.jwt.token.refresh.expire-length}") final long refreshTokenValidityInMilliseconds) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.accessTokenValidityInMinutes = accessTokenValidityInMinutes;
+        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
     }
 
     @Override
-    public String createAccessToken(String payload) {
+    public String createAccessToken(final String payload) {
         return createToken(payload, TimeUnit.MINUTES.toMillis(accessTokenValidityInMinutes));
+    }
+
+    @Override
+    public String createRefreshToken(final String payload) {
+        return createToken(payload, TimeUnit.MINUTES.toMillis(refreshTokenValidityInMilliseconds));
     }
 
     public String createToken(final String payload, final Long validityInMilliseconds) {

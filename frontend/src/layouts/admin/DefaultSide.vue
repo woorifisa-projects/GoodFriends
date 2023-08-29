@@ -74,10 +74,12 @@ const onClickManegeUser = () => {
   router.push('/admin/manage/user');
 };
 
-const onClickManegeProduct = () => {};
+const onClickManegeProduct = () => {
+  router.push('/admin/product/manage');
+};
 
 const onClickManegeDeclaration = () => {
-  router.push('admin/declaration');
+  router.push('/admin/declaration');
 };
 </script>
 
@@ -88,6 +90,7 @@ const onClickManegeDeclaration = () => {
   display: flex;
   flex-direction: column;
   padding: 5px;
+  overflow: hidden;
 }
 .header {
   width: 100%;
@@ -155,6 +158,7 @@ ul {
   gap: 20px;
 }
 .side-button {
+  padding-left: 15px;
   height: 30px;
   font-size: 18px;
   font-weight: bold;
