@@ -22,3 +22,13 @@ export interface filter {
   name: string;
   value: string;
 }
+
+export interface editProductAdmin{
+  inputProductTitle: string;
+  inputProductPrice: number;
+  inputProductDate: string;
+  inputProductDes: string;
+  selectedCategory: string;
+  previewImg: string;
+  inputImage: string;
+}

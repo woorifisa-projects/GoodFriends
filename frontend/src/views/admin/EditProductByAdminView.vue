@@ -4,7 +4,7 @@
       <div class="edit-product-grid">
         <div class="page-title-total">
           <!-- TODO:  상품 수정시 제목 변수 할당 필요-->
-          <div class="page-title">OOO 상품 수정</div>
+          <div class="page-title">{{ productTitle }} : 상품 수정</div>
         </div>
         <div class="product-Info-UP">
           <div class="detail-layout">
@@ -19,6 +19,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Detail from '@/components/ProductDetailByAdmin.vue';
+
+//TODO: 상픔정보 받아오기 api
+const productTitle = ref('상품명');
 </script>
 
 <style scoped>
