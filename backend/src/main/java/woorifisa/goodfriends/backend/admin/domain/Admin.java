@@ -23,6 +23,10 @@ public class Admin {
     protected Admin() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getRoot() {
         return root;
     }
@@ -30,4 +34,5 @@ public class Admin {
     public String getPassword() {
         return password;
     }
+
 }

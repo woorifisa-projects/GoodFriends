@@ -28,8 +28,9 @@ public class AuthenticationConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/admin/login").permitAll() // 로그인은 언제나 가능
-                .antMatchers(HttpMethod.POST, "/admin/**").authenticated()
+                .antMatchers("api/admin/login").permitAll() // 로그인은 언제나 가능
+                .antMatchers(HttpMethod.POST, "api/admin/**").authenticated()
+                .antMatchers(HttpMethod.GET, "api/admin/**").authenticated()
                 .and()
                 .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
                 .build();

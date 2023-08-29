@@ -13,6 +13,7 @@ import woorifisa.goodfriends.backend.product.domain.*;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -109,6 +110,17 @@ public class AdminService {
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
                 })
                 .collect(Collectors.toList());
+    }
+
+    public ProductViewOneResponse viewOneProduct(Long id) {
+        Product product = productRepository.getById(id);
+        List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
+
+        if(product.getUser() == null){
+            return new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
+        }
+
+        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
     }
 
 }

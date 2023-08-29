@@ -9,6 +9,7 @@ import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 
 import java.io.IOException;
 import java.net.URI;
@@ -31,7 +32,7 @@ public class AdminController {
         return ResponseEntity.ok().body(token);
     }
 
-    @PostMapping("/product/new")
+    @PostMapping("/products/new")
     public ResponseEntity<ProductSaveResponse> saveProduct(Authentication authentication,
                                                            @RequestPart ProductSaveRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
@@ -41,10 +42,16 @@ public class AdminController {
         return ResponseEntity.created(URI.create("/products/" + response.getId())).body(response);
     }
 
-    @GetMapping("/product/view")
+    @GetMapping("/products/view")
     public ResponseEntity<List<ProductViewAllResponse>> viewAllProduct() {
         List<ProductViewAllResponse> responses = adminService.viewAllProduct();
         return ResponseEntity.ok().body(responses);
+    }
+
+    @GetMapping("/products/view/{productId}")
+    public ResponseEntity<ProductViewOneResponse> viewOneProduct(@PathVariable Long productId) {
+        ProductViewOneResponse response = adminService.viewOneProduct(productId);
+        return ResponseEntity.ok().body(response);
     }
 
 }

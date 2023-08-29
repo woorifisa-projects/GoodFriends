@@ -49,6 +49,10 @@ public class Product extends BaseTimeEntity {
         return user;
     }
 
+    public Admin getAdmin() {
+        return admin;
+    }
+
     public ProductCategory getProductCategory() {
         return productCategory;
     }
