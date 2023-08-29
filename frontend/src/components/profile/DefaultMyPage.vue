@@ -24,8 +24,10 @@
           <div class="list-item">
             <span>{{ PROFILE_SIDEBAR.MY_INFO }}</span>
             <ul>
-              <li :class="route.path === '/profile' ? 'item cur' : 'item'">
-                <router-link to="/profile"> {{ PROFILE_SIDEBAR.PROFILE }} </router-link>
+              <li :class="route.path === '/profile/' + user.id ? 'item cur' : 'item'">
+                <router-link :to="`/profile/` + user.id">
+                  {{ PROFILE_SIDEBAR.PROFILE }}
+                </router-link>
               </li>
             </ul>
           </div>
@@ -60,23 +62,24 @@ const route = useRoute();
 
 const user = ref({
   image,
-  name: 'name'
+  name: 'name',
+  id: route.params.id
 });
 
-const navList = [
+const navList = ref([
   {
     name: '구매목록',
-    path: '/profile/purchase'
+    path: `/profile/${user.value.id}/purchase`
   },
   {
     name: '판매목록',
-    path: '/profile/sell'
+    path: `/profile/${user.value.id}/sell`
   },
   {
     name: '거래후기',
     path: '/'
   }
-];
+]);
 
 const onClickProfileImageUpload = async (event: Event) => {
   // TODO: 이미지 유효성 검사 및 저장

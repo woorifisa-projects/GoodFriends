@@ -33,9 +33,9 @@ const router = createRouter({
       component: DefaultLayout,
       children: [
         { path: '/', name: 'home', component: HomeView },
-        { path: 'profile', name: 'profile', component: ProfileView },
-        { path: 'profile/purchase', name: 'purchase', component: PurchaseView },
-        { path: 'profile/sell', name: 'sell', component: SellView },
+        { path: 'profile/:id', name: 'profile', component: ProfileView },
+        { path: 'profile/:id/purchase', name: 'purchase', component: PurchaseView },
+        { path: 'profile/:id/sell', name: 'sell', component: SellView },
         { path: 'product/:id', name: 'product', component: ProductView },
         { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
@@ -61,7 +61,6 @@ const router = createRouter({
       name: 'In admin page',
       component: DefaultSide,
       children: [
-
         { path: 'log', name: 'admin log', component: ManageLog },
         { path: 'manage/user', name: 'admin manage user', component: ManageUser },
         { path: 'manage/user/:id', name: 'admin manage user detail', component: EditUserInfoView },
