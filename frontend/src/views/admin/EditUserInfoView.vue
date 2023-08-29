@@ -51,6 +51,7 @@
         <div class="work-buttons-1">
           <button class="work-btn" @click="clickSuspend">{{ ADMIN.SUSPEND }}</button>
           <button class="work-btn" @click="clickEdit">{{ ADMIN.EDIT }}</button>
+          <button class="work-btn" @click="clickDelete">{{ ADMIN.DELETE }}</button>
         </div>
       </div>
     </div>
@@ -77,10 +78,10 @@ const sex = ref();
 const phone = ref();
 const address = ref();
 
-//TODO: 활동정지/수정완료 기능
+//TODO: 활동정지/수정완료/계정삭제 기능
 const clickSuspend = () => {};
-
 const clickEdit = () => {};
+const clickDelete = () => {};
 </script>
 <style scoped>
 .editUserInfo-Page {
@@ -174,12 +175,12 @@ const clickEdit = () => {};
   justify-content: flex-end;
 }
 .work-buttons-1 {
-  width: 200px;
+  width: 275px;
   height: 100px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .work-btn {

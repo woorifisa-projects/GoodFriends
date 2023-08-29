@@ -8,7 +8,7 @@ export const ADMIN_SIDEBAR = {
 };
 
 export const ADMIN = {
-  EDIT_USER_TITLE: '정보 수정',
+  EDIT_USER_TITLE: '정보 관리',
   BAN: '신고당한 횟수',
   MARK: '인증 뱃지',
   AVERRAGE: '평점',
@@ -18,7 +18,8 @@ export const ADMIN = {
   PHONE: '연락처',
   ADDRESS: '주소',
   SUSPEND: '활동 정지',
-  EDIT: '수정 완료'
+  EDIT: '수정 완료',
+  DELETE: '계정 삭제'
 };
 
 export const ADMIN_PRODUCT = {
