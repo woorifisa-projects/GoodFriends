@@ -167,6 +167,10 @@ const onClickOrder = () => {
   border-radius: 8px;
   border: 1px solid rgb(159, 159, 159);
   box-shadow: 1px 1px 10px rgba(150, 150, 150, 0.247);
+  transition: all 0.3s ease;
+}
+.wrap-btn > button:hover {
+  transform: scale(1.05);
 }
 .detail-info {
   padding: 24px;
