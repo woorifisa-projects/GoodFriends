@@ -1,7 +1,8 @@
 <template>
   <div class="header">
     <div class="title" @click="goPage(LOGO.path)">
-      GoodFriend
+      <span class="material-icons-outlined"> sentiment_satisfied </span>
+      GoodFriends
       <!-- <img :src="LOGO.image" alt="" /> -->
     </div>
     <div class="wrap">
@@ -113,27 +114,25 @@ watchEffect(() => {
 
   background: var(--header-bg);
   box-shadow: 2px 2px 10px rgba(202, 202, 202, 0.389);
-
+  backdrop-filter: blur(10px);
   z-index: 99;
+  user-select: none;
 }
-.header::before {
-  content: '';
-  position: absolute;
-  top: -40px;
-  left: 0;
-  width: 100%;
-  height: 110%;
 
-  background-color: var(--header-back-bg);
-  z-index: -1;
-  filter: blur(20px);
-}
 .title {
   cursor: pointer;
   width: 200px;
   overflow: hidden;
   font-size: 32px;
   font-family: 'LINESeedKR-Bd';
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+.title > span {
+  transform: scale(1.8);
 }
 .title img {
   width: 100%;
