@@ -21,8 +21,8 @@ body {
 }
 
 :root {
-  --header-bg: #f6fbf4a1;
-  --header-back-bg: #f6fbf4;
+  --header-bg: rgba(255, 255, 255, 0.668);
+  --header-back-bg: #ffffff48;
 
   --profile-main-color: #749f82;
 
@@ -46,7 +46,7 @@ body {
   --profile-btn-2-bg: var(--profile-main-color);
   --profile-btn-2-text: white;
 
-  --popover-bg: rgb(168, 232, 177);
+  --popover-bg: #ffd147;
   --popover-btn-bg: white;
   --popover-btn-text: black;
 
@@ -55,12 +55,12 @@ body {
   /* --category-item-bg: rgb(166, 209, 245); */
   /* --category-item-point-bg: rgb(102, 154, 226); */
   --category-item-bg: white;
-  --category-item-point-bg: #609966;
-  --category-item-point-text: white;
+  --category-item-point-bg: #fcc61f;
+  --category-item-point-text: black;
 
   /* --product-add-btn-bg: lightblue; */
-  --product-add-btn-bg: #609966;
-  --product-add-btn-text: white;
+  --product-add-btn-bg: #fcc61f;
+  --product-add-btn-text: black;
 
   --order-list-item-bg: rgb(253, 253, 253);
   --order-list-item-border: #609966c9;
@@ -70,8 +70,8 @@ body {
   --edit-product-btn-2-bg: white;
   --edit-product-remove-btn-bg: rgb(110, 110, 110); */
 
-  --edit-product-point-bg: #96ceb4;
-  --edit-product-btn-1-bg: #609966;
+  --edit-product-point-bg: #48a4f9;
+  --edit-product-btn-1-bg: #198bf3;
   --edit-product-btn-2-bg: white;
   --edit-product-remove-btn-bg: rgb(110, 110, 110);
 }
