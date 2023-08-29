@@ -11,11 +11,15 @@ import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.global.config.utils.JwtTokenProvider;
 import woorifisa.goodfriends.backend.product.domain.*;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,4 +127,40 @@ public class AdminService {
         return new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
     }
 
+    public ProductUpdateResponse showSelectedProduct(Long id) {
+        Product selectedProduct = productRepository.getById(id);
+        List<String> images = productImageRepository.findAllImageUrlByProductId(id);
+        return new ProductUpdateResponse(selectedProduct, images);
+    }
+
+    @Transactional
+    public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) throws IOException {
+        Product selectedProduct = productRepository.getById(id);
+
+        deleteImageByProductId(id);
+        productImageRepository.deleteByProductId(id);
+
+        List<String> savedImageUrls = saveImages(id, request.getImageUrls());
+
+        Product updatedProduct = productRepository.save(Product.builder()
+                .id(id)
+                .user(selectedProduct.getUser())
+                .admin(selectedProduct.getAdmin())
+                .title(request.getTitle())
+                .productCategory(request.getProductCategory())
+                .status(selectedProduct.getStatus())
+                .description(request.getDescription())
+                .sellPrice(request.getSellPrice())
+                .createdAt(selectedProduct.getCreatedAt())
+                .build());
+
+        return new ProductUpdateResponse(updatedProduct, savedImageUrls);
+    }
+
+    public void deleteImageByProductId(Long productId) throws MalformedURLException {
+        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
+        for(ProductImage productImage : productImages){
+            s3Service.deleteFile(productImage.getImageUrl());
+        }
+    }
 }

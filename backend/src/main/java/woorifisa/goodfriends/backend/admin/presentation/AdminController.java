@@ -7,7 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.application.AdminService;
 import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 
@@ -54,4 +56,18 @@ public class AdminController {
         return ResponseEntity.ok().body(response);
     }
 
+    @GetMapping("/products/edit/{productId}")
+    public ResponseEntity<ProductUpdateResponse> showSelectedProduct(@PathVariable Long productId){
+        ProductUpdateResponse response = adminService.showSelectedProduct(productId);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping("/products/edit/{productId}")
+    public ResponseEntity<ProductUpdateResponse> updateProduct(@PathVariable Long productId,
+                                                               @RequestPart ProductUpdateRequest request,
+                                                               @RequestPart List<MultipartFile> multipartFiles) throws IOException {
+        ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategory(), request.getDescription(), request.getSellPrice(), multipartFiles);
+        ProductUpdateResponse response = adminService.updateProduct(productUpdateRequest, productId);
+        return ResponseEntity.ok().body(response);
+    }
 }
