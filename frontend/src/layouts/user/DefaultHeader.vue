@@ -69,7 +69,8 @@ const onClickProfileBtn = (event: MouseEvent) => {
 
 const onClickMyProfile = () => {
   isPopoverOpen.value = false;
-  router.push('/profile');
+  // TODO: user id로 수정
+  router.push('/profile/1');
 };
 
 const closePopover = (event: MouseEvent) => {
