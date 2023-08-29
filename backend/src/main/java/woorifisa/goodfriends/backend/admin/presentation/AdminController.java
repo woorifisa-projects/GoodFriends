@@ -24,4 +24,5 @@ public class AdminController {
         String token = adminService.login(adminLoginRequest.getAdminId(), adminLoginRequest.getPassword());
         return ResponseEntity.ok().body(token);
     }
+
 }

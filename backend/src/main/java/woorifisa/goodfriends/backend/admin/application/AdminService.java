@@ -25,7 +25,7 @@ public class AdminService {
 
     public String login(String adminId, String password){
         // adminId가 틀린 경우
-        Admin selectedAdmin = adminRepository.findByAdminId(adminId)
+        Admin selectedAdmin = adminRepository.findByRoot(adminId)
                 .orElseThrow(() -> new InvalidAdminException(adminId + "와 일치하는 아이디가 없습니다."));
 
         // password가 틀린 경우
@@ -34,7 +34,7 @@ public class AdminService {
         }
 
         // 앞에서 Exception 안났으면 토큰 발행 구현해야함
-        String token = JwtTokenProvider.createToken(selectedAdmin.getAdminId(), secretKey, expireTimeMs);
+        String token = JwtTokenProvider.createToken(selectedAdmin.getRoot(), secretKey, expireTimeMs);
 
         return token;
     }
