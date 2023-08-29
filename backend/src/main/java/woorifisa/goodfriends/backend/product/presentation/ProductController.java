@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.product.presentation;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,12 +28,12 @@ public class ProductController {
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity<ProductSaveResponse> saveProduct(@PathVariable Long userId,
+    public ResponseEntity<Long> saveProduct(@PathVariable Long userId,
                                                            @RequestPart ProductSaveRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
         ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
         ProductSaveResponse response = productService.saveProduct(userId, productSaveRequest);
-        return ResponseEntity.created(URI.create("/products/" + response.getId())).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response.getId());
     }
 
     @GetMapping("/view")
@@ -54,17 +55,17 @@ public class ProductController {
     }
 
     @PutMapping("/edit/{productId}")
-    public ResponseEntity<ProductUpdateResponse> updateProduct(@PathVariable Long productId,
+    public ResponseEntity<Void> updateProduct(@PathVariable Long productId,
                                                                @RequestPart ProductUpdateRequest request,
                                                                @RequestPart List<MultipartFile> multipartFiles) throws IOException {
         ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategory(), request.getDescription(), request.getSellPrice(), multipartFiles);
         ProductUpdateResponse response = productService.updateProduct(productUpdateRequest, productId);
-        return ResponseEntity.ok().body(response);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) throws MalformedURLException {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) throws MalformedURLException {
         productService.deleteById(productId);
-        return ResponseEntity.ok().body(productId+": delete");
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

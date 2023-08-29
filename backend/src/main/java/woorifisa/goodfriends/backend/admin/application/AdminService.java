@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
+import woorifisa.goodfriends.backend.admin.dto.response.TokenResponse;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
@@ -48,7 +49,7 @@ public class AdminService {
         this.s3Service = s3Service;
     }
 
-    public String login(String root, String password){
+    public TokenResponse login(String root, String password){
         // adminId가 틀린 경우
         Admin selectedAdmin = adminRepository.findByRoot(root)
                 .orElseThrow(() -> new InvalidAdminException(root + "와 일치하는 아이디가 없습니다."));
@@ -61,7 +62,7 @@ public class AdminService {
         // 앞에서 Exception 안났으면 토큰 발행 구현해야함
         String token = JwtTokenProvider.createToken(selectedAdmin.getRoot(), secretKey, expireTimeMs);
 
-        return token;
+        return new TokenResponse(token);
     }
 
     public ProductSaveResponse saveProduct(String root, ProductSaveRequest request) throws IOException {
