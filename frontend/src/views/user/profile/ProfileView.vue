@@ -1,7 +1,7 @@
 <template>
   <DefaultMyPage>
     <div class="profile_main">
-      <div class="btn_wrap">
+      <div v-show="isOwner" class="btn_wrap">
         <button>{{ PROFILE.WITHDRAWAL }}</button>
         <button @click="onClickEdit">{{ PROFILE.EDIT }}</button>
       </div>
@@ -45,6 +45,14 @@ import { ref } from 'vue';
 import { checkPhoneNumber } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
 import AddressAPI from '@/components/AddressAPI.vue';
+import { useRoute } from 'vue-router';
+import { useUserInfoStore } from '@/stores/userInfo';
+
+const router = useRoute();
+const store = useUserInfoStore();
+
+const { id } = router.params;
+const isOwner = ref(store.userId === Number(id));
 
 const user = ref({
   email: '00@000.com',
