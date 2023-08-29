@@ -36,7 +36,6 @@
         <img :src="user.image" alt="" />
       </div>
       <div>{{ user.name }}</div>
-      <div>{{ user.gender }}</div>
     </div>
     <div class="product-detail">{{ product.description }}</div>
     <OrderModal v-model:is-visible="isVisible" :product-id="0" />
@@ -70,8 +69,7 @@ const viewImage = ref(0);
 // TODO: API 연결
 const user = ref({
   image: image,
-  name: 'name',
-  gender: 'gender'
+  name: 'name'
 });
 const isVisible = ref(false);
 
