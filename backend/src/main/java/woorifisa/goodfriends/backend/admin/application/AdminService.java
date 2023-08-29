@@ -163,4 +163,10 @@ public class AdminService {
             s3Service.deleteFile(productImage.getImageUrl());
         }
     }
+
+    public void deleteById(Long productId) throws MalformedURLException {
+        deleteImageByProductId(productId);
+        productRepository.deleteById(productId);
+    }
+
 }

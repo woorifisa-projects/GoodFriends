@@ -14,6 +14,7 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.List;
 
@@ -69,5 +70,11 @@ public class AdminController {
         ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategory(), request.getDescription(), request.getSellPrice(), multipartFiles);
         ProductUpdateResponse response = adminService.updateProduct(productUpdateRequest, productId);
         return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping("/products/delete/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) throws MalformedURLException {
+        adminService.deleteById(productId);
+        return ResponseEntity.ok().body(productId+": delete");
     }
 }
