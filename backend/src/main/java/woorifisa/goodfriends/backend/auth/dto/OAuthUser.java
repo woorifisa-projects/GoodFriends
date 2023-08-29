@@ -7,11 +7,13 @@ public class OAuthUser {
     private final String email;
     private final String nickname;
     private final String profileImageUrl;
+    private final String refreshToken;
 
-    public OAuthUser(String email, String nickname, String profileImageUrl) {
+    public OAuthUser(String email, String nickname, String profileImageUrl, String refreshToken) {
         this.email = email;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
+        this.refreshToken = refreshToken;
     }
 
     public String getEmail() {
@@ -26,6 +28,9 @@ public class OAuthUser {
         return profileImageUrl;
     }
 
+    public String getRefreshToken() {
+        return refreshToken;
+    }
     public User toUser() {
         return new User(email, nickname, profileImageUrl);
     }

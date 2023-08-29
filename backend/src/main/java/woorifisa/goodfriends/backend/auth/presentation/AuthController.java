@@ -36,12 +36,12 @@ public class AuthController {
         return ResponseEntity.ok(oAuthUriResponse);
     }
 
-    // 액세스 토큰은 Body로 발급
+    // 액세스 토큰은 Body로 발급, 리프레시 토큰은 Set-Cookie로 발급 받기
     @PostMapping("/{oauthProvider}/token")
-    public ResponseEntity <AccessTokenResponse> generateAccessToken(
+    public ResponseEntity <AccessTokenResponse> generateAccessAndRefreshToken(
             @PathVariable final String oauthProvider, @Valid @RequestBody final TokenRequest tokenRequest) {
         OAuthUser oAuthUser = oAuthClient.getOAuthUser(tokenRequest.getCode(), tokenRequest.getRedirectUri());
-        AccessTokenResponse response = authService.generateAccessToken(oAuthUser);
+        AccessTokenResponse response = authService.generateAccessAndRefreshToken(oAuthUser);
         return ResponseEntity.ok(response);
     }
 }

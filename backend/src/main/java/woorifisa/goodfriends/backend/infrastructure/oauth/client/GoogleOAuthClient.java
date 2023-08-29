@@ -49,7 +49,8 @@ public class GoogleOAuthClient implements OAuthClient {
         String payload = getPayload(googleTokenResponse.getIdToken()); // 2
         UserInfo userInfo = parseUserInfo(payload);
 
-        return new OAuthUser(userInfo.getEmail(), userInfo.getName(), userInfo.getPicture()); // OAuthMember 객체에 사용자의 이메일, 이름 및 프로필 사진 정보를 담아 반환합니다.
+        String refreshToken = googleTokenResponse.getRefreshToken();
+        return new OAuthUser(userInfo.getEmail(), userInfo.getName(), userInfo.getPicture(), refreshToken); // OAuthMember 객체에 사용자의 이메일, 이름 및 프로필 사진 정보를 담아 반환합니다.
     }
 
     // 1-1
