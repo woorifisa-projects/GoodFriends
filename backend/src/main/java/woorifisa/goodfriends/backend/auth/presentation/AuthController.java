@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import woorifisa.goodfriends.backend.auth.application.AuthService;
 import woorifisa.goodfriends.backend.auth.application.OAuthClient;
 import woorifisa.goodfriends.backend.auth.application.OAuthUri;
+import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.dto.OAuthUser;
 import woorifisa.goodfriends.backend.auth.dto.request.TokenRenewalRequest;
 import woorifisa.goodfriends.backend.auth.dto.request.TokenRequest;
@@ -53,5 +54,12 @@ public class AuthController {
         TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken);
         AccessTokenResponse response = authService.generateAccessToken(tokenRenewalRequest);
         return ResponseEntity.ok(response);
+    }
+
+    // 로그아웃: 로그아웃 시, 서버에서 accessToken과 refreshToken값을 만료시킨다.
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal LoginUser loginUser) {
+        authService.deleteToken(loginUser.getId());
+        return ResponseEntity.noContent().build();
     }
 }
