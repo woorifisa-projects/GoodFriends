@@ -49,6 +49,7 @@ public class AuthController {
     @PostMapping("/token/access")
     public ResponseEntity<AccessTokenResponse> generateAccessToken(
             @RequestHeader("refreshToken") String refreshToken) {
-        TokenRenewalRequest tokenRenewalRequest
+        TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken);
+        AccessTokenResponse response = authService.generateAccessToken(tokenRenewalRequest);
     }
 }
