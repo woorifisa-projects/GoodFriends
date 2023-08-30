@@ -9,11 +9,9 @@ export const getAllProduct = async () => {
     .then((res: AxiosResponse) => {
       const { data } = res;
 
-      console.log(data);
       return data;
     })
     .catch((err: AxiosError) => {
-      console.log(err);
       window.location.href = import.meta.env.BASE_URL + '404';
     });
 };

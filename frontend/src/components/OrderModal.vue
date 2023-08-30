@@ -97,7 +97,6 @@ const onChangeTime = (event: Event, index: number) => {
   const hours = time.slice(0, 2);
   const minute = time.slice(2, 4);
 
-  //   hours + ':' + minute
   wantedTime.value[index] = `0${hours}`.slice(-2) + ':' + `${minute}00`.slice(0, 2);
 };
 </script>
