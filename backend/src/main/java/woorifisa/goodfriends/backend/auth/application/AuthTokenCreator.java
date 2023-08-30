@@ -45,4 +45,19 @@ public class AuthTokenCreator implements TokenCreator {
         tokenProvider.validateToken(accessToken);
         return Long.valueOf(tokenProvider.getPayload(accessToken));
     }
+
+    public AuthToken renewAuthToken(final String refreshToken) {
+        tokenProvider.validateToken(refreshToken);
+        Long memberId = Long.valueOf(tokenProvider.getPayload(refreshToken));
+
+        String accessTokenForRenew = tokenProvider.createAccessToken(String.valueOf(memberId));
+        String refreshTokenForRenew = tokenRepository.getToken(memberId);
+
+        // 클라이언트로 리프레시 토큰 값을 전달하는 부분
+        authTokenResponseHandler.setRefreshTokenCookie(refreshTokenForRenew);
+
+        AuthToken renewalAuthAccessToken = new AuthToken(memberId, accessTokenForRenew);
+        renewalAuthAccessToken.validateHasSameRefreshToken(refreshTokenForRenew, refreshToken);
+        return renewalAuthAccessToken;
+    }
 }
