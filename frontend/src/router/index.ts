@@ -20,7 +20,9 @@ import AddProductByAdminView from '@/views/admin/AddProductByAdminView.vue';
 import ManageLog from '@/views/admin/ManageLogView.vue';
 import ManageUser from '@/views/admin/ManageUserView.vue';
 import ManageDeclaration from '@/views/admin/ManageDeclarationView.vue';
-import ManageProductByAdminView from '@/views/admin/ManageProductView.vue'
+import ManageProductByAdminView from '@/views/admin/ManageProductView.vue';
+import ReceiveCodeView from '@/views/user/ReceiveCodeView.vue';
+import ErrorView from '@/views/user/ErrorView.vue';
 const router = createRouter({
   scrollBehavior() {
     return { top: 0 };
@@ -40,6 +42,8 @@ const router = createRouter({
         { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
+        { path: 'err/:type', name: 'login err', component: ErrorView },
+        { path: '/receiveCode', name: 'receive code', component: ReceiveCodeView },
         {
           path: '/404',
           name: 'notFound',
@@ -65,7 +69,11 @@ const router = createRouter({
         { path: 'manage/user', name: 'admin manage user', component: ManageUser },
         { path: 'manage/user/:id', name: 'admin manage user detail', component: EditUserInfoView },
         { path: 'product/edit/:id', name: 'admin edit product', component: EditProductByAdminView },
-        { path: 'product/manage', name: 'admin manage product', component: ManageProductByAdminView },
+        {
+          path: 'product/manage',
+          name: 'admin manage product',
+          component: ManageProductByAdminView
+        },
         { path: 'product/manage/add', name: 'admin add product', component: AddProductByAdminView },
         { path: 'product/manage/:id', name: 'admin product', component: ProductView },
         { path: 'declaration', name: 'admin declaration', component: ManageDeclaration }
