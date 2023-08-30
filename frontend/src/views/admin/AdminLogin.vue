@@ -13,6 +13,7 @@
               id="id"
               v-model="userId"
               placeholder="Enter Your ID"
+              autocomplete="off"
             />
           </div>
           <div>
@@ -24,6 +25,7 @@
               id="pw"
               v-model="userPw"
               placeholder="Enter Your Password"
+              autocomplete="off"
             />
           </div>
           <button type="submit">login</button>
@@ -34,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { login } from '@/apis/adminLogin';
+import { AdminLogin } from '@/apis/adminLogin';
 import router from '@/router';
 import { ref } from 'vue';
 
@@ -46,19 +48,14 @@ const submit = async () => {
     return;
   }
 
-  // TODO: login api 연결 필요
-  // console.log(userId.value, userPw.value);
-  const loginResult = await login(userId.value, userPw.value);
+  const loginResult = await AdminLogin(userId.value, userPw.value);
 
-  if(loginResult === true) {
-    router.push('/');
+  if (loginResult.isSuccess) {
+    router.push('/admin/log');
+  } else {
+    alert('로그인/비밀번호를 확인해주세요');
   }
-  else {
-    alert("아아디 또는 비밀번호를 확인해주세요");
-  }
-
 };
-
 </script>
 
 <style scoped>
