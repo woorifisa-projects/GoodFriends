@@ -51,5 +51,6 @@ public class AuthController {
             @RequestHeader("refreshToken") String refreshToken) {
         TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken);
         AccessTokenResponse response = authService.generateAccessToken(tokenRenewalRequest);
+        return ResponseEntity.ok(response);
     }
 }
