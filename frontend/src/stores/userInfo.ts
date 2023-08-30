@@ -4,6 +4,7 @@ import { tmpImage } from '@/utils/image';
 
 export const useUserInfoStore = defineStore('userInfo', () => {
   const userId = ref(0);
+  const accessToken = ref('');
   const userName = ref('임시닉네임');
   const profileImg = ref(tmpImage);
 
@@ -13,5 +14,9 @@ export const useUserInfoStore = defineStore('userInfo', () => {
     profileImg.value = img;
   }
 
-  return { userId, userName, profileImg, setUserInfo };
+  const setUserToken = (token: string) => {
+    accessToken.value = token;
+  };
+
+  return { userId, userName, profileImg, accessToken, setUserInfo, setUserToken };
 });

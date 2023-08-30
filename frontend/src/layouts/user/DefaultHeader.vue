@@ -34,27 +34,27 @@
 </template>
 
 <script setup lang="ts">
+import { getLoginSiteURL } from '@/apis/userLogin';
 import { LOGO, POPOVER, SELL } from '@/constants/strings/header';
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfo';
-import { ref, watchEffect } from 'vue';
-
-// TODO: login 구현후 수정
-const isLogin = ref(true);
-const isPopoverOpen = ref(false);
-const popover = ref<Element>();
-const popoverBtn = ref<Element>();
+import { onMounted, ref, watchEffect } from 'vue';
 
 const store = useUserInfoStore();
 const { userId, userName, profileImg } = store;
+
+// TODO: login 구현후 수정
+const isLogin = ref();
+const isPopoverOpen = ref(false);
+const popover = ref<Element>();
+const popoverBtn = ref<Element>();
 
 const goPage = (path: string) => {
   router.push(path);
 };
 
-const onClickLoginBtn = () => {
-  // TODO: login 구현후 수정
-  isLogin.value = true;
+const onClickLoginBtn = async () => {
+  await getLoginSiteURL();
 };
 
 const onClickLogoutBtn = () => {
@@ -99,6 +99,17 @@ watchEffect(() => {
     window.addEventListener('click', closePopover);
   } else {
     window.removeEventListener('click', closePopover);
+  }
+});
+
+onMounted(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    store.setUserToken(token);
+    isLogin.value = true;
+    // TODO: 프로필 정보 get
+  } else {
+    isLogin.value = false;
   }
 });
 </script>
