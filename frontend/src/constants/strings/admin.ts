@@ -48,5 +48,8 @@ export const ADMIN_DECLARATION = {
   DEC_DAMAGE_AMOUNT : '피해금액',
   DEC_PRODUCT_CATEGORY : '상품 카테고리',
   DEC_DAMAGE_DATE : '피해날짜',
-  DEC_DES: '피해내용'
+  DEC_DES: '피해내용',
+  DEC_CLICK_BACK:'뒤로가기',
+  DEC_CLICK_DELETE:'삭제하기',
+  DEC_CLICK_SUCCESS:'처리완료'
 };

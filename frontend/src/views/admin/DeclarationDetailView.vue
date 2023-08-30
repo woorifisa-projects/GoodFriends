@@ -43,19 +43,27 @@
       </div>
       <div class="total-DeclarationInfo2">
         <div class="damageInfo1">
-          <div class="damage-date">피해날짜</div>
-          <div class="damage-date-value">2023-02-02</div>
+          <div class="damage-date">{{ ADMIN_DECLARATION.DEC_DAMAGE_DATE }}</div>
+          <div class="damage-date-value">{{ damage_date }}</div>
         </div>
         <div class="damageInfo2">
-          <div class="damage-des">피해내용</div>
-          <div class="damage-des-value"><textarea class="ta-damage-des-value">dsss</textarea></div>
+          <div class="damage-des">{{ ADMIN_DECLARATION.DEC_DES }}</div>
+          <div class="damage-des-value">
+            <textarea class="ta-damage-des-value" v-model="damage_des"></textarea>
+          </div>
         </div>
       </div>
       <div class="work-buttons">
         <div class="work-buttons-1">
-          <button class="work-btn" @click="clickBack">뒤로가기</button>
-          <button class="work-btn" @click="clickDelete">삭제하기</button>
-          <button class="work-btn" @click="clickSuccess">처리완료</button>
+          <button class="work-btn" @click="clickBack">
+            {{ ADMIN_DECLARATION.DEC_CLICK_BACK }}
+          </button>
+          <button class="work-btn" @click="clickDelete">
+            {{ ADMIN_DECLARATION.DEC_CLICK_DELETE }}
+          </button>
+          <button class="work-btn" @click="clickSuccess">
+            {{ ADMIN_DECLARATION.DEC_CLICK_SUCCESS }}
+          </button>
         </div>
       </div>
     </div>
@@ -71,27 +79,19 @@ const { item } = history.state;
 // const banCount = ref(item.count);
 const authMark = ref();
 
-//TODO: 이메일, 생년월일, 연락처, 주소
-// const email = ref(item.email);
+//TODO: 이메일, 닉네임, 연락처, 신고카테고리, 상품카테고리
 const email = ref();
 const nickname = ref();
 const phone = ref();
 const dec_category = ref();
 const pr_category = ref('');
+const damage_date = ref('');
+const damage_des = ref('');
 
-//TODO: 수정완료/계정최종삭제 기능
+//TODO: 뒤로가기/삭제하기/처리완료 기능
 const clickBack = () => {};
 const clickDelete = () => {};
 const clickSuccess = () => {};
-
-//계정 삭제시 모달창 관련
-const showModal = ref(false);
-const openModal = () => {
-  showModal.value = true;
-};
-const closeModal = () => {
-  showModal.value = false;
-};
 </script>
 
 <style scoped>
@@ -253,50 +253,5 @@ const closeModal = () => {
   background-color: #6db1ff;
   font-size: 15px;
   border-radius: 16px;
-}
-
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 20% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 400px;
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
-}
-.modal-buttons {
-  width: 100%;
-  padding-top: 15px;
-  gap: 10px;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-.modal-button {
-  width: 50px;
-  border: 1px solid rgb(173, 173, 173);
-}
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
 }
 </style>
