@@ -1,4 +1,8 @@
-export const CATEGORY = {
+interface CATEGORY_TYPE {
+  [key: string]: string;
+}
+
+export const CATEGORY: CATEGORY_TYPE = {
   ALL: '전체',
   BEAUTY: '뷰티/미용',
   PLANTS: '식물',
