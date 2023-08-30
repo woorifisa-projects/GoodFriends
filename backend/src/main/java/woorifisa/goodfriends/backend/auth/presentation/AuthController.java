@@ -46,6 +46,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    // 리프레시 토큰을 이용하여 새로운 액세스 토큰을 발급 받기
     @PostMapping("/token/access")
     public ResponseEntity<AccessTokenResponse> generateAccessToken(
             @RequestHeader("refreshToken") String refreshToken) {
