@@ -5,6 +5,7 @@ import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
 import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
+import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
@@ -29,8 +30,14 @@ public class OrderService {
     }
 
     public Long saveOrder(OrderSaveRequest request) {
+
+        if(orderRepository.findByProductIdAndUserId(request.getProductId(), request.getUserId()) != null){
+            throw new AlreadyOrderedException();
+        }
+
         Product foundProduct = productRepository.getById(request.getProductId());
         User foundUser = userRepository.getById(request.getUserId());
+
         Order newOrder = createOrder(foundProduct, foundUser, request);
         return newOrder.getId();
     }
