@@ -22,7 +22,7 @@ onMounted(async () => {
   if (res.isSuccess) {
     window.location.href = import.meta.env.BASE_URL;
   } else {
-    window.location.href = import.meta.env.BASE_URL + '/err/login';
+    window.location.href = import.meta.env.BASE_URL + 'err/login';
   }
 });
 </script>
