@@ -13,11 +13,11 @@ export const ADMIN = {
   MARK: '인증 뱃지',
   AVERRAGE: '평점',
   EMAIL: '이메일',
-  NICKNAME: '닉네임',
-  SEX: '성별',
+  BIRTH: '생년월일',
   PHONE: '연락처',
   ADDRESS: '주소',
-  SUSPEND: '활동 정지',
+  MAIL_AUTH: '메일인증여부',
+  CHECK_ACTIVITY: '활성화여부',
   EDIT: '수정 완료',
   DELETE: '계정 삭제'
 };
