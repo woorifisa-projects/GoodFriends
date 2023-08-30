@@ -24,44 +24,50 @@ import image from '@/assets/tmp/images/image.png';
 
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
+import type { product } from '@/types/product';
 
 // TODO: 수정 -> 서버로부터
 
-const products = ref([
+const products = ref<Array<product>>([
   {
     id: 0,
-    image: image,
+    imageUrl: image,
     title: 'title',
     address: '주소가 길어지면 어떻게 될려나 길어지면 길어지면 길어지면 길어지면',
-    price: 1000
+    sellPrice: 1000,
+    status: 'sell'
   },
   {
     id: 1,
-    image: image,
+    imageUrl: image,
     title: 'title1',
     address: 'address',
-    price: 1000
+    sellPrice: 1000,
+    status: 'sell'
   },
   {
     id: 2,
-    image: image,
+    imageUrl: image,
     title: 'title2',
     address: 'address',
-    price: 1000
+    sellPrice: 1000,
+    status: 'sell'
   },
   {
     id: 3,
-    image: image,
+    imageUrl: image,
     title: 'title3',
     address: 'address',
-    price: 1000
+    sellPrice: 1000,
+    status: 'sell'
   },
   {
     id: 4,
-    image: image,
+    imageUrl: image,
     title: 'title4',
     address: 'address',
-    price: 1000
+    sellPrice: 1000,
+    status: 'sell'
   }
 ]);
 
