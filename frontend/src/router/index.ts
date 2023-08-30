@@ -43,7 +43,7 @@ const router = createRouter({
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
         { path: 'err/:type', name: 'login err', component: ErrorView },
-        { path: '/receiveCode', name: 'receive code', component: ReceiveCodeView },
+        { path: '/google-callback', name: 'receive code', component: ReceiveCodeView },
         {
           path: '/404',
           name: 'notFound',
