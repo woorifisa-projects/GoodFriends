@@ -6,6 +6,7 @@ import woorifisa.goodfriends.backend.auth.application.AuthService;
 import woorifisa.goodfriends.backend.auth.application.OAuthClient;
 import woorifisa.goodfriends.backend.auth.application.OAuthUri;
 import woorifisa.goodfriends.backend.auth.dto.OAuthUser;
+import woorifisa.goodfriends.backend.auth.dto.request.TokenRenewalRequest;
 import woorifisa.goodfriends.backend.auth.dto.request.TokenRequest;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.auth.dto.response.OAuthUriResponse;
@@ -43,5 +44,11 @@ public class AuthController {
         OAuthUser oAuthUser = oAuthClient.getOAuthUser(tokenRequest.getCode(), tokenRequest.getRedirectUri());
         AccessTokenResponse response = authService.generateAccessAndRefreshToken(oAuthUser);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/token/access")
+    public ResponseEntity<AccessTokenResponse> generateAccessToken(
+            @RequestHeader("refreshToken") String refreshToken) {
+        TokenRenewalRequest tokenRenewalRequest
     }
 }
