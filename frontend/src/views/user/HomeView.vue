@@ -1,6 +1,7 @@
 <template>
   <div class="main-page">
-    <div class="banner">
+    <CommonBannerVue />
+    <!-- <div class="banner">
       <button @click="onClickBannerBtn('prev')">
         <span class="material-icons-outlined"> arrow_back_ios </span>
       </button>
@@ -10,7 +11,7 @@
       <button @click="onClickBannerBtn('next')">
         <span class="material-icons-outlined"> arrow_forward_ios </span>
       </button>
-    </div>
+    </div> -->
     <div class="main">
       <div class="category">
         <button @click="onClickPrevCategory">
@@ -65,9 +66,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
-import { getBannerList } from '@/utils/image';
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
+import CommonBannerVue from '@/components/CommonBanner.vue';
 import type { category } from '@/types/product';
 
 // TODO: 수정 -> 서버로부터
@@ -195,25 +196,11 @@ const products = ref([
 const categoryPageNumber = ref(0);
 const viewCategoryNumber = ref(8);
 const selectedCategoryId = ref(1);
-const bannerList = ref<Array<string>>([]);
-const viewBanner = ref(0);
+
 const smallCategoryIsOpen = ref(false);
 
 const openCategory = () => {
   smallCategoryIsOpen.value = !smallCategoryIsOpen.value;
-};
-
-bannerList.value = getBannerList();
-
-const onClickBannerBtn = (flag: string) => {
-  if (flag === 'next') {
-    viewBanner.value = (viewBanner.value + 1) % bannerList.value.length;
-  } else if (flag === 'prev') {
-    viewBanner.value -= 1;
-    if (viewBanner.value < 0) {
-      viewBanner.value = bannerList.value.length - 1;
-    }
-  }
 };
 
 const onClickPrevCategory = () => {
@@ -248,10 +235,6 @@ const onClickAddProduct = () => {
 const onClickProductCard = (id: number) => {
   router.push(`product/${id}`);
 };
-
-setInterval(() => {
-  onClickBannerBtn('next');
-}, 3000);
 </script>
 
 <style scoped>
@@ -259,7 +242,7 @@ setInterval(() => {
   width: 100%;
   height: 100%;
 }
-.banner {
+/* .banner {
   box-sizing: content-box;
   max-width: 1300px;
   height: 300px;
@@ -287,7 +270,7 @@ setInterval(() => {
 .banner-img > img {
   height: 100%;
   object-fit: cover;
-}
+} */
 .main {
   width: 100%;
   height: 100%;
