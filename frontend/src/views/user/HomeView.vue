@@ -22,52 +22,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
-import image from '@/assets/tmp/images/image.png';
+import { onMounted, ref, watchEffect } from 'vue';
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
 import CommonBannerVue from '@/components/CommonBanner.vue';
 import CategoryList from '@/components/CategoryList.vue';
+import { getAllProduct } from '@/apis/product';
+import type { product } from '@/types/product';
 
 const selectedCategory = ref('ALL');
 
-const products = ref([
-  {
-    id: 0,
-    image: image,
-    title: 'title',
-    address: '주소가 길어지면 어떻게 될려나 길어지면 길어지면 길어지면 길어지면',
-    price: 1000
-  },
-  {
-    id: 1,
-    image: image,
-    title: 'title1',
-    address: 'address',
-    price: 1000
-  },
-  {
-    id: 2,
-    image: image,
-    title: 'title2',
-    address: 'address',
-    price: 1000
-  },
-  {
-    id: 3,
-    image: image,
-    title: 'title3',
-    address: 'address',
-    price: 1000
-  },
-  {
-    id: 4,
-    image: image,
-    title: 'title4',
-    address: 'address',
-    price: 1000
-  }
-]);
+const products = ref<Array<product>>([]);
 
 const onClickSearch = () => {
   // TODO: 상품 검색
@@ -84,6 +49,10 @@ const onClickProductCard = (id: number) => {
 watchEffect(() => {
   console.log(selectedCategory.value);
   // TODO: 카테고리별 상품
+});
+
+onMounted(async () => {
+  products.value = await getAllProduct();
 });
 </script>
 
