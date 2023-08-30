@@ -6,6 +6,7 @@ import woorifisa.goodfriends.backend.auth.application.AuthService;
 import woorifisa.goodfriends.backend.auth.application.OAuthClient;
 import woorifisa.goodfriends.backend.auth.application.OAuthUri;
 import woorifisa.goodfriends.backend.auth.dto.OAuthUser;
+import woorifisa.goodfriends.backend.auth.dto.request.TokenRenewalRequest;
 import woorifisa.goodfriends.backend.auth.dto.request.TokenRequest;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.auth.dto.response.OAuthUriResponse;
@@ -42,6 +43,15 @@ public class AuthController {
             @PathVariable final String oauthProvider, @Valid @RequestBody final TokenRequest tokenRequest) {
         OAuthUser oAuthUser = oAuthClient.getOAuthUser(tokenRequest.getCode(), tokenRequest.getRedirectUri());
         AccessTokenResponse response = authService.generateAccessAndRefreshToken(oAuthUser);
+        return ResponseEntity.ok(response);
+    }
+
+    // 리프레시 토큰을 이용하여 새로운 액세스 토큰을 발급 받기
+    @PostMapping("/token/access")
+    public ResponseEntity<AccessTokenResponse> generateAccessToken(
+            @RequestHeader("refreshToken") String refreshToken) {
+        TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken);
+        AccessTokenResponse response = authService.generateAccessToken(tokenRenewalRequest);
         return ResponseEntity.ok(response);
     }
 }

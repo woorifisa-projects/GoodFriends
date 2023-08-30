@@ -7,6 +7,7 @@ import woorifisa.goodfriends.backend.auth.domain.AuthToken;
 import woorifisa.goodfriends.backend.auth.domain.OAuthToken;
 import woorifisa.goodfriends.backend.auth.domain.OAuthTokenRepository;
 import woorifisa.goodfriends.backend.auth.dto.OAuthUser;
+import woorifisa.goodfriends.backend.auth.dto.request.TokenRenewalRequest;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.auth.event.UserSavedEvent;
 import woorifisa.goodfriends.backend.user.domain.User;
@@ -66,5 +67,11 @@ public class AuthService {
         Long userId = tokenCreator.extractPayLoad(accessToken);
         userRepository.validateExistById(userId);
         return userId;
+    }
+
+    public AccessTokenResponse generateAccessToken(TokenRenewalRequest tokenRenewalRequest) {
+        String refreshToken = tokenRenewalRequest.getRefreshToken();
+        AuthToken authToken = tokenCreator.renewAuthToken(refreshToken);
+        return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken());
     }
 }
