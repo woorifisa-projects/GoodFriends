@@ -48,17 +48,17 @@
             <div class="userInfo2-detailInfo">{{ ADMIN.CHECK_ACTIVITY }}&nbsp;</div>
             <div class="detail-buttons">
               <button
-                class="activity-yes"
+                class="detail-button"
                 @click="clickActivity($event, 'yes')"
-                :style="{ backgroundColor: yesAcButtonColor }"
+                :class="Activity === true ? `activity-yes` : ``"
               >
                 {{ ADMIN.YES }}
               </button>
               <span></span>
               <button
-                class="activity-no"
+                class="detail-button"
                 @click="clickActivity($event, 'no')"
-                :style="{ backgroundColor: noAcButtonColor }"
+                :class="Activity === false ? `activity-no` : ``"
               >
                 {{ ADMIN.NO }}
               </button>
@@ -99,17 +99,14 @@ const email = ref(item.email);
 const birth = ref();
 const phone = ref();
 const address = ref();
-const yesAcButtonColor = ref('white');
-const noAcButtonColor = ref('white');
+const Activity = ref();
 
 //TODO: 활성화 여부 관련 로직
 const clickActivity = (event: Event, choice: string) => {
   if (choice === 'yes') {
-    yesAcButtonColor.value = '#b2b1b1';
-    noAcButtonColor.value = 'white';
+    Activity.value = true;
   } else if (choice === 'no') {
-    noAcButtonColor.value = '#b2b1b1';
-    yesAcButtonColor.value = 'white';
+    Activity.value = false;
   }
 };
 
@@ -139,6 +136,12 @@ const closeModal = () => {
 </script>
 
 <style scoped>
+.activity-yes {
+  background-color: #6db1ff;
+}
+.activity-no {
+  background-color: #6db1ff;
+}
 .editUserInfo-Page {
   display: flex;
   justify-content: center;
@@ -234,8 +237,7 @@ const closeModal = () => {
   width: 60px;
 }
 
-.activity-yes,
-.activity-no {
+.detail-button {
   width: 60px;
   border: 1px solid rgb(173, 173, 173);
   border-radius: 16px;
