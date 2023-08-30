@@ -60,8 +60,9 @@ public class OrderService {
         return orders.stream()
                 .map(order -> {
                     User user = userRepository.getById(order.getUser().getId());
-                    return new OrderViewAllResponse(order.getId(), user.getNickname(), order.getPossibleDate(), order.getPossibleTime());
+                    return new OrderViewAllResponse(order.getId(), user.getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
                 })
                 .collect(Collectors.toList());
     }
+
 }

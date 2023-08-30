@@ -10,14 +10,17 @@ public class OrderViewAllResponse {
 
     private String possibleTime;
 
+    private String requirements;
+
     public OrderViewAllResponse() {
     }
 
-    public OrderViewAllResponse(Long id, String nickName, String possibleDate, String possibleTime) {
+    public OrderViewAllResponse(Long id, String nickName, String possibleDate, String possibleTime, String requirements) {
         this.id = id;
         this.nickName = nickName;
         this.possibleDate = possibleDate;
         this.possibleTime = possibleTime;
+        this.requirements = requirements;
     }
 
     public Long getId() {
@@ -35,4 +38,9 @@ public class OrderViewAllResponse {
     public String getPossibleTime() {
         return possibleTime;
     }
+
+    public String getRequirements() {
+        return requirements;
+    }
+
 }
