@@ -74,16 +74,11 @@
 import { ADMIN_DECLARATION } from '@/constants/strings/admin';
 import { ref } from 'vue';
 
-const { item } = history.state;
-//TODO:  console.log(item); // 전달 받은 데이터 확인용
-// const banCount = ref(item.count);
-const authMark = ref();
-
-//TODO: 이메일, 닉네임, 연락처, 신고카테고리, 상품카테고리
-const email = ref();
-const nickname = ref();
+//TODO: 이메일, 닉네임, 연락처, 신고카테고리, 상품카테고리, 피해날짜, 피해내용
+const email = ref('');
+const nickname = ref('');
 const phone = ref();
-const dec_category = ref();
+const dec_category = ref('');
 const pr_category = ref('');
 const damage_date = ref('');
 const damage_des = ref('');
