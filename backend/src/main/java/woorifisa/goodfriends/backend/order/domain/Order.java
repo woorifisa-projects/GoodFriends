@@ -1,11 +1,13 @@
 package woorifisa.goodfriends.backend.order.domain;
 
+import lombok.experimental.SuperBuilder;
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
 
+@SuperBuilder
 @Table(name = "orders")
 @Entity
 public class Order extends BaseTimeEntity {
@@ -22,6 +24,8 @@ public class Order extends BaseTimeEntity {
     @JoinColumn(name = "user_id") // 외래 키로 사용할 컬럼 지정
     private User user;
 
+    private boolean confirm;
+
     @Column(nullable = false)
     private String possibleDate;
 
@@ -31,15 +35,6 @@ public class Order extends BaseTimeEntity {
     private String requirements;
 
     public Order() {
-    }
-
-    public Order(Long id, Product product, User user, String possibleDate, String possibleTime, String requirements) {
-        this.id = id;
-        this.product = product;
-        this.user = user;
-        this.possibleDate = possibleDate;
-        this.possibleTime = possibleTime;
-        this.requirements = requirements;
     }
 
     public Long getId() {
@@ -52,6 +47,10 @@ public class Order extends BaseTimeEntity {
 
     public User getUser() {
         return user;
+    }
+
+    public boolean isConfirm() {
+        return confirm;
     }
 
     public String getPossibleDate() {
