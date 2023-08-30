@@ -4,7 +4,13 @@
       <span class="material-icons-outlined"> arrow_back_ios </span>
     </button>
     <div class="banner-img">
-      <img :src="bannerList[viewBanner]" alt="배너" />
+      <img
+        :class="index === viewBanner ? `view` : `none`"
+        v-for="(img, index) in bannerList"
+        :src="img"
+        alt="banner-image"
+        :key="index"
+      />
     </div>
     <button @click="onClickBannerBtn('next')">
       <span class="material-icons-outlined"> arrow_forward_ios </span>
@@ -66,5 +72,8 @@ setInterval(() => {
 .banner-img > img {
   height: 100%;
   object-fit: cover;
+}
+.banner-img > .none {
+  display: none;
 }
 </style>
