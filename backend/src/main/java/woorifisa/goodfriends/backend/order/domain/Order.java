@@ -1,6 +1,7 @@
-package woorifisa.goodfriends.backend.product.domain;
+package woorifisa.goodfriends.backend.order.domain;
 
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
+import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
