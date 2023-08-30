@@ -12,10 +12,11 @@ export interface productEdit {
 }
 export interface product {
   id: number;
-  image: string;
+  imageUrl: string;
   title: string;
-  address: string;
-  price: number;
+  address: string | null;
+  sellPrice: number;
+  status: string;
 }
 export interface filter {
   id: number;
@@ -23,7 +24,7 @@ export interface filter {
   value: string;
 }
 
-export interface editProductAdmin{
+export interface editProductAdmin {
   inputProductTitle: string;
   inputProductPrice: number;
   inputProductDate: string;

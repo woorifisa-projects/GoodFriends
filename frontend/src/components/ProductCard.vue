@@ -6,12 +6,12 @@
     :key="product.id"
   >
     <div class="img">
-      <img :src="product.image" alt="임시 이미지" />
+      <img :src="product.imageUrl" alt="임시 이미지" />
     </div>
     <div class="detail">
       <p class="title">{{ product.title }}</p>
       <p class="address">{{ product.address }}</p>
-      <p class="price">{{ product.price }}원</p>
+      <p class="price">{{ product.sellPrice }}원</p>
     </div>
   </div>
 </template>
