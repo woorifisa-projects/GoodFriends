@@ -12,48 +12,74 @@
 import Table from '@/components/CommonTable.vue';
 
 //TODO: api 신고데이터 가져오기
-const tableDataKey = ['created_at', 'product_id', 'user_id', 'content'];
+const tableDataKey = [
+  'user_id',
+  'do_user_nickname',
+  'product_category',
+  'product_title',
+  'declaration_category',
+  'created_at',
+  'result'
+];
 const tableHeader = {
-  created_at: '신고날짜',
-  product_id: '상품ID',
   user_id: '피해자ID',
-  content: '신고내용'
+  do_user_nickname: '피해자 닉네임',
+  product_category: '상품 카테고리',
+  product_title: '상품이름',
+  declaration_category: '신고 카테고리',
+  created_at: '신고날짜',
+  result: '처리상태'
 };
 const testData = [
   {
     id: 1,
-    created_at: '2023-09-01',
-    product_id: 'product_123',
-    user_id: 'jmp951',
-    content: '터무니 없는 가격 확인 요청'
+    user_id: 'moon@gmail.com',
+    do_user_nickname: 'classicMoon',
+    product_category: '전자',
+    product_title: '에어팟 프로20',
+    declaration_category: '사기',
+    created_at: '2023-08-30',
+    result: '처리중'
   },
   {
     id: 2,
-    created_at: '2023-08-20',
-    product_id: 'product_13',
-    user_id: 'fdsfdf1',
-    content: '거짓 신분'
+    user_id: 'hmp9511@gmail.com',
+    do_user_nickname: 'Min',
+    product_category: '전자',
+    product_title: '갤럭시20',
+    declaration_category: '사기',
+    created_at: '2023-08-29',
+    result: '처리중'
   },
   {
     id: 3,
-    created_at: '2023-08-13',
-    product_id: 'product_123',
-    user_id: 'j12351',
-    content: '장기간 업로드 상품'
+    user_id: 'han@gmail.com',
+    do_user_nickname: 'kensayHan',
+    product_category: '전자',
+    product_title: '맥북 2023 M2',
+    declaration_category: '사기',
+    created_at: '2023-08-26',
+    result: '처리완료'
   },
   {
     id: 4,
-    created_at: '2023-08-10',
-    product_id: 'product_123',
-    user_id: 'jmdddp951',
-    content: '터무니 없는 가격 확인 요청'
+    user_id: 'yybeen@gmail.com',
+    do_user_nickname: 'mapo security guard',
+    product_category: '의류',
+    product_title: '엘사드레스',
+    declaration_category: '욕설',
+    created_at: '2023-08-21',
+    result: '처리완료'
   },
   {
     id: 5,
-    created_at: '2023-08-01',
-    product_id: 'product_123',
-    user_id: 'jmp951',
-    content: '터무니 없는 가격 확인 요청'
+    user_id: 'yybeen@gmail.com',
+    do_user_nickname: 'mapo security guard',
+    product_category: '의류',
+    product_title: '엘사드레스',
+    declaration_category: '욕설',
+    created_at: '2023-08-21',
+    result: '처리완료'
   }
 ];
 </script>
