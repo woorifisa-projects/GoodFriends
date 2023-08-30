@@ -19,7 +19,10 @@ export const ADMIN = {
   MAIL_AUTH: '메일인증여부',
   CHECK_ACTIVITY: '활성화여부',
   EDIT: '수정 완료',
-  DELETE: '계정 삭제'
+  DELETE: '계정 삭제',
+  YES: '예',
+  NO: '아니오',
+  ASK_ACCOUNT_DELETE: '계정을 삭제하시겠습니까?'
 };
 
 export const ADMIN_PRODUCT = {

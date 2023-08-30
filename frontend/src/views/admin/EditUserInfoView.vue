@@ -41,9 +41,7 @@
           <div class="userInfo2-info">
             <div class="userInfo2-detailInfo">{{ ADMIN.MAIL_AUTH }}&nbsp;</div>
             <div class="detail-buttons">
-              <span class="mail-auth-yes">완료</span>
-              <span></span>
-              <span class="mail-auth-no">미완료</span>
+              <span class="mail-auth-check">{{ email_auth }}</span>
             </div>
           </div>
           <div class="userInfo2-info">
@@ -54,7 +52,7 @@
                 @click="clickActivity($event, 'yes')"
                 :style="{ backgroundColor: yesAcButtonColor }"
               >
-                예
+                {{ ADMIN.YES }}
               </button>
               <span></span>
               <button
@@ -62,7 +60,7 @@
                 @click="clickActivity($event, 'no')"
                 :style="{ backgroundColor: noAcButtonColor }"
               >
-                아니오
+                {{ ADMIN.NO }}
               </button>
             </div>
           </div>
@@ -71,7 +69,16 @@
       <div class="work-buttons">
         <div class="work-buttons-1">
           <button class="work-btn" @click="clickEdit">{{ ADMIN.EDIT }}</button>
-          <button class="work-btn" @click="clickDelete">{{ ADMIN.DELETE }}</button>
+          <button class="work-btn" @click="openModal">{{ ADMIN.DELETE }}</button>
+          <div v-if="showModal" class="modal">
+            <div class="modal-content">
+              <p>{{ ADMIN.ASK_ACCOUNT_DELETE }}</p>
+              <div class="modal-buttons">
+                <button class="modal-button" @click="clickDelete">{{ ADMIN.YES }}</button>
+                <button class="modal-button" @click="closeModal">{{ ADMIN.NO }}</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -80,15 +87,14 @@
 
 <script setup lang="ts">
 import { ADMIN } from '@/constants/strings/admin';
-import { reduce } from 'node_modules/cypress/types/bluebird';
 import { ref } from 'vue';
 
 const { item } = history.state;
-// console.log(item); // 전달 받은 데이터 확인용
+//TODO:  console.log(item); // 전달 받은 데이터 확인용
 const banCount = ref(item.count);
 const authMark = ref();
 
-//이메일, 생년월일, 연락처, 주소
+//TODO: 이메일, 생년월일, 연락처, 주소
 const email = ref(item.email);
 const birth = ref();
 const phone = ref();
@@ -96,19 +102,42 @@ const address = ref();
 const yesAcButtonColor = ref('white');
 const noAcButtonColor = ref('white');
 
+//TODO: 활성화 여부 관련 로직
 const clickActivity = (event: Event, choice: string) => {
   if (choice === 'yes') {
-    yesAcButtonColor.value = '#15ea15';
+    yesAcButtonColor.value = '#b2b1b1';
     noAcButtonColor.value = 'white';
   } else if (choice === 'no') {
-    noAcButtonColor.value = '#15ea15';
+    noAcButtonColor.value = '#b2b1b1';
     yesAcButtonColor.value = 'white';
   }
 };
-//TODO: 활동정지/수정완료/계정삭제 기능
+
+//TODO: 메일인증 관련 함수
+const email_auth = ref('미완료');
+const admin_authCheck = (item: Boolean) => {
+  item = true;
+  if (item === true) {
+    email_auth.value = '완료';
+  } else if (item === false) {
+    email_auth.value = '미완료';
+  }
+};
+
+//TODO: 수정완료/계정최종삭제 기능
 const clickEdit = () => {};
 const clickDelete = () => {};
+
+//계정 삭제시 모달창 관련
+const showModal = ref(false);
+const openModal = () => {
+  showModal.value = true;
+};
+const closeModal = () => {
+  showModal.value = false;
+};
 </script>
+
 <style scoped>
 .editUserInfo-Page {
   display: flex;
@@ -200,8 +229,11 @@ const clickDelete = () => {};
   justify-content: center;
   gap: 3px;
 }
-.mail-auth-yes,
-.mail-auth-no,
+
+.mail-auth-check {
+  width: 60px;
+}
+
 .activity-yes,
 .activity-no {
   width: 60px;
@@ -230,5 +262,50 @@ const clickDelete = () => {};
   background-color: #6db1ff;
   font-size: 15px;
   border-radius: 16px;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 20% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+}
+.modal-buttons {
+  width: 100%;
+  padding-top: 15px;
+  gap: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.modal-button {
+  width: 50px;
+  border: 1px solid rgb(173, 173, 173);
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
