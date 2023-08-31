@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import type { AddressDaum } from '@/types/profile';
+import type { IAddressDaum } from '@/types/profile';
 const props = defineProps({
   text: {
     type: String,
@@ -17,7 +17,7 @@ const emits = defineEmits(['click']);
 
 function getRoadAddress() {
   new window.daum.Postcode({
-    oncomplete: function (data: AddressDaum) {
+    oncomplete: function (data: IAddressDaum) {
       emits('click', data.roadAddress);
     }
   }).open();

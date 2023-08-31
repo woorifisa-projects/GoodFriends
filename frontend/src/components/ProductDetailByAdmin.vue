@@ -105,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-import type { category } from '@/types/product';
+import type { ICategory } from '@/types/product';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
@@ -119,7 +119,7 @@ const inputProductPrice = ref(0);
 const inputProductDate = ref('');
 const inputProductDes = ref('');
 const selectedCategory = ref('0');
-const categories = ref<Array<category>>([
+const categories = ref<Array<ICategory>>([
   {
     id: 1,
     name: '가전'

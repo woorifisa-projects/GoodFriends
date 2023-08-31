@@ -1,16 +1,16 @@
-export interface category {
+export interface ICategory {
   id: number;
   name: string;
 }
 
-export interface productEdit {
+export interface IProductEdit {
   price: number;
   name: string;
   content: string;
   category: number;
   date: Date;
 }
-export interface product {
+export interface IProduct {
   id: number;
   imageUrl: string;
   title: string;
@@ -18,13 +18,13 @@ export interface product {
   sellPrice: number;
   status: string;
 }
-export interface filter {
+export interface IFilter {
   id: number;
   name: string;
   value: string;
 }
 
-export interface editProductAdmin {
+export interface IEditProductAdmin {
   inputProductTitle: string;
   inputProductPrice: number;
   inputProductDate: string;

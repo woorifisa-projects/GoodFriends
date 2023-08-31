@@ -3,8 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { getAccessToken } from '@/apis/userLogin';
+import loginAPI from '@/apis/user/login';
 import LoadingIconVue from '@/components/LoadingIcon.vue';
+import { goErrorWithReload, goPageWithReload } from '@/utils/goPage';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -16,13 +17,13 @@ const getQuery = () => {
 };
 
 onMounted(async () => {
-  const code = getQuery();
+  const res = await loginAPI.getAccessToken(getQuery());
 
-  const res = await getAccessToken(code);
-  if (res.isSuccess) {
-    window.location.href = import.meta.env.BASE_URL;
+  if (res.isSuccess && res.data) {
+    localStorage.setItem('token', res.data);
+    goPageWithReload('');
   } else {
-    window.location.href = import.meta.env.BASE_URL + 'err/login';
+    goErrorWithReload(res.type);
   }
 });
 </script>

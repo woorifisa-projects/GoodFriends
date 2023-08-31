@@ -13,7 +13,8 @@ export const PRODUCT = {
   REPORT: '신고하기',
   ORDER: '주문하기',
   VIEW_ORDER: '주문서 보기',
-  DEAL: '거래하기'
+  DEAL: '거래하기',
+  NOTHING: '찾으시는 상품이 없어요 ㅠ.ㅠ'
 };
 
 export const ORDER_MODAL = {

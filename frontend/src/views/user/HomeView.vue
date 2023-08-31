@@ -9,9 +9,10 @@
           <span class="material-icons-outlined"> search </span>
         </label>
       </div>
-      <div class="card-list">
+      <div v-if="products.length" class="card-list">
         <ProductCardVue :products="products" @click="onClickProductCard" />
       </div>
+      <EmptyProduct v-else />
     </div>
     <div class="add-button">
       <button @click="onClickAddProduct">
@@ -27,12 +28,13 @@ import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
 import CommonBannerVue from '@/components/CommonBanner.vue';
 import CategoryList from '@/components/CategoryList.vue';
-import { getAllProduct } from '@/apis/product';
-import type { product } from '@/types/product';
+import productAPI from '@/apis/user/product';
+import type { IProduct } from '@/types/product';
+import EmptyProduct from '@/components/EmptyProduct.vue';
 
 const selectedCategory = ref('ALL');
 
-const products = ref<Array<product>>([]);
+const products = ref<Array<IProduct>>([]);
 
 const onClickSearch = () => {
   // TODO: 상품 검색
@@ -47,12 +49,16 @@ const onClickProductCard = (id: number) => {
 };
 
 watchEffect(() => {
-  console.log(selectedCategory.value);
   // TODO: 카테고리별 상품
 });
 
 onMounted(async () => {
-  products.value = await getAllProduct();
+  const res = await productAPI.getAll();
+  if (res.isSuccess && res.data) {
+    products.value = res.data;
+  } else {
+    console.error(res.message);
+  }
 });
 </script>
 

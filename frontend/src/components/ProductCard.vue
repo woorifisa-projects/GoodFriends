@@ -17,11 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import type { product } from '@/types/product';
+import type { IProduct } from '@/types/product';
 
 const props = defineProps({
   products: {
-    type: Array<product>,
+    type: Array<IProduct>,
     required: true
   }
 });
