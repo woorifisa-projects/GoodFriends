@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { getAccessToken } from '@/apis/userLogin';
 import LoadingIconVue from '@/components/LoadingIcon.vue';
+import { goErrorWithReload, goPageWithReload } from '@/utils/goPage';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -16,13 +17,12 @@ const getQuery = () => {
 };
 
 onMounted(async () => {
-  const code = getQuery();
+  const res = await getAccessToken(getQuery());
 
-  const res = await getAccessToken(code);
   if (res.isSuccess) {
-    window.location.href = import.meta.env.BASE_URL;
+    goPageWithReload('');
   } else {
-    window.location.href = import.meta.env.BASE_URL + 'err/login';
+    goErrorWithReload(res.type);
   }
 });
 </script>

@@ -38,6 +38,7 @@ import { getLoginSiteURL } from '@/apis/userLogin';
 import { LOGO, POPOVER, SELL } from '@/constants/strings/header';
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfo';
+import { goErrorWithReload, goOtherPage } from '@/utils/goPage';
 import { onMounted, ref, watchEffect } from 'vue';
 
 const store = useUserInfoStore();
@@ -54,7 +55,12 @@ const goPage = (path: string) => {
 };
 
 const onClickLoginBtn = async () => {
-  await getLoginSiteURL();
+  const res = await getLoginSiteURL();
+  if (res.isSuccess && res.data) {
+    goOtherPage(res.data);
+  } else {
+    goErrorWithReload(res.type);
+  }
 };
 
 const onClickLogoutBtn = () => {
