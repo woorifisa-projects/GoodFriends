@@ -55,13 +55,13 @@
       </div>
       <div class="work-buttons">
         <div class="work-buttons-1">
-          <button class="work-btn" @click="clickBack">
+          <button class="work-btn1" @click="clickBack">
             {{ ADMIN_DECLARATION.DEC_CLICK_BACK }}
           </button>
-          <button class="work-btn" @click="clickDelete">
+          <button class="work-btn2" @click="clickDelete">
             {{ ADMIN_DECLARATION.DEC_CLICK_DELETE }}
           </button>
-          <button class="work-btn" @click="clickSuccess">
+          <button class="work-btn3" @click="clickSuccess">
             {{ ADMIN_DECLARATION.DEC_CLICK_SUCCESS }}
           </button>
         </div>
@@ -242,7 +242,21 @@ const clickSuccess = () => {};
   padding: 20px;
 }
 
-.work-btn {
+.work-btn1 {
+  width: 80px;
+  height: 40px;
+  background-color: rgb(168, 167, 167);
+  font-size: 15px;
+  border-radius: 16px;
+}
+.work-btn2 {
+  width: 80px;
+  height: 40px;
+  background-color: rgb(239, 71, 71);
+  font-size: 15px;
+  border-radius: 16px;
+}
+.work-btn3 {
   width: 80px;
   height: 40px;
   background-color: #6db1ff;
