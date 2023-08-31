@@ -36,10 +36,10 @@
 </template>
 
 <script setup lang="ts">
-import { AdminLoginAPI } from '@/apis/adminLogin';
 import { useAdminStore } from '@/stores/admin';
 import { ref } from 'vue';
 import { goPageWithReload } from '@/utils/goPage';
+import adminLoginAPI from '@/apis/admin/login';
 
 const userId = ref('');
 const userPw = ref('');
@@ -49,11 +49,10 @@ const submit = async () => {
     return;
   }
 
-  const res = await AdminLoginAPI(userId.value, userPw.value);
-
+  const res = await adminLoginAPI.login({ root: userId.value, password: userPw.value });
   if (res.isSuccess && res.data) {
     const store = useAdminStore();
-    store.setAdmin(res.data.id, res.data.password, res.data.token);
+    store.setAdmin(res.data.root, res.data.password, res.data.token);
     goPageWithReload('admin/log');
   } else {
     alert('로그인/비밀번호를 확인해주세요');

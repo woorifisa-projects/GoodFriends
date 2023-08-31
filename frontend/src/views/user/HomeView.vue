@@ -28,7 +28,7 @@ import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
 import CommonBannerVue from '@/components/CommonBanner.vue';
 import CategoryList from '@/components/CategoryList.vue';
-import { getAllProduct } from '@/apis/product';
+import productAPI from '@/apis/user/product';
 import type { IProduct } from '@/types/product';
 import EmptyProduct from '@/components/EmptyProduct.vue';
 
@@ -53,7 +53,7 @@ watchEffect(() => {
 });
 
 onMounted(async () => {
-  const res = await getAllProduct();
+  const res = await productAPI.getAll();
   if (res.isSuccess && res.data) {
     products.value = res.data;
   } else {

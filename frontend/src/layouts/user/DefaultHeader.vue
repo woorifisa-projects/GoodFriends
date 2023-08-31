@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { getLoginSiteURL } from '@/apis/userLogin';
+import loginAPI from '@/apis/user/login';
 import { LOGO, POPOVER, SELL } from '@/constants/strings/header';
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfo';
@@ -55,7 +55,7 @@ const goPage = (path: string) => {
 };
 
 const onClickLoginBtn = async () => {
-  const res = await getLoginSiteURL();
+  const res = await loginAPI.getUrl();
   if (res.isSuccess && res.data) {
     goOtherPage(res.data);
   } else {

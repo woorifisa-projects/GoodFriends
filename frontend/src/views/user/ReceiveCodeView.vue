@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { getAccessToken } from '@/apis/userLogin';
+import loginAPI from '@/apis/user/login';
 import LoadingIconVue from '@/components/LoadingIcon.vue';
 import { goErrorWithReload, goPageWithReload } from '@/utils/goPage';
 import { onMounted } from 'vue';
@@ -17,9 +17,10 @@ const getQuery = () => {
 };
 
 onMounted(async () => {
-  const res = await getAccessToken(getQuery());
+  const res = await loginAPI.getAccessToken(getQuery());
 
-  if (res.isSuccess) {
+  if (res.isSuccess && res.data) {
+    localStorage.setItem('token', res.data);
     goPageWithReload('');
   } else {
     goErrorWithReload(res.type);
