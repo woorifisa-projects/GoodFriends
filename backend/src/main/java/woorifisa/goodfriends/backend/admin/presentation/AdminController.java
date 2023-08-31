@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.application.AdminService;
 import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
+import woorifisa.goodfriends.backend.admin.dto.response.LogViewResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.TokenResponse;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
@@ -80,4 +81,10 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //관리자가 사용자들 로그기록 조회
+    @GetMapping("/record")
+    public ResponseEntity<List<LogViewResponse>> entryRecord() throws IOException {
+        List<LogViewResponse> response = adminService.findAll();
+        return ResponseEntity.ok(response);
+    }
 }

@@ -17,6 +17,9 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.user.domain.User;
+import woorifisa.goodfriends.backend.admin.dto.response.LogViewResponse;
+import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -29,7 +32,7 @@ import java.util.stream.Collectors;
 public class AdminService {
 
     private final AdminRepository adminRepository;
-
+    private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
     private final ProductImageRepository productImageRepository;
@@ -42,8 +45,9 @@ public class AdminService {
     @Value("${security.jwt.token.access.expire-length}")
     private Long expireTimeMs;
 
-    public AdminService(AdminRepository adminRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service) {
+    public AdminService(AdminRepository adminRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service) {
         this.adminRepository = adminRepository;
+        this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.s3Service = s3Service;
@@ -168,6 +172,16 @@ public class AdminService {
     public void deleteById(Long productId) throws MalformedURLException {
         deleteImageByProductId(productId);
         productRepository.deleteById(productId);
+    }
+
+    //  관리자가 사용자 정보 가져오기
+    public List<LogViewResponse> findAll() throws IOException{
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> {
+                    return new LogViewResponse(user.getEmail(),user.getNickname(),user.getBan(),user.getLastModifiedAt());
+                })
+                .collect(Collectors.toList());
     }
 
 }
