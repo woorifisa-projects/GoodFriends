@@ -1,6 +1,5 @@
 package woorifisa.goodfriends.backend.global.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,15 +7,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import woorifisa.goodfriends.backend.admin.application.AdminService;
-import woorifisa.goodfriends.backend.global.config.utils.JwtFilter;
+import woorifisa.goodfriends.backend.admin.application.AdminAuthenticationFilter;
+import woorifisa.goodfriends.backend.auth.application.TokenProvider;
 
 @Configuration
 @EnableWebSecurity
-public class AuthenticationConfig {
+public class SecurityAuthenticationConfig {
 
-    @Value("${security.jwt.token.secret-key}")
-    private String secretKey;
+    private final TokenProvider tokenProvider;
+
+    public SecurityAuthenticationConfig(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     // SpringSecurity 적용하면 모든 api에 인증이 필요하다고 default로 호출됨
     // 로그인이나 회원가입같이 인증받지 않고 접속해야하는 부분 설정할 수 있는 부분
@@ -34,7 +36,7 @@ public class AuthenticationConfig {
                 .antMatchers(HttpMethod.PUT, "api/admin/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "api/admin/**").authenticated()
                 .and()
-                .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AdminAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }

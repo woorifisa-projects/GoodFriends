@@ -32,6 +32,12 @@ public class AuthTokenCreator implements TokenCreator {
         return new AuthToken(id, accessToken);
     }
 
+    public AuthToken createAdminToken(final Long adminId) {
+        Long id = adminId;
+        String accessToken = tokenProvider.createAdminAccessToken(String.valueOf(adminId));
+        return new AuthToken(id, accessToken);
+    }
+
     private String createRefreshToken(final Long userId) {
         if(tokenRepository.exist(userId)) {
             return tokenRepository.getToken(userId);
@@ -39,7 +45,6 @@ public class AuthTokenCreator implements TokenCreator {
         String refreshToken = tokenProvider.createRefreshToken(String.valueOf(userId));
         return tokenRepository.save(userId, refreshToken);
     }
-
     @Override
     public Long extractPayLoad(final String accessToken) {
         tokenProvider.validateToken(accessToken);
