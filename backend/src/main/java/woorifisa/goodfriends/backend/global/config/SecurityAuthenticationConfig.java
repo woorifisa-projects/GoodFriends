@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import woorifisa.goodfriends.backend.admin.application.AdminJwtFilter;
+import woorifisa.goodfriends.backend.admin.application.AdminAuthenticationFilter;
 import woorifisa.goodfriends.backend.auth.application.TokenProvider;
 
 @Configuration
@@ -36,7 +36,7 @@ public class SecurityAuthenticationConfig {
                 .antMatchers(HttpMethod.PUT, "api/admin/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "api/admin/**").authenticated()
                 .and()
-                .addFilterBefore(new AdminJwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AdminAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }
