@@ -24,11 +24,11 @@ import image from '@/assets/tmp/images/image.png';
 
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
-import type { product } from '@/types/product';
+import type { IProduct } from '@/types/product';
 
 // TODO: 수정 -> 서버로부터
 
-const products = ref<Array<product>>([
+const products = ref<Array<IProduct>>([
   {
     id: 0,
     imageUrl: image,
