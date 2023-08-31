@@ -1,22 +1,26 @@
 import { AxiosError, type AxiosResponse } from 'axios';
 import { apiInstance } from '.';
-import { useAdminStore } from '@/stores/admin';
+import type { IResultType, IAdminLogin } from '@/types/api';
+import { ApiType } from '@/constants/apiType';
 
 const api = apiInstance();
 
-export const AdminLogin = async (id: string, password: string) => {
-  return await api
+export const AdminLoginAPI = (id: string, password: string): Promise<IResultType<IAdminLogin>> => {
+  return api
     .post('api/admin/login', {
       root: id,
       password: password
     })
     .then((res: AxiosResponse) => {
       const { data } = res;
-      const store = useAdminStore();
-      store.setAdmin(id, password, data.accessToken);
-      return { isSuccess: true, message: 'success' };
+
+      return {
+        isSuccess: true,
+        data: { id, password, token: data.accessToken },
+        type: ApiType.ADMIN_LOGIN
+      };
     })
     .catch((error: AxiosError) => {
-      return { isSuccess: false, message: error.message };
+      return { isSuccess: false, message: error.message, type: ApiType.ADMIN_LOGIN };
     });
 };
