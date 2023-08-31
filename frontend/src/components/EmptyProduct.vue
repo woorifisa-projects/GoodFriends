@@ -1,10 +1,12 @@
 <template>
   <div class="empty">
-    <p>찾으시는 상품이 없어요 ㅠ.ㅠ</p>
+    <p>{{ PRODUCT.NOTHING }}</p>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { PRODUCT } from '@/constants/strings/product';
+</script>
 
 <style scoped>
 .empty {
