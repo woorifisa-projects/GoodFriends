@@ -1,6 +1,6 @@
 import { apiInstance } from '..';
 import { ApiType } from '@/constants/apiType';
-import type { IResultType, IGetOAuthURI } from '@/types/api';
+import type { IResultType, IGetOAuthURI, IApiSuccess } from '@/types/api';
 import { AxiosError, type AxiosResponse } from 'axios';
 
 const api = apiInstance();
@@ -11,7 +11,9 @@ const redirectUri = import.meta.env.VITE_APP_REDIRECT_URI;
 const loginAPI = {
   endPoint: {
     urlLogin: `api/auth/google/oauth-uri?oauthProvier=${oauthProvier}&redirectUri=${redirectUri}`,
-    getAccessToken: `api/auth/google/token`
+    getAccessToken: `api/auth/google/token`,
+    logout: `api/auth/logout`,
+    getAccessTokenWithRefresh: 'api/auth/token/access'
   },
   headers: {},
   getUrl: (): Promise<IResultType<string>> => {
@@ -37,6 +39,32 @@ const loginAPI = {
       })
       .catch((e: AxiosError) => {
         return { isSuccess: false, message: e.message, type: ApiType.LOGIN };
+      });
+  },
+  logout: (id: string, token: string): Promise<IApiSuccess> => {
+    return api
+      .get(loginAPI.endPoint.logout, {
+        params: { id },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res: AxiosResponse) => {
+        console.log(res);
+        return { isSuccess: true, message: '로그아웃 성공' };
+      })
+      .catch((error: AxiosError) => {
+        return { isSuccess: false, message: error.message };
+      });
+  },
+  getAccessTokenWithRefresh: () => {
+    return api
+      .post(loginAPI.endPoint.getAccessTokenWithRefresh)
+      .then((res: AxiosResponse) => {
+        console.log(res);
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
       });
   }
 };
