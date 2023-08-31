@@ -18,11 +18,11 @@ import java.util.List;
 
 // 관리자의 인증 작업을 처리하는 클래스.
 // 인증된 관리자에게만 접근 권한을 부여하고, 해당 사용자의 정보를 SecurityContextHolder에 설정하여 보안 관련 작업을 수행
-public class AdminJwtFilter extends OncePerRequestFilter { // 매번 인증해야하기 때문에
+public class AdminAuthenticationFilter extends OncePerRequestFilter { // 매번 인증해야하기 때문에
 
     private final TokenProvider tokenProvider;
 
-    public AdminJwtFilter(TokenProvider tokenProvider) {
+    public AdminAuthenticationFilter(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 
