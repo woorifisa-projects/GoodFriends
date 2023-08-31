@@ -1,15 +1,15 @@
 package woorifisa.goodfriends.backend.admin.application;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
-import woorifisa.goodfriends.backend.admin.dto.response.TokenResponse;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
+import woorifisa.goodfriends.backend.auth.application.TokenCreator;
+import woorifisa.goodfriends.backend.auth.domain.AuthToken;
+import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
-import woorifisa.goodfriends.backend.global.config.utils.JwtTokenProvider;
 import woorifisa.goodfriends.backend.product.domain.*;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
@@ -36,20 +36,18 @@ public class AdminService {
 
     private final S3Service s3Service;
 
-    @Value("${security.jwt.token.secret-key}") //lombok 아닌 springframework annotation
-    private String secretKey;
-
-    @Value("${security.jwt.token.access.expire-length}")
-    private Long expireTimeMs;
-
-    public AdminService(AdminRepository adminRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service) {
+    private final TokenCreator tokenCreator;
+    public AdminService(AdminRepository adminRepository, ProductRepository productRepository,
+                        ProductImageRepository productImageRepository, S3Service s3Service,
+                        TokenCreator tokenCreator) {
         this.adminRepository = adminRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.s3Service = s3Service;
+        this.tokenCreator = tokenCreator;
     }
 
-    public TokenResponse login(String root, String password){
+    public AccessTokenResponse login(String root, String password){
         // adminId가 틀린 경우
         Admin selectedAdmin = adminRepository.findByRoot(root)
                 .orElseThrow(() -> new InvalidAdminException(root + "와 일치하는 아이디가 없습니다."));
@@ -60,9 +58,9 @@ public class AdminService {
         }
 
         // 앞에서 Exception 안났으면 토큰 발행 구현해야함
-        String token = JwtTokenProvider.createToken(selectedAdmin.getRoot(), secretKey, expireTimeMs);
+        AuthToken authToken = tokenCreator.createAdminToken(selectedAdmin.getId());
 
-        return new TokenResponse(token);
+        return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken());
     }
 
     public ProductSaveResponse saveProduct(String root, ProductSaveRequest request) throws IOException {
