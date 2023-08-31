@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.global.config.utils;
+package woorifisa.goodfriends.backend.admin.application;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class JwtFilter extends OncePerRequestFilter { // 매번 인증해야하기 때문에
+public class AdminJwtFilter extends OncePerRequestFilter { // 매번 인증해야하기 때문에
 
     private final String secretKey;
 
-    public JwtFilter(String secretKey) {
+    public AdminJwtFilter(String secretKey) {
         this.secretKey = secretKey;
     }
 
@@ -37,13 +37,13 @@ public class JwtFilter extends OncePerRequestFilter { // 매번 인증해야하�
         String token = authorization.split(" ")[1];
 
         // token 만료 여부 확인
-        if(JwtTokenProvider.isExpired(token, secretKey)) {
+        if(AdminJwtTokenProvider.isExpired(token, secretKey)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         // adminId를 token에서 꺼내기
-        String adminId = JwtTokenProvider.getAdminId(token, secretKey);
+        String adminId = AdminJwtTokenProvider.getAdminId(token, secretKey);
 
         // 권한 부여
         // token에 있는 adminId를 꺼내서 아래와 같이 넣어주면 controller에서 adminId 사용 가능

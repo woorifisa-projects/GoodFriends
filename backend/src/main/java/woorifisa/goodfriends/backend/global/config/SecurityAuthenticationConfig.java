@@ -8,12 +8,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import woorifisa.goodfriends.backend.admin.application.AdminService;
-import woorifisa.goodfriends.backend.global.config.utils.JwtFilter;
+import woorifisa.goodfriends.backend.admin.application.AdminJwtFilter;
 
 @Configuration
 @EnableWebSecurity
-public class AuthenticationConfig {
+public class SecurityAuthenticationConfig {
 
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
@@ -34,7 +33,7 @@ public class AuthenticationConfig {
                 .antMatchers(HttpMethod.PUT, "api/admin/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "api/admin/**").authenticated()
                 .and()
-                .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AdminJwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }

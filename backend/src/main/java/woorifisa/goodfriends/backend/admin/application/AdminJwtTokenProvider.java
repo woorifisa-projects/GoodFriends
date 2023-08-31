@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.global.config.utils;
+package woorifisa.goodfriends.backend.admin.application;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -6,7 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
 
-public class JwtTokenProvider {
+public class AdminJwtTokenProvider {
 
     public static String getAdminId(String token, String secretKey) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
