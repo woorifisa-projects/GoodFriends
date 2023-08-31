@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import type { category } from '@/types/product';
+import type { ICategory } from '@/types/product';
 import { ref } from 'vue';
 import { dateFormat } from '@/utils/format';
 import { uploadFile } from '@/utils/file';
@@ -82,7 +82,7 @@ const props = defineProps({
 });
 
 // TODO: 수정 -> 서버로부터
-const categories = ref<Array<category>>([
+const categories = ref<Array<ICategory>>([
   {
     id: 1,
     name: '가전'

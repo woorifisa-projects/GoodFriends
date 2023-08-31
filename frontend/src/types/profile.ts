@@ -1,4 +1,4 @@
-export interface Item {
+export interface IItem {
   id: number;
   name: string;
   date: string;
@@ -10,7 +10,7 @@ declare global {
     daum: any;
   }
 }
-export interface AddressDaum {
+export interface IAddressDaum {
   userSelectedType: string;
   roadAddress: string;
   jibunAddress: string;

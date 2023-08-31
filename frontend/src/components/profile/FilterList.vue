@@ -16,11 +16,11 @@
 </template>
 
 <script setup lang="ts">
-import type { filter } from '@/types/product';
+import type { IFilter } from '@/types/product';
 
 const props = defineProps({
   productStatus: {
-    type: Array<filter>,
+    type: Array<IFilter>,
     required: true
   },
   checkedStatus: {

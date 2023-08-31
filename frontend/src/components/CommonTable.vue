@@ -18,16 +18,16 @@
 </template>
 
 <script setup lang="ts">
-import type { dataType, headerType } from '@/types/table';
+import type { IDataType, IHeaderType } from '@/types/table';
 import type { PropType } from 'vue';
 
 const props = defineProps({
   data: {
-    type: Array<dataType>,
+    type: Array<IDataType>,
     required: true
   },
   headerText: {
-    type: Object as PropType<headerType>,
+    type: Object as PropType<IHeaderType>,
     required: true
   },
   dataKey: {
@@ -38,7 +38,7 @@ const props = defineProps({
 
 const emits = defineEmits(['click']);
 
-const onClickTr = (item: dataType) => {
+const onClickTr = (item: IDataType) => {
   emits('click', item);
 };
 </script>

@@ -13,11 +13,11 @@
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import FilterListVue from '@/components/profile/FilterList.vue';
 import ItemList from '@/components/profile/ItemList.vue';
-import type { Item } from '@/types/profile';
+import type { IItem } from '@/types/profile';
 
 import { ref } from 'vue';
 
-const tmpItemList = ref<Array<Item>>([
+const tmpItemList = ref<Array<IItem>>([
   { id: 1, name: '판매 물품명1', date: 'yyyy-mm-dd', path: '/profile/sell' },
   { id: 2, name: '판매 물품명2', date: 'yyyy-mm-dd', path: '/profile/sell' },
   { id: 3, name: '판매 물품명3', date: 'yyyy-mm-dd', path: '/profile/sell' },
