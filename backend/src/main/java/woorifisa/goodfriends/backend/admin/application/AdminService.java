@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.admin.application;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
@@ -176,7 +177,7 @@ public class AdminService {
 
     //  관리자가 사용자 정보 가져오기
     public List<LogViewResponse> findAll() throws IOException{
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.DESC, "lastModifiedAt"));
         return users.stream()
                 .map(user -> {
                     return new LogViewResponse(user.getEmail(),user.getNickname(),user.getBan(),user.getLastModifiedAt());
