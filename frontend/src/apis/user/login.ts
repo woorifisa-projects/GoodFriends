@@ -57,6 +57,7 @@ const loginAPI = {
         return { isSuccess: false, message: error.message };
       });
   },
+  // TODO: cookie 저장 확인 후 다시 테스트
   getAccessTokenWithRefresh: () => {
     return api
       .post(loginAPI.endPoint.getAccessTokenWithRefresh)
