@@ -38,3 +38,18 @@ export const ADMIN_PRODUCT = {
   PRODUCT_ADD: '등록하기',
   PRODUCT_CANCEL: '취소하기'
 };
+
+export const ADMIN_DECLARATION = {
+  DEC_TITLE : '신고 관리',
+  DEC_DO_ID : '피해자 이메일',
+  DEC_NICKNAME : '피해자 닉네임',
+  DEC_PHONE : '연락처',
+  DEC_CATEGORY : '신고 카테고리',
+  DEC_DAMAGE_AMOUNT : '피해금액',
+  DEC_PRODUCT_CATEGORY : '상품 카테고리',
+  DEC_DAMAGE_DATE : '피해날짜',
+  DEC_DES: '피해내용',
+  DEC_CLICK_BACK:'뒤로가기',
+  DEC_CLICK_DELETE:'삭제하기',
+  DEC_CLICK_SUCCESS:'처리완료'
+};
