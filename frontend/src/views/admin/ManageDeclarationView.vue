@@ -2,7 +2,12 @@
   <div id="total">
     <div class="table">
       <div class="table-in">
-        <Table :data="testData" :header-text="tableHeader" :dataKey="tableDataKey" />
+        <Table
+          :data="testData"
+          :header-text="tableHeader"
+          :dataKey="tableDataKey"
+          @click="onClickDec"
+        />
       </div>
     </div>
   </div>
@@ -10,6 +15,16 @@
 
 <script setup lang="ts">
 import Table from '@/components/CommonTable.vue';
+import router from '@/router';
+import type { IDataType } from '@/types/table';
+
+const onClickDec = (item: IDataType) => {
+  router.push({
+    name: 'admin manage declaration detail',
+    params: { id: item.id },
+    state: { item }
+  });
+};
 
 //TODO: api 신고데이터 가져오기
 const tableDataKey = [
