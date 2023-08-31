@@ -1,6 +1,5 @@
 package woorifisa.goodfriends.backend.profile.domain;
 
-import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 import woorifisa.goodfriends.backend.global.common.BaseCreateTimeEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
@@ -30,13 +29,6 @@ public class Profile extends BaseCreateTimeEntity {
     protected Profile() {
     }
 
-    @Builder
-    public Profile(User user, String mobilePhone, String address) {
-        this.user = user;
-        this.mobilePhone = mobilePhone;
-        this.address = address;
-    }
-
     public Long getId() {
         return id;
     }
@@ -47,5 +39,13 @@ public class Profile extends BaseCreateTimeEntity {
 
     public String getAddress() {
         return address;
+    }
+
+    public void updateMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    public void updateAddress(String address) {
+        this.address = address;
     }
 }
