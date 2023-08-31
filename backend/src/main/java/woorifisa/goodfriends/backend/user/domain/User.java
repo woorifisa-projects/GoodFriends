@@ -63,4 +63,11 @@ public class User extends BaseTimeEntity {
     public int getBan() {
         return ban;
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    public void updateProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 }
