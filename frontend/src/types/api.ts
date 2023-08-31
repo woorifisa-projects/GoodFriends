@@ -19,3 +19,8 @@ export interface IAdminLoginRequest {
   root: string;
   password: string;
 }
+
+export interface IApiSuccess {
+  isSuccess: boolean;
+  message: string;
+}
