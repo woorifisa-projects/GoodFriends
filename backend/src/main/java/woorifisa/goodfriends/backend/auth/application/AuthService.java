@@ -63,7 +63,7 @@ public class AuthService {
         return saveUser;
     }
 
-    public Long extractMemberId(final String accessToken) {
+    public Long extractUserId(final String accessToken) {
         Long userId = tokenCreator.extractPayLoad(accessToken);
         userRepository.validateExistById(userId);
         return userId;

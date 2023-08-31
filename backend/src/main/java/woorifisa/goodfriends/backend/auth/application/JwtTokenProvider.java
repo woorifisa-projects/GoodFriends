@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.auth.application;
 
 
+import org.apache.http.annotation.Obsolete;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +34,11 @@ public class JwtTokenProvider implements TokenProvider {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.accessTokenValidityInMinutes = accessTokenValidityInMinutes;
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
+    }
+
+    @Override
+    public String createAdminAccessToken(final String payload) {
+        return createToken(payload, TimeUnit.MINUTES.toMillis(accessTokenValidityInMinutes));
     }
 
     @Override
