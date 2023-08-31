@@ -39,7 +39,7 @@ import { LOCAL_STORAGE } from '@/constants/localStorage';
 import HEADER from '@/constants/strings/header';
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfo';
-import { goErrorWithReload, goOtherPage } from '@/utils/goPage';
+import { goErrorWithReload, goOtherPage, goPageWithReload } from '@/utils/goPage';
 import { onMounted, ref, watchEffect } from 'vue';
 
 const store = useUserInfoStore();
@@ -70,7 +70,7 @@ const onClickLogoutBtn = async () => {
   if (res.isSuccess) {
     store.resetInfo();
     localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
-    isLogin.value = false;
+    goPageWithReload();
   } else {
     alert('로그아웃 오류');
   }
