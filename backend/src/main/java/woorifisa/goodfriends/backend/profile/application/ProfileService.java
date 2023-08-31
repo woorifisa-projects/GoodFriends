@@ -28,10 +28,19 @@ public class ProfileService {
         userRepository.save(user);
 
         Profile profile = profileRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("프로필을 찾을 수 없습니다."));
+                .orElse(null);
 
-        profile.updateMobilePhone(request.getMobileNumber());
-        profile.updateAddress(request.getAddress());
-        profileRepository.save(profile);
+        if(profile == null) { // 프로필을 등록하지 않은 경우 새로 생성해서 값을 넣어준다.
+            profileRepository.save(profile.builder()
+                    .user(user)
+                    .mobilePhone(request.getMobileNumber())
+                    .address(request.getAddress())
+                    .build());
+        }
+        else { // 기존에 프로필이 있는 경우, 프로필 정보(핸드폰, 주소)를 수정해서 저장한다.
+            profile.updateMobilePhone(request.getMobileNumber());
+            profile.updateAddress(request.getAddress());
+            profileRepository.save(profile);
+        }
     }
 }
