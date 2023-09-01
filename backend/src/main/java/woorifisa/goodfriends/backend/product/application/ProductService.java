@@ -11,6 +11,8 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.profile.domain.Profile;
+import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
@@ -32,11 +34,14 @@ public class ProductService {
 
     private final S3Service s3Service;
 
-    public ProductService(UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service) {
+    private final ProfileRepository profileRepository;
+
+    public ProductService(UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service, ProfileRepository profileRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.s3Service = s3Service;
+        this.profileRepository = profileRepository;
     }
 
     public ProductSaveResponse saveProduct(Long userId, ProductSaveRequest request) throws IOException {
@@ -109,7 +114,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) throws IOException {
+    public void updateProduct(ProductUpdateRequest request, Long id) throws IOException {
         Product selectedProduct = productRepository.getById(id);
 
         deleteImageByProductId(id);
@@ -118,17 +123,15 @@ public class ProductService {
         List<String> savedImageUrls = saveImages(id, request.getImageUrls());
 
         Product updatedProduct = productRepository.save(Product.builder()
-                        .id(id)
-                        .user(selectedProduct.getUser())
-                        .title(request.getTitle())
-                        .productCategory(request.getProductCategory())
-                        .status(selectedProduct.getStatus())
-                        .description(request.getDescription())
-                        .sellPrice(request.getSellPrice())
-                        .createdAt(selectedProduct.getCreatedAt())
-                        .build());
-
-        return new ProductUpdateResponse(updatedProduct, savedImageUrls);
+                .id(id)
+                .user(selectedProduct.getUser())
+                .title(request.getTitle())
+                .productCategory(request.getProductCategory())
+                .status(selectedProduct.getStatus())
+                .description(request.getDescription())
+                .sellPrice(request.getSellPrice())
+                .createdAt(selectedProduct.getCreatedAt())
+                .build());
     }
 
     public void deleteImageByProductId(Long productId) throws MalformedURLException {
@@ -140,5 +143,15 @@ public class ProductService {
     public void deleteById(Long productId) throws MalformedURLException {
         deleteImageByProductId(productId);
         productRepository.deleteById(productId);
+    }
+
+    public boolean verifyUser(Long userId, Long productId) {
+        Product product = productRepository.getById(productId);
+        return product.getUser().getId() == userId;
+    }
+
+    public boolean existProfile(Long userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        return profile != null;
     }
 }
