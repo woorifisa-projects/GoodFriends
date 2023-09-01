@@ -25,13 +25,13 @@ export const useUserInfoStore = defineStore('userInfo', () => {
   };
   const getInfo = () => {
     return {
-      id: id.value,
-      accessToken: accessToken.value,
-      nickname: nickname.value,
-      imageUrl: imageUrl.value,
-      email: email.value,
-      phoneNumber: phoneNumber.value
+      id,
+      accessToken,
+      nickname,
+      imageUrl,
+      email,
+      phoneNumber
     };
   };
-  return { id, accessToken, setUserInfo, setAllInfo, getInfo };
+  return { id, nickname, imageUrl, accessToken, setUserInfo, setAllInfo, getInfo };
 });
