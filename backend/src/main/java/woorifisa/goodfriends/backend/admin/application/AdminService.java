@@ -119,14 +119,17 @@ public class AdminService {
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
-                        return new ProductViewAllResponse(
+                        ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
                                 product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null);
+
+                        return productViewAllResponse;
                     }
 
                     Profile profile = profileRepository.findByUserId(product.getUser().getId()).orElseThrow(()-> new RuntimeException("유저의 프로필이 없습니다."));
 
-                    return new ProductViewAllResponse(
+                    ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress());
+                    return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
     }
@@ -136,13 +139,16 @@ public class AdminService {
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if(product.getUser() == null){
-            return new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(),
+            ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(),
                     product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
+
+            return response;
         }
 
         User user = userRepository.getById(product.getUser().getId());
-        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(),
+        ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(),
                 product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
+        return response;
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
