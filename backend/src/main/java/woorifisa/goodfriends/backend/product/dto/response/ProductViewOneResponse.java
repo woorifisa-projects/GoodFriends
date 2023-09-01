@@ -28,10 +28,14 @@ public class ProductViewOneResponse {
 
     private List<String> imageUrls;
 
+    private String profileImageUrl;
+
+    private String nickName;
+
     public ProductViewOneResponse() {
     }
 
-    public ProductViewOneResponse(Long id, Long userId, Long adminId, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls) {
+    public ProductViewOneResponse(Long id, Long userId, Long adminId, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls, String profileImageUrl, String nickName) {
         this.id = id;
         this.userId = userId;
         this.adminId = adminId;
@@ -42,6 +46,8 @@ public class ProductViewOneResponse {
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
         this.imageUrls = imageUrls;
+        this.profileImageUrl = profileImageUrl;
+        this.nickName = nickName;
     }
 
     public Long getId() {
@@ -76,4 +82,11 @@ public class ProductViewOneResponse {
         return imageUrls;
     }
 
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
 }
