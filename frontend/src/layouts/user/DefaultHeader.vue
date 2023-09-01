@@ -46,7 +46,7 @@ const store = useUserInfoStore();
 const { userId, userName, profileImg } = store;
 
 // TODO: login 구현후 수정
-const isLogin = ref();
+const isLogin = ref(false);
 const isPopoverOpen = ref(false);
 const popover = ref<Element>();
 const popoverBtn = ref<Element>();
@@ -116,15 +116,20 @@ watchEffect(() => {
   }
 });
 
-onMounted(() => {
+onMounted(async () => {
   const token = localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN);
   if (token) {
     store.setUserToken(token);
     isLogin.value = true;
     // TODO: 프로필 정보 get
-  } else {
-    isLogin.value = false;
+    return;
   }
+  // TODO: refresh token 으로 access token 발급받는 api
+  // const res = await loginAPI.getAccessTokenWithRefresh();
+  // if (res.isSuccess && res.data?.accessToken) {
+  //   store.setUserToken(res.data?.accessToken);
+  //   return;
+  // }
 });
 </script>
 

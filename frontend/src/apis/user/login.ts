@@ -1,6 +1,6 @@
 import { apiInstance } from '..';
 import { ApiType } from '@/constants/apiType';
-import type { IResultType, IGetOAuthURI, IApiSuccess } from '@/types/api';
+import type { IResultType, IGetOAuthURI, IApiSuccess, IGetAccessToken } from '@/types/api';
 import { AxiosError, type AxiosResponse } from 'axios';
 
 const api = apiInstance();
@@ -57,15 +57,15 @@ const loginAPI = {
         return { isSuccess: false, message: error.message };
       });
   },
-  // TODO: cookie 저장 확인 후 다시 테스트
-  getAccessTokenWithRefresh: () => {
+  getAccessTokenWithRefresh: (): Promise<IResultType<IGetAccessToken>> => {
     return api
       .post(loginAPI.endPoint.getAccessTokenWithRefresh)
       .then((res: AxiosResponse) => {
-        console.log(res);
+        const data = res.data as IGetAccessToken;
+        return { isSuccess: true, data, type: ApiType.LOGIN };
       })
       .catch((error: AxiosError) => {
-        console.log(error);
+        return { isSuccess: false, message: error.message, type: ApiType.LOGIN };
       });
   }
 };

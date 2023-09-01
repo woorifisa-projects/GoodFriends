@@ -24,3 +24,8 @@ export interface IApiSuccess {
   isSuccess: boolean;
   message: string;
 }
+
+export interface IGetAccessToken {
+  id: string;
+  accessToken: string;
+}
