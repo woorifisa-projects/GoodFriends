@@ -1,10 +1,15 @@
 package woorifisa.goodfriends.backend.admin.application;
 
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
+import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
+import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
 import woorifisa.goodfriends.backend.auth.application.TokenCreator;
 import woorifisa.goodfriends.backend.auth.domain.AuthToken;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
@@ -20,12 +25,14 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
+import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordResponse;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +40,7 @@ import java.util.stream.Collectors;
 public class AdminService {
 
     private final AdminRepository adminRepository;
-
+    private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
     private final ProductImageRepository productImageRepository;
@@ -42,18 +49,16 @@ public class AdminService {
 
     private final ProfileRepository profileRepository;
 
-    private final UserRepository userRepository;
-
     private final TokenCreator tokenCreator;
-    public AdminService(AdminRepository adminRepository, ProductRepository productRepository,
+    public AdminService(AdminRepository adminRepository,UserRepository userRepository, ProductRepository productRepository,
                         ProductImageRepository productImageRepository, S3Service s3Service,
-                        ProfileRepository profileRepository, UserRepository userRepository, TokenCreator tokenCreator) {
+                        ProfileRepository profileRepository,TokenCreator tokenCreator) {
         this.adminRepository = adminRepository;
+        this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.s3Service = s3Service;
         this.profileRepository = profileRepository;
-        this.userRepository = userRepository;
         this.tokenCreator = tokenCreator;
     }
 
@@ -193,4 +198,13 @@ public class AdminService {
         productRepository.deleteById(productId);
     }
 
+    //  관리자가 사용자 정보 가져오기
+    public UserLogRecordsResponse findUserLogRecord() {
+        List<UserLogRecordResponse> userResponses = userRepository.findAll()
+                .stream()
+                .map(UserLogRecordResponse::new)
+                .sorted(Comparator.comparing(UserLogRecordResponse::getLastModifiedAt).reversed())
+                .collect(Collectors.toList());
+        return new UserLogRecordsResponse(userResponses);
+    }
 }
