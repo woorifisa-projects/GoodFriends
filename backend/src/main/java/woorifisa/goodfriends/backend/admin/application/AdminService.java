@@ -19,6 +19,8 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
+import woorifisa.goodfriends.backend.user.domain.User;
+import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -40,22 +42,25 @@ public class AdminService {
 
     private final ProfileRepository profileRepository;
 
+    private final UserRepository userRepository;
+
     private final TokenCreator tokenCreator;
     public AdminService(AdminRepository adminRepository, ProductRepository productRepository,
                         ProductImageRepository productImageRepository, S3Service s3Service,
-                        ProfileRepository profileRepository, TokenCreator tokenCreator) {
+                        ProfileRepository profileRepository, UserRepository userRepository, TokenCreator tokenCreator) {
         this.adminRepository = adminRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.s3Service = s3Service;
         this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
         this.tokenCreator = tokenCreator;
     }
 
     public AccessTokenResponse login(String root, String password){
         // adminId가 틀린 경우
         Admin selectedAdmin = adminRepository.findByRoot(root)
-                .orElseThrow(() -> new InvalidAdminException(root + "와 일치하는 아이디가 없습니다."));
+                .orElseThrow(() -> new InvalidAdminException( root + "와 일치하는 아이디가 없습니다."));
 
         // password가 틀린 경우
         if(!selectedAdmin.getPassword().equals(password)) {
@@ -126,10 +131,13 @@ public class AdminService {
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if(product.getUser() == null){
-            return new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
+            return new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(),
+                    product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
         }
 
-        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images);
+        User user = userRepository.getById(product.getUser().getId());
+        return new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(),
+                product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
     }
 
     public ProductUpdateResponse showSelectedProduct(Long id) {
