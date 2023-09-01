@@ -7,7 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
 import woorifisa.goodfriends.backend.admin.dto.response.TokenResponse;
+import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
+import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.global.config.utils.JwtTokenProvider;
@@ -19,13 +21,14 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
-import woorifisa.goodfriends.backend.admin.dto.response.LogViewResponse;
+import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordResponse;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -176,13 +179,12 @@ public class AdminService {
     }
 
     //  관리자가 사용자 정보 가져오기
-    public List<LogViewResponse> findAll() throws IOException{
-        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.DESC, "lastModifiedAt"));
-        return users.stream()
-                .map(user -> {
-                    return new LogViewResponse(user.getEmail(),user.getNickname(),user.getBan(),user.getLastModifiedAt());
-                })
+    public UserLogRecordsResponse findUserLogRecord() {
+        List<UserLogRecordResponse> userResponses = userRepository.findAll()
+                .stream()
+                .map(UserLogRecordResponse::new)
+                .sorted(Comparator.comparing(UserLogRecordResponse::getLastModifiedAt).reversed())
                 .collect(Collectors.toList());
+        return new UserLogRecordsResponse(userResponses);
     }
-
 }
