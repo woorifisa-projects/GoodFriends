@@ -1,6 +1,6 @@
 <div align="center">
 <img width ="500" src="https://github.com/woorifisa-projects/GoodFriends/assets/83820185/e4dd46f4-37a0-4c01-a0da-0dc1ad2274d4"/>
- <h2> 친구처럼 안전한 중고거래, 굿프렌즈 🤹🏻‍♀️ </h2>
+ <h2> 친구처럼 안전한 중고 거래 서비스, 굿프렌즈 🤹🏻‍♀️ </h2>
 
 [<img src="https://img.shields.io/badge/-github wiki-yellow?style=flat&logo=google-chrome&logoColor=black" />](https://github.com/woorifisa-projects/GoodFriends/wiki)
 [<img src="https://img.shields.io/badge/-tech blog-blue?style=flat&logo=google-chrome&logoColor=black" />](https://goodfriends-team.tistory.com/)
@@ -12,7 +12,7 @@
 
 ### 👩🏻‍🎨 Front-end
 
-![](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/901130a2-3827-4e79-ba38-a730096331ff)
+![](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/90a2d7ee-0587-49f8-9e08-635279ba1ba3)
 
 ### 🧑🏻‍🚀 Back-end
 
