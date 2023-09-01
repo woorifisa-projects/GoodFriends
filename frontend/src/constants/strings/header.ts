@@ -1,16 +1,16 @@
-import logo from '@/assets/tmp/images/logo.png';
-
-export const LOGO = {
-  image: logo,
-  path: '/'
+const HEADER = {
+  LOGO: {
+    view: 'GoodFriends',
+    path: '/'
+  },
+  SELL: {
+    title: '판매하기',
+    path: '/product/add'
+  },
+  POPOVER: {
+    MY_PAGE: 'myPage',
+    LOGOUT: 'logout'
+  }
 };
 
-export const SELL = {
-  title: '판매하기',
-  path: '/product/add'
-};
-
-export const POPOVER = {
-  MY_PAGE: 'myPage',
-  LOGOUT: 'logout'
-};
+export default HEADER;
