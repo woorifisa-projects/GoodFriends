@@ -1,13 +1,13 @@
 <template>
   <div class="header">
-    <div class="title" @click="goPage(LOGO.path)">
+    <div class="title" @click="goPage(HEADER.LOGO.path)">
       <span class="material-icons-outlined"> sentiment_satisfied </span>
-      GoodFriends
+      {{ HEADER.LOGO.view }}
       <!-- <img :src="LOGO.image" alt="" /> -->
     </div>
     <div class="wrap">
       <div>
-        <button @click="goPage(SELL.path)">{{ SELL.title }}</button>
+        <button @click="goPage(HEADER.SELL.path)">{{ HEADER.SELL.title }}</button>
       </div>
       <div id="login">
         <div v-if="!isLogin">
@@ -23,8 +23,8 @@
             </div>
             <div class="content">
               <div>{{ userName }}</div>
-              <div @click="onClickMyProfile">{{ POPOVER.MY_PAGE }}</div>
-              <div @click="onClickLogoutBtn">{{ POPOVER.LOGOUT }}</div>
+              <div @click="onClickMyProfile">{{ HEADER.POPOVER.MY_PAGE }}</div>
+              <div @click="onClickLogoutBtn">{{ HEADER.POPOVER.LOGOUT }}</div>
             </div>
           </div>
         </div>
@@ -35,17 +35,18 @@
 
 <script setup lang="ts">
 import loginAPI from '@/apis/user/login';
-import { LOGO, POPOVER, SELL } from '@/constants/strings/header';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import HEADER from '@/constants/strings/header';
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfo';
-import { goErrorWithReload, goOtherPage } from '@/utils/goPage';
+import { goErrorWithReload, goOtherPage, goPageWithReload } from '@/utils/goPage';
 import { onMounted, ref, watchEffect } from 'vue';
 
 const store = useUserInfoStore();
 const { userId, userName, profileImg } = store;
 
 // TODO: login 구현후 수정
-const isLogin = ref();
+const isLogin = ref(false);
 const isPopoverOpen = ref(false);
 const popover = ref<Element>();
 const popoverBtn = ref<Element>();
@@ -63,9 +64,16 @@ const onClickLoginBtn = async () => {
   }
 };
 
-const onClickLogoutBtn = () => {
-  // TODO: login 구현후 수정
-  isLogin.value = false;
+const onClickLogoutBtn = async () => {
+  // TODO: login 구현후 수정 -> id 수정
+  const res = await loginAPI.logout('1', store.accessToken);
+  if (res.isSuccess) {
+    store.resetInfo();
+    localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
+    goPageWithReload();
+  } else {
+    alert('로그아웃 오류');
+  }
 };
 
 const onClickProfileBtn = (event: MouseEvent) => {
@@ -108,15 +116,20 @@ watchEffect(() => {
   }
 });
 
-onMounted(() => {
-  const token = localStorage.getItem('token');
+onMounted(async () => {
+  const token = localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN);
   if (token) {
     store.setUserToken(token);
     isLogin.value = true;
     // TODO: 프로필 정보 get
-  } else {
-    isLogin.value = false;
+    return;
   }
+  // TODO: refresh token 으로 access token 발급받는 api
+  // const res = await loginAPI.getAccessTokenWithRefresh();
+  // if (res.isSuccess && res.data?.accessToken) {
+  //   store.setUserToken(res.data?.accessToken);
+  //   return;
+  // }
 });
 </script>
 
