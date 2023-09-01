@@ -1,7 +1,14 @@
 package woorifisa.goodfriends.backend.auth.presentation;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import woorifisa.goodfriends.backend.auth.application.AuthService;
 import woorifisa.goodfriends.backend.auth.application.OAuthClient;
 import woorifisa.goodfriends.backend.auth.application.OAuthUri;
@@ -50,7 +57,7 @@ public class AuthController {
     // 리프레시 토큰을 이용하여 새로운 액세스 토큰을 발급 받기
     @PostMapping("/token/access")
     public ResponseEntity<AccessTokenResponse> generateAccessToken(
-            @RequestHeader("refreshToken") String refreshToken) {
+            @CookieValue("refreshToken") String refreshToken) {
         TokenRenewalRequest tokenRenewalRequest = new TokenRenewalRequest(refreshToken);
         AccessTokenResponse response = authService.generateAccessToken(tokenRenewalRequest);
         return ResponseEntity.ok(response);
