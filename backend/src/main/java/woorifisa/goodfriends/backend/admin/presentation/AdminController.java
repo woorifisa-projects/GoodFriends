@@ -87,4 +87,10 @@ public class AdminController {
         UserLogRecordsResponse response = adminService.findUserLogRecord();
         return ResponseEntity.ok(response);
     }
+
+    //관리자가 사용자 정보를 삭제
+    @DeleteMapping("/user/delete/{userId}")
+    public void deleteUser(@PathVariable Long userId){
+        adminService.deleteUserInfo(userId);
+    }
 }

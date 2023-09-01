@@ -4,6 +4,7 @@ package woorifisa.goodfriends.backend.admin.application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
@@ -32,6 +33,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -189,4 +191,11 @@ public class AdminService {
                 .collect(Collectors.toList());
         return new UserLogRecordsResponse(userResponses);
     }
+
+    // 관리자가 사용자 정보 삭제
+    public void deleteUserInfo(Long userId){
+         userRepository.deleteById(userId);
+    }
+
+
 }
