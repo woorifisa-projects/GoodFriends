@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
-import woorifisa.goodfriends.backend.admin.dto.response.TokenResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
 import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
@@ -48,7 +47,7 @@ public class AdminService {
 
 
     private final TokenCreator tokenCreator;
-    public AdminService(AdminRepository adminRepository, ProductRepository productRepository,
+    public AdminService(AdminRepository adminRepository,UserRepository userRepository, ProductRepository productRepository,
                         ProductImageRepository productImageRepository, S3Service s3Service,
                         TokenCreator tokenCreator) {
 
