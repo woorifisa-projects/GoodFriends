@@ -7,22 +7,19 @@ import java.util.List;
 
 public class ProductViewAllResponse {
 
-    private Long id;
+    private final Long id;
 
-    private ProductCategory productCategory;
+    private final ProductCategory productCategory;
 
-    private String title;
+    private final String title;
 
-    private ProductStatus status;
+    private final ProductStatus status;
 
-    private int sellPrice;
+    private final int sellPrice;
 
-    private String imageUrl;
+    private final String imageUrl;
 
-    private String address;
-
-    public ProductViewAllResponse() {
-    }
+    private final String address;
 
     public ProductViewAllResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String imageUrl, String address) {
         this.id = id;
