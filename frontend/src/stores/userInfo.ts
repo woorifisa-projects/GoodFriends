@@ -1,29 +1,37 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { tmpImage } from '@/utils/image';
+import type { IProfile } from '@/types/api';
 
 export const useUserInfoStore = defineStore('userInfo', () => {
-  const userId = ref(0);
+  const id = ref(0);
   const accessToken = ref('');
-  const userName = ref('임시닉네임');
-  const profileImg = ref(tmpImage);
+  const nickname = ref('임시닉네임');
+  const imageUrl = ref(tmpImage);
+  const email = ref('');
+  const phoneNumber = ref('');
 
-  function setUserInfo(id: number, name: string, img: string) {
-    userId.value = id;
-    userName.value = name;
-    profileImg.value = img;
-  }
+  const setUserInfo = (data: IProfile) => {
+    id.value = data.id;
+    nickname.value = data.nickname;
+    imageUrl.value = data.imageUrl;
+    email.value = data.email;
+    phoneNumber.value = data.phoneNumber;
+  };
 
-  const setUserToken = (token: string) => {
+  const setAllInfo = (data: IProfile, token: string) => {
+    setUserInfo(data);
     accessToken.value = token;
   };
-
-  const resetInfo = () => {
-    userId.value = 0;
-    accessToken.value = '';
-    userName.value = '';
-    profileImg.value = '';
+  const getInfo = () => {
+    return {
+      id: id.value,
+      accessToken: accessToken.value,
+      nickname: nickname.value,
+      imageUrl: imageUrl.value,
+      email: email.value,
+      phoneNumber: phoneNumber.value
+    };
   };
-
-  return { userId, userName, profileImg, accessToken, setUserInfo, setUserToken, resetInfo };
+  return { id, accessToken, setUserInfo, setAllInfo, getInfo };
 });
