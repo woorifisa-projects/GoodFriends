@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.application.AdminService;
 import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
+
 import woorifisa.goodfriends.backend.admin.dto.response.TokenResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
+import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
@@ -31,11 +33,11 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody AdminLoginRequest adminLoginRequest) {
+    public ResponseEntity<AccessTokenResponse> login(@RequestBody AdminLoginRequest adminLoginRequest) {
 
-        TokenResponse tokenResponse = adminService.login(adminLoginRequest.getRoot(), adminLoginRequest.getPassword());
+        AccessTokenResponse response = adminService.login(adminLoginRequest.getRoot(), adminLoginRequest.getPassword());
 
-        return ResponseEntity.ok().body(tokenResponse);
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/products/new")

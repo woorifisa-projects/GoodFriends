@@ -18,5 +18,12 @@ export const useUserInfoStore = defineStore('userInfo', () => {
     accessToken.value = token;
   };
 
-  return { userId, userName, profileImg, accessToken, setUserInfo, setUserToken };
+  const resetInfo = () => {
+    userId.value = 0;
+    accessToken.value = '';
+    userName.value = '';
+    profileImg.value = '';
+  };
+
+  return { userId, userName, profileImg, accessToken, setUserInfo, setUserToken, resetInfo };
 });
