@@ -1,7 +1,7 @@
 <template>
   <DefaultMyPage>
     <div class="profile_main">
-      <div v-show="isOwner" class="btn_wrap">
+      <div v-show="Number(router.params.id) === store.id" class="btn_wrap">
         <button>{{ PROFILE.WITHDRAWAL }}</button>
         <button @click="onClickEdit">{{ PROFILE.EDIT }}</button>
       </div>
@@ -9,18 +9,18 @@
         <div class="profile_detail">
           <div class="item">
             <label>{{ PROFILE.EMAIL }}</label>
-            <input v-model="user.email" type="email" disabled />
+            <input v-model="store.email" type="email" disabled />
           </div>
 
           <div class="item">
             <label>{{ PROFILE.NICKNAME }}</label>
-            <input type="text" v-model="userInputInfo.name" :disabled="isDisabled" />
+            <input type="text" v-model="userInputInfo.nickName" :disabled="isDisabled" />
           </div>
           <div class="item">
             <label>{{ PROFILE.PHONE_NUMBER }}</label>
             <input
               type="text"
-              :value="userInputInfo.phone"
+              :value="userInputInfo.mobileNumber"
               :disabled="isDisabled"
               @change="onChangePhoneNumber"
               @input="onInputPhoneNumber"
@@ -29,7 +29,12 @@
           </div>
           <div class="item">
             <label>{{ PROFILE.ADDRESS }}</label>
-            <input type="text" v-model="userInputInfo.address" disabled />
+            <input
+              type="text"
+              v-model="userInputInfo.address"
+              placeholder="주소를 입력해주세요"
+              disabled
+            />
             <AddressAPI v-show="!isDisabled" @click="searchAddress" :text="PROFILE.GET_ADDRESS" />
           </div>
         </div>
@@ -41,61 +46,64 @@
 <script setup lang="ts">
 import { ALERT, PLACEHOLDER, PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { checkPhoneNumber } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
 import AddressAPI from '@/components/AddressAPI.vue';
 import { useRoute } from 'vue-router';
 import { useUserInfoStore } from '@/stores/userInfo';
+import profileAPI from '@/apis/user/profile';
+import { useLoadingStore } from '@/stores/loading';
 
 const router = useRoute();
 const store = useUserInfoStore();
-
-const { id } = router.params;
-const isOwner = ref(store.userId === Number(id));
-
+const loadingStore = useLoadingStore();
 const user = ref({
-  email: '00@000.com',
-  name: 'han',
-  phone: '010-1234-1234',
-  address: '00시00구'
+  ...store.getProfile()
 });
-
 const userInputInfo = ref({
-  name: user.value.name,
-  phone: user.value.phone,
+  nickName: user.value.nickName,
+  mobileNumber: user.value.mobileNumber,
   address: user.value.address
 });
 const isDisabled = ref(true);
 const searchAddress = (data: string) => {
-  console.log(data);
   userInputInfo.value.address = data;
 };
-const onClickEdit = () => {
+const onClickEdit = async () => {
   if (isDisabled.value) {
     isDisabled.value = false;
   } else if (!isDisabled.value) {
-    if (!checkPhoneNumber(userInputInfo.value.phone)) {
-      console.log(userInputInfo.value.phone);
+    if (!checkPhoneNumber(userInputInfo.value.mobileNumber)) {
+      console.log(userInputInfo.value.mobileNumber);
       alert(ALERT.PHONE);
       return;
     }
-    if (!checkUserName(userInputInfo.value.name)) {
+    if (!checkUserName(userInputInfo.value.nickName)) {
       alert(ALERT.NAME);
       // TODO: 중복일 경우 다른 메시지로 알려주기
       return;
     }
     // TODO: API
-
-    user.value = { ...userInputInfo.value, ...user.value };
-    isDisabled.value = true;
+    loadingStore.setLoading(true);
+    const res = await profileAPI.editProfile(store.accessToken, {
+      ...userInputInfo.value,
+      email: store.email
+    });
+    if (res.isSuccess) {
+      user.value = { ...userInputInfo.value, ...user.value };
+      isDisabled.value = true;
+    } else {
+      alert(res.message);
+    }
+    loadingStore.setLoading(false);
   }
 };
 
 const onChangePhoneNumber = (event: Event) => {
   const value = (event.target as HTMLInputElement).value;
 
-  userInputInfo.value.phone = value.replace(/[^0-9-]/, '');
+  userInputInfo.value.mobileNumber = value.replace(/[^0-9-]/, '');
 };
 const onInputPhoneNumber = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -104,11 +112,24 @@ const onInputPhoneNumber = (event: Event) => {
   if (!number) return;
   target.value = phoneNumberFormat(number);
 };
-const checkUserName = (name: string) => {
+const checkUserName = (nickName: string) => {
   // TODO: API 중복검사
-  if (name.length < 2) return false;
+  if (nickName.length < 2) return false;
   return true;
 };
+
+watchEffect(() => {
+  user.value = {
+    nickName: store.nickName,
+    mobileNumber: store.mobileNumber,
+    address: store.address
+  };
+  userInputInfo.value = {
+    nickName: store.nickName,
+    mobileNumber: store.mobileNumber,
+    address: store.address
+  };
+});
 </script>
 
 <style scoped>
