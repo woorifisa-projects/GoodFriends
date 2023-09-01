@@ -17,18 +17,21 @@ public class ProductViewAllResponse {
 
     private int sellPrice;
 
-    private String image;
+    private String imageUrl;
+
+    private String address;
 
     public ProductViewAllResponse() {
     }
 
-    public ProductViewAllResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String image) {
+    public ProductViewAllResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String imageUrl, String address) {
         this.id = id;
         this.productCategory = productCategory;
         this.title = title;
         this.status = status;
         this.sellPrice = sellPrice;
-        this.image = image;
+        this.imageUrl = imageUrl;
+        this.address = address;
     }
 
     public Long getId() {
@@ -52,6 +55,11 @@ public class ProductViewAllResponse {
     }
 
     public String getImageUrl() {
-        return image;
+        return imageUrl;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
 }
