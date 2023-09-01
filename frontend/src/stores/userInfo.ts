@@ -6,17 +6,19 @@ import type { IProfile } from '@/types/api';
 export const useUserInfoStore = defineStore('userInfo', () => {
   const id = ref(0);
   const accessToken = ref('');
-  const nickname = ref('임시닉네임');
+  const nickName = ref('임시닉네임');
   const imageUrl = ref(tmpImage);
   const email = ref('');
-  const phoneNumber = ref('');
+  const mobileNumber = ref('');
+  const address = ref('');
 
   const setUserInfo = (data: IProfile) => {
     id.value = data.id;
-    nickname.value = data.nickname;
+    nickName.value = data.nickName;
     imageUrl.value = data.imageUrl;
     email.value = data.email;
-    phoneNumber.value = data.phoneNumber;
+    mobileNumber.value = data.mobileNumber;
+    address.value = data.address;
   };
 
   const setAllInfo = (data: IProfile, token: string) => {
@@ -25,13 +27,29 @@ export const useUserInfoStore = defineStore('userInfo', () => {
   };
   const getInfo = () => {
     return {
-      id,
-      accessToken,
-      nickname,
-      imageUrl,
-      email,
-      phoneNumber
+      id: id.value,
+      accessToken: accessToken.value,
+      nickName: nickName.value,
+      imageUrl: imageUrl.value,
+      email: email.value,
+      mobileNumber: mobileNumber.value,
+      address: address.value
     };
   };
-  return { id, nickname, imageUrl, accessToken, setUserInfo, setAllInfo, getInfo };
+  const getProfile = () => {
+    return { nickName: nickName.value, mobileNumber: mobileNumber.value, address: address.value };
+  };
+  return {
+    id,
+    nickName,
+    imageUrl,
+    accessToken,
+    email,
+    mobileNumber,
+    address,
+    setUserInfo,
+    setAllInfo,
+    getInfo,
+    getProfile
+  };
 });

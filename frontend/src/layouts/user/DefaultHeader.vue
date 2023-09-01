@@ -17,14 +17,14 @@
         </div>
         <div v-else>
           <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">
-            {{ user.nickname }} 님
+            {{ user.nickName }} 님
           </button>
           <div v-if="isPopoverOpen" class="popover" ref="popover">
             <div class="img">
               <img :src="user.imageUrl" alt="예시 이미지" />
             </div>
             <div class="content">
-              <div>{{ user.nickname }}</div>
+              <div>{{ user.nickName }}</div>
               <div @click="onClickMyProfile">{{ HEADER.POPOVER.MY_PAGE }}</div>
               <div @click="onClickLogoutBtn">{{ HEADER.POPOVER.LOGOUT }}</div>
             </div>
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import loginAPI from '@/apis/user/login';
-import profileAPI from '@/apis/user/profiel';
+import profileAPI from '@/apis/user/profile';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
 import HEADER from '@/constants/strings/header';
 import router from '@/router';
@@ -49,7 +49,7 @@ const store = useUserInfoStore();
 
 const user = ref({
   id: 0,
-  nickname: '',
+  nickName: '',
   imageUrl: ''
 });
 
@@ -120,7 +120,7 @@ const saveInfo = async (token: string) => {
     store.setAllInfo(res.data, token);
     user.value = {
       id: res.data.id,
-      nickname: res.data.nickname,
+      nickName: res.data.nickName,
       imageUrl: res.data.imageUrl
     };
     return true;
