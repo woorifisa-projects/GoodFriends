@@ -17,6 +17,8 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.profile.domain.Profile;
+import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -36,14 +38,17 @@ public class AdminService {
 
     private final S3Service s3Service;
 
+    private final ProfileRepository profileRepository;
+
     private final TokenCreator tokenCreator;
     public AdminService(AdminRepository adminRepository, ProductRepository productRepository,
                         ProductImageRepository productImageRepository, S3Service s3Service,
-                        TokenCreator tokenCreator) {
+                        ProfileRepository profileRepository, TokenCreator tokenCreator) {
         this.adminRepository = adminRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.s3Service = s3Service;
+        this.profileRepository = profileRepository;
         this.tokenCreator = tokenCreator;
     }
 
@@ -108,9 +113,10 @@ public class AdminService {
         return products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
+                    Profile profile = profileRepository.findByUserId(product.getUser().getId()).orElseThrow(()-> new RuntimeException("유저의 프로필이 없습니다."));
 
                     return new ProductViewAllResponse(
-                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
+                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress());
                 })
                 .collect(Collectors.toList());
     }
