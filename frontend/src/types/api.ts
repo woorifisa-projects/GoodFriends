@@ -5,6 +5,11 @@ export interface IResultType<T> {
   data?: T;
 }
 
+export interface INoContent {
+  isSuccess: boolean;
+  message: string;
+}
+
 export interface IGetOAuthURI {
   oAuthUri: string;
 }
@@ -20,11 +25,6 @@ export interface IAdminLoginRequest {
   password: string;
 }
 
-export interface IApiSuccess {
-  isSuccess: boolean;
-  message: string;
-}
-
 export interface IGetAccessToken {
   id: string;
   accessToken: string;
@@ -32,9 +32,16 @@ export interface IGetAccessToken {
 
 export interface IProfile {
   id: number;
-  address: string;
   email: string;
   imageUrl: string;
-  nickname: string;
-  phoneNumber: string;
+  address: string;
+  nickName: string;
+  mobileNumber: string;
+}
+
+export interface IProfileEdit {
+  email: string;
+  address: string;
+  nickName: string;
+  mobileNumber: string;
 }
