@@ -11,6 +11,8 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.profile.domain.Profile;
+import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
@@ -32,11 +34,14 @@ public class ProductService {
 
     private final S3Service s3Service;
 
-    public ProductService(UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service) {
+    private final ProfileRepository profileRepository;
+
+    public ProductService(UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service, ProfileRepository profileRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.s3Service = s3Service;
+        this.profileRepository = profileRepository;
     }
 
     public ProductSaveResponse saveProduct(Long userId, ProductSaveRequest request) throws IOException {
@@ -143,5 +148,10 @@ public class ProductService {
     public boolean verifyUser(Long userId, Long productId) {
         Product product = productRepository.getById(productId);
         return product.getUser().getId() == userId;
+    }
+
+    public boolean existProfile(Long userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        return profile != null;
     }
 }

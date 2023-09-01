@@ -34,9 +34,15 @@ public class ProductController {
     public ResponseEntity<Long> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                             @RequestPart ProductSaveRequest request,
                                             @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-        ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
-        ProductSaveResponse response = productService.saveProduct(loginUser.getId(), productSaveRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response.getId()); // 201
+        //프로필 등록해야 상품 등록 가능하도록
+        if(!productService.existProfile(loginUser.getId())) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN); // 403
+        }
+        else{
+            ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
+            ProductSaveResponse response = productService.saveProduct(loginUser.getId(), productSaveRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response.getId()); // 201
+        }
     }
 
     @GetMapping("/view")
@@ -56,7 +62,7 @@ public class ProductController {
                                                                      @PathVariable Long productId){
         if(productService.verifyUser(loginUser.getId(), productId)) {
             ProductUpdateResponse response = productService.showSelectedProduct(productId);
-            return ResponseEntity.ok().body(response); // 204
+            return ResponseEntity.ok().body(response); // 200
         }
         else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN); // 403
