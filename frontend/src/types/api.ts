@@ -29,3 +29,12 @@ export interface IGetAccessToken {
   id: string;
   accessToken: string;
 }
+
+export interface IProfile {
+  id: number;
+  address: string;
+  email: string;
+  imageUrl: string;
+  nickname: string;
+  phoneNumber: string;
+}
