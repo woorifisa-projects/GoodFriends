@@ -6,6 +6,7 @@ import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileUpdateResponse;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
@@ -42,5 +43,15 @@ public class ProfileService {
             profile.updateAddress(request.getAddress());
             profileRepository.save(profile);
         }
+    }
+
+    public ProfileViewResponse viewProfile(Long userId) {
+        User user = userRepository.getById(userId);
+
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        if(profile==null){
+            return new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), null, null);
+        }
+        return new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), profile.getAddress(), profile.getMobilePhone());
     }
 }
