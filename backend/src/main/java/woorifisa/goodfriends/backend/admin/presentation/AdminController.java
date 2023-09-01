@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.application.AdminService;
 import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
+import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
@@ -90,7 +91,17 @@ public class AdminController {
 
     //관리자가 사용자 정보를 삭제
     @DeleteMapping("/user/delete/{userId}")
-    public void deleteUser(@PathVariable Long userId){
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
+
         adminService.deleteUserInfo(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+    }
+
+    //관리자가 사용자 정보 업데이트
+    @PutMapping("/user/edit/{userId}")
+    public ResponseEntity<Void> updateUserInfo(@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest){
+        adminService.updateUserInfo(userId,userUpdateRequest);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+
     }
 }

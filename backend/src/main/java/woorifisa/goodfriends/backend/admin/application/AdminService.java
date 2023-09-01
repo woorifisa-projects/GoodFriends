@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
+import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
 import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
@@ -197,5 +198,19 @@ public class AdminService {
          userRepository.deleteById(userId);
     }
 
+    // 관리자가 사용자 정보 수정
+    public void updateUserInfo(Long userId, UserUpdateRequest request){
+        User user = userRepository.getById(userId);
+        userRepository.save(User.builder()
+                        .id(userId)
+                        .email(user.getEmail())
+                        .nickname(request.getNickname())
+                        .profileImageUrl(user.getProfileImageUrl())
+                        .ban(request.getBanCount())
+                        .activated(request.getActivated())
+                        .createdAt(user.getCreatedAt())
+                        .build());
+
+    }
 
 }

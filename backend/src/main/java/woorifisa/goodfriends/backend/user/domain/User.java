@@ -1,12 +1,15 @@
 package woorifisa.goodfriends.backend.user.domain;
 
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 
 import javax.persistence.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@SuperBuilder
 @Table(name = "users")
 @Entity
 public class User extends BaseTimeEntity {
@@ -28,6 +31,7 @@ public class User extends BaseTimeEntity {
 
     private int ban;
 
+    private  boolean activated;
     protected User() {
     }
 
@@ -62,6 +66,10 @@ public class User extends BaseTimeEntity {
 
     public int getBan() {
         return ban;
+    }
+
+    public boolean isActivated() {
+        return activated;
     }
 
     public void updateNickname(String nickname) {
