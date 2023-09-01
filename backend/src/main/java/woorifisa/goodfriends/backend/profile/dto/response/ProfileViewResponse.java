@@ -2,16 +2,12 @@ package woorifisa.goodfriends.backend.profile.dto.response;
 
 public class ProfileViewResponse {
 
-    // id, profile image, nickname, email, address
-
-    private Long id;
-    private String imageUrl;
-    private String nickname;
-    private String email;
-    private String address;
-    private String phoneNumber;
-
-    public ProfileViewResponse(){}
+    private final Long id;
+    private final String imageUrl;
+    private final String nickname;
+    private final String email;
+    private final String address;
+    private final String phoneNumber;
 
     public ProfileViewResponse(Long id, String imageUrl, String nickname, String email, String address, String phoneNumber) {
         this.id = id;
