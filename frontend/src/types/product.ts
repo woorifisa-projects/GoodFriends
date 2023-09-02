@@ -34,3 +34,18 @@ export interface IEditProduct {
   description: string;
   sellPrice: string;
 }
+
+export interface IDetailProduct {
+  adminId: string;
+  id: string;
+  imageUrls: Array<string>;
+  nickName: string;
+  productCategory: string;
+  profileImageUrl: string;
+  description: string;
+  sellPrice: string;
+  status: string;
+  title: string;
+  userId: string;
+  createdDate: string;
+}

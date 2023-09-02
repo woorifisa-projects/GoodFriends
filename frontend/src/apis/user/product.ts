@@ -1,7 +1,7 @@
 import { apiInstance, headers } from '..';
 import { ApiType } from '@/constants/apiType';
 import type { INoContent, IResultType } from '@/types/api';
-import type { IProduct } from '@/types/product';
+import type { IDetailProduct, IProduct } from '@/types/product';
 import { AxiosError, type AxiosResponse } from 'axios';
 
 const api = apiInstance();
@@ -9,7 +9,8 @@ const api = apiInstance();
 const productAPI = {
   endPoint: {
     getAll: `api/products/view`,
-    postProduct: `api/products`
+    postProduct: `api/products`,
+    getProduct: `api/products/view/`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IProduct>>> => {
@@ -37,6 +38,16 @@ const productAPI = {
       })
       .catch((error: AxiosError) => {
         return { isSuccess: false, message: error.message };
+      });
+  },
+  getProduct: (productId: string): Promise<IResultType<IDetailProduct>> => {
+    return api
+      .get(productAPI.endPoint.getProduct + productId)
+      .then((res: AxiosResponse) => {
+        return { isSuccess: true, data: res.data, type: ApiType.PRODUCT };
+      })
+      .catch((error: AxiosError) => {
+        return { isSuccess: false, message: error.message, type: ApiType.PRODUCT };
       });
   }
 };
