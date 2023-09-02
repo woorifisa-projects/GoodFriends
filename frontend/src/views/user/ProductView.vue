@@ -50,12 +50,14 @@ import OrderModal from '@/components/OrderModal.vue';
 import { PRODUCT } from '@/constants/strings/product';
 import productAPI from '@/apis/user/product';
 import { CATEGORY } from '@/constants/category';
+import { useUserInfoStore } from '@/stores/userInfo';
 
+const store = useUserInfoStore();
 const route = useRoute();
 
 const id = route.params.id.toString();
 // TODO: 작성자 인지 아닌지 -> API 연결 필요
-const isWriter = ref(Math.random() < 0.5);
+const isWriter = ref(false);
 
 const product = ref({
   title: '',
@@ -67,7 +69,7 @@ const product = ref({
 });
 const viewImage = ref(0);
 const user = ref({
-  id: '',
+  id: 0,
   image: '',
   name: ''
 });
@@ -113,6 +115,11 @@ onMounted(async () => {
       image: data.profileImageUrl,
       name: data.nickName
     };
+    console.log(store.id, user.value.id);
+    if (store.id > 0) {
+      isWriter.value = user.value.id === store.id;
+      console.log(isWriter.value, user.value.id, store.id);
+    } else isWriter.value = false;
   } else {
     alert(res.message);
     router.go(-1);

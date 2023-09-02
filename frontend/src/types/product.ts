@@ -46,6 +46,6 @@ export interface IDetailProduct {
   sellPrice: string;
   status: string;
   title: string;
-  userId: string;
+  userId: number;
   createdDate: string;
 }
