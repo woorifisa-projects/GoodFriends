@@ -27,7 +27,6 @@ const props = defineProps({
 });
 
 const onClick = (item: IItem) => {
-  console.log(item);
   // TODO: 상세 페이지 완성 후 수정 + 삭제 기능 추가할 시 삭제 및 페이지 이동으로 수정
 };
 </script>

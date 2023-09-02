@@ -18,7 +18,6 @@ const profileAPI = {
       })
       .then((res: AxiosResponse) => {
         const { data } = res;
-        console.log(data);
         return { isSuccess: true, data, type: ApiType.PROFILE };
       })
       .catch((error: AxiosError) => {
@@ -47,11 +46,9 @@ const profileAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log(res);
         return { isSuccess: true, message: '' };
       })
       .catch((error: AxiosError) => {
-        console.log(error.message);
         return { isSuccess: false, message: error.message };
       });
   }

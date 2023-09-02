@@ -50,7 +50,6 @@ const loginAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log(res);
         return { isSuccess: true, message: '로그아웃 성공' };
       })
       .catch((error: AxiosError) => {

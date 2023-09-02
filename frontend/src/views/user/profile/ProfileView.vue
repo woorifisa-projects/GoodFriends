@@ -75,7 +75,6 @@ const onClickEdit = async () => {
     isDisabled.value = false;
   } else if (!isDisabled.value) {
     if (!checkPhoneNumber(userInputInfo.value.mobileNumber)) {
-      console.log(userInputInfo.value.mobileNumber);
       alert(ALERT.PHONE);
       return;
     }

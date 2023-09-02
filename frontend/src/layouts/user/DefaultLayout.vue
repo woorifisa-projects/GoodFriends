@@ -15,7 +15,6 @@ import LoadingIcon from '@/components/LoadingIcon.vue';
 import { useLoadingStore } from '@/stores/loading';
 
 const store = useLoadingStore();
-console.log(store.isLoading);
 </script>
 
 <style scoped>
