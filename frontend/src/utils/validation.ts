@@ -29,7 +29,11 @@ export const checkProductValue = (product: IEditProduct) => {
   if (product.description.length < 10) {
     return { isSuccess: false, type: 'description' };
   }
-  if (!product.productCategory.length || !CATEGORY[product.productCategory]) {
+  if (
+    product.productCategory === 'ALL' ||
+    !product.productCategory.length ||
+    !CATEGORY[product.productCategory]
+  ) {
     return { isSuccess: false, type: 'category' };
   }
   return { isSuccess: true };
