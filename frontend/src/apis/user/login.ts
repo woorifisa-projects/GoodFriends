@@ -1,6 +1,6 @@
 import { apiInstance } from '..';
 import { ApiType } from '@/constants/apiType';
-import type { IResultType, IGetOAuthURI, IApiSuccess, IGetAccessToken } from '@/types/api';
+import type { IResultType, IGetOAuthURI, IGetAccessToken, INoContent } from '@/types/api';
 import { AxiosError, type AxiosResponse } from 'axios';
 
 const api = apiInstance();
@@ -41,7 +41,7 @@ const loginAPI = {
         return { isSuccess: false, message: e.message, type: ApiType.LOGIN };
       });
   },
-  logout: (id: string, token: string): Promise<IApiSuccess> => {
+  logout: (id: string, token: string): Promise<INoContent> => {
     return api
       .get(loginAPI.endPoint.logout, {
         params: { id },
