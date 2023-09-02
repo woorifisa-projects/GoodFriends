@@ -37,13 +37,23 @@ const profileAPI = {
         return { isSuccess: false, message: error.message };
       });
   },
-  editProfileImg: (token: string) => {
+  editProfileImg: (token: string, formData: FormData): Promise<INoContent> => {
     return api
-      .patch(profileAPI.endPoint.editProfileImg, {
-        headers: { Authorization: `Bearer ${token}` }
+      .patch(profileAPI.endPoint.editProfileImg, formData, {
+        headers: {
+          ...headers,
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
       })
-      .then((res: AxiosResponse) => {})
-      .catch((error: AxiosError) => {});
+      .then((res: AxiosResponse) => {
+        console.log(res);
+        return { isSuccess: true, message: '' };
+      })
+      .catch((error: AxiosError) => {
+        console.log(error.message);
+        return { isSuccess: false, message: error.message };
+      });
   }
 };
 

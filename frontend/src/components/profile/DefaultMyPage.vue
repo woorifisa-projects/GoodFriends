@@ -4,7 +4,7 @@
       <div class="side">
         <div class="img-wrap">
           <div class="img">
-            <img :src="user.image" alt="profile img" />
+            <img :src="user.imageUrl" alt="profile img" />
           </div>
           <div class="profile-img-upload">
             <input type="file" id="profile-image" @change="onClickProfileImageUpload" />
@@ -54,16 +54,19 @@
 
 <script setup lang="ts">
 import { PROFILE_SIDEBAR } from '@/constants/strings/profile';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import image from '@/assets/tmp/images/image.png';
 import { uploadFile } from '@/utils/file';
+import { useUserInfoStore } from '@/stores/userInfo';
+import profileAPI from '@/apis/user/profile';
+
 const route = useRoute();
+const store = useUserInfoStore();
 
 const user = ref({
-  image,
-  name: 'name',
-  id: route.params.id
+  imageUrl: store.imageUrl,
+  nickName: store.nickName,
+  id: store.id
 });
 
 const navList = ref([
@@ -82,16 +85,30 @@ const navList = ref([
 ]);
 
 const onClickProfileImageUpload = async (event: Event) => {
-  // TODO: 이미지 유효성 검사 및 저장
+  // TODO: 이미지 유효성 검사
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
   if (!fileList) return;
 
   const uploadImageFile: Array<File> = [];
   const previewImg: Array<string> = [];
   await uploadFile('ima', fileList, previewImg, 0, uploadImageFile);
-
-  user.value.image = previewImg[0];
+  const formData = new FormData();
+  formData.append('multipartFile', fileList[0]);
+  const res = await profileAPI.editProfileImg(store.accessToken, formData);
+  if (res.isSuccess) {
+    user.value.imageUrl = previewImg[0];
+  } else {
+    alert(res.message);
+  }
 };
+
+watchEffect(() => {
+  user.value = {
+    imageUrl: store.imageUrl,
+    nickName: store.nickName,
+    id: store.id
+  };
+});
 </script>
 
 <style scoped>
