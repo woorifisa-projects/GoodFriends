@@ -49,8 +49,8 @@
           <span for="category">{{ PRODUCT.CATEGORY }}</span>
           <select name="" id="" v-model="selectedCategory">
             <option disabled value="0">{{ PRODUCT.PLEASE_SELECT }}</option>
-            <option v-for="category in categories" :key="category.id" :value="category.id">
-              {{ category.name }}
+            <option v-for="(category, index) in categories" :key="index" :value="category">
+              {{ CATEGORY[category] }}
             </option>
           </select>
         </div>
@@ -64,12 +64,14 @@
 </template>
 
 <script setup lang="ts">
-import type { ICategory } from '@/types/product';
 import { ref } from 'vue';
 import { dateFormat } from '@/utils/format';
 import { uploadFile } from '@/utils/file';
 import { useRoute } from 'vue-router';
 import { PRODUCT } from '@/constants/strings/product';
+import { useUserInfoStore } from '@/stores/userInfo';
+import { CATEGORY_LIST } from '@/constants/category';
+import { CATEGORY } from '@/constants/category';
 
 const props = defineProps({
   type: {
@@ -80,30 +82,7 @@ const props = defineProps({
     required: true
   }
 });
-
-// TODO: 수정 -> 서버로부터
-const categories = ref<Array<ICategory>>([
-  {
-    id: 1,
-    name: '가전'
-  },
-  {
-    id: 2,
-    name: '2'
-  },
-  {
-    id: 3,
-    name: '3'
-  },
-  {
-    id: 4,
-    name: '4'
-  },
-  {
-    id: 5,
-    name: '5'
-  }
-]);
+const categories = CATEGORY_LIST;
 
 const inputPrice = ref(0);
 const inputName = ref('');
@@ -134,7 +113,7 @@ const onClickDeleteBtn = (index: number) => {
   previewImg.value.splice(index, 1);
 };
 
-const submit = () => {
+const submit = async () => {
   if (props.type === 'edit') {
     // TODO: edit 관련 API 호출
     console.log('수정 버튼 클릭(EDIT)');
