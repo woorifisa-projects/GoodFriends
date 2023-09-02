@@ -1,15 +1,13 @@
 package woorifisa.goodfriends.backend.admin.application;
 
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
+import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
-import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
 import woorifisa.goodfriends.backend.auth.application.TokenCreator;
 import woorifisa.goodfriends.backend.auth.domain.AuthToken;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
@@ -25,7 +23,6 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
-import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordResponse;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
 import javax.transaction.Transactional;
@@ -78,8 +75,8 @@ public class AdminService {
         return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken());
     }
 
-    public ProductSaveResponse saveProduct(String root, ProductSaveRequest request) throws IOException {
-        Admin foundAdmin = adminRepository.findByRoot(root).orElseThrow(() -> new InvalidAdminException(root + "와 일치하는 아이디가 없습니다."));
+    public ProductSaveResponse saveProduct(long adminId, ProductSaveRequest request) throws IOException {
+        Admin foundAdmin = adminRepository.findById(adminId).orElseThrow(() -> new InvalidAdminException(adminId + "와 일치하는 아이디가 없습니다."));
 
         Product newProduct = createProduct(foundAdmin, request);
 
