@@ -45,7 +45,6 @@ public class ProfileController {
     @GetMapping("/me")  // 본인 프로필 조회
     public ResponseEntity<ProfileViewResponse> viewProfile(@AuthenticationPrincipal LoginUser loginUser) {
         ProfileViewResponse profileViewResponse = profileService.viewProfile(loginUser.getId());
-
         return ResponseEntity.ok().body(profileViewResponse);
     }
 }

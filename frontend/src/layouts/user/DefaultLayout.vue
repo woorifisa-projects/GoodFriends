@@ -2,6 +2,7 @@
   <div id="wrap">
     <DefaultHeader />
     <RouterView id="main" />
+    <LoadingIcon v-if="store.isLoading" />
     <DefaultFooter />
   </div>
 </template>
@@ -10,6 +11,10 @@
 import { RouterView } from 'vue-router';
 import DefaultHeader from '@/layouts/user/DefaultHeader.vue';
 import DefaultFooter from '@/layouts/user/DefaultFooter.vue';
+import LoadingIcon from '@/components/LoadingIcon.vue';
+import { useLoadingStore } from '@/stores/loading';
+
+const store = useLoadingStore();
 </script>
 
 <style scoped>

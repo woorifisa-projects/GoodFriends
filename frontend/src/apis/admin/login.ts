@@ -11,7 +11,6 @@ const adminLoginAPI = {
   },
   headers: {},
   login: (body: IAdminLoginRequest): Promise<IResultType<IAdminLoginResponse>> => {
-    console.log(body);
     return api
       .post(adminLoginAPI.endPoint.login, body)
       .then((res: AxiosResponse) => {
