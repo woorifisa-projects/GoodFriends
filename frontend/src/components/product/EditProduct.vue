@@ -110,14 +110,15 @@ const onChangeDate = (event: Event) => {
   registerDate.value = new Date(date);
 };
 
-const uploadImage = (event: Event) => {
+const uploadImage = async (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
   if (!fileList) return;
-  uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
+  await uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
 };
 
 const onClickDeleteBtn = (index: number) => {
   previewImg.value.splice(index, 1);
+  inputImage.value.splice(index, 1);
 };
 
 const submit = async () => {
