@@ -4,13 +4,6 @@ export interface ICategory {
   name: string;
 }
 
-export interface IProductEdit {
-  price: number;
-  name: string;
-  content: string;
-  category: number;
-  date: Date;
-}
 export interface IProduct {
   id: number;
   imageUrl: string;
@@ -33,4 +26,11 @@ export interface IEditProductAdmin {
   selectedCategory: string;
   previewImg: string;
   inputImage: string;
+}
+
+export interface IEditProduct {
+  title: string;
+  productCategory: string;
+  description: string;
+  sellPrice: string;
 }

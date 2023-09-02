@@ -3,15 +3,15 @@
     <div class="form">
       <div class="input-detail">
         <div class="title detail">
-          <input type="text" id="title" placeholder="제목을 입력해주세요" v-model="inputName" />
+          <input type="text" id="title" placeholder="제목을 입력해주세요" v-model="data.title" />
         </div>
         <div class="price detail">
           <label for="price">{{ PRODUCT.PRICE }}</label>
-          <input type="number" id="price" v-model="inputPrice" />
+          <input type="number" id="price" v-model="data.sellPrice" />
         </div>
         <div class="explain detail">
           <label for="explain">{{ PRODUCT.DESCRIPTION }}</label>
-          <textarea name="" id="explain" cols="30" rows="10" v-model="inputContent"></textarea>
+          <textarea name="" id="explain" cols="30" rows="10" v-model="data.description"></textarea>
         </div>
         <div class="buttons">
           <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">
@@ -47,9 +47,9 @@
         </div>
         <div class="category">
           <span for="category">{{ PRODUCT.CATEGORY }}</span>
-          <select name="" id="" v-model="selectedCategory">
-            <option disabled value="0">{{ PRODUCT.PLEASE_SELECT }}</option>
-            <option v-for="(category, index) in categories" :key="index" :value="category">
+          <select name="" id="" v-model="data.productCategory">
+            <option disabled value="ALL">{{ PRODUCT.PLEASE_SELECT }}</option>
+            <option v-for="(category, index) in categories.slice(1)" :key="index" :value="category">
               {{ CATEGORY[category] }}
             </option>
           </select>
@@ -72,6 +72,9 @@ import { PRODUCT } from '@/constants/strings/product';
 import { useUserInfoStore } from '@/stores/userInfo';
 import { CATEGORY_LIST } from '@/constants/category';
 import { CATEGORY } from '@/constants/category';
+import productAPI from '@/apis/user/product';
+import type { IEditProduct } from '@/types/product';
+import { checkProductValue } from '@/utils/validation';
 
 const props = defineProps({
   type: {
@@ -84,13 +87,17 @@ const props = defineProps({
 });
 const categories = CATEGORY_LIST;
 
-const inputPrice = ref(0);
-const inputName = ref('');
-const inputContent = ref('');
-const selectedCategory = ref('0');
+const data = ref<IEditProduct>({
+  title: '',
+  productCategory: 'ALL',
+  description: '',
+  sellPrice: ''
+});
+
 const inputImage = ref<Array<File>>([]);
 const previewImg = ref<Array<string>>([]);
 const registerDate = ref(new Date());
+const store = useUserInfoStore();
 
 if (props.type === 'edit') {
   const route = useRoute();
@@ -114,12 +121,32 @@ const onClickDeleteBtn = (index: number) => {
 };
 
 const submit = async () => {
+  // 모든 값들이 존재 하는지 체크
+  const checkData = checkProductValue(data.value);
+  if (!checkData.isSuccess) {
+    alert(checkData.type);
+  }
+
   if (props.type === 'edit') {
     // TODO: edit 관련 API 호출
     console.log('수정 버튼 클릭(EDIT)');
   } else if (props.type === 'add') {
     // TODO: add 관련 API 호출
     console.log('저장 버튼 클릭(ADD)');
+
+    const formData = new FormData();
+    Array.from(inputImage.value).map((v) => {
+      formData.append('multipartFiles', v);
+    });
+    console.log(formData.getAll('multipartFiles'));
+    formData.append(
+      'request',
+      new Blob([JSON.stringify(data.value)], {
+        type: 'application/json'
+      })
+    );
+    const res = await productAPI.postProduct(store.accessToken, formData);
+    console.log(res);
   }
 };
 

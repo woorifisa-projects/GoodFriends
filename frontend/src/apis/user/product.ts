@@ -1,4 +1,4 @@
-import { apiInstance } from '..';
+import { apiInstance, headers } from '..';
 import { ApiType } from '@/constants/apiType';
 import type { IResultType } from '@/types/api';
 import type { IProduct } from '@/types/product';
@@ -8,7 +8,8 @@ const api = apiInstance();
 
 const productAPI = {
   endPoint: {
-    getAll: `api/products/view`
+    getAll: `api/products/view`,
+    postProduct: `api/products`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IProduct>>> => {
@@ -20,6 +21,22 @@ const productAPI = {
       })
       .catch((err: AxiosError) => {
         return { isSuccess: false, message: err.message, type: ApiType.PRODUCT };
+      });
+  },
+  postProduct: (token: string, formData: FormData) => {
+    return api
+      .post(productAPI.endPoint.postProduct, formData, {
+        headers: {
+          ...headers,
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res: AxiosResponse) => {
+        console.log(res);
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
       });
   }
 };
