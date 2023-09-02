@@ -59,6 +59,7 @@ import { useRoute } from 'vue-router';
 import { uploadFile } from '@/utils/file';
 import { useUserInfoStore } from '@/stores/userInfo';
 import profileAPI from '@/apis/user/profile';
+import { useLoadingStore } from '@/stores/loading';
 
 const route = useRoute();
 const store = useUserInfoStore();
@@ -94,12 +95,17 @@ const onClickProfileImageUpload = async (event: Event) => {
   await uploadFile('ima', fileList, previewImg, 0, uploadImageFile);
   const formData = new FormData();
   formData.append('multipartFile', fileList[0]);
+
+  const loadingStore = useLoadingStore();
+
+  loadingStore.setLoading(true);
   const res = await profileAPI.editProfileImg(store.accessToken, formData);
   if (res.isSuccess) {
     user.value.imageUrl = previewImg[0];
   } else {
     alert(res.message);
   }
+  loadingStore.setLoading(false);
 };
 
 watchEffect(() => {
