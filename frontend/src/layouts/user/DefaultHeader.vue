@@ -16,13 +16,15 @@
           </button>
         </div>
         <div v-else>
-          <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">000님</button>
+          <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">
+            {{ user.nickName }} 님
+          </button>
           <div v-if="isPopoverOpen" class="popover" ref="popover">
             <div class="img">
-              <img :src="profileImg" alt="예시 이미지" />
+              <img :src="user.imageUrl" alt="예시 이미지" />
             </div>
             <div class="content">
-              <div>{{ userName }}</div>
+              <div>{{ user.nickName }}</div>
               <div @click="onClickMyProfile">{{ HEADER.POPOVER.MY_PAGE }}</div>
               <div @click="onClickLogoutBtn">{{ HEADER.POPOVER.LOGOUT }}</div>
             </div>
@@ -35,6 +37,7 @@
 
 <script setup lang="ts">
 import loginAPI from '@/apis/user/login';
+import profileAPI from '@/apis/user/profile';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
 import HEADER from '@/constants/strings/header';
 import router from '@/router';
@@ -43,7 +46,12 @@ import { goErrorWithReload, goOtherPage, goPageWithReload } from '@/utils/goPage
 import { onMounted, ref, watchEffect } from 'vue';
 
 const store = useUserInfoStore();
-const { userId, userName, profileImg } = store;
+
+const user = ref({
+  id: 0,
+  nickName: '',
+  imageUrl: ''
+});
 
 // TODO: login 구현후 수정
 const isLogin = ref(false);
@@ -66,9 +74,8 @@ const onClickLoginBtn = async () => {
 
 const onClickLogoutBtn = async () => {
   // TODO: login 구현후 수정 -> id 수정
-  const res = await loginAPI.logout('1', store.accessToken);
+  const res = await loginAPI.logout('3', store.accessToken);
   if (res.isSuccess) {
-    store.resetInfo();
     localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
     goPageWithReload();
   } else {
@@ -87,8 +94,7 @@ const onClickProfileBtn = (event: MouseEvent) => {
 
 const onClickMyProfile = () => {
   isPopoverOpen.value = false;
-  // TODO: user id로 수정
-  router.push('/profile/' + userId);
+  router.push('/profile/' + user.value.id);
 };
 
 const closePopover = (event: MouseEvent) => {
@@ -108,6 +114,23 @@ const openPopover = () => {
   isPopoverOpen.value = true;
 };
 
+const saveInfo = async (token: string) => {
+  const res = await profileAPI.getProfile(token);
+  if (res.isSuccess && res.data) {
+    store.setAllInfo(res.data, token);
+    user.value = {
+      id: res.data.id,
+      nickName: res.data.nickName,
+      imageUrl: res.data.imageUrl
+    };
+    return true;
+  } else {
+    alert(res.message);
+    localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
+    return false;
+  }
+};
+
 watchEffect(() => {
   if (isPopoverOpen.value) {
     window.addEventListener('click', closePopover);
@@ -119,17 +142,15 @@ watchEffect(() => {
 onMounted(async () => {
   const token = localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN);
   if (token) {
-    store.setUserToken(token);
-    isLogin.value = true;
-    // TODO: 프로필 정보 get
+    isLogin.value = await saveInfo(token);
     return;
   }
-  // TODO: refresh token 으로 access token 발급받는 api
-  // const res = await loginAPI.getAccessTokenWithRefresh();
-  // if (res.isSuccess && res.data?.accessToken) {
-  //   store.setUserToken(res.data?.accessToken);
-  //   return;
-  // }
+  const res = await loginAPI.getAccessTokenWithRefresh();
+  if (res.isSuccess && res.data) {
+    localStorage.setItem(LOCAL_STORAGE.ACCESS_TOKEN, res.data.accessToken);
+    goPageWithReload();
+  }
+  isLogin.value = false;
 });
 </script>
 

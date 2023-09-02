@@ -25,7 +25,6 @@ export const uploadFile = async (
           reader.readAsDataURL(file);
         });
         previewFile.push(res);
-        console.log('!@#');
         return [previewFile, savedFiles];
       } catch (err) {
         // TODO: error 처리

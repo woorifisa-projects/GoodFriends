@@ -1,21 +1,20 @@
 package woorifisa.goodfriends.backend.profile.dto.response;
 
 public class ProfileViewResponse {
-
     private final Long id;
     private final String imageUrl;
-    private final String nickname;
+    private final String nickName;
     private final String email;
     private final String address;
-    private final String phoneNumber;
+    private final String mobileNumber;
 
-    public ProfileViewResponse(Long id, String imageUrl, String nickname, String email, String address, String phoneNumber) {
+    public ProfileViewResponse(Long id, String imageUrl, String nickName, String email, String address, String mobileNumber) {
         this.id = id;
         this.imageUrl = imageUrl;
-        this.nickname = nickname;
+        this.nickName = nickName;
         this.email = email;
         this.address = address;
-        this.phoneNumber = phoneNumber;
+        this.mobileNumber = mobileNumber;
     }
 
     public Long getId() {
@@ -26,8 +25,8 @@ public class ProfileViewResponse {
         return imageUrl;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getNickName() {
+        return nickName;
     }
 
     public String getEmail() {
@@ -38,7 +37,7 @@ public class ProfileViewResponse {
         return address;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getMobileNumber() {
+        return mobileNumber;
     }
 }

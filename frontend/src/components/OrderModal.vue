@@ -77,7 +77,6 @@ const onClickOrderSubmit = () => {
     !checkTime(wantedTime.value[1]) ||
     compareTime(wantedTime.value[0], wantedTime.value[1]) < 0
   ) {
-    console.log(checkTime(wantedTime.value[0]));
     alert(ORDER_MODAL.ALERT_TIME);
     return;
   }
