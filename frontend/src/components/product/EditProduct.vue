@@ -126,28 +126,28 @@ const submit = async () => {
   const checkData = checkProductValue(data.value);
   if (!checkData.isSuccess) {
     alert(checkData.type);
+    return;
   }
+  const formData = new FormData();
+  Array.from(inputImage.value).map((v) => {
+    formData.append('multipartFiles', v);
+  });
+  console.log(formData.getAll('multipartFiles'));
+  formData.append(
+    'request',
+    new Blob([JSON.stringify(data.value)], {
+      type: 'application/json'
+    })
+  );
 
   if (props.type === 'edit') {
     // TODO: edit 관련 API 호출
     console.log('수정 버튼 클릭(EDIT)');
   } else if (props.type === 'add') {
-    // TODO: add 관련 API 호출
-    console.log('저장 버튼 클릭(ADD)');
-
-    const formData = new FormData();
-    Array.from(inputImage.value).map((v) => {
-      formData.append('multipartFiles', v);
-    });
-    console.log(formData.getAll('multipartFiles'));
-    formData.append(
-      'request',
-      new Blob([JSON.stringify(data.value)], {
-        type: 'application/json'
-      })
-    );
     const res = await productAPI.postProduct(store.accessToken, formData);
-    console.log(res);
+    if (!res.isSuccess) {
+      alert(res.message);
+    }
   }
 };
 
