@@ -51,9 +51,12 @@ import { PRODUCT } from '@/constants/strings/product';
 import productAPI from '@/apis/user/product';
 import { CATEGORY } from '@/constants/category';
 import { useUserInfoStore } from '@/stores/userInfo';
+import { useLoadingStore } from '@/stores/loading';
+import { goPageWithReload } from '@/utils/goPage';
 
 const store = useUserInfoStore();
 const route = useRoute();
+const loadingStore = useLoadingStore();
 
 const id = route.params.id.toString();
 // TODO: 작성자 인지 아닌지 -> API 연결 필요
@@ -86,8 +89,17 @@ const onClickEditBtn = () => {
   router.push('/product/edit/' + id);
 };
 
-const onClickDelete = () => {
-  // TODO: delete
+const onClickDelete = async () => {
+  loadingStore.setLoading(true);
+  const res = await productAPI.deleteProduct(store.accessToken, id);
+  if (res.isSuccess) {
+    console.log('success');
+    goPageWithReload('');
+    loadingStore.setLoading(true);
+  } else {
+    alert(res.message);
+    loadingStore.setLoading(true);
+  }
 };
 
 const onClickReport = () => {
@@ -115,7 +127,6 @@ onMounted(async () => {
       image: data.profileImageUrl,
       name: data.nickName
     };
-    console.log(store.id, user.value.id);
     if (store.id > 0) {
       isWriter.value = user.value.id === store.id;
       console.log(isWriter.value, user.value.id, store.id);
