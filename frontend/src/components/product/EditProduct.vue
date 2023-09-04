@@ -77,6 +77,8 @@ import type { IEditProduct } from '@/types/product';
 import { checkProductValue } from '@/utils/validation';
 import { goPageWithReload } from '@/utils/goPage';
 
+const route = useRoute();
+
 const props = defineProps({
   type: {
     type: String,
@@ -86,6 +88,7 @@ const props = defineProps({
     required: true
   }
 });
+const id = route.params.id?.toString() || '0';
 const categories = CATEGORY_LIST;
 
 const data = ref<IEditProduct>({
@@ -127,17 +130,18 @@ const submit = async () => {
   Array.from(inputImage.value).map((v) => {
     formData.append('multipartFiles', v);
   });
-  console.log(formData.getAll('multipartFiles'));
+
   formData.append(
     'request',
     new Blob([JSON.stringify(data.value)], {
       type: 'application/json'
     })
   );
-
   if (props.type === 'edit') {
-    // TODO: edit 관련 API 호출
-    console.log('수정 버튼 클릭(EDIT)');
+    const res = await productAPI.editProduct(store.accessToken, id, formData);
+    if (!res.isSuccess) {
+      alert(res.message);
+    }
   } else if (props.type === 'add') {
     const res = await productAPI.postProduct(store.accessToken, formData);
     if (!res.isSuccess) {
@@ -164,11 +168,9 @@ onMounted(async () => {
   if (props.type === 'add') {
     return;
   }
-  const route = useRoute();
-  const id = route.params.id.toString();
-
   const res = await productAPI.getEditProduct(store.accessToken, id);
   if (res.data === undefined || !res.isSuccess) return;
+
   const resData = res.data;
   const imageUrl = resData.imageUrls || [];
 
@@ -184,7 +186,7 @@ onMounted(async () => {
 
   images.forEach(async (promiseFile: Promise<File | null>) => {
     const file = await promiseFile;
-    if (!file) throw new Error('!!!');
+    if (!file) throw new Error('파일 변환 과정중 오류 발생');
     inputImage.value.push(file);
   });
 
@@ -242,7 +244,6 @@ onMounted(async () => {
 }
 
 .input-detail > .detail {
-  /* border: 1px solid black; */
   padding: 12px;
   display: flex;
   flex-direction: column;
