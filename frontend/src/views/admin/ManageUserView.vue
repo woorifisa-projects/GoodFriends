@@ -16,16 +16,15 @@
 <script setup lang="ts">
 import Table from '@/components/CommonTable.vue';
 import router from '@/router';
+import type { IDataType } from '@/types/table';
 
-import type { dataType } from '@/types/table';
-
-// const onClickDetailUser = (item: dataType) => {
-//   router.push({
-//     name: 'admin manage user detail',
-//     params: { id: item.id },
-//     state: { item }
-//   });
-// };
+const onClickDetailUser = (item: IDataType) => {
+  router.push({
+    name: 'admin manage user detail',
+    params: { id: item.id },
+    state: { item }
+  });
+};
 
 //TODO: api 사용자데이터 가져오기
 const tableDataKey = [
