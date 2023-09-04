@@ -64,9 +64,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { dateFormat } from '@/utils/format';
-import { uploadFile } from '@/utils/file';
+import { uploadFile, urlToFile } from '@/utils/file';
 import { useRoute } from 'vue-router';
 import { PRODUCT } from '@/constants/strings/product';
 import { useUserInfoStore } from '@/stores/userInfo';
@@ -75,6 +75,7 @@ import { CATEGORY } from '@/constants/category';
 import productAPI from '@/apis/user/product';
 import type { IEditProduct } from '@/types/product';
 import { checkProductValue } from '@/utils/validation';
+import { goPageWithReload } from '@/utils/goPage';
 
 const props = defineProps({
   type: {
@@ -99,12 +100,6 @@ const previewImg = ref<Array<string>>([]);
 const registerDate = ref(new Date());
 const store = useUserInfoStore();
 
-if (props.type === 'edit') {
-  const route = useRoute();
-  const id = route.params.id;
-
-  // TODO: API 요청 -> price, name, content, category, image, date 가져오기
-}
 const onChangeDate = (event: Event) => {
   const date = (event.target as HTMLInputElement).value;
   registerDate.value = new Date(date);
@@ -164,6 +159,42 @@ const remove = () => {
     console.log('삭제 버튼 클릭');
   }
 };
+
+onMounted(async () => {
+  if (props.type === 'add') {
+    return;
+  }
+  const route = useRoute();
+  const id = route.params.id.toString();
+
+  const res = await productAPI.getEditProduct(store.accessToken, id);
+  if (res.data === undefined || !res.isSuccess) return;
+  const resData = res.data;
+  const imageUrl = resData.imageUrls || [];
+
+  previewImg.value = imageUrl;
+
+  const images = await urlToFile(imageUrl);
+
+  if (images === null) {
+    alert('이미지를 불러오는 중 오류가 발생했습니다');
+    goPageWithReload('product/' + id);
+    return;
+  }
+
+  images.forEach(async (promiseFile: Promise<File | null>) => {
+    const file = await promiseFile;
+    if (!file) throw new Error('!!!');
+    inputImage.value.push(file);
+  });
+
+  data.value = {
+    title: resData.title,
+    productCategory: resData.productCategory,
+    description: resData.description,
+    sellPrice: resData.sellPrice
+  };
+});
 </script>
 
 <style scoped>
