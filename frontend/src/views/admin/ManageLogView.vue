@@ -10,11 +10,21 @@
 
 <script setup lang="ts">
 import Table from '@/components/CommonTable.vue';
+import manageLogAPI from '@/apis/admin/log';
+import { data } from 'node_modules/cypress/types/jquery';
+import type { Test } from 'mocha';
+import { pushScopeId } from 'vue';
+
+const test = await manageLogAPI.selectLog();
+console.log(test);
+if (test.isSuccess === true && test.data) {
+  console.log('test: ', test.data);
+}
 
 //TODO: api 로그데이터 가져오기
-const tableDataKey = ['user_id', 'nickname', 'banCount', 'authCheck', 'date'];
+const tableDataKey = ['email', 'nickname', 'banCount', 'lastModifiedAt'];
 const tableHeader = {
-  user_id: '계정',
+  email: '계정',
   nickname: '닉네임',
   banCount: '신고당한 횟수',
   authCheck: '인증여부',

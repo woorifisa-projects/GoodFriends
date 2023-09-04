@@ -45,3 +45,10 @@ export interface IProfileEdit {
   nickName: string;
   mobileNumber: string;
 }
+
+export interface IGetUserLog{
+  email: string;
+  nickName: string;
+  lastModified:string;
+  banCount: number;
+}
