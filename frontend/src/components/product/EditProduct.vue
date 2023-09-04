@@ -134,6 +134,10 @@ const submit = async () => {
     formData.append('multipartFiles', v);
   });
 
+  if (formData.getAll('multipartFiles').length === 0) {
+    formData.append('multipartFiles', new Blob());
+  }
+
   formData.append(
     'request',
     new Blob([JSON.stringify(data.value)], {
@@ -170,9 +174,7 @@ const save = (e: Event) => {
 };
 
 const remove = async () => {
-  console.log('!@3');
   if (props.type === 'edit') {
-    // TODO: 현재 게시물 삭제 API 호출
     console.log('삭제 버튼 클릭');
     loadingStore.setLoading(true);
     const res = await productAPI.deleteProduct(store.accessToken, id);
