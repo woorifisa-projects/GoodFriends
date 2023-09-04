@@ -30,11 +30,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "profile_image_url", nullable = false)
     private String profileImageUrl;
 
-    @ColumnDefault("0")
     private int ban;
 
-    @ColumnDefault("0")
     private  boolean activated;
+
     protected User() {
     }
 
@@ -69,10 +68,6 @@ public class User extends BaseTimeEntity {
 
     public int getBan() {
         return ban;
-    }
-
-    public boolean isActivated() {
-        return activated;
     }
 
     public void updateNickname(String nickname) {

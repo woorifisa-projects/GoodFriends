@@ -207,7 +207,7 @@ public class AdminService {
                         .nickname(request.getNickname())
                         .profileImageUrl(user.getProfileImageUrl())
                         .ban(request.getBanCount())
-                        .activated(request.getActivated())
+//  비활성화              .activated(request.getActivated())
                         .createdAt(user.getCreatedAt())
                         .build());
 
