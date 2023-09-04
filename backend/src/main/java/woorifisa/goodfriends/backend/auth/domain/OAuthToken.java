@@ -1,5 +1,7 @@
 package woorifisa.goodfriends.backend.auth.domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ public class OAuthToken {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(name = "refresh_token")

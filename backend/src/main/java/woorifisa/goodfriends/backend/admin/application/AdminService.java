@@ -2,9 +2,11 @@ package woorifisa.goodfriends.backend.admin.application;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
+import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
@@ -31,6 +33,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -204,4 +207,25 @@ public class AdminService {
                 .collect(Collectors.toList());
         return new UserLogRecordsResponse(userResponses);
     }
+
+    // 관리자가 사용자 정보 삭제
+    public void deleteUserInfo(Long userId){
+         userRepository.deleteById(userId);
+    }
+
+    // 관리자가 사용자 정보 수정
+    public void updateUserInfo(Long userId, UserUpdateRequest request){
+        User user = userRepository.getById(userId);
+        userRepository.save(User.builder()
+                        .id(userId)
+                        .email(user.getEmail())
+                        .nickname(request.getNickname())
+                        .profileImageUrl(user.getProfileImageUrl())
+                        .ban(request.getBanCount())
+//  비활성화              .activated(request.getActivated())
+                        .createdAt(user.getCreatedAt())
+                        .build());
+
+    }
+
 }
