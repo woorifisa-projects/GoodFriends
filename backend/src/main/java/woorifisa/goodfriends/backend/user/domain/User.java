@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.user.domain;
 
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
@@ -29,8 +30,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "profile_image_url", nullable = false)
     private String profileImageUrl;
 
+    @ColumnDefault("0")
     private int ban;
 
+    @ColumnDefault("0")
     private  boolean activated;
     protected User() {
     }
