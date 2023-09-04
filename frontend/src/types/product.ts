@@ -1,15 +1,9 @@
+// TODO: 삭제 필요
 export interface ICategory {
   id: number;
   name: string;
 }
 
-export interface IProductEdit {
-  price: number;
-  name: string;
-  content: string;
-  category: number;
-  date: Date;
-}
 export interface IProduct {
   id: number;
   imageUrl: string;
@@ -32,4 +26,28 @@ export interface IEditProductAdmin {
   selectedCategory: string;
   previewImg: string;
   inputImage: string;
+}
+
+export interface IEditProduct {
+  title: string;
+  productCategory: string;
+  description: string;
+  sellPrice: string;
+  status?: string;
+  imageUrls?: Array<string>;
+}
+
+export interface IDetailProduct {
+  adminId: string;
+  id: string;
+  imageUrls: Array<string>;
+  nickName: string;
+  productCategory: string;
+  profileImageUrl: string;
+  description: string;
+  sellPrice: string;
+  status: string;
+  title: string;
+  userId: number;
+  createdDate: string;
 }
