@@ -6,23 +6,6 @@ import { apiInstance } from '..';
 
 const api = apiInstance();
 
-// const manageLogAPI = {
-//   endPoint: {
-//     selectLog: 'api/admin/user-log/record' // API 엔드포인트 경로를 수정합니다.
-//   },
-//   headers: {}, 
-//   selectLog: async () => {
-//     try {
-//       const response = await api.get(manageLogAPI.endPoint.selectLog);
-//       const data = response.data;
-//       console.log(data);
-//     } catch (error) {
-//       console.error('API 호출 중 오류 발생:', error);
-//     }
-//   }
-// };
-
-
 const manageLogAPI = {
 endPoint: {
     userlog: 'api/admin/user-log/record'

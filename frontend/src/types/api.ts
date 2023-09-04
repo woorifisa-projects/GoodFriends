@@ -48,7 +48,7 @@ export interface IProfileEdit {
 
 export interface IGetUserLog{
   email: string;
-  nickName: string;
-  lastModified:string;
+  nickname: string;
+  lastModifiedAt:string;
   banCount: number;
 }
