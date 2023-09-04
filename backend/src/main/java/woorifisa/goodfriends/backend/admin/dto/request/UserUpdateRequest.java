@@ -5,11 +5,11 @@ import lombok.Builder;
 
 public class UserUpdateRequest {
 
-    private String nickname;
+    private final String nickname;
 
-    private boolean activated;
+    private final boolean activated;
 
-    private int banCount;
+    private final int banCount;
 
     public UserUpdateRequest(String nickname, boolean activated, int banCount) {
         this.nickname = nickname;
