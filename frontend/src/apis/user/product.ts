@@ -12,7 +12,8 @@ const productAPI = {
     postProduct: `api/products`,
     getProduct: `api/products/view/`,
     getEditProduct: `api/products/edit/`,
-    editProduct: `api/products/edit/`
+    editProduct: `api/products/edit/`,
+    deleteProduct: `api/products/delete/`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IProduct>>> => {
@@ -74,6 +75,23 @@ const productAPI = {
         headers: {
           ...headers,
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res: AxiosResponse) => {
+        console.log(res);
+        return { isSuccess: true, message: '' };
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        return { isSuccess: false, message: error.message };
+      });
+  },
+  deleteProduct: (token: string, productId: string): Promise<INoContent> => {
+    return api
+      .delete(productAPI.endPoint.deleteProduct + productId, {
+        headers: {
+          ...headers,
           Authorization: `Bearer ${token}`
         }
       })

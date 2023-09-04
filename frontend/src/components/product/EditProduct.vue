@@ -169,10 +169,21 @@ const save = (e: Event) => {
   }
 };
 
-const remove = () => {
+const remove = async () => {
+  console.log('!@3');
   if (props.type === 'edit') {
     // TODO: 현재 게시물 삭제 API 호출
     console.log('삭제 버튼 클릭');
+    loadingStore.setLoading(true);
+    const res = await productAPI.deleteProduct(store.accessToken, id);
+    if (res.isSuccess) {
+      console.log('success');
+      goPageWithReload('');
+      loadingStore.setLoading(true);
+    } else {
+      alert(res.message);
+      loadingStore.setLoading(true);
+    }
   }
 };
 
