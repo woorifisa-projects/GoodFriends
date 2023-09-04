@@ -53,6 +53,7 @@ import { CATEGORY } from '@/constants/category';
 import { useUserInfoStore } from '@/stores/userInfo';
 import { useLoadingStore } from '@/stores/loading';
 import { goPageWithReload } from '@/utils/goPage';
+import { dateFormat } from '@/utils/format';
 
 const store = useUserInfoStore();
 const route = useRoute();
@@ -117,7 +118,7 @@ onMounted(async () => {
     product.value = {
       title: data.title,
       description: data.description,
-      createdDate: data.createdDate,
+      createdDate: dateFormat(new Date(data.createdDate)),
       productCategory: data.productCategory,
       sellPrice: data.sellPrice,
       imageUrls: data.imageUrls
