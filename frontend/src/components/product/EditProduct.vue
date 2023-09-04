@@ -76,8 +76,10 @@ import productAPI from '@/apis/user/product';
 import type { IEditProduct } from '@/types/product';
 import { checkProductValue } from '@/utils/validation';
 import { goPageWithReload } from '@/utils/goPage';
+import { useLoadingStore } from '@/stores/loading';
 
 const route = useRoute();
+const loadingStore = useLoadingStore();
 
 const props = defineProps({
   type: {
@@ -126,6 +128,7 @@ const submit = async () => {
     alert(checkData.type);
     return;
   }
+  loadingStore.setLoading(true);
   const formData = new FormData();
   Array.from(inputImage.value).map((v) => {
     formData.append('multipartFiles', v);
@@ -141,12 +144,21 @@ const submit = async () => {
     const res = await productAPI.editProduct(store.accessToken, id, formData);
     if (!res.isSuccess) {
       alert(res.message);
+      loadingStore.setLoading(false);
+
+      return;
     }
+    goPageWithReload('product/' + id);
+    loadingStore.setLoading(false);
   } else if (props.type === 'add') {
     const res = await productAPI.postProduct(store.accessToken, formData);
     if (!res.isSuccess) {
       alert(res.message);
+      loadingStore.setLoading(false);
+      return;
     }
+    goPageWithReload();
+    loadingStore.setLoading(false);
   }
 };
 
@@ -168,9 +180,13 @@ onMounted(async () => {
   if (props.type === 'add') {
     return;
   }
-  const res = await productAPI.getEditProduct(store.accessToken, id);
-  if (res.data === undefined || !res.isSuccess) return;
+  loadingStore.setLoading(true);
 
+  const res = await productAPI.getEditProduct(store.accessToken, id);
+  if (res.data === undefined || !res.isSuccess) {
+    loadingStore.setLoading(false);
+    return;
+  }
   const resData = res.data;
   const imageUrl = resData.imageUrls || [];
 
@@ -180,6 +196,7 @@ onMounted(async () => {
 
   if (images === null) {
     alert('이미지를 불러오는 중 오류가 발생했습니다');
+    loadingStore.setLoading(false);
     goPageWithReload('product/' + id);
     return;
   }
@@ -188,6 +205,7 @@ onMounted(async () => {
     const file = await promiseFile;
     if (!file) throw new Error('파일 변환 과정중 오류 발생');
     inputImage.value.push(file);
+    loadingStore.setLoading(false);
   });
 
   data.value = {
@@ -196,6 +214,7 @@ onMounted(async () => {
     description: resData.description,
     sellPrice: resData.sellPrice
   };
+  loadingStore.setLoading(false);
 });
 </script>
 
