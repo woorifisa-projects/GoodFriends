@@ -33,3 +33,32 @@ export const uploadFile = async (
     })
   );
 };
+
+export const urlToFile = async (urls: Array<string>) => {
+  const imageUrls = urls;
+
+  const imageFetch = async (url: string) => {
+    return await fetch(url, {
+      method: 'GET',
+      cache: 'no-cache'
+    });
+  };
+
+  const prArray = imageUrls.map((url) => imageFetch(url));
+
+  const res = Promise.all(prArray)
+    .then((results) => {
+      return results.map(async (imageData, index) => {
+        const data = await imageData.blob();
+        const extension = imageUrls[index].split('.').pop();
+        const fileName = index.toString() + '.' + extension;
+        const metaData = { type: `image/${extension}` };
+        return new File([data], fileName, metaData);
+      });
+    })
+    .catch((err) => {
+      return null;
+    });
+
+  return res;
+};

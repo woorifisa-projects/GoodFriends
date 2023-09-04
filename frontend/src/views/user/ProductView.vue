@@ -5,10 +5,10 @@
         <button @click="onClickBannerBtn('prev')" :disabled="viewImage === 0">
           <span class="material-icons-outlined"> arrow_back_ios </span>
         </button>
-        <img :src="product.images[viewImage]" alt="" />
+        <img :src="product.imageUrls[viewImage]" alt="" />
         <button
           @click="onClickBannerBtn('next')"
-          :disabled="viewImage === product.images.length - 1"
+          :disabled="viewImage === product.imageUrls.length - 1"
         >
           <span class="material-icons-outlined"> arrow_forward_ios </span>
         </button>
@@ -24,10 +24,10 @@
           <button @click="onClickOrder">{{ PRODUCT.ORDER }}</button>
         </div>
         <div class="detail-info">
-          <div class="name">{{ product.title }}~</div>
-          <div class="price">{{ product.price }}원</div>
-          <div class="category">{{ product.category }}</div>
-          <div class="date">{{ PRODUCT.CREATE_AT }}: {{ product.createdAt }}</div>
+          <div class="name">{{ product.title }}</div>
+          <div class="price">{{ product.sellPrice }}원</div>
+          <div class="category">{{ CATEGORY[product.productCategory] }}</div>
+          <div class="date">{{ PRODUCT.CREATE_AT }}: {{ product.createdDate }}</div>
         </div>
       </div>
     </div>
@@ -44,32 +44,38 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import OrderModal from '@/components/OrderModal.vue';
-import image from '@/assets/tmp/images/image.png';
-import banner1 from '@/assets/tmp/images/banner1.jpeg';
 import { PRODUCT } from '@/constants/strings/product';
+import productAPI from '@/apis/user/product';
+import { CATEGORY } from '@/constants/category';
+import { useUserInfoStore } from '@/stores/userInfo';
+import { useLoadingStore } from '@/stores/loading';
+import { goPageWithReload } from '@/utils/goPage';
+import { dateFormat } from '@/utils/format';
 
+const store = useUserInfoStore();
 const route = useRoute();
+const loadingStore = useLoadingStore();
 
-const id = ref(route.params.id);
+const id = route.params.id.toString();
 // TODO: 작성자 인지 아닌지 -> API 연결 필요
-const isWriter = ref(Math.random() < 0.5);
-// TODO: API 연결
+const isWriter = ref(false);
+
 const product = ref({
-  title: '상품 제목',
-  description: '상세 내용',
-  createdAt: 'yyyy-mm-dd',
-  category: 'category',
-  price: 1000,
-  images: [image, banner1]
+  title: '',
+  description: '',
+  createdDate: new Date().toString(),
+  productCategory: '',
+  sellPrice: '',
+  imageUrls: ['']
 });
 const viewImage = ref(0);
-// TODO: API 연결
 const user = ref({
-  image: image,
-  name: 'name'
+  id: 0,
+  image: '',
+  name: ''
 });
 const isVisible = ref(false);
 
@@ -81,11 +87,20 @@ const onClickBannerBtn = (flag: string) => {
   }
 };
 const onClickEditBtn = () => {
-  router.push('/product/edit/' + id.value);
+  router.push('/product/edit/' + id);
 };
 
-const onClickDelete = () => {
-  // TODO: delete
+const onClickDelete = async () => {
+  loadingStore.setLoading(true);
+  const res = await productAPI.deleteProduct(store.accessToken, id);
+  if (res.isSuccess) {
+    console.log('success');
+    goPageWithReload('');
+    loadingStore.setLoading(true);
+  } else {
+    alert(res.message);
+    loadingStore.setLoading(true);
+  }
 };
 
 const onClickReport = () => {
@@ -95,6 +110,33 @@ const onClickReport = () => {
 const onClickOrder = () => {
   isVisible.value = true;
 };
+
+onMounted(async () => {
+  const res = await productAPI.getProduct(id);
+  if (res.isSuccess && res.data) {
+    const { data } = res;
+    product.value = {
+      title: data.title,
+      description: data.description,
+      createdDate: dateFormat(new Date(data.createdDate)),
+      productCategory: data.productCategory,
+      sellPrice: data.sellPrice,
+      imageUrls: data.imageUrls
+    };
+    user.value = {
+      id: data.userId,
+      image: data.profileImageUrl,
+      name: data.nickName
+    };
+    if (store.id > 0) {
+      isWriter.value = user.value.id === store.id;
+      console.log(isWriter.value, user.value.id, store.id);
+    } else isWriter.value = false;
+  } else {
+    alert(res.message);
+    router.go(-1);
+  }
+});
 </script>
 
 <style scoped>

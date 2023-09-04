@@ -107,18 +107,20 @@ public class ProductService {
 
     public ProductViewOneResponse viewOneProduct(Long id) {
         Product product = productRepository.getById(id);
+        System.out.println(product.getCreatedAt());
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if(product.getUser() == null){
-            ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(),
+            ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
                     product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
 
             return response;
         }
 
         User user = userRepository.getById(product.getUser().getId());
-        ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(),
+        ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
                 product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
+
         return response;
     }
 

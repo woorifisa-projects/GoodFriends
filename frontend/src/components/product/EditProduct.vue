@@ -3,15 +3,15 @@
     <div class="form">
       <div class="input-detail">
         <div class="title detail">
-          <input type="text" id="title" placeholder="제목을 입력해주세요" v-model="inputName" />
+          <input type="text" id="title" placeholder="제목을 입력해주세요" v-model="data.title" />
         </div>
         <div class="price detail">
           <label for="price">{{ PRODUCT.PRICE }}</label>
-          <input type="number" id="price" v-model="inputPrice" />
+          <input type="number" id="price" v-model="data.sellPrice" />
         </div>
         <div class="explain detail">
           <label for="explain">{{ PRODUCT.DESCRIPTION }}</label>
-          <textarea name="" id="explain" cols="30" rows="10" v-model="inputContent"></textarea>
+          <textarea name="" id="explain" cols="30" rows="10" v-model="data.description"></textarea>
         </div>
         <div class="buttons">
           <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">
@@ -47,10 +47,10 @@
         </div>
         <div class="category">
           <span for="category">{{ PRODUCT.CATEGORY }}</span>
-          <select name="" id="" v-model="selectedCategory">
-            <option disabled value="0">{{ PRODUCT.PLEASE_SELECT }}</option>
-            <option v-for="category in categories" :key="category.id" :value="category.id">
-              {{ category.name }}
+          <select name="" id="" v-model="data.productCategory">
+            <option disabled value="ALL">{{ PRODUCT.PLEASE_SELECT }}</option>
+            <option v-for="(category, index) in categories.slice(1)" :key="index" :value="category">
+              {{ CATEGORY[category] }}
             </option>
           </select>
         </div>
@@ -64,12 +64,22 @@
 </template>
 
 <script setup lang="ts">
-import type { ICategory } from '@/types/product';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { dateFormat } from '@/utils/format';
-import { uploadFile } from '@/utils/file';
+import { uploadFile, urlToFile } from '@/utils/file';
 import { useRoute } from 'vue-router';
 import { PRODUCT } from '@/constants/strings/product';
+import { useUserInfoStore } from '@/stores/userInfo';
+import { CATEGORY_LIST } from '@/constants/category';
+import { CATEGORY } from '@/constants/category';
+import productAPI from '@/apis/user/product';
+import type { IEditProduct } from '@/types/product';
+import { checkProductValue } from '@/utils/validation';
+import { goPageWithReload } from '@/utils/goPage';
+import { useLoadingStore } from '@/stores/loading';
+
+const route = useRoute();
+const loadingStore = useLoadingStore();
 
 const props = defineProps({
   type: {
@@ -80,67 +90,79 @@ const props = defineProps({
     required: true
   }
 });
+const id = route.params.id?.toString() || '0';
+const categories = CATEGORY_LIST;
 
-// TODO: 수정 -> 서버로부터
-const categories = ref<Array<ICategory>>([
-  {
-    id: 1,
-    name: '가전'
-  },
-  {
-    id: 2,
-    name: '2'
-  },
-  {
-    id: 3,
-    name: '3'
-  },
-  {
-    id: 4,
-    name: '4'
-  },
-  {
-    id: 5,
-    name: '5'
-  }
-]);
+const data = ref<IEditProduct>({
+  title: '',
+  productCategory: 'ALL',
+  description: '',
+  sellPrice: ''
+});
 
-const inputPrice = ref(0);
-const inputName = ref('');
-const inputContent = ref('');
-const selectedCategory = ref('0');
 const inputImage = ref<Array<File>>([]);
 const previewImg = ref<Array<string>>([]);
 const registerDate = ref(new Date());
+const store = useUserInfoStore();
 
-if (props.type === 'edit') {
-  const route = useRoute();
-  const id = route.params.id;
-
-  // TODO: API 요청 -> price, name, content, category, image, date 가져오기
-}
 const onChangeDate = (event: Event) => {
   const date = (event.target as HTMLInputElement).value;
   registerDate.value = new Date(date);
 };
 
-const uploadImage = (event: Event) => {
+const uploadImage = async (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
   if (!fileList) return;
-  uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
+  await uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
 };
 
 const onClickDeleteBtn = (index: number) => {
   previewImg.value.splice(index, 1);
+  inputImage.value.splice(index, 1);
 };
 
-const submit = () => {
+const submit = async () => {
+  // 모든 값들이 존재 하는지 체크
+  const checkData = checkProductValue(data.value);
+  if (!checkData.isSuccess) {
+    alert(checkData.type);
+    return;
+  }
+  loadingStore.setLoading(true);
+  const formData = new FormData();
+  Array.from(inputImage.value).map((v) => {
+    formData.append('multipartFiles', v);
+  });
+
+  if (formData.getAll('multipartFiles').length === 0) {
+    formData.append('multipartFiles', new Blob());
+  }
+
+  formData.append(
+    'request',
+    new Blob([JSON.stringify(data.value)], {
+      type: 'application/json'
+    })
+  );
   if (props.type === 'edit') {
-    // TODO: edit 관련 API 호출
-    console.log('수정 버튼 클릭(EDIT)');
+    const res = await productAPI.editProduct(store.accessToken, id, formData);
+    if (!res.isSuccess) {
+      alert(res.message);
+      loadingStore.setLoading(false);
+
+      return;
+    }
+    goPageWithReload('product/' + id);
+    loadingStore.setLoading(false);
   } else if (props.type === 'add') {
-    // TODO: add 관련 API 호출
-    console.log('저장 버튼 클릭(ADD)');
+    const res = await productAPI.postProduct(store.accessToken, formData);
+    if (!res.isSuccess) {
+      alert(res.message);
+      loadingStore.setLoading(false);
+      return;
+    }
+    goPageWithReload();
+    loadingStore.setLoading(false);
   }
 };
 
@@ -151,12 +173,62 @@ const save = (e: Event) => {
   }
 };
 
-const remove = () => {
+const remove = async () => {
   if (props.type === 'edit') {
-    // TODO: 현재 게시물 삭제 API 호출
     console.log('삭제 버튼 클릭');
+    loadingStore.setLoading(true);
+    const res = await productAPI.deleteProduct(store.accessToken, id);
+    if (res.isSuccess) {
+      console.log('success');
+      goPageWithReload('');
+      loadingStore.setLoading(true);
+    } else {
+      alert(res.message);
+      loadingStore.setLoading(true);
+    }
   }
 };
+
+onMounted(async () => {
+  if (props.type === 'add') {
+    return;
+  }
+  loadingStore.setLoading(true);
+
+  const res = await productAPI.getEditProduct(store.accessToken, id);
+  if (res.data === undefined || !res.isSuccess) {
+    loadingStore.setLoading(false);
+    return;
+  }
+  const resData = res.data;
+  const imageUrl = resData.imageUrls || [];
+
+  previewImg.value = imageUrl;
+
+  const images = await urlToFile(imageUrl);
+
+  if (images === null) {
+    alert('이미지를 불러오는 중 오류가 발생했습니다');
+    loadingStore.setLoading(false);
+    goPageWithReload('product/' + id);
+    return;
+  }
+
+  images.forEach(async (promiseFile: Promise<File | null>) => {
+    const file = await promiseFile;
+    if (!file) throw new Error('파일 변환 과정중 오류 발생');
+    inputImage.value.push(file);
+    loadingStore.setLoading(false);
+  });
+
+  data.value = {
+    title: resData.title,
+    productCategory: resData.productCategory,
+    description: resData.description,
+    sellPrice: resData.sellPrice
+  };
+  loadingStore.setLoading(false);
+});
 </script>
 
 <style scoped>
@@ -204,7 +276,6 @@ const remove = () => {
 }
 
 .input-detail > .detail {
-  /* border: 1px solid black; */
   padding: 12px;
   display: flex;
   flex-direction: column;
