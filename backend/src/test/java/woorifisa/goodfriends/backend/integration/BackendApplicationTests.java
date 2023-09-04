@@ -1,4 +1,4 @@
-package woorifisa.sut.backend;
+package woorifisa.goodfriends.backend.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringBootConfiguration;
