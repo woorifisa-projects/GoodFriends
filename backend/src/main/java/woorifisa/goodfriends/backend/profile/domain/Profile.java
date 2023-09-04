@@ -1,6 +1,8 @@
 package woorifisa.goodfriends.backend.profile.domain;
 
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.global.common.BaseCreateTimeEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
 
@@ -18,6 +20,7 @@ public class Profile extends BaseCreateTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @Column(name = "mobile_phone")
@@ -28,7 +31,6 @@ public class Profile extends BaseCreateTimeEntity {
 
     protected Profile() {
     }
-
     public Long getId() {
         return id;
     }
