@@ -7,28 +7,28 @@ import java.util.List;
 
 public class ProductViewAllResponse {
 
-    private Long id;
+    private final Long id;
 
-    private ProductCategory productCategory;
+    private final ProductCategory productCategory;
 
-    private String title;
+    private final String title;
 
-    private ProductStatus status;
+    private final ProductStatus status;
 
-    private int sellPrice;
+    private final int sellPrice;
 
-    private String image;
+    private final String imageUrl;
 
-    public ProductViewAllResponse() {
-    }
+    private final String address;
 
-    public ProductViewAllResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String image) {
+    public ProductViewAllResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String imageUrl, String address) {
         this.id = id;
         this.productCategory = productCategory;
         this.title = title;
         this.status = status;
         this.sellPrice = sellPrice;
-        this.image = image;
+        this.imageUrl = imageUrl;
+        this.address = address;
     }
 
     public Long getId() {
@@ -52,6 +52,11 @@ public class ProductViewAllResponse {
     }
 
     public String getImageUrl() {
-        return image;
+        return imageUrl;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
 }

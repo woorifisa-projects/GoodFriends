@@ -43,7 +43,7 @@ public class AdminController {
     public ResponseEntity<Long> saveProduct(Authentication authentication,
                                                            @RequestPart ProductSaveRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-        String adminId = authentication.getName();
+        long adminId = Long.parseLong(authentication.getName());
         ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
         ProductSaveResponse response = adminService.saveProduct(adminId, productSaveRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response.getId());

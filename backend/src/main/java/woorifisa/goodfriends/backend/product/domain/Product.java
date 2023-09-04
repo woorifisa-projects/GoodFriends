@@ -27,7 +27,7 @@ public class Product extends BaseTimeEntity {
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
     @Column(nullable = false)

@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface AdminRepository extends CrudRepository<Admin, Long> {
 
-    Optional<Admin> findByRoot(String adminId);
+    Optional<Admin> findByRoot(String root);
 
     Optional<Admin> findById(Long adminId);
 }

@@ -1,12 +1,12 @@
 package woorifisa.goodfriends.backend.product.exception;
 
-public class NoSuchImageFileException extends RuntimeException {
+public class NotFoundImageFileException extends RuntimeException {
 
-    public NoSuchImageFileException(String message) {
+    public NotFoundImageFileException(String message) {
         super(message);
     }
 
-    public NoSuchImageFileException() {
+    public NotFoundImageFileException() {
         this("파일명을 변경할 이미지 파일이 존재하지 않습니다.");
     }
 }
