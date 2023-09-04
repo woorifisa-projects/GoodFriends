@@ -8,7 +8,7 @@ import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 import woorifisa.goodfriends.backend.user.dto.response.UserResponse;
-import woorifisa.goodfriends.backend.user.exception.NoSuchUserException;
+import woorifisa.goodfriends.backend.user.exception.NotFoundUserException;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ public class UserService {
 
     public UserResponse findById(final Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(NoSuchUserException::new);
+                .orElseThrow(NotFoundUserException::new);
         return new UserResponse(user);
     }
 
