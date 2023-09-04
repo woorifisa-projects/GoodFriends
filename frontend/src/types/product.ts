@@ -33,6 +33,8 @@ export interface IEditProduct {
   productCategory: string;
   description: string;
   sellPrice: string;
+  status?: string;
+  imageUrls?: Array<string>;
 }
 
 export interface IDetailProduct {
