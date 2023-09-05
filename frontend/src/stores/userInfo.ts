@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { tmpImage } from '@/utils/image';
-import type { IProfile } from '@/types/api';
+import type { IProfile } from '@/types/profile';
 
 export const useUserInfoStore = defineStore('userInfo', () => {
   const id = ref(0);
