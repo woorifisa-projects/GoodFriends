@@ -130,7 +130,7 @@ public class AdminService {
                         return productViewAllResponse;
                     }
 
-                    Profile profile = profileRepository.findByUserId(product.getUser().getId()).orElseThrow(()-> new RuntimeException("유저의 프로필이 존재하지 않습니다."));
+                    Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
                     ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress());
