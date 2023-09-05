@@ -19,6 +19,7 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -40,13 +41,13 @@ public class AdminController {
     }
 
     @PostMapping("/products/new")
-    public ResponseEntity<Long> saveProduct(Authentication authentication,
+    public ResponseEntity<Void> saveProduct(Authentication authentication,
                                                            @RequestPart ProductSaveRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
         long adminId = Long.parseLong(authentication.getName());
         ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
-        ProductSaveResponse response = adminService.saveProduct(adminId, productSaveRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response.getId());
+        Long productId = adminService.saveProduct(adminId, productSaveRequest);
+        return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }
 
     @GetMapping("/products/view")

@@ -18,6 +18,7 @@ import woorifisa.goodfriends.backend.user.dto.response.UserResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.List;
 
 @RequestMapping("/api/products")
@@ -31,7 +32,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Long> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
+    public ResponseEntity<Void> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                             @RequestPart ProductSaveRequest request,
                                             @RequestPart List<MultipartFile> multipartFiles) throws IOException {
         //프로필 등록해야 상품 등록 가능하도록
@@ -40,8 +41,8 @@ public class ProductController {
         }
         else{
             ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
-            ProductSaveResponse response = productService.saveProduct(loginUser.getId(), productSaveRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response.getId()); // 201
+            Long productId = productService.saveProduct(loginUser.getId(), productSaveRequest);
+            return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
         }
     }
 

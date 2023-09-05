@@ -78,14 +78,16 @@ public class AdminService {
         return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken());
     }
 
-    public ProductSaveResponse saveProduct(long adminId, ProductSaveRequest request) throws IOException {
+    public Long saveProduct(long adminId, ProductSaveRequest request) throws IOException {
         Admin foundAdmin = adminRepository.findById(adminId).orElseThrow(() -> new InvalidAdminException(adminId + "와 일치하는 아이디가 없습니다."));
 
+        // 상품 저장
         Product newProduct = createProduct(foundAdmin, request);
 
-        List<String> savedImageUrls = saveImages(newProduct.getId(), request.getImageUrls());
+        // 저장한 상품 id를 가져와서 상품 이미지 저장
+        saveImages(newProduct.getId(), request.getImageUrls());
 
-        return new ProductSaveResponse(newProduct, savedImageUrls);
+        return newProduct.getId();
     }
 
     private Product createProduct(Admin admin, ProductSaveRequest request) {

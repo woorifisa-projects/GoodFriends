@@ -44,14 +44,15 @@ public class ProductService {
         this.profileRepository = profileRepository;
     }
 
-    public ProductSaveResponse saveProduct(Long userId, ProductSaveRequest request) throws IOException {
+    public Long saveProduct(Long userId, ProductSaveRequest request) throws IOException {
         User foundUser = userRepository.getById(userId);
-
+        // 상품 저장
         Product newProduct = createProduct(foundUser, request);
 
-        List<String> savedImageUrls = saveImages(newProduct.getId(), request.getImageUrls());
+        // 저장한 상품 id를 가져와서 상품 이미지 저장
+        saveImages(newProduct.getId(), request.getImageUrls());
 
-        return new ProductSaveResponse(newProduct, savedImageUrls);
+        return newProduct.getId();
     }
 
     private Product createProduct(User user, ProductSaveRequest request) {
