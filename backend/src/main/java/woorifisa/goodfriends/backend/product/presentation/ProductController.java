@@ -33,15 +33,9 @@ public class ProductController {
     public ResponseEntity<Void> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                             @RequestPart ProductSaveRequest request,
                                             @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-        //프로필 등록해야 상품 등록 가능하도록
-        if(!productService.existProfile(loginUser.getId())) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN); // 403
-        }
-        else{
             ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
             Long productId = productService.saveProduct(loginUser.getId(), productSaveRequest);
             return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
-        }
     }
 
     @GetMapping("/view")

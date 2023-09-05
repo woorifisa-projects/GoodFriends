@@ -1,5 +1,7 @@
 package woorifisa.goodfriends.backend.product.application;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
@@ -12,6 +14,7 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
@@ -44,6 +47,12 @@ public class ProductService {
     }
 
     public Long saveProduct(Long userId, ProductSaveRequest request) throws IOException {
+
+        //프로필 등록해야 상품 등록 가능하도록
+        if(!existProfile(userId)) {
+            throw new NotFoundProfile(); // 403
+        }
+
         User foundUser = userRepository.getById(userId);
         // 상품 저장
         Product newProduct = createProduct(foundUser, request);
