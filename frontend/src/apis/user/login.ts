@@ -41,7 +41,7 @@ const loginAPI = {
         return { isSuccess: false, message: e.message, type: ApiType.LOGIN };
       });
   },
-  logout: (id: string, token: string): Promise<INoContent> => {
+  logout: (id: number, token: string): Promise<INoContent> => {
     return api
       .get(loginAPI.endPoint.logout, {
         params: { id },
