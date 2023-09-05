@@ -4,6 +4,7 @@
 export interface IResultType<T> {
   isSuccess: boolean;
   type: string;
+  code: number | undefined;
   message?: string;
   data?: T;
 }
@@ -11,4 +12,5 @@ export interface IResultType<T> {
 export interface INoContent {
   isSuccess: boolean;
   message: string;
+  code: number | undefined;
 }
