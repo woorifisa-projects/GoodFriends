@@ -1,7 +1,8 @@
 import { AxiosError, type AxiosResponse } from 'axios';
-import type { IResultType, IAdminLoginResponse, IAdminLoginRequest } from '@/types/api';
+import type { IResultType } from '@/types/api';
 import { ApiType } from '@/constants/apiType';
 import { apiInstance } from '..';
+import type { IAdminLoginRequest, IAdminLoginResponse } from '@/types/login';
 
 const api = apiInstance();
 
