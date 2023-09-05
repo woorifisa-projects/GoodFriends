@@ -98,7 +98,6 @@ const onClickDelete = async () => {
   loadingStore.setLoading(true);
   const res = await productAPI.deleteProduct(store.accessToken, id);
   if (res.isSuccess) {
-    console.log('success');
     goPageWithReload('');
     loadingStore.setLoading(true);
   } else {
@@ -120,10 +119,8 @@ onMounted(async () => {
   if (res.isSuccess && res.data) {
     data.value = res.data;
     data.value.createdDate = dateFormat(new Date(res.data.createdDate));
-    console.log(store.id, data.value.userId);
     if (store.id > 0) {
       isWriter.value = data.value.userId === store.id;
-      console.log(isWriter.value, data.value.userId, store.id);
     } else isWriter.value = false;
   } else {
     alert(res.message);

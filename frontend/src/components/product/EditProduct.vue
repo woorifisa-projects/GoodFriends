@@ -179,7 +179,6 @@ const remove = async () => {
     loadingStore.setLoading(true);
     const res = await productAPI.deleteProduct(store.accessToken, id);
     if (res.isSuccess) {
-      console.log('success');
       goPageWithReload('');
       loadingStore.setLoading(true);
     } else {
