@@ -9,7 +9,7 @@ const api = apiInstance();
 const productAPI = {
   endPoint: {
     getAll: `api/products/view`,
-    postProduct: `api/products`,
+    postProduct: `api/products/new`,
     getProduct: `api/products/view/`,
     getEditProduct: `api/products/edit/`,
     editProduct: `api/products/edit/`,
@@ -21,7 +21,7 @@ const productAPI = {
       .get(productAPI.endPoint.getAll)
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data: data, type: ApiType.PRODUCT };
+        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT };
       })
       .catch((err: AxiosError) => {
         return { isSuccess: false, message: err.message, type: ApiType.PRODUCT };

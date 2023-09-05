@@ -12,6 +12,7 @@ import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
@@ -94,9 +95,10 @@ public class ProductService {
         return savedImages;
     }
 
-    public List<ProductViewAllResponse> viewAllProduct() {
+    public ProductViewsAllResponse viewAllProduct() {
         List<Product> products = productRepository.findAll();
-        return products.stream()
+
+        List<ProductViewAllResponse> responses = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
@@ -113,6 +115,8 @@ public class ProductService {
                     return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
+
+        return new ProductViewsAllResponse(responses);
     }
 
     public ProductViewOneResponse viewOneProduct(Long id) {

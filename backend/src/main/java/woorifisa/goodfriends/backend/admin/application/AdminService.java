@@ -20,6 +20,7 @@ import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
@@ -117,9 +118,10 @@ public class AdminService {
         return savedImages;
     }
 
-    public List<ProductViewAllResponse> viewAllProduct() {
+    public ProductViewsAllResponse viewAllProduct() {
         List<Product> products = productRepository.findAll();
-        return products.stream()
+
+        List<ProductViewAllResponse> responses = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
@@ -129,13 +131,15 @@ public class AdminService {
                         return productViewAllResponse;
                     }
 
-                    Profile profile = profileRepository.findByUserId(product.getUser().getId()).orElseThrow(()-> new RuntimeException("유저의 프로필이 없습니다."));
+                    Profile profile = profileRepository.findByUserId(product.getUser().getId()).orElseThrow(()-> new RuntimeException("유저의 프로필이 존재하지 않습니다."));
 
                     ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress());
                     return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
+
+        return new ProductViewsAllResponse(responses);
     }
 
     public ProductViewOneResponse viewOneProduct(Long id) {

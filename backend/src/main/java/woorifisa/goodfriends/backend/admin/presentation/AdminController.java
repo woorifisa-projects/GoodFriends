@@ -15,6 +15,7 @@ import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -50,8 +51,8 @@ public class AdminController {
     }
 
     @GetMapping("/products/view")
-    public ResponseEntity<List<ProductViewAllResponse>> viewAllProduct() {
-        List<ProductViewAllResponse> responses = adminService.viewAllProduct();
+    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
+        ProductViewsAllResponse responses = adminService.viewAllProduct();
         return ResponseEntity.ok().body(responses);
     }
 
