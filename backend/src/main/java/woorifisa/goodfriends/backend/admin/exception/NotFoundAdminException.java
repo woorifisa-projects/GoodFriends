@@ -6,6 +6,6 @@ public class NotFoundAdminException extends RuntimeException {
         super(message);
     }
     public NotFoundAdminException() {
-        this("존재하지 않는 어드민 id 입니다.");
+        this("존재하지 않는 관리자 계정입니다.");
     }
 }

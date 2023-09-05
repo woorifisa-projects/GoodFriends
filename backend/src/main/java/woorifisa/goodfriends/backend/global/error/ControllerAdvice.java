@@ -9,7 +9,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
 import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
 import woorifisa.goodfriends.backend.auth.exception.EmptyAuthorizationHeaderException;
 import woorifisa.goodfriends.backend.auth.exception.InvalidTokenException;
@@ -42,7 +41,6 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({ // 클라이언트 에러: 400
-            InvalidAdminException.class,
             InvalidNicknameException.class,
             InvalidUserException.class
     })

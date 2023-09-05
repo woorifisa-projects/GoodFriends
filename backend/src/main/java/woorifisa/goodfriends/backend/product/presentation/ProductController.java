@@ -46,7 +46,8 @@ public class ProductController {
     }
 
     @GetMapping("/view/{productId}")
-    public ResponseEntity<ProductViewOneResponse> viewOneProduct(@PathVariable Long productId) {
+    public ResponseEntity<ProductViewOneResponse> viewOneProduct(@AuthenticationPrincipal final LoginUser loginUser,
+                                                                 @PathVariable Long productId) {
         ProductViewOneResponse response = productService.viewOneProduct(productId);
         return ResponseEntity.ok().body(response); // 200
     }

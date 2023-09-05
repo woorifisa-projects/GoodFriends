@@ -8,7 +8,7 @@ import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
 import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
-import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
+import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
 import woorifisa.goodfriends.backend.auth.application.TokenCreator;
 import woorifisa.goodfriends.backend.auth.domain.AuthToken;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
@@ -62,12 +62,11 @@ public class AdminService {
 
     public AccessTokenResponse login(String root, String password){
         // adminId가 틀린 경우
-        Admin selectedAdmin = adminRepository.findByRoot(root)
-                .orElseThrow(() -> new InvalidAdminException( root + "와 일치하는 아이디가 없습니다."));
+        Admin selectedAdmin = adminRepository.getByRoot(root);
 
         // password가 틀린 경우
         if(!selectedAdmin.getPassword().equals(password)) {
-            throw new InvalidAdminException("잘못된 비밀번호입니다.");
+            throw new NotFoundAdminException();
         }
 
         // 앞에서 Exception 안났으면 토큰 발행 구현해야함
@@ -77,7 +76,7 @@ public class AdminService {
     }
 
     public Long saveProduct(long adminId, ProductSaveRequest request) throws IOException {
-        Admin foundAdmin = adminRepository.findById(adminId).orElseThrow(() -> new InvalidAdminException(adminId + "와 일치하는 아이디가 없습니다."));
+        Admin foundAdmin = adminRepository.getById(adminId);
 
         // 상품 저장
         Product newProduct = createProduct(foundAdmin, request);
