@@ -1,10 +1,12 @@
 package woorifisa.goodfriends.backend.product.dto.response;
 
+import lombok.Getter;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
 import java.util.List;
 
+@Getter
 public class ProductViewAllResponse {
 
     private final Long id;
@@ -29,34 +31,6 @@ public class ProductViewAllResponse {
         this.sellPrice = sellPrice;
         this.imageUrl = imageUrl;
         this.address = address;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public ProductCategory getProductCategory() {
-        return productCategory;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public ProductStatus getStatus() {
-        return status;
-    }
-
-    public int getSellPrice() {
-        return sellPrice;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public String getAddress() {
-        return address;
     }
 
 }
