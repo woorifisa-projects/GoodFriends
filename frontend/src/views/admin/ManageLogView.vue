@@ -31,6 +31,8 @@ if (logApi.isSuccess === true && logApi.data) {
     };
     data.push(dataObject);
   }
+} else if (logApi.isSuccess === false) {
+  alert('페이지 오류입니다.');
 }
 //데이터 확인 콘솔 console.log(data);
 
