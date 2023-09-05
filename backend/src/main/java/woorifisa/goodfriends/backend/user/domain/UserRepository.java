@@ -1,8 +1,10 @@
 package woorifisa.goodfriends.backend.user.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import woorifisa.goodfriends.backend.user.exception.NotFoundUserException;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -24,4 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             throw new NotFoundUserException();
         }
     }
+    @Query("SELECT u, p FROM User u JOIN Profile p ON u.id = p.user.id")
+    List<Object[]> getAllUserInfo();
+
 }

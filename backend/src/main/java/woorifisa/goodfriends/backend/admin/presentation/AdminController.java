@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.application.AdminService;
 import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
 import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
+import woorifisa.goodfriends.backend.admin.dto.response.UserInfoResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
@@ -16,10 +17,12 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.user.domain.User;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/admin/")
@@ -103,5 +106,12 @@ public class AdminController {
         adminService.updateUserInfo(userId,userUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
 
+    }
+
+    //관리자가 전체사용자 정보 조회
+    @GetMapping("/view")
+    public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
+        List<UserInfoResponse> userInfoResponse = adminService.getAllUsers();
+        return ResponseEntity.ok().body(userInfoResponse);
     }
 }
