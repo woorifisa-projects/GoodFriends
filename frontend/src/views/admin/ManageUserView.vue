@@ -16,7 +16,6 @@
 <script setup lang="ts">
 import Table from '@/components/CommonTable.vue';
 import router from '@/router';
-
 import type { IDataType } from '@/types/table';
 
 const onClickDetailUser = (item: IDataType) => {

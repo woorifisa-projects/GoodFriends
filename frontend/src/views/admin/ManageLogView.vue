@@ -2,7 +2,7 @@
   <div id="total">
     <div class="table">
       <div class="table-in">
-        <Table :data="testData" :header-text="tableHeader" :dataKey="tableDataKey" />
+        <Table :data="data" :header-text="tableHeader" :dataKey="tableDataKey" />
       </div>
     </div>
   </div>
@@ -10,98 +10,39 @@
 
 <script setup lang="ts">
 import Table from '@/components/CommonTable.vue';
+import manageLogAPI from '@/apis/admin/log';
+import type { IDataType } from '@/types/table';
 
-//TODO: api 로그데이터 가져오기
-const tableDataKey = ['user_id', 'nickname', 'banCount', 'authCheck', 'date'];
-const tableHeader = {
-  user_id: '계정',
-  nickname: '닉네임',
-  banCount: '신고당한 횟수',
-  authCheck: '인증여부',
-  date: '마지막 접속날짜'
-};
-const testData = [
-  {
-    id: 1,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 2,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 3,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 4,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 5,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 6,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 7,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 8,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 9,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
-  },
-  {
-    id: 10,
-    user_id: 'phm9511',
-    nickname: 'ddddd',
-    banCount: '4',
-    authCheck: '인증완료',
-    date: '2023-02-02'
+const logApi = await manageLogAPI.selectLog();
+
+const data: Array<IDataType> = [];
+
+if (logApi.isSuccess === true && logApi.data) {
+  const temp = logApi.data;
+  for (let i = 0; i < temp.length; i++) {
+    const item = temp[i];
+
+    let dataObject = {
+      id: i + 1,
+      email: item.email,
+      nickname: item.nickname,
+      ban: item.banCount.toString(),
+      last_modified_at: item.lastModifiedAt
+    };
+    data.push(dataObject);
   }
-];
+} else if (logApi.isSuccess === false) {
+  alert('페이지 오류입니다.');
+}
+//데이터 확인 콘솔 console.log(data);
+
+const tableDataKey = ['email', 'nickname', 'ban', 'last_modified_at'];
+const tableHeader = {
+  email: '계정',
+  nickname: '닉네임',
+  ban: '신고당한 횟수',
+  last_modified_at: '마지막 접속날짜'
+};
 </script>
 
 <style scoped>
