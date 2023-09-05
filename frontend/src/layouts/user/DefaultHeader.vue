@@ -74,7 +74,7 @@ const onClickLoginBtn = async () => {
 
 const onClickLogoutBtn = async () => {
   // TODO: login 구현후 수정 -> id 수정
-  const res = await loginAPI.logout('3', store.accessToken);
+  const res = await loginAPI.logout(store.id, store.accessToken);
   if (res.isSuccess) {
     localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
     goPageWithReload();
