@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.application.AdminService;
 import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
 import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
+import woorifisa.goodfriends.backend.admin.dto.response.UserInfoResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
@@ -107,10 +108,10 @@ public class AdminController {
 
     }
 
-    //관리자가 사용자 정보 조회
+    //관리자가 전체사용자 정보 조회
     @GetMapping("/user/all")
-    public List<Object[]> getAllUsers(){
-        return adminService.getAllUsers();
-
+    public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
+        List<UserInfoResponse> userInfoResponse = adminService.getAllUsers();
+        return ResponseEntity.ok().body(userInfoResponse);
     }
 }
