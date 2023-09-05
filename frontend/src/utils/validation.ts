@@ -23,7 +23,7 @@ export const checkProductValue = (product: IPostProduct) => {
   if (product.title.length < 2) {
     return { isSuccess: false, type: 'title' };
   }
-  if (product.sellPrice > 0 || product.sellPrice < 99999999) {
+  if (product.sellPrice < 0 || product.sellPrice > 99999999) {
     return { isSuccess: false, type: 'price' };
   }
   if (product.description.length < 10) {
