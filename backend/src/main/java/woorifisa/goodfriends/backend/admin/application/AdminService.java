@@ -227,17 +227,17 @@ public class AdminService {
     //사용자 전체 조회
     public List<UserInfoResponse> getAllUsers() {
         List<Object[]> results = userRepository.getAllUserInfo();
-
-        return results.stream()
+        List<UserInfoResponse> userInfoList = results.stream()
                 .map(result -> {
                     User user = (User) result[0];
                     Profile profile = (Profile) result[1];
 
-                    UserInfoResponse response = new UserInfoResponse(
-                            user.getEmail(), user.getNickname(), user.getCreatedAt(),user.getBan(), profile.getMobilePhone(), profile.getAddress()
+                    return new UserInfoResponse(
+                            user.getEmail(), user.getNickname(), user.getProfileImageUrl(), user.getCreatedAt(), user.getLastModifiedAt()
+                            , user.getBan(), profile.getMobilePhone(), profile.getAddress()
                     );
-                    return response;
-                })
-                .collect(Collectors.toList());
-            }
+                }).collect(Collectors.toList());
+
+        return userInfoList;
     }
+}

@@ -13,20 +13,25 @@ public class UserInfoResponse {
 
     private String email;
     private String nickname;
+    private String profileImageUrl;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime lastModifiedAt;
     private int banCount;
     private String phone;
     private String address;
 //    private boolean info_activated;
 
-    public UserInfoResponse(String email, String nickname, LocalDateTime created_at,int banCount, String phone, String address) {
+
+    public UserInfoResponse(String email, String nickname, String profileImageUrl, LocalDateTime createdAt, LocalDateTime lastModifiedAt, int banCount, String phone, String address) {
         this.email = email;
         this.nickname = nickname;
-        this.created_at = created_at;
+        this.profileImageUrl = profileImageUrl;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
         this.banCount = banCount;
         this.phone = phone;
         this.address = address;
-//      this.info_activated = info_activated;
     }
 }

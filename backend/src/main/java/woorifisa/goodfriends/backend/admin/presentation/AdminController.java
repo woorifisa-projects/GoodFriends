@@ -109,7 +109,7 @@ public class AdminController {
     }
 
     //관리자가 전체사용자 정보 조회
-    @GetMapping("/user/all")
+    @GetMapping("/view")
     public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
         List<UserInfoResponse> userInfoResponse = adminService.getAllUsers();
         return ResponseEntity.ok().body(userInfoResponse);
