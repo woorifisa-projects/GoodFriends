@@ -10,26 +10,6 @@ export interface INoContent {
   message: string;
 }
 
-export interface IGetOAuthURI {
-  oAuthUri: string;
-}
-
-export interface IAdminLoginResponse {
-  token: string;
-  root: string;
-  password: string;
-}
-
-export interface IAdminLoginRequest {
-  root: string;
-  password: string;
-}
-
-export interface IGetAccessToken {
-  id: string;
-  accessToken: string;
-}
-
 export interface IProfile {
   id: number;
   email: string;
@@ -46,9 +26,9 @@ export interface IProfileEdit {
   mobileNumber: string;
 }
 
-export interface IGetUserLog{
+export interface IGetUserLog {
   email: string;
   nickname: string;
-  lastModifiedAt:string;
+  lastModifiedAt: string;
   banCount: number;
 }
