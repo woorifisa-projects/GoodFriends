@@ -77,6 +77,8 @@ import { checkProductValue } from '@/utils/validation';
 import { goPageWithReload } from '@/utils/goPage';
 import { useLoadingStore } from '@/stores/loading';
 import type { IPostProduct } from '@/types/product';
+import router from '@/router';
+import type { IStringToFunction } from '@/types/dynamic';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
@@ -144,26 +146,27 @@ const submit = async () => {
       type: 'application/json'
     })
   );
-  if (props.type === 'edit') {
-    const res = await productAPI.editProduct(store.accessToken, id, formData);
-    if (!res.isSuccess) {
-      alert(res.message);
-      loadingStore.setLoading(false);
 
+  const submit: IStringToFunction = {
+    edit: async () => {
+      return await productAPI.editProduct(store.accessToken, id, formData);
+    },
+    add: async () => {
+      return await productAPI.postProduct(store.accessToken, formData);
+    }
+  };
+
+  const res = await submit[props.type]();
+  if (!res.isSuccess) {
+    alert(res.message);
+    if (props.type === 'add' && res.code === 403) {
+      router.push('/profile');
       return;
     }
-    goPageWithReload('product/' + id);
-    loadingStore.setLoading(false);
-  } else if (props.type === 'add') {
-    const res = await productAPI.postProduct(store.accessToken, formData);
-    if (!res.isSuccess) {
-      alert(res.message);
-      loadingStore.setLoading(false);
-      return;
-    }
-    goPageWithReload();
-    loadingStore.setLoading(false);
+    if (props.type === 'edit' && res.code !== 403 && res.code !== 404) return;
   }
+  goPageWithReload();
+  loadingStore.setLoading(false);
 };
 
 const save = (e: Event) => {
@@ -174,31 +177,38 @@ const save = (e: Event) => {
 };
 
 const remove = async () => {
-  if (props.type === 'edit') {
-    console.log('삭제 버튼 클릭');
-    loadingStore.setLoading(true);
-    const res = await productAPI.deleteProduct(store.accessToken, id);
-    if (res.isSuccess) {
-      goPageWithReload('');
-      loadingStore.setLoading(true);
-    } else {
-      alert(res.message);
-      loadingStore.setLoading(true);
-    }
+  console.log('삭제 버튼 클릭');
+  if (props.type === 'add') return;
+
+  loadingStore.setLoading(true);
+  const res = await productAPI.deleteProduct(store.accessToken, id);
+  loadingStore.setLoading(false);
+  if (res.isSuccess) {
+    goPageWithReload('');
+    return;
+  }
+  alert(res.message);
+  if (res.code === 403) {
+    goPageWithReload('');
+    return;
   }
 };
 
 onMounted(async () => {
-  if (props.type === 'add') {
-    return;
-  }
+  if (props.type === 'add') return;
+
   loadingStore.setLoading(true);
 
   const res = await productAPI.getEditProduct(store.accessToken, id);
+
+  loadingStore.setLoading(false);
+
   if (res.data === undefined || !res.isSuccess) {
-    loadingStore.setLoading(false);
+    alert(res.message);
+    router.go(-1);
     return;
   }
+
   const resData = res.data;
   const imageUrl = resData.imageUrls || [];
 
