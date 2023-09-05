@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import woorifisa.goodfriends.backend.auth.application.AuthService;
+import woorifisa.goodfriends.backend.auth.application.AuthTokenResponseHandler;
 import woorifisa.goodfriends.backend.auth.application.OAuthClient;
 import woorifisa.goodfriends.backend.auth.application.OAuthUri;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
@@ -31,10 +32,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    public AuthController(OAuthUri oAuthUri, OAuthClient oAuthClient, AuthService authService) {
+    private final AuthTokenResponseHandler authTokenResponseHandler;
+
+    public AuthController(OAuthUri oAuthUri, OAuthClient oAuthClient, AuthService authService, AuthTokenResponseHandler authTokenResponseHandler) {
         this.oAuthUri = oAuthUri;
         this.oAuthClient = oAuthClient;
         this.authService = authService;
+        this.authTokenResponseHandler = authTokenResponseHandler;
     }
 
     // 로그인 요청
@@ -47,7 +51,7 @@ public class AuthController {
 
     // 액세스 토큰은 Body로 발급, 리프레시 토큰은 Set-Cookie로 발급 받기
     @PostMapping("/{oauthProvider}/token")
-    public ResponseEntity <AccessTokenResponse> generateAccessAndRefreshToken(
+    public ResponseEntity<AccessTokenResponse> generateAccessAndRefreshToken(
             @PathVariable final String oauthProvider, @Valid @RequestBody final TokenRequest tokenRequest) {
         OAuthUser oAuthUser = oAuthClient.getOAuthUser(tokenRequest.getCode(), tokenRequest.getRedirectUri());
         AccessTokenResponse response = authService.generateAccessAndRefreshToken(oAuthUser);
@@ -63,10 +67,10 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    // 로그아웃: 로그아웃 시, 서버에서 accessToken과 refreshToken값을 만료시킨다.
+    // 로그아웃: 로그아웃 시, 브라우저 쿠키에 저장되어 있던 refreshToken 을 만료시킨다..
     @GetMapping("/logout")
-    public ResponseEntity<Void> logout(@AuthenticationPrincipal LoginUser loginUser) {
-        authService.deleteToken(loginUser.getId());
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal LoginUser loginUser, @CookieValue("refreshToken") String refreshToken) {
+        authTokenResponseHandler.setRefreshTokenDeleteCookie(refreshToken);
         return ResponseEntity.noContent().build();
     }
 }

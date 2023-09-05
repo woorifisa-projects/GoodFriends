@@ -74,8 +74,4 @@ public class AuthService {
         AuthToken authToken = tokenCreator.renewAuthToken(refreshToken);
         return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken());
     }
-
-    public void deleteToken(Long id) {
-        oAuthTokenRepository.deleteAllByUserId(id);
-    }
 }
