@@ -12,7 +12,7 @@ export const CATEGORY: CATEGORY_TYPE = {
   DIGITAL_DEVICE: '디지털기기',
   FURNITURE: '가구/인테리어',
   BABY_GOODS: '유아동',
-  LINING: '생활/주방',
+  LIVING: '생활/주방',
   PROCESSED_FOOD: '가공식품',
   SPORTS: '스포츠/레저',
   HOBBY: '취미/게임/음반'
@@ -27,7 +27,7 @@ export const CATEGORY_LIST = [
   'DIGITAL_DEVICE',
   'FURNITURE',
   'BABY_GOODS',
-  'LINING',
+  'LIVING',
   'PROCESSED_FOOD',
   'SPORTS',
   'HOBBY'
