@@ -227,5 +227,9 @@ public class AdminService {
                         .build());
 
     }
+    //사용자 전체 조회
+    public List<Object[]> getAllUsers(){
+        return userRepository.getAllUserInfo();
+    }
 
 }

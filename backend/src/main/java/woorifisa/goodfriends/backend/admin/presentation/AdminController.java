@@ -16,10 +16,12 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.user.domain.User;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/admin/")
@@ -102,6 +104,13 @@ public class AdminController {
     public ResponseEntity<Void> updateUserInfo(@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest){
         adminService.updateUserInfo(userId,userUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+
+    }
+
+    //관리자가 사용자 정보 조회
+    @GetMapping("/user/all")
+    public List<Object[]> getAllUsers(){
+        return adminService.getAllUsers();
 
     }
 }
