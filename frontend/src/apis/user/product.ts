@@ -13,7 +13,7 @@ const productAPI = {
     getProduct: `api/products/view/`,
     getEditProduct: `api/products/edit/`,
     editProduct: `api/products/edit/`,
-    deleteProduct: `api/products/delete/`
+    deleteProduct: `api/products/remove/`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IProduct>>> => {
@@ -43,9 +43,14 @@ const productAPI = {
         return { isSuccess: false, message: error.message };
       });
   },
-  getProduct: (productId: string): Promise<IResultType<IDetailProduct>> => {
+  getProduct: (token:string, productId: string): Promise<IResultType<IDetailProduct>> => {
     return api
-      .get(productAPI.endPoint.getProduct + productId)
+      .get(productAPI.endPoint.getProduct + productId, {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then((res: AxiosResponse) => {
         return { isSuccess: true, data: res.data, type: ApiType.PRODUCT };
       })

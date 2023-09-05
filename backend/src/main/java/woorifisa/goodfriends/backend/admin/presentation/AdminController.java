@@ -77,7 +77,7 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/products/delete/{productId}")
+    @DeleteMapping("/products/remove/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) throws MalformedURLException {
         adminService.deleteById(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -91,7 +91,7 @@ public class AdminController {
     }
 
     //관리자가 사용자 정보를 삭제
-    @DeleteMapping("/user/delete/{userId}")
+    @DeleteMapping("/user/remove/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
 
         adminService.deleteUserInfo(userId);

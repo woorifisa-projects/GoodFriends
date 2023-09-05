@@ -69,7 +69,7 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
     }
 
-    @DeleteMapping("/delete/{productId}")
+    @DeleteMapping("/remove/{productId}")
     public ResponseEntity<Void> deleteProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                               @PathVariable Long productId) throws MalformedURLException {
             productService.deleteById(loginUser.getId(), productId);
