@@ -120,7 +120,8 @@ onMounted(async () => {
   if (res.isSuccess && res.data) {
     data.value = res.data;
     data.value.createdDate = dateFormat(new Date(res.data.createdDate));
-    if (!store.id) {
+    console.log(store.id, data.value.userId);
+    if (store.id > 0) {
       isWriter.value = data.value.userId === store.id;
       console.log(isWriter.value, data.value.userId, store.id);
     } else isWriter.value = false;
