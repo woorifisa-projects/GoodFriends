@@ -27,6 +27,15 @@ public class AuthTokenResponseHandler {
         refreshTokenCookie.setMaxAge(14 * 24 * 60 * 60); // 리프레시 토큰 유효 기간 설정 (14일)
         refreshTokenCookie.setPath("/"); // 쿠키의 유효 경로 설정 (애플리케이션 전체)
         httpServletResponse.addCookie(refreshTokenCookie);
+    }
 
+    public void setRefreshTokenDeleteCookie(String refreshToken){
+        // 브라우저에 저장되어 있던 refreshToken의 만료시간을 0으로 설정해 바로 refreshToken이 만료되도록
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setMaxAge(0);
+        refreshTokenCookie.setPath("/");
+        httpServletResponse.addCookie(refreshTokenCookie);
     }
 }
