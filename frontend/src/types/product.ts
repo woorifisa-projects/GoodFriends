@@ -1,9 +1,3 @@
-// TODO: 삭제 필요
-export interface ICategory {
-  id: number;
-  name: string;
-}
-
 export interface IProduct {
   title: string;
   productCategory: string;
