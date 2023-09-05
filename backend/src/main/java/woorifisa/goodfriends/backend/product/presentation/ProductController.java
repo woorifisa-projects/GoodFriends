@@ -53,13 +53,8 @@ public class ProductController {
     @GetMapping("/edit/{productId}")
     public ResponseEntity<ProductUpdateResponse> showSelectedProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                                                      @PathVariable Long productId){
-        if(productService.verifyUser(loginUser.getId(), productId)) {
-            ProductUpdateResponse response = productService.showSelectedProduct(productId);
+            ProductUpdateResponse response = productService.showSelectedProduct(loginUser.getId(), productId);
             return ResponseEntity.ok().body(response); // 200
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN); // 403
-        }
     }
 
     @PutMapping("/edit/{productId}")
@@ -67,25 +62,15 @@ public class ProductController {
                                               @PathVariable Long productId,
                                               @RequestPart ProductUpdateRequest request,
                                               @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-        if(productService.verifyUser(loginUser.getId(), productId)) {
             ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategory(), request.getDescription(), request.getSellPrice(), multipartFiles);
-            productService.updateProduct(productUpdateRequest, productId);
+            productService.updateProduct(productUpdateRequest, loginUser.getId(), productId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN); // 403
-        }
     }
 
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<Void> deleteProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                               @PathVariable Long productId) throws MalformedURLException {
-        if(productService.verifyUser(loginUser.getId(), productId)) {
-            productService.deleteById(productId);
+            productService.deleteById(loginUser.getId(), productId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN); // 403
-        }
     }
 }

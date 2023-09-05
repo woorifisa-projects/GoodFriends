@@ -19,6 +19,7 @@ import woorifisa.goodfriends.backend.global.error.dto.ErrorReportRequest;
 import woorifisa.goodfriends.backend.global.error.dto.ErrorResponse;
 import woorifisa.goodfriends.backend.infrastructure.oauth.exception.OAuthException;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
+import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.product.exception.NotFoundImageFileException;
 import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
@@ -59,7 +60,10 @@ public class ControllerAdvice {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
-    @ExceptionHandler(NotFoundProfile.class)
+    @ExceptionHandler({ // 클라이언테 에러: 403
+            NotFoundProfile.class,
+            NotAccessThisProduct.class
+    })
     public ResponseEntity<ErrorResponse> handleForbidden(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);

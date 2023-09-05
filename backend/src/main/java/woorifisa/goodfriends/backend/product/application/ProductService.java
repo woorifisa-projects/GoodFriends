@@ -12,6 +12,7 @@ import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
@@ -133,23 +134,31 @@ public class ProductService {
         return response;
     }
 
-    public ProductUpdateResponse showSelectedProduct(Long id) {
-        Product selectedProduct = productRepository.getById(id);
-        List<String> images = productImageRepository.findAllImageUrlByProductId(id);
+    public ProductUpdateResponse showSelectedProduct(Long userId, Long productId) {
+        if(!verifyUser(userId, productId)){
+            throw new NotAccessThisProduct();
+        }
+
+        Product selectedProduct = productRepository.getById(productId);
+        List<String> images = productImageRepository.findAllImageUrlByProductId(productId);
         return new ProductUpdateResponse(selectedProduct, images);
     }
 
     @Transactional
-    public void updateProduct(ProductUpdateRequest request, Long id) throws IOException {
-        Product selectedProduct = productRepository.getById(id);
+    public void updateProduct(ProductUpdateRequest request, Long userId, Long productId) throws IOException {
+        if(!verifyUser(userId, productId)){
+            throw new NotAccessThisProduct();
+        }
 
-        deleteImageByProductId(id);
-        productImageRepository.deleteByProductId(id);
+        Product selectedProduct = productRepository.getById(productId);
 
-        List<String> savedImageUrls = saveImages(id, request.getImageUrls());
+        deleteImageByProductId(productId);
+        productImageRepository.deleteByProductId(productId);
+
+        List<String> savedImageUrls = saveImages(productId, request.getImageUrls());
 
         Product updatedProduct = productRepository.save(Product.builder()
-                .id(id)
+                .id(productId)
                 .user(selectedProduct.getUser())
                 .title(request.getTitle())
                 .productCategory(request.getProductCategory())
@@ -166,7 +175,10 @@ public class ProductService {
             s3Service.deleteFile(productImage.getImageUrl());
         }
     }
-    public void deleteById(Long productId) throws MalformedURLException {
+    public void deleteById(Long userId, Long productId) throws MalformedURLException {
+        if(!verifyUser(userId, productId)){
+            throw new NotAccessThisProduct();
+        }
         deleteImageByProductId(productId);
         productRepository.deleteById(productId);
     }
