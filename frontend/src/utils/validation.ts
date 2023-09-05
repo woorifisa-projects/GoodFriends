@@ -1,5 +1,5 @@
 import { CATEGORY } from '@/constants/category';
-import type { IEditProduct } from '@/types/product';
+import type { IPostProduct } from '@/types/product';
 
 export const checkBirthday = (birthday: string) => {
   const [year, month, day, tmp] = birthday.split('-').map(Number);
@@ -19,11 +19,11 @@ export const checkPhoneNumber = (phoneNumber: string) => {
   return regex.test(phoneNumber);
 };
 
-export const checkProductValue = (product: IEditProduct) => {
+export const checkProductValue = (product: IPostProduct) => {
   if (product.title.length < 2) {
     return { isSuccess: false, type: 'title' };
   }
-  if (product.sellPrice.length < 1 || !/^\d+$/.test(product.sellPrice)) {
+  if (product.sellPrice > 0 || product.sellPrice < 99999999) {
     return { isSuccess: false, type: 'price' };
   }
   if (product.description.length < 10) {

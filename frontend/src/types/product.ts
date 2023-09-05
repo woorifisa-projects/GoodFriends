@@ -5,49 +5,54 @@ export interface ICategory {
 }
 
 export interface IProduct {
-  id: number;
-  imageUrl: string;
   title: string;
-  address: string | null;
+  productCategory: string;
   sellPrice: number;
-  status: string;
 }
+// 상품 등록시 및 수정 사용할 interface
+export interface IPostProduct extends IProduct {
+  description: string;
+}
+// 전체 상품 조회시 사용할 interface
+export interface IAllProduct extends IProduct {
+  id: number;
+  status: string;
+  imageUrl: string;
+  address: string;
+}
+// 상품 상세 조회시 사용할 Interface
+export interface IDetailProduct extends IProduct {
+  id: number;
+  userId: number | null;
+  adminId: number | null;
+  description: string;
+  createdDate: string;
+  status: string;
+  lastModifiedDate: string;
+  imageUrls: Array<string>;
+  profileImageUrl: string;
+  nickName: string;
+}
+// 수정할 상품 조회할 시 사용할 interface
+export interface IDetailEditProduct extends IPostProduct {
+  id: number;
+  status: string;
+  imageUrls: Array<string>;
+}
+// 상품 상태(판매중, 예약중, 거래완료)
 export interface IFilter {
   id: number;
   name: string;
   value: string;
 }
 
-export interface IEditProductAdmin {
-  inputProductTitle: string;
-  inputProductPrice: number;
-  inputProductDate: string;
-  inputProductDes: string;
-  selectedCategory: string;
-  previewImg: string;
-  inputImage: string;
-}
-
-export interface IEditProduct {
+/* 관리자 */
+// 전체 상품 조회시 사용할 interface
+export interface IAllProductAdmin {
+  id: number;
+  imageUrl: string;
   title: string;
-  productCategory: string;
-  description: string;
-  sellPrice: string;
-  status?: string;
-  imageUrls?: Array<string>;
-}
-
-export interface IDetailProduct {
-  adminId: string;
-  id: string;
-  imageUrls: Array<string>;
-  nickName: string;
-  productCategory: string;
-  profileImageUrl: string;
-  description: string;
-  sellPrice: string;
+  address: string;
+  sellPrice: number;
   status: string;
-  title: string;
-  userId: number;
-  createdDate: string;
 }

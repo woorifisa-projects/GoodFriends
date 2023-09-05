@@ -73,10 +73,10 @@ import { useUserInfoStore } from '@/stores/userInfo';
 import { CATEGORY_LIST } from '@/constants/category';
 import { CATEGORY } from '@/constants/category';
 import productAPI from '@/apis/user/product';
-import type { IEditProduct } from '@/types/product';
 import { checkProductValue } from '@/utils/validation';
 import { goPageWithReload } from '@/utils/goPage';
 import { useLoadingStore } from '@/stores/loading';
+import type { IPostProduct } from '@/types/product';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
@@ -93,11 +93,11 @@ const props = defineProps({
 const id = route.params.id?.toString() || '0';
 const categories = CATEGORY_LIST;
 
-const data = ref<IEditProduct>({
+const data = ref<IPostProduct>({
   title: '',
   productCategory: 'ALL',
   description: '',
-  sellPrice: ''
+  sellPrice: 0
 });
 
 const inputImage = ref<Array<File>>([]);
