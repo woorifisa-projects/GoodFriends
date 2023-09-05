@@ -43,7 +43,9 @@
           </div>
         </div>
       </div>
-      <RouterView id="main" />
+      <Suspense>
+        <RouterView id="main" />
+      </Suspense>
     </div>
   </div>
 </template>
