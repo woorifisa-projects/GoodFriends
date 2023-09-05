@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.10'
 	id 'io.spring.dependency-management' version '1.1.0'
-	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2' // 1
 }
 
 group = 'woorifisa.goodfriends.backend'
@@ -10,11 +10,12 @@ version = '0.0.1-SNAPSHOT'
 java {
 	sourceCompatibility = '11'
 }
+ext {
+	snippetsDir = file('build/generated-snippets') // 2
+}
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+	asciidoctorExtensions
 }
 
 repositories {
@@ -39,7 +40,6 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// configuration 설치
@@ -53,14 +53,33 @@ dependencies {
 	// s3연동을 위한 의존성
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.137'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// Rest docs를 위한 의존성
+	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor' // 5
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // 6
+
+	// RestAssured
+	testImplementation 'io.rest-assured:rest-assured:4.4.0'
 }
 
-tasks.named('test') {
+tasks.named('test') { // 3
 	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
 
-tasks.named('asciidoctor') {
+tasks.named('asciidoctor') { // 4
+	configurations 'asciidoctorExtensions'
 	inputs.dir snippetsDir
 	dependsOn test
+}
+
+task copyDocument(type: Copy) { // 7
+	dependsOn asciidoctor
+
+	from "${asciidoctor.outputDir}"
+	into file("src/main/resources/static/docs")
+}
+
+bootJar {  // 8
+	dependsOn copyDocument
 }
