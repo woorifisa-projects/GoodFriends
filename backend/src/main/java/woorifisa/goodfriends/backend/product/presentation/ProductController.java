@@ -9,12 +9,10 @@ import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
 import woorifisa.goodfriends.backend.product.application.ProductService;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
-import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.user.application.UserService;
-import woorifisa.goodfriends.backend.user.dto.response.UserResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
