@@ -4,10 +4,7 @@
       <img :src="LOGO_IMG" alt="" />
     </div>
     <ul class="links">
-      <li>
-        <a href="https://github.com/woorifisa/GoodFriends"> link1</a>
-      </li>
-      <li><a href="https://github.com/woorifisa/GoodFriends"> link2</a></li>
+      <li>Copyright ⓒ 2023. Good Friends. All rights reserved.</li>
     </ul>
     <ul class="icons">
       <li>
@@ -63,7 +60,7 @@ import { LOGO_IMG } from '@/constants/images';
 .icons > li {
   width: 40px;
   height: 40px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   background: #f2f1fa;
   border-radius: 10px;
   padding: 4px;

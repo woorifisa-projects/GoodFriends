@@ -1,9 +1,9 @@
 <template>
   <div class="header">
     <div class="title" @click="goPage(HEADER.LOGO.path)">
-      <span class="material-icons-outlined"> sentiment_satisfied </span>
-      {{ HEADER.LOGO.view }}
-      <!-- <img :src="LOGO.image" alt="" /> -->
+      <!-- <span class="material-icons-outlined"> sentiment_satisfied </span> -->
+      <!-- {{ HEADER.LOGO.view }} -->
+      <img src="@/assets/images/logo.png" alt="" />
     </div>
     <div class="wrap">
       <div>
@@ -192,7 +192,7 @@ onMounted(async () => {
 }
 .title img {
   width: 100%;
-  object-fit: cover;
+  /* object-fit: cover; */
 }
 .wrap {
   display: flex;

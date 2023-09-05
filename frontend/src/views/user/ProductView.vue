@@ -5,10 +5,10 @@
         <button @click="onClickBannerBtn('prev')" :disabled="viewImage === 0">
           <span class="material-icons-outlined"> arrow_back_ios </span>
         </button>
-        <img :src="product.imageUrls[viewImage]" alt="" />
+        <img :src="data.imageUrls[viewImage]" alt="" />
         <button
           @click="onClickBannerBtn('next')"
-          :disabled="viewImage === product.imageUrls.length - 1"
+          :disabled="viewImage === data.imageUrls.length - 1"
         >
           <span class="material-icons-outlined"> arrow_forward_ios </span>
         </button>
@@ -24,20 +24,20 @@
           <button @click="onClickOrder">{{ PRODUCT.ORDER }}</button>
         </div>
         <div class="detail-info">
-          <div class="name">{{ product.title }}</div>
-          <div class="price">{{ product.sellPrice }}원</div>
-          <div class="category">{{ CATEGORY[product.productCategory] }}</div>
-          <div class="date">{{ PRODUCT.CREATE_AT }}: {{ product.createdDate }}</div>
+          <div class="name">{{ data.title }}</div>
+          <div class="price">{{ data.sellPrice }}원</div>
+          <div class="category">{{ CATEGORY[data.productCategory] }}</div>
+          <div class="date">{{ PRODUCT.CREATE_AT }}: {{ data.createdDate }}</div>
         </div>
       </div>
     </div>
     <div class="product-user">
       <div class="img">
-        <img :src="user.image" alt="" />
+        <img :src="data.profileImageUrl" alt="" />
       </div>
-      <div>{{ user.name }}</div>
+      <div>{{ data.nickName }}</div>
     </div>
-    <div class="product-detail">{{ product.description }}</div>
+    <div class="product-detail">{{ data.description }}</div>
     <OrderModal v-model:is-visible="isVisible" :product-id="0" />
   </div>
 </template>
@@ -54,6 +54,7 @@ import { useUserInfoStore } from '@/stores/userInfo';
 import { useLoadingStore } from '@/stores/loading';
 import { goPageWithReload } from '@/utils/goPage';
 import { dateFormat } from '@/utils/format';
+import type { IDetailProduct } from '@/types/product';
 
 const store = useUserInfoStore();
 const route = useRoute();
@@ -63,19 +64,22 @@ const id = route.params.id.toString();
 // TODO: 작성자 인지 아닌지 -> API 연결 필요
 const isWriter = ref(false);
 
-const product = ref({
-  title: '',
+const viewImage = ref(0);
+
+const data = ref<IDetailProduct>({
+  id: 0,
+  userId: null,
+  adminId: null,
   description: '',
   createdDate: new Date().toString(),
+  status: '',
+  lastModifiedDate: '',
+  imageUrls: [],
+  profileImageUrl: '',
+  nickName: '',
+  title: '',
   productCategory: '',
-  sellPrice: '',
-  imageUrls: ['']
-});
-const viewImage = ref(0);
-const user = ref({
-  id: 0,
-  image: '',
-  name: ''
+  sellPrice: 0
 });
 const isVisible = ref(false);
 
@@ -94,7 +98,6 @@ const onClickDelete = async () => {
   loadingStore.setLoading(true);
   const res = await productAPI.deleteProduct(store.accessToken, id);
   if (res.isSuccess) {
-    console.log('success');
     goPageWithReload('');
     loadingStore.setLoading(true);
   } else {
@@ -114,27 +117,15 @@ const onClickOrder = () => {
 onMounted(async () => {
   const res = await productAPI.getProduct(id);
   if (res.isSuccess && res.data) {
-    const { data } = res;
-    product.value = {
-      title: data.title,
-      description: data.description,
-      createdDate: dateFormat(new Date(data.createdDate)),
-      productCategory: data.productCategory,
-      sellPrice: data.sellPrice,
-      imageUrls: data.imageUrls
-    };
-    user.value = {
-      id: data.userId,
-      image: data.profileImageUrl,
-      name: data.nickName
-    };
+    data.value = res.data;
+    data.value.createdDate = dateFormat(new Date(res.data.createdDate));
     if (store.id > 0) {
-      isWriter.value = user.value.id === store.id;
-      console.log(isWriter.value, user.value.id, store.id);
+      isWriter.value = data.value.userId === store.id;
     } else isWriter.value = false;
   } else {
     alert(res.message);
     router.go(-1);
+    return;
   }
 });
 </script>

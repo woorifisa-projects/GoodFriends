@@ -29,12 +29,12 @@ import ProductCardVue from '@/components/ProductCard.vue';
 import CommonBannerVue from '@/components/CommonBanner.vue';
 import CategoryList from '@/components/CategoryList.vue';
 import productAPI from '@/apis/user/product';
-import type { IProduct } from '@/types/product';
+import type { IAllProduct } from '@/types/product';
 import EmptyProduct from '@/components/EmptyProduct.vue';
 
 const selectedCategory = ref('ALL');
 
-const products = ref<Array<IProduct>>([]);
+const products = ref<Array<IAllProduct>>([]);
 
 const onClickSearch = () => {
   // TODO: 상품 검색
