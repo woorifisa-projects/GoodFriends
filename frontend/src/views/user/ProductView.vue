@@ -112,7 +112,7 @@ const onClickOrder = () => {
 };
 
 onMounted(async () => {
-  const res = await productAPI.getProduct(id);
+  const res = await productAPI.getProduct(store.accessToken,id);
   if (res.isSuccess && res.data) {
     const { data } = res;
     product.value = {
