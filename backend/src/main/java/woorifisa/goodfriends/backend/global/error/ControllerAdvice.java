@@ -21,6 +21,7 @@ import woorifisa.goodfriends.backend.infrastructure.oauth.exception.OAuthExcepti
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.product.exception.NotFoundImageFileException;
 import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.user.exception.InvalidNicknameException;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 import woorifisa.goodfriends.backend.user.exception.NotFoundUserException;
@@ -56,6 +57,12 @@ public class ControllerAdvice {
     public ResponseEntity<ErrorResponse> handleInvalidAuthorization(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ExceptionHandler(NotFoundProfile.class)
+    public ResponseEntity<ErrorResponse> handleForbidden(final RuntimeException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
 
     @ExceptionHandler({ // 클라이언트 에러: 404
