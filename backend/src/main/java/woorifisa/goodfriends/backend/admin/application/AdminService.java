@@ -119,7 +119,7 @@ public class AdminService {
     }
 
     public ProductViewsAllResponse viewAllProduct() {
-        List<Product> products = productRepository.findAll();
+        List<Product> products = productRepository.findAllOrderByIdDesc();
 
         List<ProductViewAllResponse> responses = products.stream()
                 .map(product -> {
