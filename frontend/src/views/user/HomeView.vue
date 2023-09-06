@@ -48,8 +48,26 @@ const onClickProductCard = (id: number) => {
   router.push(`product/${id}`);
 };
 
-watchEffect(() => {
+watchEffect(async() => {
   // TODO: 카테고리별 상품
+  if(selectedCategory.value === 'ALL'){
+    const res = await productAPI.getAll();
+    if (res.isSuccess && res.data) {
+      products.value = res.data;
+    } else {
+      console.error(res.message);
+    }
+    
+    return;
+  }
+
+  const res = await productAPI.getCategoryProduct(selectedCategory.value);
+  if (res.isSuccess && res.data) {
+    products.value = res.data;
+  }
+  else {
+    products.value = [];
+  }
 });
 
 onMounted(async () => {

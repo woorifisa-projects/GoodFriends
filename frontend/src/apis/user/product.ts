@@ -13,7 +13,8 @@ const productAPI = {
     getProduct: `api/products/view/`,
     getEditProduct: `api/products/edit/`,
     editProduct: `api/products/edit/`,
-    deleteProduct: `api/products/remove/`
+    deleteProduct: `api/products/remove/`,
+    getCategoryProduct: `api/products/view/category?`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IAllProduct>>> => {
@@ -128,6 +129,25 @@ const productAPI = {
       .catch((error: AxiosError) => {
         console.log(error);
         return { isSuccess: false, message: error.message, code: error.status };
+      });
+  },
+  getCategoryProduct: (productCategory: string): Promise<IResultType<Array<IAllProduct>>> => {
+    // 카테고리별 조회
+    return api
+      .get(productAPI.endPoint.getCategoryProduct, {
+        params: { productCategory },
+      })
+      .then((res: AxiosResponse) => {
+        const { data } = res;
+        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT, code: res.status };
+      })
+      .catch((error: AxiosError) => {
+        return {
+          isSuccess: false,
+          message: error.message,
+          type: ApiType.PRODUCT,
+          code: error.status
+        };
       });
   }
 };
