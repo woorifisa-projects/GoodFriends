@@ -1,5 +1,5 @@
 <template>
-  <div class="main-page">
+  <div id="main-page">
     <CommonBannerVue />
     <div class="main">
       <CategoryList v-model:selectedCategory="selectedCategory" />
@@ -63,14 +63,16 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.main-page {
+#main-page {
   width: 100%;
   height: 100%;
+  padding: 0;
 }
 .main {
   width: 100%;
   height: 100%;
-  margin-top: 24px;
+  /* margin-top: 24px; */
+  padding: 10px 200px;
 }
 
 .search-bar {
@@ -95,8 +97,6 @@ onMounted(async () => {
   cursor: pointer;
 }
 .card-list {
-  width: 80%;
-
   margin: auto;
   margin-top: 24px;
   padding: 24px;
@@ -104,30 +104,46 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
+  align-content: center;
   gap: 24px;
 }
 .add-button {
   position: sticky;
-  bottom: 24px;
-  right: 0;
+  bottom: 32px;
   text-align: end;
+  padding-right: 200px;
 }
 .add-button > button {
-  border: 1px solid #48583f;
+  border: 2px solid #dfa700;
+  box-shadow: 1px 1px 10px rgba(123, 123, 123, 0.45);
   background-color: var(--product-add-btn-bg);
   color: var(--product-add-btn-text);
   border-radius: 50%;
   width: 64px;
   height: 64px;
 }
+.add-button > button > span {
+  line-height: 32px;
+  font-size: 32px;
+  font-weight: 700;
+}
 
 @media screen and (max-width: 1200px) {
   .card-list {
     grid-template-columns: 1fr 1fr;
   }
+  .add-button {
+    padding-right: 24px;
+  }
 }
 
 @media screen and (max-width: 1023px) {
+  #main-page {
+    padding: 10px 0;
+  }
+  .main {
+    padding: 0;
+  }
   .card-list {
     grid-template-columns: 1fr 1fr;
   }
@@ -155,12 +171,12 @@ onMounted(async () => {
     font-weight: 700;
     justify-content: right;
   }
-  .add-button {
-    padding-right: 24px;
-  }
 }
 
 @media screen and (max-width: 767px) {
+  #main-page {
+    padding: 10px 0;
+  }
   .card-list {
     grid-template-columns: 1fr;
   }
