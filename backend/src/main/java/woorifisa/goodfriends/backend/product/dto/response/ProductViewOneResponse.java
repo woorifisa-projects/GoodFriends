@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.product.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
