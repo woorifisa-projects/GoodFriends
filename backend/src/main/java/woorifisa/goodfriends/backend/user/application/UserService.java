@@ -3,6 +3,8 @@ package woorifisa.goodfriends.backend.user.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import woorifisa.goodfriends.backend.auth.dto.LoginUser;
+import woorifisa.goodfriends.backend.auth.exception.AuthorizationException;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.user.domain.User;
