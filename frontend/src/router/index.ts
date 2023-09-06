@@ -17,6 +17,7 @@ import ErrorView from '@/views/user/ErrorView.vue';
 import { goPageWithReload } from '@/utils/goPage';
 import { useAdminStore } from '@/stores/admin';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { ERROR_MSG } from '@/constants/strings/error';
 
 const router = createRouter({
   scrollBehavior() {
@@ -127,7 +128,7 @@ router.beforeEach((to, form, next) => {
   }
   if (to.meta.type === 'user') {
     if (!isLogin && !to.meta.every) {
-      alert('로그인 후 이용해 주세요');
+      alert(ERROR_MSG.NEED_LOGIN);
       goPageWithReload();
       return;
     }
@@ -135,7 +136,7 @@ router.beforeEach((to, form, next) => {
     return;
   }
   if (to.meta.type === 'admin' && !adminStore.accessToken) {
-    alert('로그인 후 이용해 주세요');
+    alert(ERROR_MSG.NEED_LOGIN);
     goPageWithReload('admin');
     next();
     return;
