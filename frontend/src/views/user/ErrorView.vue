@@ -3,8 +3,8 @@
     <div class="img">\(^ . ^)/</div>
     <div class="text">
       <p>
-        <span> {{ ERROR.ERROR }} </span>
-        {{ ERROR.MESSAGE }}
+        <span> {{ ERROR_MSG.ERROR }} </span>
+        {{ ERROR_MSG.MESSAGE }}
       </p>
       <p>{{ message }}</p>
     </div>
@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ERROR } from '@/constants/strings/error';
+import { ERROR_MSG } from '@/constants/strings/error';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 import { ref } from 'vue';
@@ -23,9 +23,9 @@ const { type } = route.params;
 const message = ref('');
 
 if (type === 'login') {
-  message.value = ERROR.LOGIN;
+  message.value = ERROR_MSG.LOGIN;
 } else {
-  message.value = ERROR.SERVER;
+  message.value = ERROR_MSG.SERVER;
 }
 
 const goHome = () => {

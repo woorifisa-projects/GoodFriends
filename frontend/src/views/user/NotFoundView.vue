@@ -3,17 +3,17 @@
     <div class="img">\(^ . ^)/</div>
     <div class="text">
       <p>
-        <span> {{ ERROR.NOT_FOUND }} </span>
-        {{ ERROR.NOT_FOUND_MESSAGE }}
+        <span> {{ ERROR_MSG.NOT_FOUND }} </span>
+        {{ ERROR_MSG.NOT_FOUND_MESSAGE }}
       </p>
-      <p>{{ ERROR.NOT_FOUND_ERR_DETAIL }}</p>
+      <p>{{ ERROR_MSG.NOT_FOUND_ERR_DETAIL }}</p>
     </div>
-    <button @click="goHome">{{ ERROR.GO_HOME }}</button>
+    <button @click="goHome">{{ ERROR_MSG.GO_HOME }}</button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ERROR } from '@/constants/strings/error';
+import { ERROR_MSG } from '@/constants/strings/error';
 import router from '@/router';
 
 const goHome = () => {
