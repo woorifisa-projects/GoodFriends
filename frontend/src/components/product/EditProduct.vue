@@ -76,8 +76,8 @@ import productAPI from '@/apis/user/product';
 import { checkProductValue } from '@/utils/validation';
 import { goPageWithReload } from '@/utils/goPage';
 import { useLoadingStore } from '@/stores/loading';
-import type { IPostProduct } from '@/types/product';
 import router from '@/router';
+import type { IPostProduct } from '@/types/product';
 import type { IStringToFunction } from '@/types/dynamic';
 
 const route = useRoute();
@@ -170,14 +170,15 @@ const submit = async () => {
 };
 
 const save = (e: Event) => {
-  if (props.type === 'add') {
-    // TODO: add 관련 API 호출
-    console.log('임시저장 버튼 클릭');
+  if (props.type === 'edit') {
+    return;
   }
+
+  // TODO: add 관련 API 호출
+  console.log('임시저장 버튼 클릭', e);
 };
 
 const remove = async () => {
-  console.log('삭제 버튼 클릭');
   if (props.type === 'add') return;
 
   loadingStore.setLoading(true);
@@ -208,7 +209,6 @@ onMounted(async () => {
     router.go(-1);
     return;
   }
-
   const resData = res.data;
   const imageUrl = resData.imageUrls || [];
 
@@ -218,7 +218,6 @@ onMounted(async () => {
 
   if (images === null) {
     alert('이미지를 불러오는 중 오류가 발생했습니다');
-    loadingStore.setLoading(false);
     goPageWithReload('product/' + id);
     return;
   }
@@ -227,7 +226,6 @@ onMounted(async () => {
     const file = await promiseFile;
     if (!file) throw new Error('파일 변환 과정중 오류 발생');
     inputImage.value.push(file);
-    loadingStore.setLoading(false);
   });
 
   data.value = {

@@ -53,7 +53,6 @@ const user = ref({
   imageUrl: ''
 });
 
-// TODO: login 구현후 수정
 const isLogin = ref(false);
 const isPopoverOpen = ref(false);
 const popover = ref<Element>();
@@ -73,7 +72,6 @@ const onClickLoginBtn = async () => {
 };
 
 const onClickLogoutBtn = async () => {
-  // TODO: login 구현후 수정 -> id 수정
   const res = await loginAPI.logout(store.id, store.accessToken);
   if (res.isSuccess) {
     localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
@@ -116,6 +114,7 @@ const openPopover = () => {
 
 const saveInfo = async (token: string) => {
   const res = await profileAPI.getProfile(token);
+
   if (res.isSuccess && res.data) {
     store.setAllInfo(res.data, token);
     user.value = {
@@ -124,11 +123,11 @@ const saveInfo = async (token: string) => {
       imageUrl: res.data.imageUrl
     };
     return true;
-  } else {
-    alert(res.message);
-    localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
-    return false;
   }
+
+  alert(res.message);
+  localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
+  return false;
 };
 
 watchEffect(() => {

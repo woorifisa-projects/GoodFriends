@@ -73,29 +73,28 @@ const searchAddress = (data: string) => {
 const onClickEdit = async () => {
   if (isDisabled.value) {
     isDisabled.value = false;
-  } else if (!isDisabled.value) {
-    if (!checkPhoneNumber(userInputInfo.value.mobileNumber)) {
-      alert(ALERT.PHONE);
-      return;
-    }
-    if (!checkUserName(userInputInfo.value.nickName)) {
-      alert(ALERT.NAME);
-      // TODO: 중복일 경우 다른 메시지로 알려주기
-      return;
-    }
-    // TODO: API
-    loadingStore.setLoading(true);
-    const res = await profileAPI.editProfile(store.accessToken, {
-      ...userInputInfo.value,
-      email: store.email
-    });
-    if (res.isSuccess) {
-      user.value = { ...userInputInfo.value, ...user.value };
-      isDisabled.value = true;
-    } else {
-      alert(res.message);
-    }
-    loadingStore.setLoading(false);
+    return;
+  }
+
+  if (!checkPhoneNumber(userInputInfo.value.mobileNumber)) {
+    alert(ALERT.PHONE);
+    return;
+  }
+  if (!checkUserName(userInputInfo.value.nickName)) {
+    alert(ALERT.NAME);
+    return;
+  }
+  loadingStore.setLoading(true);
+  const res = await profileAPI.editProfile(store.accessToken, {
+    ...userInputInfo.value,
+    email: store.email
+  });
+  loadingStore.setLoading(false);
+  if (res.isSuccess) {
+    user.value = { ...userInputInfo.value, ...user.value };
+    isDisabled.value = true;
+  } else {
+    alert(res.message);
   }
 };
 
@@ -112,7 +111,6 @@ const onInputPhoneNumber = (event: Event) => {
   target.value = phoneNumberFormat(number);
 };
 const checkUserName = (nickName: string) => {
-  // TODO: API 중복검사
   if (nickName.length < 2) return false;
   return true;
 };
