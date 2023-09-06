@@ -22,7 +22,7 @@ const productAPI = {
       .get(productAPI.endPoint.getAll)
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT, code: res.status };
+        return { isSuccess: true, data: data, type: ApiType.PRODUCT, code: res.status };
       })
       .catch((error: AxiosError) => {
         return {
@@ -50,7 +50,7 @@ const productAPI = {
         return { isSuccess: false, message: error.message, code: error.status };
       });
   },
-  getProduct: (token:string, productId: string): Promise<IResultType<IDetailProduct>> => {
+  getProduct: (token: string, productId: string): Promise<IResultType<IDetailProduct>> => {
     // 상품 상세 조회
     return api
       .get(productAPI.endPoint.getProduct + productId, {
