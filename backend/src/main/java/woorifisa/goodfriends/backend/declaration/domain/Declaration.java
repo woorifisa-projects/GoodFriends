@@ -49,6 +49,7 @@ public class Declaration extends BaseCreateTimeEntity {
     private Content content;
 
     @Column(name = "report_status")
+    @Enumerated(EnumType.STRING)
     private ReportStatus reportStatus;
 
     protected Declaration() {
