@@ -10,10 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
-import woorifisa.goodfriends.backend.auth.exception.EmptyAuthorizationHeaderException;
-import woorifisa.goodfriends.backend.auth.exception.InvalidTokenException;
-import woorifisa.goodfriends.backend.auth.exception.NotFoundOAuthTokenException;
-import woorifisa.goodfriends.backend.auth.exception.NotFoundTokenException;
+import woorifisa.goodfriends.backend.auth.exception.*;
 import woorifisa.goodfriends.backend.global.error.dto.ErrorReportRequest;
 import woorifisa.goodfriends.backend.global.error.dto.ErrorResponse;
 import woorifisa.goodfriends.backend.infrastructure.oauth.exception.OAuthException;
@@ -60,7 +57,8 @@ public class ControllerAdvice {
 
     @ExceptionHandler({ // 클라이언테 에러: 403
             NotFoundProfile.class,
-            NotAccessThisProduct.class
+            NotAccessThisProduct.class,
+            AuthorizationException.class
     })
     public ResponseEntity<ErrorResponse> handleForbidden(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
