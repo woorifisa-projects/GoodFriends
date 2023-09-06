@@ -14,7 +14,8 @@ const productAPI = {
     getEditProduct: `api/products/edit/`,
     editProduct: `api/products/edit/`,
     deleteProduct: `api/products/remove/`,
-    getCategoryProduct: `api/products/view/category?`
+    getCategoryProduct: `api/products/view/category`,
+    getSerchTitleProduct: `api/products/view/search`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IAllProduct>>> => {
@@ -136,6 +137,25 @@ const productAPI = {
     return api
       .get(productAPI.endPoint.getCategoryProduct, {
         params: { productCategory },
+      })
+      .then((res: AxiosResponse) => {
+        const { data } = res;
+        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT, code: res.status };
+      })
+      .catch((error: AxiosError) => {
+        return {
+          isSuccess: false,
+          message: error.message,
+          type: ApiType.PRODUCT,
+          code: error.status
+        };
+      });
+  },
+  getSearchTitleProduct: (keyword: string): Promise<IResultType<Array<IAllProduct>>> => {
+    // 제목으로 상품 검색
+    return api
+      .get(productAPI.endPoint.getSerchTitleProduct, {
+        params: { keyword },
       })
       .then((res: AxiosResponse) => {
         const { data } = res;

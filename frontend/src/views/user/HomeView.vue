@@ -4,7 +4,7 @@
     <div class="main">
       <CategoryList v-model:selectedCategory="selectedCategory" />
       <div class="search-bar">
-        <input type="text" id="search" @keyup.enter="onClickSearch" />
+        <input type="text" id="search" @keyup.enter="onClickSearch" v-model="keyword" />
         <label @click="onClickSearch">
           <span class="material-icons-outlined"> search </span>
         </label>
@@ -34,10 +34,18 @@ import EmptyProduct from '@/components/EmptyProduct.vue';
 
 const selectedCategory = ref('ALL');
 
+const keyword = ref('');
+
 const products = ref<Array<IAllProduct>>([]);
 
-const onClickSearch = () => {
-  // TODO: 상품 검색
+const onClickSearch = async () => {
+  const res = await productAPI.getSearchTitleProduct(keyword.value);
+  if (res.isSuccess && res.data) {
+    products.value = res.data;
+  }
+  else {
+    products.value = [];
+  }
 };
 
 const onClickAddProduct = () => {
@@ -49,7 +57,6 @@ const onClickProductCard = (id: number) => {
 };
 
 watchEffect(async() => {
-  // TODO: 카테고리별 상품
   if(selectedCategory.value === 'ALL'){
     const res = await productAPI.getAll();
     if (res.isSuccess && res.data) {
@@ -57,7 +64,7 @@ watchEffect(async() => {
     } else {
       console.error(res.message);
     }
-    
+
     return;
   }
 
