@@ -11,19 +11,9 @@ import EditProduct from '@/views/user/EditProductView.vue';
 import ProductView from '@/views/user/ProductView.vue';
 import NotFoundView from '@/views/user/NotFoundView.vue';
 import OrderView from '@/views/user/OrderView.vue';
-
-import AdminLogin from '@/views/admin/AdminLogin.vue';
-import DefaultSide from '@/layouts/admin/DefaultSide.vue';
-import EditUserInfoView from '@/views/admin/EditUserInfoView.vue';
-import EditProductByAdminView from '@/views/admin/EditProductByAdminView.vue';
-import AddProductByAdminView from '@/views/admin/AddProductByAdminView.vue';
-import ManageLog from '@/views/admin/ManageLogView.vue';
-import ManageUser from '@/views/admin/ManageUserView.vue';
-import ManageDeclaration from '@/views/admin/ManageDeclarationView.vue';
-import ManageProductByAdminView from '@/views/admin/ManageProductView.vue';
 import ReceiveCodeView from '@/views/user/ReceiveCodeView.vue';
 import ErrorView from '@/views/user/ErrorView.vue';
-import DeclarationDeatilView from '@/views/admin/DeclarationDetailView.vue';
+
 import { useUserInfoStore } from '@/stores/userInfo';
 import { goPageWithReload } from '@/utils/goPage';
 
@@ -63,29 +53,59 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin page',
-      component: AdminLogin
+      meta: { type: 'admin' },
+      component: () => import('@/views/admin/AdminLogin.vue')
     },
     {
       path: '/admin',
       name: 'In admin page',
-      component: DefaultSide,
+      meta: { type: 'admin' },
+      component: () => import('@/layouts/admin/DefaultSide.vue'),
       children: [
-        { path: 'log', name: 'admin log', component: ManageLog },
-        { path: 'manage/user', name: 'admin manage user', component: ManageUser },
-        { path: 'manage/user/:id', name: 'admin manage user detail', component: EditUserInfoView },
-        { path: 'product/edit/:id', name: 'admin edit product', component: EditProductByAdminView },
+        {
+          path: 'log',
+          name: 'admin log',
+          component: () => import('@/views/admin/ManageLogView.vue')
+        },
+        {
+          path: 'manage/user',
+          name: 'admin manage user',
+          component: () => import('@/views/admin/ManageUserView.vue')
+        },
+        {
+          path: 'manage/user/:id',
+          name: 'admin manage user detail',
+          component: () => import('@/views/admin/EditUserInfoView.vue')
+        },
+        {
+          path: 'product/edit/:id',
+          name: 'admin edit product',
+          component: () => import('@/views/admin/EditProductByAdminView.vue')
+        },
         {
           path: 'product/manage',
           name: 'admin manage product',
-          component: ManageProductByAdminView
+          component: () => import('@/views/admin/ManageProductView.vue')
         },
-        { path: 'product/manage/add', name: 'admin add product', component: AddProductByAdminView },
-        { path: 'product/manage/:id', name: 'admin product', component: ProductView },
-        { path: 'declaration', name: 'admin declaration', component: ManageDeclaration },
+        {
+          path: 'product/manage/add',
+          name: 'admin add product',
+          component: () => import('@/views/admin/AddProductByAdminView.vue')
+        },
+        {
+          path: 'product/manage/:id',
+          name: 'admin product',
+          component: () => import('@/views/admin/ManageProductView.vue')
+        },
+        {
+          path: 'declaration',
+          name: 'admin declaration',
+          component: () => import('@/views/admin/ManageDeclarationView.vue')
+        },
         {
           path: 'declaration/manage/:id',
           name: 'admin manage declaration detail',
-          component: DeclarationDeatilView
+          component: () => import('@/views/admin/DeclarationDetailView.vue')
         }
       ]
     }
