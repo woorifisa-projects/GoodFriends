@@ -13,7 +13,7 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class Content {
 
-    public static final int MAX_LENGTH = 10000;
+    public static final int MAX_LENGTH = 300;
 
     @Column(name = "content", nullable = false)
     @Lob
