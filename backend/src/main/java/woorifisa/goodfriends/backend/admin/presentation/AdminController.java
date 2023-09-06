@@ -8,21 +8,24 @@ import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.application.AdminService;
 import woorifisa.goodfriends.backend.admin.dto.request.AdminLoginRequest;
 import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
+import woorifisa.goodfriends.backend.admin.dto.response.UserInfoResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
-import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
-@RequestMapping("api/admin/")
+@RequestMapping("/api/admin")
 public class AdminController {
 
     private final AdminService adminService;
@@ -40,18 +43,18 @@ public class AdminController {
     }
 
     @PostMapping("/products/new")
-    public ResponseEntity<Long> saveProduct(Authentication authentication,
+    public ResponseEntity<Void> saveProduct(Authentication authentication,
                                                            @RequestPart ProductSaveRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
         long adminId = Long.parseLong(authentication.getName());
         ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
-        ProductSaveResponse response = adminService.saveProduct(adminId, productSaveRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response.getId());
+        Long productId = adminService.saveProduct(adminId, productSaveRequest);
+        return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }
 
     @GetMapping("/products/view")
-    public ResponseEntity<List<ProductViewAllResponse>> viewAllProduct() {
-        List<ProductViewAllResponse> responses = adminService.viewAllProduct();
+    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
+        ProductViewsAllResponse responses = adminService.viewAllProduct();
         return ResponseEntity.ok().body(responses);
     }
 
@@ -76,7 +79,7 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/products/delete/{productId}")
+    @DeleteMapping("/products/remove/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) throws MalformedURLException {
         adminService.deleteById(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -90,7 +93,7 @@ public class AdminController {
     }
 
     //관리자가 사용자 정보를 삭제
-    @DeleteMapping("/user/delete/{userId}")
+    @DeleteMapping("/user/remove/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
 
         adminService.deleteUserInfo(userId);
@@ -103,5 +106,12 @@ public class AdminController {
         adminService.updateUserInfo(userId,userUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
 
+    }
+
+    //관리자가 전체사용자 정보 조회
+    @GetMapping("/view")
+    public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
+        List<UserInfoResponse> userInfoResponse = adminService.getAllUsers();
+        return ResponseEntity.ok().body(userInfoResponse);
     }
 }

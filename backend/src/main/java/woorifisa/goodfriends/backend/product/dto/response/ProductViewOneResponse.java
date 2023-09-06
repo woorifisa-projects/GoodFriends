@@ -1,11 +1,14 @@
 package woorifisa.goodfriends.backend.product.dto.response;
 
+import lombok.Getter;
+
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 public class ProductViewOneResponse {
 
     private Long id;
@@ -24,8 +27,10 @@ public class ProductViewOneResponse {
 
     private int sellPrice;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedDate;
 
     private List<String> imageUrls;
@@ -53,55 +58,4 @@ public class ProductViewOneResponse {
         this.nickName = nickName;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public ProductCategory getProductCategory() {
-        return productCategory;
-    }
-
-    public Long getAdminId() {
-        return adminId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public ProductStatus getStatus() {
-        return status;
-    }
-
-    public int getSellPrice() {
-        return sellPrice;
-    }
-
-    public List<String> getImageUrls() {
-        return imageUrls;
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
 }

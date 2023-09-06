@@ -1,5 +1,7 @@
 package woorifisa.goodfriends.backend.product.application;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
@@ -7,12 +9,14 @@ import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.product.domain.*;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
-import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
+import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
@@ -44,14 +48,21 @@ public class ProductService {
         this.profileRepository = profileRepository;
     }
 
-    public ProductSaveResponse saveProduct(Long userId, ProductSaveRequest request) throws IOException {
-        User foundUser = userRepository.getById(userId);
+    public Long saveProduct(Long userId, ProductSaveRequest request) throws IOException {
 
+        //프로필 등록해야 상품 등록 가능하도록
+        if(!existProfile(userId)) {
+            throw new NotFoundProfile(); // 403
+        }
+
+        User foundUser = userRepository.getById(userId);
+        // 상품 저장
         Product newProduct = createProduct(foundUser, request);
 
-        List<String> savedImageUrls = saveImages(newProduct.getId(), request.getImageUrls());
+        // 저장한 상품 id를 가져와서 상품 이미지 저장
+        saveImages(newProduct.getId(), request.getImageUrls());
 
-        return new ProductSaveResponse(newProduct, savedImageUrls);
+        return newProduct.getId();
     }
 
     private Product createProduct(User user, ProductSaveRequest request) {
@@ -84,9 +95,10 @@ public class ProductService {
         return savedImages;
     }
 
-    public List<ProductViewAllResponse> viewAllProduct() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
+    public ProductViewsAllResponse viewAllProduct() {
+        List<Product> products = productRepository.findAllOrderByIdDesc();
+
+        List<ProductViewAllResponse> responses = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
@@ -96,13 +108,15 @@ public class ProductService {
                         return productViewAllResponse;
                     }
 
-                    Profile profile = profileRepository.findByUserId(product.getUser().getId()).orElseThrow(()-> new RuntimeException("유저의 프로필이 존재하지 않습니다."));
+                    Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
                     ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress());
                     return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
+
+        return new ProductViewsAllResponse(responses);
     }
 
     public ProductViewOneResponse viewOneProduct(Long id) {
@@ -124,23 +138,31 @@ public class ProductService {
         return response;
     }
 
-    public ProductUpdateResponse showSelectedProduct(Long id) {
-        Product selectedProduct = productRepository.getById(id);
-        List<String> images = productImageRepository.findAllImageUrlByProductId(id);
+    public ProductUpdateResponse showSelectedProduct(Long userId, Long productId) {
+        if(!verifyUser(userId, productId)){
+            throw new NotAccessThisProduct();
+        }
+
+        Product selectedProduct = productRepository.getById(productId);
+        List<String> images = productImageRepository.findAllImageUrlByProductId(productId);
         return new ProductUpdateResponse(selectedProduct, images);
     }
 
     @Transactional
-    public void updateProduct(ProductUpdateRequest request, Long id) throws IOException {
-        Product selectedProduct = productRepository.getById(id);
+    public void updateProduct(ProductUpdateRequest request, Long userId, Long productId) throws IOException {
+        if(!verifyUser(userId, productId)){
+            throw new NotAccessThisProduct();
+        }
 
-        deleteImageByProductId(id);
-        productImageRepository.deleteByProductId(id);
+        Product selectedProduct = productRepository.getById(productId);
 
-        List<String> savedImageUrls = saveImages(id, request.getImageUrls());
+        deleteImageByProductId(productId);
+        productImageRepository.deleteByProductId(productId);
+
+        List<String> savedImageUrls = saveImages(productId, request.getImageUrls());
 
         Product updatedProduct = productRepository.save(Product.builder()
-                .id(id)
+                .id(productId)
                 .user(selectedProduct.getUser())
                 .title(request.getTitle())
                 .productCategory(request.getProductCategory())
@@ -157,7 +179,10 @@ public class ProductService {
             s3Service.deleteFile(productImage.getImageUrl());
         }
     }
-    public void deleteById(Long productId) throws MalformedURLException {
+    public void deleteById(Long userId, Long productId) throws MalformedURLException {
+        if(!verifyUser(userId, productId)){
+            throw new NotAccessThisProduct();
+        }
         deleteImageByProductId(productId);
         productRepository.deleteById(productId);
     }

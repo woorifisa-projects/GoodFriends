@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.admin.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import woorifisa.goodfriends.backend.user.domain.User;
 
@@ -11,6 +12,8 @@ public class UserLogRecordResponse {
     private String email;
     private String nickname;
     private int banCount;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedAt;
 
     protected UserLogRecordResponse() {

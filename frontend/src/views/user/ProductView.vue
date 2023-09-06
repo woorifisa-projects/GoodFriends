@@ -115,7 +115,7 @@ const onClickOrder = () => {
 };
 
 onMounted(async () => {
-  const res = await productAPI.getProduct(id);
+  const res = await productAPI.getProduct(store.accessToken,id);
   if (res.isSuccess && res.data) {
     data.value = res.data;
     data.value.createdDate = dateFormat(new Date(res.data.createdDate));
