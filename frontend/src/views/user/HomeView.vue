@@ -39,7 +39,7 @@ const keyword = ref('');
 const products = ref<Array<IAllProduct>>([]);
 
 const onClickSearch = async () => {
-  const res = await productAPI.getSearchTitleProduct(keyword.value);
+  const res = await productAPI.getSearchTitleProduct(selectedCategory.value, keyword.value);
   if (res.isSuccess && res.data) {
     products.value = res.data;
   }

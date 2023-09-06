@@ -99,10 +99,6 @@ public class ProductService {
     public ProductViewsAllResponse viewAllProduct() {
         List<Product> products = productRepository.findAllOrderByIdDesc();
 
-        if(products.isEmpty()) {
-            throw new NotFoundProductException();
-        }
-
         List<ProductViewAllResponse> responses = createViewList(products);
 
         return new ProductViewsAllResponse(responses);
@@ -111,20 +107,20 @@ public class ProductService {
     public ProductViewsAllResponse viewProductByCategory(ProductCategory productCategory) {
         List<Product> products = productRepository.findByProductCategory(productCategory);
 
-        if(products.isEmpty()) {
-            throw new NotFoundProductException();
-        }
-
         List<ProductViewAllResponse> responses = createViewList(products);
 
         return new ProductViewsAllResponse(responses);
     }
 
-    public ProductViewsAllResponse viewSearchProduct(String keyword) {
-        List<Product> products = productRepository.findByTitleContains(keyword);
+    public ProductViewsAllResponse viewSearchProduct(String productCategory, String keyword) {
+        List<Product> products;
 
-        if(products.isEmpty()) {
-            throw new NotFoundProductException();
+        if(productCategory.equals("ALL")){
+            products = productRepository.findByTitleContains(keyword);
+        }
+        else {
+            ProductCategory category = ProductCategory.valueOf(productCategory);
+            products = productRepository.findByTitleContainsInCategory(category, keyword);
         }
 
         List<ProductViewAllResponse> responses = createViewList(products);

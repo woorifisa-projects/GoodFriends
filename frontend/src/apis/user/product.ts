@@ -151,11 +151,11 @@ const productAPI = {
         };
       });
   },
-  getSearchTitleProduct: (keyword: string): Promise<IResultType<Array<IAllProduct>>> => {
+  getSearchTitleProduct: (productCategory: string, keyword: string): Promise<IResultType<Array<IAllProduct>>> => {
     // 제목으로 상품 검색
     return api
       .get(productAPI.endPoint.getSerchTitleProduct, {
-        params: { keyword },
+        params: { productCategory,keyword },
       })
       .then((res: AxiosResponse) => {
         const { data } = res;

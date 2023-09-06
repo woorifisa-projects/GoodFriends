@@ -54,8 +54,8 @@ public class ProductController {
     }
 
     @GetMapping("/view/search")
-    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String keyword) {
-        ProductViewsAllResponse responses = productService.viewSearchProduct(keyword);
+    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String productCategory, @RequestParam String keyword) {
+        ProductViewsAllResponse responses = productService.viewSearchProduct(productCategory, keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
 
