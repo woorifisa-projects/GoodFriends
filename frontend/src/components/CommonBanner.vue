@@ -45,13 +45,13 @@ setInterval(() => {
 
 <style scoped>
 .banner {
-  box-sizing: content-box;
-  max-width: 1300px;
-  height: 300px;
+  box-sizing: border-box;
+  height: 500px;
   position: relative;
   display: flex;
   align-items: center;
   border: 1px solid rgba(109, 109, 109, 0.155);
+  width: 100%;
 }
 .banner > button {
   position: absolute;
