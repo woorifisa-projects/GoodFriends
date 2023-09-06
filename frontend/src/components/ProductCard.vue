@@ -51,13 +51,18 @@ const emits = defineEmits(['click']);
   height: 250px;
   overflow: hidden;
 
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
   background-color: white;
 
-  border: 1px solid black;
+  border: 1px solid rgb(164, 164, 164);
   border-radius: 12px;
 }
 .card > .img > img {
   width: 100%;
+  object-fit: cover;
 }
 .detail {
   display: flex;
