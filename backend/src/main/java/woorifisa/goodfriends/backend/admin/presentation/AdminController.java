@@ -58,6 +58,12 @@ public class AdminController {
         return ResponseEntity.ok().body(responses);
     }
 
+    @GetMapping("/products/view/search")
+    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String keyword) {
+        ProductViewsAllResponse responses = adminService.viewSearchProduct(keyword);
+        return ResponseEntity.ok().body(responses); // 200
+    }
+
     @GetMapping("/products/view/{productId}")
     public ResponseEntity<ProductViewOneResponse> viewOneProduct(@PathVariable Long productId) {
         ProductViewOneResponse response = adminService.viewOneProduct(productId);
