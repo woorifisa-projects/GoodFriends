@@ -7,11 +7,12 @@
         </div>
         <div class="price detail">
           <label for="price">{{ PRODUCT.PRICE }}</label>
-          <input type="number" id="price" v-model="data.sellPrice" />
+          <input onfocus="this.select()" type="number" id="price" v-model="data.sellPrice" />
         </div>
         <div class="explain detail">
           <label for="explain">{{ PRODUCT.DESCRIPTION }}</label>
           <textarea name="" id="explain" cols="30" rows="10" v-model="data.description"></textarea>
+          <div class="text-length">{{ data.description.length }}/{{ maxLength }}</div>
         </div>
         <div class="buttons">
           <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">
@@ -26,12 +27,17 @@
       <div class="select-detail">
         <div class="image">
           <span for="image">{{ PRODUCT.IMAGE }}</span>
-          <label for="image">{{ PRODUCT.UPLOAD }}</label>
+          <div class="image-label">
+            <label for="image">
+              {{ PRODUCT.UPLOAD }}
+            </label>
+            <div class="image-length">{{ inputImage.length }}/{{ maxImage }}</div>
+          </div>
           <input
             id="image"
             type="file"
             multiple
-            accept="image/png, image/gif, image/jpeg"
+            accept="image/png, image/jpeg"
             @change="uploadImage"
           />
           <div class="image-wrap">
@@ -54,17 +60,17 @@
             </option>
           </select>
         </div>
-        <div class="date">
+        <!-- <div class="date">
           <span for="date">{{ PRODUCT.CREATE_AT }}</span>
           <input type="date" :value="dateFormat(registerDate)" @change="onChangeDate" disabled />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import { dateFormat } from '@/utils/format';
 import { uploadFile, urlToFile } from '@/utils/file';
 import { useRoute } from 'vue-router';
@@ -94,6 +100,8 @@ const props = defineProps({
 });
 const id = route.params.id?.toString() || '0';
 const categories = CATEGORY_LIST;
+const maxLength = ref(200);
+const maxImage = ref(10);
 
 const data = ref<IPostProduct>({
   title: '',
@@ -114,8 +122,14 @@ const onChangeDate = (event: Event) => {
 
 const uploadImage = async (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
+  console.log(fileList);
   if (!fileList) return;
   await uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
+  if (inputImage.value.length > maxImage.value) {
+    previewImg.value.splice(maxImage.value);
+    inputImage.value.splice(maxImage.value);
+    alert(`최대 ${maxImage.value}까지 가능`);
+  }
 };
 
 const onClickDeleteBtn = (index: number) => {
@@ -195,6 +209,10 @@ const remove = async () => {
   }
 };
 
+watchEffect(() => {
+  data.value.description = data.value.description.slice(0, maxLength.value);
+});
+
 onMounted(async () => {
   if (props.type === 'add') return;
 
@@ -245,7 +263,7 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
 
-  margin-top: 48px;
+  margin: 64px 0;
 }
 .form {
   display: flex;
@@ -274,9 +292,13 @@ onMounted(async () => {
   border: none;
   border-radius: 8px;
   padding: 12px;
+  font-family: 'LINESeedKR-Rg';
 }
 .input-detail textarea {
   border: 1px solid rgb(200, 200, 200);
+}
+.text-length {
+  text-align: end;
 }
 .input-detail label {
   font-size: 18px;
@@ -307,9 +329,12 @@ onMounted(async () => {
   justify-content: end;
   gap: 36px;
 }
-
+.price > label {
+  font-size: 24px;
+}
 .input-detail > .price > input {
   width: 400px;
+  font-family: 'LINESeedKR-Rg';
 }
 
 .input-detail > .explain {
@@ -341,7 +366,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
 
-  padding: 24px;
+  padding: 24px 20px;
 }
 .select-detail span {
   border-bottom: 1px solid black;
@@ -353,9 +378,16 @@ onMounted(async () => {
 .select-detail select {
   font-size: 18px;
   margin-top: 12px;
+  font-family: 'LINESeedKR-Rg';
+  cursor: pointer;
 }
 .image {
   width: 100%;
+}
+.image-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .image label {
   margin-top: 12px;
@@ -370,6 +402,18 @@ onMounted(async () => {
   border-radius: 0.25em;
 
   cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.image label:hover {
+  transform: scale(1.03);
+}
+.disabled {
+  background-color: red;
+}
+.image-length {
+  text-align: end;
 }
 .image-wrap {
   border: 1px solid rgb(195, 195, 195);
@@ -430,6 +474,11 @@ onMounted(async () => {
   padding: 8px 24px;
   border: 1px solid rgb(110, 110, 110);
   border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  filter: brightness(90%);
 }
 
 .remove-btn {
