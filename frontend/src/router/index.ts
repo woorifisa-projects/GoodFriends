@@ -24,6 +24,8 @@ import ManageProductByAdminView from '@/views/admin/ManageProductView.vue';
 import ReceiveCodeView from '@/views/user/ReceiveCodeView.vue';
 import ErrorView from '@/views/user/ErrorView.vue';
 import DeclarationDeatilView from '@/views/admin/DeclarationDetailView.vue';
+import { useUserInfoStore } from '@/stores/userInfo';
+import { goPageWithReload } from '@/utils/goPage';
 
 // TODO: /profile 로 접근시 profile/:id로 리다리렉트
 const router = createRouter({
@@ -37,7 +39,7 @@ const router = createRouter({
       name: 'defaultLayout',
       component: DefaultLayout,
       children: [
-        { path: '/', name: 'home', component: HomeView },
+        { path: '/', name: 'home', component: HomeView, meta: { every: true } },
         { path: 'profile/:id', name: 'profile', component: ProfileView },
         { path: 'profile/:id/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/:id/sell', name: 'sell', component: SellView },
@@ -89,5 +91,14 @@ const router = createRouter({
     }
   ]
 });
+router.beforeEach((to, form, next) => {
+  const store = useUserInfoStore();
 
+  if (store.id === 0 && !to.meta.every) {
+    alert('로그인 후 이용해 주세요');
+    goPageWithReload();
+    return;
+  }
+  next();
+});
 export default router;
