@@ -163,15 +163,17 @@ const productAPI = {
       })
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT, code: res.status };
+        return { isSuccess: true, data: data.responses,  code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.PRODUCT,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   getSearchTitleProduct: (productCategory: string, keyword: string): Promise<IResultType<Array<IAllProduct>>> => {
@@ -182,15 +184,17 @@ const productAPI = {
       })
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT, code: res.status };
+        return { isSuccess: true, data: data.responses, code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.PRODUCT,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   }
 };

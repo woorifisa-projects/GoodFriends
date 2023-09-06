@@ -11,7 +11,7 @@ import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
-import static woorifisa.goodfriends.backend.declaration.domain.ReportStatus.Processing;
+import static woorifisa.goodfriends.backend.declaration.domain.ReportStatus.PROCESSING;
 
 @Transactional(readOnly = true)
 @Service
@@ -44,7 +44,7 @@ public class DeclarationService {
         Declaration newDeclaration = Declaration.builder()
                 .declarationCategory(request.getDeclarationCategory())
                 .content(request.getContent())
-                .reportStatus(Processing)
+                .reportStatus(PROCESSING)
                 .user(user)
                 .product(product)
                 .build();
