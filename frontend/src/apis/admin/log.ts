@@ -1,6 +1,5 @@
-import { AxiosError, type AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 import type { IResultType } from '@/types/api';
-import { ApiType } from '@/constants/apiType';
 import { apiInstance } from '..';
 import type { IGetUserLog } from '@/types/log';
 
@@ -19,17 +18,18 @@ const manageLogAPI = {
         return {
           isSuccess: true,
           data: data.userLogRecord,
-          type: ApiType.ADMIN_LOG,
           code: res.status
         };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.ADMIN_LOG,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   }
 };

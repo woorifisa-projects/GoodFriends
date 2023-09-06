@@ -1,8 +1,7 @@
 import { apiInstance, headers } from '..';
-import { ApiType } from '@/constants/apiType';
 import type { IResultType, INoContent } from '@/types/api';
 import type { IProfile, IProfileEdit } from '@/types/profile';
-import { AxiosError, type AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
 const profileAPI = {
@@ -19,15 +18,17 @@ const profileAPI = {
       })
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data, type: ApiType.PROFILE, code: res.status };
+        return { isSuccess: true, data, code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.PROFILE,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   editProfile: (token: string, body: IProfileEdit): Promise<INoContent> => {
@@ -38,8 +39,15 @@ const profileAPI = {
       .then((res: AxiosResponse) => {
         return { isSuccess: true, message: '', code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message, code: error.status };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   editProfileImg: (token: string, formData: FormData): Promise<INoContent> => {
@@ -54,8 +62,15 @@ const profileAPI = {
       .then((res: AxiosResponse) => {
         return { isSuccess: true, message: '', code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message, code: error.status };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   }
 };

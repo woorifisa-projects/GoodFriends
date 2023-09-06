@@ -24,7 +24,7 @@ onMounted(async () => {
     localStorage.setItem(LOCAL_STORAGE.ACCESS_TOKEN, res.data);
     goPageWithReload('');
   } else {
-    goErrorWithReload(res.type);
+    goErrorWithReload('login');
   }
 });
 </script>

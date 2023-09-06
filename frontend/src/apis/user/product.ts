@@ -1,8 +1,7 @@
 import { apiInstance, headers } from '..';
-import { ApiType } from '@/constants/apiType';
 import type { INoContent, IResultType } from '@/types/api';
-import type { IAllProduct, IDetailEditProduct, IDetailProduct, IProduct } from '@/types/product';
-import { AxiosError, type AxiosResponse } from 'axios';
+import type { IAllProduct, IDetailEditProduct, IDetailProduct } from '@/types/product';
+import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
 
@@ -22,15 +21,17 @@ const productAPI = {
       .get(productAPI.endPoint.getAll)
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT, code: res.status };
+        return { isSuccess: true, data: data.responses, code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.PRODUCT,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   postProduct: (token: string, formData: FormData): Promise<INoContent> => {
@@ -46,11 +47,18 @@ const productAPI = {
       .then((res: AxiosResponse) => {
         return { isSuccess: true, message: '', code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message, code: error.status };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
-  getProduct: (token:string, productId: string): Promise<IResultType<IDetailProduct>> => {
+  getProduct: (token: string, productId: string): Promise<IResultType<IDetailProduct>> => {
     // 상품 상세 조회
     return api
       .get(productAPI.endPoint.getProduct + productId, {
@@ -60,15 +68,17 @@ const productAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        return { isSuccess: true, data: res.data, type: ApiType.PRODUCT, code: res.status };
+        return { isSuccess: true, data: res.data, code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.PRODUCT,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   getEditProduct: (token: string, productId: string): Promise<IResultType<IDetailEditProduct>> => {
@@ -81,16 +91,17 @@ const productAPI = {
       })
       .then((res: AxiosResponse) => {
         console.log(res);
-        return { isSuccess: true, data: res.data, type: ApiType.PRODUCT, code: res.status };
+        return { isSuccess: true, data: res.data, code: res.status };
       })
-      .catch((error: AxiosError) => {
-        console.log(error);
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.PRODUCT,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   editProduct: (token: string, productId: string, formData: FormData): Promise<INoContent> => {
@@ -107,9 +118,15 @@ const productAPI = {
         console.log(res);
         return { isSuccess: true, message: '', code: res.status };
       })
-      .catch((error: AxiosError) => {
-        console.log(error);
-        return { isSuccess: false, message: error.message, code: error.status };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   deleteProduct: (token: string, productId: string): Promise<INoContent> => {
@@ -125,9 +142,15 @@ const productAPI = {
         console.log(res);
         return { isSuccess: true, message: '', code: res.status };
       })
-      .catch((error: AxiosError) => {
-        console.log(error);
-        return { isSuccess: false, message: error.message, code: error.status };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   }
 };

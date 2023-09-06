@@ -11,21 +11,14 @@ import EditProduct from '@/views/user/EditProductView.vue';
 import ProductView from '@/views/user/ProductView.vue';
 import NotFoundView from '@/views/user/NotFoundView.vue';
 import OrderView from '@/views/user/OrderView.vue';
-
-import AdminLogin from '@/views/admin/AdminLogin.vue';
-import DefaultSide from '@/layouts/admin/DefaultSide.vue';
-import EditUserInfoView from '@/views/admin/EditUserInfoView.vue';
-import EditProductByAdminView from '@/views/admin/EditProductByAdminView.vue';
-import AddProductByAdminView from '@/views/admin/AddProductByAdminView.vue';
-import ManageLog from '@/views/admin/ManageLogView.vue';
-import ManageUser from '@/views/admin/ManageUserView.vue';
-import ManageDeclaration from '@/views/admin/ManageDeclarationView.vue';
-import ManageProductByAdminView from '@/views/admin/ManageProductView.vue';
 import ReceiveCodeView from '@/views/user/ReceiveCodeView.vue';
 import ErrorView from '@/views/user/ErrorView.vue';
-import DeclarationDeatilView from '@/views/admin/DeclarationDetailView.vue';
 
-// TODO: /profile 로 접근시 profile/:id로 리다리렉트
+import { goPageWithReload } from '@/utils/goPage';
+import { useAdminStore } from '@/stores/admin';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { ERROR_MSG } from '@/constants/strings/error';
+
 const router = createRouter({
   scrollBehavior() {
     return { top: 0 };
@@ -35,9 +28,10 @@ const router = createRouter({
     {
       path: '/',
       name: 'defaultLayout',
+      meta: { type: 'user' },
       component: DefaultLayout,
       children: [
-        { path: '/', name: 'home', component: HomeView },
+        { path: '/', name: 'home', component: HomeView, meta: { every: true } },
         { path: 'profile/:id', name: 'profile', component: ProfileView },
         { path: 'profile/:id/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/:id/sell', name: 'sell', component: SellView },
@@ -46,7 +40,12 @@ const router = createRouter({
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
         { path: 'err/:type', name: 'login err', component: ErrorView },
-        { path: '/google-callback', name: 'receive code', component: ReceiveCodeView },
+        {
+          path: '/google-callback',
+          name: 'receive code',
+          component: ReceiveCodeView,
+          meta: { every: true }
+        },
         {
           path: '/404',
           name: 'notFound',
@@ -61,33 +60,88 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin page',
-      component: AdminLogin
+      meta: { type: 'login' },
+      component: () => import('@/views/admin/AdminLogin.vue')
     },
     {
       path: '/admin',
       name: 'In admin page',
-      component: DefaultSide,
+      meta: { type: 'admin' },
+      component: () => import('@/layouts/admin/DefaultSide.vue'),
       children: [
-        { path: 'log', name: 'admin log', component: ManageLog },
-        { path: 'manage/user', name: 'admin manage user', component: ManageUser },
-        { path: 'manage/user/:id', name: 'admin manage user detail', component: EditUserInfoView },
-        { path: 'product/edit/:id', name: 'admin edit product', component: EditProductByAdminView },
+        {
+          path: 'log',
+          name: 'admin log',
+          component: () => import('@/views/admin/ManageLogView.vue')
+        },
+        {
+          path: 'manage/user',
+          name: 'admin manage user',
+          component: () => import('@/views/admin/ManageUserView.vue')
+        },
+        {
+          path: 'manage/user/:id',
+          name: 'admin manage user detail',
+          component: () => import('@/views/admin/EditUserInfoView.vue')
+        },
+        {
+          path: 'product/edit/:id',
+          name: 'admin edit product',
+          component: () => import('@/views/admin/EditProductByAdminView.vue')
+        },
         {
           path: 'product/manage',
           name: 'admin manage product',
-          component: ManageProductByAdminView
+          component: () => import('@/views/admin/ManageProductView.vue')
         },
-        { path: 'product/manage/add', name: 'admin add product', component: AddProductByAdminView },
-        { path: 'product/manage/:id', name: 'admin product', component: ProductView },
-        { path: 'declaration', name: 'admin declaration', component: ManageDeclaration },
+        {
+          path: 'product/manage/add',
+          name: 'admin add product',
+          component: () => import('@/views/admin/AddProductByAdminView.vue')
+        },
+        {
+          path: 'product/manage/:id',
+          name: 'admin product',
+          component: () => import('@/views/admin/ManageProductView.vue')
+        },
+        {
+          path: 'declaration',
+          name: 'admin declaration',
+          component: () => import('@/views/admin/ManageDeclarationView.vue')
+        },
         {
           path: 'declaration/manage/:id',
           name: 'admin manage declaration detail',
-          component: DeclarationDeatilView
+          component: () => import('@/views/admin/DeclarationDetailView.vue')
         }
       ]
     }
   ]
 });
 
+router.beforeEach((to, form, next) => {
+  const adminStore = useAdminStore();
+  const isLogin = localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN);
+  if (to.meta.type === 'login') {
+    next();
+    return;
+  }
+  if (to.meta.type === 'user') {
+    if (!isLogin && !to.meta.every) {
+      alert(ERROR_MSG.NEED_LOGIN);
+      goPageWithReload();
+      return;
+    }
+    next();
+    return;
+  }
+  if (to.meta.type === 'admin' && !adminStore.accessToken) {
+    alert(ERROR_MSG.NEED_LOGIN);
+    goPageWithReload('admin');
+    next();
+    return;
+  }
+
+  next();
+});
 export default router;

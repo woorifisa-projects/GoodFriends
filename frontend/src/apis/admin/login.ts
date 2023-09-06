@@ -1,6 +1,5 @@
-import { AxiosError, type AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 import type { IResultType } from '@/types/api';
-import { ApiType } from '@/constants/apiType';
 import { apiInstance } from '..';
 import type { IAdminLoginRequest, IAdminLoginResponse } from '@/types/login';
 
@@ -20,17 +19,18 @@ const adminLoginAPI = {
         return {
           isSuccess: true,
           data: { ...body, token: data.accessToken },
-          type: ApiType.ADMIN_LOGIN,
           code: res.status
         };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.ADMIN_LOGIN,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   }
 };
