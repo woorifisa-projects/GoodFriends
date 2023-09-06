@@ -29,28 +29,28 @@ public class OrderService {
         this.userRepository = userRepository;
     }
 
-    public Long saveOrder(OrderSaveRequest request) {
+    public Long saveOrder(Long userId, OrderSaveRequest request) {
 
-        if(orderRepository.findByProductIdAndUserId(request.getProductId(), request.getUserId()) != null){
+        if(orderRepository.findByProductIdAndUserId(request.getProductId(), userId) != null){
             throw new AlreadyOrderedException();
         }
 
         Product foundProduct = productRepository.getById(request.getProductId());
-        User foundUser = userRepository.getById(request.getUserId());
+        User foundUser = userRepository.getById(userId);
 
-        Order newOrder = createOrder(foundProduct, foundUser, request);
+        Order newOrder = orderRepository.save(createOrder(foundProduct, foundUser, request));
         return newOrder.getId();
     }
 
     private Order createOrder(Product product, User user, OrderSaveRequest request) {
-        return orderRepository.save(Order.builder()
+        return Order.builder()
                         .product(product)
                         .user(user)
                         .confirm(false)
                         .possibleDate(request.getPossibleDateStart() + " ~ " + request.getPossibleDateEnd())
                         .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
                         .requirements(request.getRequirements())
-                        .build());
+                        .build();
     }
 
     public List<OrderViewAllResponse> viewAllOrder(Long productId) {
