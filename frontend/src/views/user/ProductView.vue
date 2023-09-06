@@ -25,6 +25,14 @@
         </div>
         <div class="detail-info">
           <div class="name">{{ data.title }}</div>
+          <div class="status select" v-if="isWriter">
+            <select name="select" id="select">
+              <option value="SELL">판매중</option>
+              <option value="RESERVATION">예약중</option>
+              <option value="COMPLETED">거래완료</option>
+            </select>
+          </div>
+          <div class="status" v-else>{{ PRODUCT_STATUS[data.status] }}</div>
           <div class="price">{{ data.sellPrice }}원</div>
           <div class="category">{{ CATEGORY[data.productCategory] }}</div>
           <div class="date">{{ PRODUCT.CREATE_AT }}: {{ data.createdDate }}</div>
@@ -47,7 +55,7 @@ import router from '@/router';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import OrderModal from '@/components/OrderModal.vue';
-import { PRODUCT } from '@/constants/strings/product';
+import { PRODUCT, PRODUCT_STATUS } from '@/constants/strings/product';
 import productAPI from '@/apis/user/product';
 import { CATEGORY } from '@/constants/category';
 import { useUserInfoStore } from '@/stores/userInfo';
@@ -61,7 +69,6 @@ const route = useRoute();
 const loadingStore = useLoadingStore();
 
 const id = route.params.id.toString();
-// TODO: 작성자 인지 아닌지 -> API 연결 필요
 const isWriter = ref(false);
 
 const viewImage = ref(0);
@@ -94,6 +101,7 @@ const onClickEditBtn = () => {
   router.push('/product/edit/' + id);
 };
 
+// TODO: 확인 후 삭제하도록 수정
 const onClickDelete = async () => {
   loadingStore.setLoading(true);
   const res = await productAPI.deleteProduct(store.accessToken, id);
@@ -115,7 +123,7 @@ const onClickOrder = () => {
 };
 
 onMounted(async () => {
-  const res = await productAPI.getProduct(store.accessToken,id);
+  const res = await productAPI.getProduct(store.accessToken, id);
   if (res.isSuccess && res.data) {
     data.value = res.data;
     data.value.createdDate = dateFormat(new Date(res.data.createdDate));
@@ -134,6 +142,7 @@ onMounted(async () => {
 .product-page {
   width: 100%;
   height: 199%;
+  /* color: black; */
 }
 .product-info {
   display: flex;
@@ -143,8 +152,7 @@ onMounted(async () => {
 .imgs {
   flex: 1;
 
-  width: 450px;
-  height: 450px;
+  height: 500px;
 
   display: flex;
   align-items: center;
@@ -177,7 +185,7 @@ onMounted(async () => {
   object-fit: contain;
 }
 .info {
-  flex: 2;
+  flex: 1;
 
   display: flex;
   flex-direction: column;
@@ -187,6 +195,8 @@ onMounted(async () => {
   box-shadow: 1px 1px 10px rgba(150, 150, 150, 0.247);
 }
 .wrap-btn {
+  margin-top: 24px;
+  margin-right: 24px;
   display: flex;
   justify-content: end;
   gap: 24px;
@@ -202,6 +212,7 @@ onMounted(async () => {
 }
 .wrap-btn > button:hover {
   transform: scale(1.05);
+  background-color: var(--category-item-point-bg);
 }
 .detail-info {
   padding: 24px;
@@ -209,17 +220,32 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
 
-  gap: 18px;
+  gap: 24px;
   font-size: 24px;
   height: 100%;
 }
 .name {
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 700;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   font-family: 'LINESeedKR-Bd';
 }
+.status {
+  text-align: end;
+  padding-right: 42px;
+}
+.select > select {
+  font-size: 18px;
+  padding: 6px 12px;
+  font-family: 'LINESeedKR-Rg';
+  border-radius: 10px;
+  border: 1px solid rgb(200, 200, 200);
+}
+.select > select > option {
+  font-family: 'LINESeedKR-Rg';
+}
+
 .price {
   text-align: end;
   padding-right: 42px;
@@ -261,7 +287,8 @@ onMounted(async () => {
 
   margin-top: 32px;
   margin-bottom: 42px;
-  padding: 24px;
+  padding: 32px;
+  font-size: 32px;
 }
 @media screen and (max-width: 1023px) {
   .info {
