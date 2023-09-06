@@ -53,6 +53,12 @@ public class ProductController {
         return ResponseEntity.ok().body(responses); // 200
     }
 
+    @GetMapping("/view/search")
+    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String keyword) {
+        ProductViewsAllResponse responses = productService.viewSearchProduct(keyword);
+        return ResponseEntity.ok().body(responses); // 200
+    }
+
     @GetMapping("/view/{productId}")
     public ResponseEntity<ProductViewOneResponse> viewOneProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                                                  @PathVariable Long productId) {

@@ -14,6 +14,7 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
+import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
@@ -98,6 +99,10 @@ public class ProductService {
     public ProductViewsAllResponse viewAllProduct() {
         List<Product> products = productRepository.findAllOrderByIdDesc();
 
+        if(products.isEmpty()) {
+            throw new NotFoundProductException();
+        }
+
         List<ProductViewAllResponse> responses = createViewList(products);
 
         return new ProductViewsAllResponse(responses);
@@ -105,6 +110,22 @@ public class ProductService {
 
     public ProductViewsAllResponse viewProductByCategory(ProductCategory productCategory) {
         List<Product> products = productRepository.findByProductCategory(productCategory);
+
+        if(products.isEmpty()) {
+            throw new NotFoundProductException();
+        }
+
+        List<ProductViewAllResponse> responses = createViewList(products);
+
+        return new ProductViewsAllResponse(responses);
+    }
+
+    public ProductViewsAllResponse viewSearchProduct(String keyword) {
+        List<Product> products = productRepository.findByTitleContains(keyword);
+
+        if(products.isEmpty()) {
+            throw new NotFoundProductException();
+        }
 
         List<ProductViewAllResponse> responses = createViewList(products);
 
