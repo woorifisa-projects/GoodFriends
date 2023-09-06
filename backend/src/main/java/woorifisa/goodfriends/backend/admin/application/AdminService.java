@@ -83,7 +83,7 @@ public class AdminService {
         Admin foundAdmin = adminRepository.getById(adminId);
 
         // 상품 저장
-        Product newProduct = createProduct(foundAdmin, request);
+        Product newProduct = productRepository.save(createProduct(foundAdmin, request));
 
         // 저장한 상품 id를 가져와서 상품 이미지 저장
         saveImages(newProduct.getId(), request.getImageUrls());
@@ -92,14 +92,14 @@ public class AdminService {
     }
 
     private Product createProduct(Admin admin, ProductSaveRequest request) {
-        return productRepository.save(Product.builder()
+        return Product.builder()
                 .admin(admin)
                 .title(request.getTitle())
                 .status(ProductStatus.SELL)
                 .productCategory(request.getProductCategory())
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
-                .build());
+                .build();
     }
 
     private String saveImage(Long productId, MultipartFile image) throws IOException {
