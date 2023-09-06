@@ -40,8 +40,8 @@
             <div class="product-Info-Detail">
               <select name="" class="seelct-category" v-model="selectedCategory">
                 <option disabled value="0">{{ ADMIN_PRODUCT.PRODCUT_DEFAULT_CATEGORY }}</option>
-                <option v-for="category in categories" :key="category.id" :value="category.id">
-                  {{ category.name }}
+                <option v-for="(category, index) in categories" :key="index" :value="category">
+                  {{ CATEGORY[category] }}
                 </option>
               </select>
             </div>
@@ -105,12 +105,12 @@
 </template>
 
 <script setup lang="ts">
-import type { ICategory } from '@/types/product';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
 import { uploadFile } from '@/utils/file';
 import router from '@/router';
+import { CATEGORY, CATEGORY_LIST } from '@/constants/category';
 
 const previewImg = ref<Array<string>>([]);
 const inputImage = ref<Array<File>>([]);
@@ -119,28 +119,7 @@ const inputProductPrice = ref(0);
 const inputProductDate = ref('');
 const inputProductDes = ref('');
 const selectedCategory = ref('0');
-const categories = ref<Array<ICategory>>([
-  {
-    id: 1,
-    name: '가전'
-  },
-  {
-    id: 2,
-    name: '음식'
-  },
-  {
-    id: 3,
-    name: '생활'
-  },
-  {
-    id: 4,
-    name: '의류'
-  },
-  {
-    id: 5,
-    name: '악세사리 '
-  }
-]);
+const categories = CATEGORY_LIST;
 const props = defineProps({
   type: {
     type: String,

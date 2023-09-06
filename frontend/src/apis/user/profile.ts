@@ -1,6 +1,7 @@
 import { apiInstance, headers } from '..';
 import { ApiType } from '@/constants/apiType';
-import type { IResultType, IProfile, IProfileEdit, INoContent } from '@/types/api';
+import type { IResultType, INoContent } from '@/types/api';
+import type { IProfile, IProfileEdit } from '@/types/profile';
 import { AxiosError, type AxiosResponse } from 'axios';
 
 const api = apiInstance();

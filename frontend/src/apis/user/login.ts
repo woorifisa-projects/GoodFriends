@@ -1,6 +1,7 @@
 import { apiInstance } from '..';
 import { ApiType } from '@/constants/apiType';
-import type { IResultType, IGetOAuthURI, IGetAccessToken, INoContent } from '@/types/api';
+import type { IResultType, INoContent } from '@/types/api';
+import type { IGetAccessToken, IGetOAuthURI } from '@/types/login';
 import { AxiosError, type AxiosResponse } from 'axios';
 
 const api = apiInstance();

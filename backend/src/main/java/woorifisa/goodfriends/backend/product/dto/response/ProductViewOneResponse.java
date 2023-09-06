@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.product.dto.response;
 
 import lombok.Getter;
+
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
@@ -26,8 +27,10 @@ public class ProductViewOneResponse {
 
     private int sellPrice;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime createdDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedDate;
 
     private List<String> imageUrls;

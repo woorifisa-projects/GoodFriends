@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.admin.domain.AdminRepository;
 import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
+import woorifisa.goodfriends.backend.admin.dto.response.UserInfoResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
@@ -29,9 +30,11 @@ import woorifisa.goodfriends.backend.user.domain.UserRepository;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -48,9 +51,9 @@ public class AdminService {
     private final ProfileRepository profileRepository;
 
     private final TokenCreator tokenCreator;
-    public AdminService(AdminRepository adminRepository,UserRepository userRepository, ProductRepository productRepository,
+    public AdminService(AdminRepository adminRepository, UserRepository userRepository, ProductRepository productRepository,
                         ProductImageRepository productImageRepository, S3Service s3Service,
-                        ProfileRepository profileRepository,TokenCreator tokenCreator) {
+                        ProfileRepository profileRepository, TokenCreator tokenCreator) {
         this.adminRepository = adminRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
@@ -60,8 +63,9 @@ public class AdminService {
         this.tokenCreator = tokenCreator;
     }
 
-    public AccessTokenResponse login(String root, String password){
+    public AccessTokenResponse login(String root, String password) {
         // adminId가 틀린 경우
+
         Admin selectedAdmin = adminRepository.getByRoot(root);
 
         // password가 틀린 경우
@@ -109,8 +113,8 @@ public class AdminService {
 
     private List<String> saveImages(Long productId, List<MultipartFile> images) throws IOException {
         List<String> savedImages = new ArrayList<>();
-        for(MultipartFile image : images) {
-            if(!image.isEmpty()) {
+        for (MultipartFile image : images) {
+            if (!image.isEmpty()) {
                 savedImages.add(saveImage(productId, image));
             }
         }
@@ -123,7 +127,7 @@ public class AdminService {
         List<ProductViewAllResponse> responses = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
-                    if(product.getUser() == null) {
+                    if (product.getUser() == null) {
                         ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
                                 product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null);
 
@@ -145,7 +149,7 @@ public class AdminService {
         Product product = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
-        if(product.getUser() == null){
+        if (product.getUser() == null) {
             ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
                     product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
 
@@ -190,7 +194,7 @@ public class AdminService {
 
     public void deleteImageByProductId(Long productId) throws MalformedURLException {
         List<ProductImage> productImages = productImageRepository.findByProductId(productId);
-        for(ProductImage productImage : productImages){
+        for (ProductImage productImage : productImages) {
             s3Service.deleteFile(productImage.getImageUrl());
         }
     }
@@ -211,23 +215,38 @@ public class AdminService {
     }
 
     // 관리자가 사용자 정보 삭제
-    public void deleteUserInfo(Long userId){
-         userRepository.deleteById(userId);
+    public void deleteUserInfo(Long userId) {
+        userRepository.deleteById(userId);
     }
 
     // 관리자가 사용자 정보 수정
-    public void updateUserInfo(Long userId, UserUpdateRequest request){
+    public void updateUserInfo(Long userId, UserUpdateRequest request) {
         User user = userRepository.getById(userId);
         userRepository.save(User.builder()
-                        .id(userId)
-                        .email(user.getEmail())
-                        .nickname(request.getNickname())
-                        .profileImageUrl(user.getProfileImageUrl())
-                        .ban(request.getBanCount())
+                .id(userId)
+                .email(user.getEmail())
+                .nickname(request.getNickname())
+                .profileImageUrl(user.getProfileImageUrl())
+                .ban(request.getBanCount())
 //  비활성화              .activated(request.getActivated())
-                        .createdAt(user.getCreatedAt())
-                        .build());
+                .createdAt(user.getCreatedAt())
+                .build());
 
     }
+    //사용자 전체 조회
+    public List<UserInfoResponse> getAllUsers() {
+        List<Object[]> results = userRepository.getAllUserInfo();
+        List<UserInfoResponse> userInfoList = results.stream()
+                .map(result -> {
+                    User user = (User) result[0];
+                    Profile profile = (Profile) result[1];
 
+                    return new UserInfoResponse(
+                            user.getEmail(), user.getNickname(), user.getProfileImageUrl(), user.getCreatedAt(), user.getLastModifiedAt()
+                            , user.getBan(), profile.getMobilePhone(), profile.getAddress()
+                    );
+                }).collect(Collectors.toList());
+
+        return userInfoList;
+    }
 }
