@@ -24,7 +24,7 @@ public class DeclarationController {
     public ResponseEntity<Void> saveReport(@AuthenticationPrincipal LoginUser loginUser,
                                            @PathVariable Long productId,
                                            @Valid @RequestBody DeclarationSaveRequest request) {
-        Long declarationId = declarationService.saveDeclaration(loginUser, productId, request);
+        Long declarationId = declarationService.saveReport(loginUser, productId, request);
         return ResponseEntity.created(URI.create("/report/" + declarationId)).build();
     }
 }

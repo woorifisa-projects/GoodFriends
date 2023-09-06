@@ -30,7 +30,7 @@ public class DeclarationService {
     }
 
     @Transactional
-    public Long saveDeclaration(LoginUser loginUser, Long productId, DeclarationSaveRequest request) {
+    public Long saveReport(LoginUser loginUser, Long productId, DeclarationSaveRequest request) {
 
         User foundUser = userRepository.getById(loginUser.getId());
         Product foundProduct = productRepository.getById(productId);
