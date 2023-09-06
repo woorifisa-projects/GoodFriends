@@ -17,11 +17,11 @@
         </div>
         <div v-else>
           <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">
-            {{ user.nickName }} 님
+            <img :src="user.imageUrl" alt="" />
           </button>
           <div v-if="isPopoverOpen" class="popover" ref="popover">
             <div class="img">
-              <img :src="user.imageUrl" alt="예시 이미지" />
+              <img :src="user.imageUrl" alt="프로필 이미지" />
             </div>
             <div class="content">
               <div>{{ user.nickName }}</div>
@@ -82,6 +82,7 @@ const onClickLogoutBtn = async () => {
 };
 
 const onClickProfileBtn = (event: MouseEvent) => {
+  console.log('!');
   if (isPopoverOpen.value) {
     isPopoverOpen.value = false;
     closePopover(event);
@@ -207,9 +208,28 @@ onMounted(async () => {
 }
 
 #login {
-  width: 60px;
+  min-width: 60px;
 }
+.profile {
+  width: fit-content;
+  white-space: nowrap;
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.306);
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 2;
+}
+.profile > img {
+  width: 120%;
+  object-fit: cover;
+  z-index: -1;
+}
 .popover {
   position: absolute;
   top: 100px;
@@ -227,6 +247,8 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: 'LINESeedKR-Rg';
 }
 
 .popover::after {
@@ -242,11 +264,18 @@ onMounted(async () => {
 }
 
 .popover > .img {
+  box-sizing: border-box;
   width: 150px;
   height: 150px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   border-radius: 100%;
-  border: 1px solid black;
-  margin-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.26);
+  background-color: white;
+
   overflow: hidden;
 }
 
@@ -273,7 +302,9 @@ onMounted(async () => {
 .content > div:first-child {
   border: none;
   background: transparent;
-  cursor: text;
+  cursor: default;
+  font-family: 'LINESeedKR-Bd';
+  /* text overflow */
 }
 
 @media screen and (max-width: 1023px) {
