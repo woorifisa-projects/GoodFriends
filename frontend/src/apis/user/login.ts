@@ -1,8 +1,7 @@
 import { apiInstance } from '..';
-import { ApiType } from '@/constants/apiType';
 import type { IResultType, INoContent } from '@/types/api';
 import type { IGetAccessToken, IGetOAuthURI } from '@/types/login';
-import { AxiosError, type AxiosResponse } from 'axios';
+import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
 
@@ -22,15 +21,17 @@ const loginAPI = {
       .get(loginAPI.endPoint.urlLogin)
       .then((res: AxiosResponse) => {
         const data = res.data as IGetOAuthURI;
-        return { isSuccess: true, data: data.oAuthUri, type: ApiType.LOGIN, code: res.status };
+        return { isSuccess: true, data: data.oAuthUri, code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.LOGIN,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   getAccessToken: (code: string): Promise<IResultType<string>> => {
@@ -41,15 +42,17 @@ const loginAPI = {
       })
       .then((res: AxiosResponse) => {
         const { accessToken } = res.data;
-        return { isSuccess: true, data: accessToken, type: ApiType.LOGIN, code: res.status };
+        return { isSuccess: true, data: accessToken, code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.LOGIN,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   logout: (id: number, token: string): Promise<INoContent> => {
@@ -63,8 +66,15 @@ const loginAPI = {
       .then((res: AxiosResponse) => {
         return { isSuccess: true, message: '로그아웃 성공', code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message, code: error.status };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   getAccessTokenWithRefresh: (): Promise<IResultType<IGetAccessToken>> => {
@@ -72,15 +82,17 @@ const loginAPI = {
       .post(loginAPI.endPoint.getAccessTokenWithRefresh)
       .then((res: AxiosResponse) => {
         const data = res.data as IGetAccessToken;
-        return { isSuccess: true, data, type: ApiType.LOGIN, code: res.status };
+        return { isSuccess: true, data, code: res.status };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          type: ApiType.LOGIN,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   }
 };

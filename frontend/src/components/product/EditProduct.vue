@@ -157,16 +157,16 @@ const submit = async () => {
   };
 
   const res = await submit[props.type]();
+  loadingStore.setLoading(false);
   if (!res.isSuccess) {
     alert(res.message);
     if (props.type === 'add' && res.code === 403) {
-      router.push('/profile');
+      router.push('/profile/' + store.id);
       return;
     }
     if (props.type === 'edit' && res.code !== 403 && res.code !== 404) return;
   }
   goPageWithReload();
-  loadingStore.setLoading(false);
 };
 
 const save = (e: Event) => {

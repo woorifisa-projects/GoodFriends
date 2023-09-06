@@ -67,7 +67,7 @@ const onClickLoginBtn = async () => {
   if (res.isSuccess && res.data) {
     goOtherPage(res.data);
   } else {
-    goErrorWithReload(res.type);
+    goErrorWithReload('login');
   }
 };
 
