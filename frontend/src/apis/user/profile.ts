@@ -19,10 +19,15 @@ const profileAPI = {
       })
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data, type: ApiType.PROFILE };
+        return { isSuccess: true, data, type: ApiType.PROFILE, code: res.status };
       })
       .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message, type: ApiType.PROFILE };
+        return {
+          isSuccess: false,
+          message: error.message,
+          type: ApiType.PROFILE,
+          code: error.status
+        };
       });
   },
   editProfile: (token: string, body: IProfileEdit): Promise<INoContent> => {
@@ -31,10 +36,10 @@ const profileAPI = {
         headers: { ...headers, Authorization: `Bearer ${token}` }
       })
       .then((res: AxiosResponse) => {
-        return { isSuccess: true, message: '' };
+        return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message };
+        return { isSuccess: false, message: error.message, code: error.status };
       });
   },
   editProfileImg: (token: string, formData: FormData): Promise<INoContent> => {
@@ -47,10 +52,10 @@ const profileAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        return { isSuccess: true, message: '' };
+        return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message };
+        return { isSuccess: false, message: error.message, code: error.status };
       });
   }
 };

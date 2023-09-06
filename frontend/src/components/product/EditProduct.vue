@@ -76,7 +76,9 @@ import productAPI from '@/apis/user/product';
 import { checkProductValue } from '@/utils/validation';
 import { goPageWithReload } from '@/utils/goPage';
 import { useLoadingStore } from '@/stores/loading';
+import router from '@/router';
 import type { IPostProduct } from '@/types/product';
+import type { IStringToFunction } from '@/types/dynamic';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
@@ -144,59 +146,67 @@ const submit = async () => {
       type: 'application/json'
     })
   );
-  if (props.type === 'edit') {
-    const res = await productAPI.editProduct(store.accessToken, id, formData);
-    if (!res.isSuccess) {
-      alert(res.message);
-      loadingStore.setLoading(false);
 
+  const submit: IStringToFunction = {
+    edit: async () => {
+      return await productAPI.editProduct(store.accessToken, id, formData);
+    },
+    add: async () => {
+      return await productAPI.postProduct(store.accessToken, formData);
+    }
+  };
+
+  const res = await submit[props.type]();
+  if (!res.isSuccess) {
+    alert(res.message);
+    if (props.type === 'add' && res.code === 403) {
+      router.push('/profile');
       return;
     }
-    goPageWithReload('product/' + id);
-    loadingStore.setLoading(false);
-  } else if (props.type === 'add') {
-    const res = await productAPI.postProduct(store.accessToken, formData);
-    if (!res.isSuccess) {
-      alert(res.message);
-      loadingStore.setLoading(false);
-      return;
-    }
-    goPageWithReload();
-    loadingStore.setLoading(false);
+    if (props.type === 'edit' && res.code !== 403 && res.code !== 404) return;
   }
+  goPageWithReload();
+  loadingStore.setLoading(false);
 };
 
 const save = (e: Event) => {
-  if (props.type === 'add') {
-    // TODO: add 관련 API 호출
-    console.log('임시저장 버튼 클릭');
+  if (props.type === 'edit') {
+    return;
   }
+
+  // TODO: add 관련 API 호출
+  console.log('임시저장 버튼 클릭', e);
 };
 
 const remove = async () => {
-  if (props.type === 'edit') {
-    console.log('삭제 버튼 클릭');
-    loadingStore.setLoading(true);
-    const res = await productAPI.deleteProduct(store.accessToken, id);
-    if (res.isSuccess) {
-      goPageWithReload('');
-      loadingStore.setLoading(true);
-    } else {
-      alert(res.message);
-      loadingStore.setLoading(true);
-    }
+  if (props.type === 'add') return;
+
+  loadingStore.setLoading(true);
+  const res = await productAPI.deleteProduct(store.accessToken, id);
+  loadingStore.setLoading(false);
+  if (res.isSuccess) {
+    goPageWithReload('');
+    return;
+  }
+  alert(res.message);
+  if (res.code === 403) {
+    goPageWithReload('');
+    return;
   }
 };
 
 onMounted(async () => {
-  if (props.type === 'add') {
-    return;
-  }
+  if (props.type === 'add') return;
+
   loadingStore.setLoading(true);
 
   const res = await productAPI.getEditProduct(store.accessToken, id);
+
+  loadingStore.setLoading(false);
+
   if (res.data === undefined || !res.isSuccess) {
-    loadingStore.setLoading(false);
+    alert(res.message);
+    router.go(-1);
     return;
   }
   const resData = res.data;
@@ -208,7 +218,6 @@ onMounted(async () => {
 
   if (images === null) {
     alert('이미지를 불러오는 중 오류가 발생했습니다');
-    loadingStore.setLoading(false);
     goPageWithReload('product/' + id);
     return;
   }
@@ -217,7 +226,6 @@ onMounted(async () => {
     const file = await promiseFile;
     if (!file) throw new Error('파일 변환 과정중 오류 발생');
     inputImage.value.push(file);
-    loadingStore.setLoading(false);
   });
 
   data.value = {

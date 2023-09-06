@@ -16,10 +16,20 @@ const manageLogAPI = {
       .get(manageLogAPI.endPoint.userLog)
       .then((res: AxiosResponse) => {
         const data = res.data;
-        return { isSuccess: true, data: data.userLogRecord, type: ApiType.ADMIN_LOG };
+        return {
+          isSuccess: true,
+          data: data.userLogRecord,
+          type: ApiType.ADMIN_LOG,
+          code: res.status
+        };
       })
       .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message, type: ApiType.ADMIN_LOG };
+        return {
+          isSuccess: false,
+          message: error.message,
+          type: ApiType.ADMIN_LOG,
+          code: error.status
+        };
       });
   }
 };

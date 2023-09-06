@@ -22,10 +22,15 @@ const productAPI = {
       .get(productAPI.endPoint.getAll)
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT };
+        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT, code: res.status };
       })
-      .catch((err: AxiosError) => {
-        return { isSuccess: false, message: err.message, type: ApiType.PRODUCT };
+      .catch((error: AxiosError) => {
+        return {
+          isSuccess: false,
+          message: error.message,
+          type: ApiType.PRODUCT,
+          code: error.status
+        };
       });
   },
   postProduct: (token: string, formData: FormData): Promise<INoContent> => {
@@ -39,10 +44,10 @@ const productAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        return { isSuccess: true, message: '' };
+        return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message };
+        return { isSuccess: false, message: error.message, code: error.status };
       });
   },
   getProduct: (token:string, productId: string): Promise<IResultType<IDetailProduct>> => {
@@ -55,10 +60,15 @@ const productAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        return { isSuccess: true, data: res.data, type: ApiType.PRODUCT };
+        return { isSuccess: true, data: res.data, type: ApiType.PRODUCT, code: res.status };
       })
       .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message, type: ApiType.PRODUCT };
+        return {
+          isSuccess: false,
+          message: error.message,
+          type: ApiType.PRODUCT,
+          code: error.status
+        };
       });
   },
   getEditProduct: (token: string, productId: string): Promise<IResultType<IDetailEditProduct>> => {
@@ -71,11 +81,16 @@ const productAPI = {
       })
       .then((res: AxiosResponse) => {
         console.log(res);
-        return { isSuccess: true, data: res.data, type: ApiType.PRODUCT };
+        return { isSuccess: true, data: res.data, type: ApiType.PRODUCT, code: res.status };
       })
       .catch((error: AxiosError) => {
         console.log(error);
-        return { isSuccess: false, message: error.message, type: ApiType.PRODUCT };
+        return {
+          isSuccess: false,
+          message: error.message,
+          type: ApiType.PRODUCT,
+          code: error.status
+        };
       });
   },
   editProduct: (token: string, productId: string, formData: FormData): Promise<INoContent> => {
@@ -90,11 +105,11 @@ const productAPI = {
       })
       .then((res: AxiosResponse) => {
         console.log(res);
-        return { isSuccess: true, message: '' };
+        return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error: AxiosError) => {
         console.log(error);
-        return { isSuccess: false, message: error.message };
+        return { isSuccess: false, message: error.message, code: error.status };
       });
   },
   deleteProduct: (token: string, productId: string): Promise<INoContent> => {
@@ -108,11 +123,11 @@ const productAPI = {
       })
       .then((res: AxiosResponse) => {
         console.log(res);
-        return { isSuccess: true, message: '' };
+        return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error: AxiosError) => {
         console.log(error);
-        return { isSuccess: false, message: error.message };
+        return { isSuccess: false, message: error.message, code: error.status };
       });
   }
 };

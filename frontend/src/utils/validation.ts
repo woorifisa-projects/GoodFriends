@@ -21,12 +21,15 @@ export const checkPhoneNumber = (phoneNumber: string) => {
 
 export const checkProductValue = (product: IPostProduct) => {
   if (product.title.length < 2) {
+    // 제목 글자 수
     return { isSuccess: false, type: 'title' };
   }
   if (product.sellPrice < 0 || product.sellPrice > 99999999) {
+    // 가격 범위
     return { isSuccess: false, type: 'price' };
   }
   if (product.description.length < 10) {
+    // 상품 상세설명 글자 수
     return { isSuccess: false, type: 'description' };
   }
   if (
@@ -34,6 +37,7 @@ export const checkProductValue = (product: IPostProduct) => {
     !product.productCategory.length ||
     !CATEGORY[product.productCategory]
   ) {
+    // 카테고리(ALL 제외)
     return { isSuccess: false, type: 'category' };
   }
   return { isSuccess: true };

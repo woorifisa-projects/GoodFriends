@@ -23,8 +23,9 @@ import ManageDeclaration from '@/views/admin/ManageDeclarationView.vue';
 import ManageProductByAdminView from '@/views/admin/ManageProductView.vue';
 import ReceiveCodeView from '@/views/user/ReceiveCodeView.vue';
 import ErrorView from '@/views/user/ErrorView.vue';
-import DeclarationDeatilView from '@/views/admin/DeclarationDetailView.vue'
+import DeclarationDeatilView from '@/views/admin/DeclarationDetailView.vue';
 
+// TODO: /profile 로 접근시 profile/:id로 리다리렉트
 const router = createRouter({
   scrollBehavior() {
     return { top: 0 };
@@ -79,7 +80,11 @@ const router = createRouter({
         { path: 'product/manage/add', name: 'admin add product', component: AddProductByAdminView },
         { path: 'product/manage/:id', name: 'admin product', component: ProductView },
         { path: 'declaration', name: 'admin declaration', component: ManageDeclaration },
-        { path: 'declaration/manage/:id', name: 'admin manage declaration detail', component:DeclarationDeatilView}
+        {
+          path: 'declaration/manage/:id',
+          name: 'admin manage declaration detail',
+          component: DeclarationDeatilView
+        }
       ]
     }
   ]

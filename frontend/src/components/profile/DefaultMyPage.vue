@@ -100,12 +100,12 @@ const onClickProfileImageUpload = async (event: Event) => {
 
   loadingStore.setLoading(true);
   const res = await profileAPI.editProfileImg(store.accessToken, formData);
+  loadingStore.setLoading(false);
   if (res.isSuccess) {
     user.value.imageUrl = previewImg[0];
-  } else {
-    alert(res.message);
+    return;
   }
-  loadingStore.setLoading(false);
+  alert(res.message);
 };
 
 watchEffect(() => {
