@@ -9,7 +9,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
 import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
 import woorifisa.goodfriends.backend.auth.exception.EmptyAuthorizationHeaderException;
 import woorifisa.goodfriends.backend.auth.exception.InvalidTokenException;
@@ -19,8 +18,10 @@ import woorifisa.goodfriends.backend.global.error.dto.ErrorReportRequest;
 import woorifisa.goodfriends.backend.global.error.dto.ErrorResponse;
 import woorifisa.goodfriends.backend.infrastructure.oauth.exception.OAuthException;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
+import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.product.exception.NotFoundImageFileException;
 import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.user.exception.InvalidNicknameException;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 import woorifisa.goodfriends.backend.user.exception.NotFoundUserException;
@@ -40,7 +41,6 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({ // 클라이언트 에러: 400
-            InvalidAdminException.class,
             InvalidNicknameException.class,
             InvalidUserException.class
     })
@@ -56,6 +56,15 @@ public class ControllerAdvice {
     public ResponseEntity<ErrorResponse> handleInvalidAuthorization(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ExceptionHandler({ // 클라이언테 에러: 403
+            NotFoundProfile.class,
+            NotAccessThisProduct.class
+    })
+    public ResponseEntity<ErrorResponse> handleForbidden(final RuntimeException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
 
     @ExceptionHandler({ // 클라이언트 에러: 404

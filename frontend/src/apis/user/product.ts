@@ -9,11 +9,11 @@ const api = apiInstance();
 const productAPI = {
   endPoint: {
     getAll: `api/products/view`,
-    postProduct: `api/products`,
+    postProduct: `api/products/new`,
     getProduct: `api/products/view/`,
     getEditProduct: `api/products/edit/`,
     editProduct: `api/products/edit/`,
-    deleteProduct: `api/products/delete/`
+    deleteProduct: `api/products/remove/`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IAllProduct>>> => {
@@ -22,7 +22,7 @@ const productAPI = {
       .get(productAPI.endPoint.getAll)
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data: data, type: ApiType.PRODUCT };
+        return { isSuccess: true, data: data.responses, type: ApiType.PRODUCT };
       })
       .catch((err: AxiosError) => {
         return { isSuccess: false, message: err.message, type: ApiType.PRODUCT };
@@ -45,10 +45,15 @@ const productAPI = {
         return { isSuccess: false, message: error.message };
       });
   },
-  getProduct: (productId: string): Promise<IResultType<IDetailProduct>> => {
+  getProduct: (token:string, productId: string): Promise<IResultType<IDetailProduct>> => {
     // 상품 상세 조회
     return api
-      .get(productAPI.endPoint.getProduct + productId)
+      .get(productAPI.endPoint.getProduct + productId, {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then((res: AxiosResponse) => {
         return { isSuccess: true, data: res.data, type: ApiType.PRODUCT };
       })

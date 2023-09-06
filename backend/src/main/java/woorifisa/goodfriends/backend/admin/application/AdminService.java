@@ -9,7 +9,7 @@ import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
 import woorifisa.goodfriends.backend.admin.dto.response.UserInfoResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
-import woorifisa.goodfriends.backend.admin.exception.InvalidAdminException;
+import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
 import woorifisa.goodfriends.backend.auth.application.TokenCreator;
 import woorifisa.goodfriends.backend.auth.domain.AuthToken;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
@@ -18,10 +18,10 @@ import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.product.domain.*;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
-import woorifisa.goodfriends.backend.product.dto.response.ProductSaveResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
@@ -30,7 +30,11 @@ import woorifisa.goodfriends.backend.user.domain.UserRepository;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -61,12 +65,12 @@ public class AdminService {
 
     public AccessTokenResponse login(String root, String password) {
         // adminId가 틀린 경우
-        Admin selectedAdmin = adminRepository.findByRoot(root)
-                .orElseThrow(() -> new InvalidAdminException(root + "와 일치하는 아이디가 없습니다."));
+
+        Admin selectedAdmin = adminRepository.getByRoot(root);
 
         // password가 틀린 경우
-        if (!selectedAdmin.getPassword().equals(password)) {
-            throw new InvalidAdminException("잘못된 비밀번호입니다.");
+        if(!selectedAdmin.getPassword().equals(password)) {
+            throw new NotFoundAdminException();
         }
 
         // 앞에서 Exception 안났으면 토큰 발행 구현해야함
@@ -75,14 +79,16 @@ public class AdminService {
         return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken());
     }
 
-    public ProductSaveResponse saveProduct(long adminId, ProductSaveRequest request) throws IOException {
-        Admin foundAdmin = adminRepository.findById(adminId).orElseThrow(() -> new InvalidAdminException(adminId + "와 일치하는 아이디가 없습니다."));
+    public Long saveProduct(long adminId, ProductSaveRequest request) throws IOException {
+        Admin foundAdmin = adminRepository.getById(adminId);
 
+        // 상품 저장
         Product newProduct = createProduct(foundAdmin, request);
 
-        List<String> savedImageUrls = saveImages(newProduct.getId(), request.getImageUrls());
+        // 저장한 상품 id를 가져와서 상품 이미지 저장
+        saveImages(newProduct.getId(), request.getImageUrls());
 
-        return new ProductSaveResponse(newProduct, savedImageUrls);
+        return newProduct.getId();
     }
 
     private Product createProduct(Admin admin, ProductSaveRequest request) {
@@ -115,9 +121,10 @@ public class AdminService {
         return savedImages;
     }
 
-    public List<ProductViewAllResponse> viewAllProduct() {
-        List<Product> products = productRepository.findAll();
-        return products.stream()
+    public ProductViewsAllResponse viewAllProduct() {
+        List<Product> products = productRepository.findAllOrderByIdDesc();
+
+        List<ProductViewAllResponse> responses = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if (product.getUser() == null) {
@@ -127,13 +134,15 @@ public class AdminService {
                         return productViewAllResponse;
                     }
 
-                    Profile profile = profileRepository.findByUserId(product.getUser().getId()).orElseThrow(() -> new RuntimeException("유저의 프로필이 없습니다."));
+                    Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
                     ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress());
                     return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
+
+        return new ProductViewsAllResponse(responses);
     }
 
     public ProductViewOneResponse viewOneProduct(Long id) {
