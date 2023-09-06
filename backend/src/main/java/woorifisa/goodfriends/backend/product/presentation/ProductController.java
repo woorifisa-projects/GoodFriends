@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
 import woorifisa.goodfriends.backend.product.application.ProductService;
+import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
@@ -45,6 +46,13 @@ public class ProductController {
         return ResponseEntity.ok().body(responses); // 200
     }
 
+    @GetMapping("/view/category")
+    public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@RequestParam String productCategory) {
+        ProductCategory category = ProductCategory.valueOf(productCategory);
+        ProductViewsAllResponse responses = productService.viewProductByCategory(category);
+        return ResponseEntity.ok().body(responses); // 200
+    }
+
     @GetMapping("/view/{productId}")
     public ResponseEntity<ProductViewOneResponse> viewOneProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                                                  @PathVariable Long productId) {
@@ -75,4 +83,5 @@ public class ProductController {
             productService.deleteById(loginUser.getId(), productId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
     }
+
 }

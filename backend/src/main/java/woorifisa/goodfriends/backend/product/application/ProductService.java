@@ -98,7 +98,21 @@ public class ProductService {
     public ProductViewsAllResponse viewAllProduct() {
         List<Product> products = productRepository.findAllOrderByIdDesc();
 
-        List<ProductViewAllResponse> responses = products.stream()
+        List<ProductViewAllResponse> responses = createViewList(products);
+
+        return new ProductViewsAllResponse(responses);
+    }
+
+    public ProductViewsAllResponse viewProductByCategory(ProductCategory productCategory) {
+        List<Product> products = productRepository.findByProductCategory(productCategory);
+
+        List<ProductViewAllResponse> responses = createViewList(products);
+
+        return new ProductViewsAllResponse(responses);
+    }
+
+    private List<ProductViewAllResponse> createViewList(List<Product> products) {
+        return products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
@@ -115,8 +129,6 @@ public class ProductService {
                     return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
-
-        return new ProductViewsAllResponse(responses);
     }
 
     public ProductViewOneResponse viewOneProduct(Long id) {
@@ -196,4 +208,5 @@ public class ProductService {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
+
 }
