@@ -20,11 +20,17 @@ const adminLoginAPI = {
         return {
           isSuccess: true,
           data: { ...body, token: data.accessToken },
-          type: ApiType.ADMIN_LOGIN
+          type: ApiType.ADMIN_LOGIN,
+          code: res.status
         };
       })
       .catch((error: AxiosError) => {
-        return { isSuccess: false, message: error.message, type: ApiType.ADMIN_LOGIN };
+        return {
+          isSuccess: false,
+          message: error.message,
+          type: ApiType.ADMIN_LOGIN,
+          code: error.status
+        };
       });
   }
 };
