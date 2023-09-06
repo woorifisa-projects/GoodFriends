@@ -38,8 +38,8 @@
 <script setup lang="ts">
 import { useAdminStore } from '@/stores/admin';
 import { ref } from 'vue';
-import { goPageWithReload } from '@/utils/goPage';
 import adminLoginAPI from '@/apis/admin/login';
+import router from '@/router';
 
 const userId = ref('');
 const userPw = ref('');
@@ -53,7 +53,8 @@ const submit = async () => {
   if (res.isSuccess && res.data) {
     const store = useAdminStore();
     store.setAdmin(res.data.root, res.data.password, res.data.token);
-    goPageWithReload('admin/log');
+    console.log(store.accessToken);
+    router.push('admin/log');
   } else {
     alert('로그인/비밀번호를 확인해주세요');
   }
