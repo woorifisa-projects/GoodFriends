@@ -14,10 +14,10 @@ import OrderView from '@/views/user/OrderView.vue';
 import ReceiveCodeView from '@/views/user/ReceiveCodeView.vue';
 import ErrorView from '@/views/user/ErrorView.vue';
 
-import { useUserInfoStore } from '@/stores/userInfo';
 import { goPageWithReload } from '@/utils/goPage';
+import { useAdminStore } from '@/stores/admin';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
 
-// TODO: /profile 로 접근시 profile/:id로 리다리렉트
 const router = createRouter({
   scrollBehavior() {
     return { top: 0 };
@@ -27,6 +27,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'defaultLayout',
+      meta: { type: 'user' },
       component: DefaultLayout,
       children: [
         { path: '/', name: 'home', component: HomeView, meta: { every: true } },
@@ -38,7 +39,12 @@ const router = createRouter({
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
         { path: 'err/:type', name: 'login err', component: ErrorView },
-        { path: '/google-callback', name: 'receive code', component: ReceiveCodeView },
+        {
+          path: '/google-callback',
+          name: 'receive code',
+          component: ReceiveCodeView,
+          meta: { every: true }
+        },
         {
           path: '/404',
           name: 'notFound',
@@ -53,7 +59,7 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'admin page',
-      meta: { type: 'admin' },
+      meta: { type: 'login' },
       component: () => import('@/views/admin/AdminLogin.vue')
     },
     {
@@ -111,14 +117,30 @@ const router = createRouter({
     }
   ]
 });
-router.beforeEach((to, form, next) => {
-  const store = useUserInfoStore();
 
-  if (store.id === 0 && !to.meta.every) {
-    alert('로그인 후 이용해 주세요');
-    goPageWithReload();
+router.beforeEach((to, form, next) => {
+  const adminStore = useAdminStore();
+  const isLogin = localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN);
+  if (to.meta.type === 'login') {
+    next();
     return;
   }
+  if (to.meta.type === 'user') {
+    if (!isLogin && !to.meta.every) {
+      alert('로그인 후 이용해 주세요');
+      goPageWithReload();
+      return;
+    }
+    next();
+    return;
+  }
+  if (to.meta.type === 'admin' && !adminStore.accessToken) {
+    alert('로그인 후 이용해 주세요');
+    goPageWithReload('admin');
+    next();
+    return;
+  }
+
   next();
 });
 export default router;
