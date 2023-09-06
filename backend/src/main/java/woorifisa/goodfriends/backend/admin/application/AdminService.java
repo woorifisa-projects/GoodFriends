@@ -124,10 +124,24 @@ public class AdminService {
     public ProductViewsAllResponse viewAllProduct() {
         List<Product> products = productRepository.findAllOrderByIdDesc();
 
-        List<ProductViewAllResponse> responses = products.stream()
+        List<ProductViewAllResponse> responses = createViewList(products);
+
+        return new ProductViewsAllResponse(responses);
+    }
+
+    public ProductViewsAllResponse viewSearchProduct(String keyword) {
+        List<Product> products = productRepository.findByTitleContains(keyword);
+
+        List<ProductViewAllResponse> responses = createViewList(products);
+
+        return new ProductViewsAllResponse(responses);
+    }
+
+    private List<ProductViewAllResponse> createViewList(List<Product> products) {
+        return products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
-                    if (product.getUser() == null) {
+                    if(product.getUser() == null) {
                         ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
                                 product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null);
 
@@ -141,10 +155,7 @@ public class AdminService {
                     return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
-
-        return new ProductViewsAllResponse(responses);
     }
-
     public ProductViewOneResponse viewOneProduct(Long id) {
         Product product = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());

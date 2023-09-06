@@ -14,4 +14,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p ORDER BY p.id DESC")
     List<Product> findAllOrderByIdDesc();
+
+    @Query("SELECT p FROM Product p WHERE p.productCategory = :productCategory ORDER BY p.id DESC")
+    List<Product> findByProductCategory(ProductCategory productCategory);
+
+    @Query("SELECT p FROM Product p WHERE p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC")
+    List<Product> findByTitleContains(String keyword);
+
+    @Query("SELECT p FROM Product p  WHERE p.productCategory = :productCategory AND p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC")
+    List<Product> findByTitleContainsInCategory(ProductCategory productCategory, String keyword);
 }

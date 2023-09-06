@@ -14,6 +14,7 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
+import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
@@ -98,7 +99,37 @@ public class ProductService {
     public ProductViewsAllResponse viewAllProduct() {
         List<Product> products = productRepository.findAllOrderByIdDesc();
 
-        List<ProductViewAllResponse> responses = products.stream()
+        List<ProductViewAllResponse> responses = createViewList(products);
+
+        return new ProductViewsAllResponse(responses);
+    }
+
+    public ProductViewsAllResponse viewProductByCategory(ProductCategory productCategory) {
+        List<Product> products = productRepository.findByProductCategory(productCategory);
+
+        List<ProductViewAllResponse> responses = createViewList(products);
+
+        return new ProductViewsAllResponse(responses);
+    }
+
+    public ProductViewsAllResponse viewSearchProduct(String productCategory, String keyword) {
+        List<Product> products;
+
+        if(productCategory.equals("ALL")){
+            products = productRepository.findByTitleContains(keyword);
+        }
+        else {
+            ProductCategory category = ProductCategory.valueOf(productCategory);
+            products = productRepository.findByTitleContainsInCategory(category, keyword);
+        }
+
+        List<ProductViewAllResponse> responses = createViewList(products);
+
+        return new ProductViewsAllResponse(responses);
+    }
+
+    private List<ProductViewAllResponse> createViewList(List<Product> products) {
+        return products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
@@ -115,8 +146,6 @@ public class ProductService {
                     return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
-
-        return new ProductViewsAllResponse(responses);
     }
 
     public ProductViewOneResponse viewOneProduct(Long id) {
@@ -196,4 +225,5 @@ public class ProductService {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
+
 }
