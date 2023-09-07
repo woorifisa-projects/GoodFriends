@@ -17,17 +17,17 @@ import type { IItem } from '@/types/profile';
 import { ref } from 'vue';
 
 const tmpItemList = ref<Array<IItem>>([
-  { id: 1, name: '구매 물품명1', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 2, name: '구매 물품명2', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 3, name: '구매 물품명3', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 4, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 5, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 6, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 7, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 8, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 9, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 10, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase' },
-  { id: 11, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase' }
+  { id: 1, name: '구매 물품명1', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 2, name: '구매 물품명2', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 3, name: '구매 물품명3', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 4, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 5, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 6, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 7, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 8, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 9, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 10, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
+  { id: 11, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' }
 ]);
 
 const productStatus = [

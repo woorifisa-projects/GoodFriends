@@ -3,6 +3,7 @@ export interface IItem {
   name: string;
   date: string;
   path: string;
+  status: string;
 }
 
 // 프로필 정보 수정시 사용할 interface

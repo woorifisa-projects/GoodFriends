@@ -25,14 +25,14 @@
         </div>
         <div class="detail-info">
           <div class="name">{{ data.title }}</div>
-          <div class="status select" v-if="isWriter">
+          <!-- <div class="status select" v-if="isWriter">
             <select name="select" id="select">
               <option value="SELL">판매중</option>
               <option value="RESERVATION">예약중</option>
               <option value="COMPLETED">거래완료</option>
             </select>
-          </div>
-          <div class="status" v-else>{{ PRODUCT_STATUS[data.status] }}</div>
+          </div> -->
+          <div class="status">{{ PRODUCT_STATUS[data.status] }}</div>
           <div class="price">{{ data.sellPrice.toLocaleString() }}원</div>
           <div class="category">{{ CATEGORY[data.productCategory] }}</div>
           <div class="date">{{ PRODUCT.CREATE_AT }}: {{ data.createdDate }}</div>

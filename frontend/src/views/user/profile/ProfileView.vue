@@ -178,16 +178,24 @@ watchEffect(() => {
 }
 
 .btn_wrap > button {
-  background-color: var(--profile-btn-1-bg);
-  color: var(--profile-btn-1-text);
+  cursor: pointer;
+  font-family: 'LINESeedKR-Bd';
+  font-size: 15px;
+  border: 1px solid black;
+  height: 40px;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--product-status-filter-bg);
+  color: var(--product-status-filter-base-text);
   padding: 16px 20px;
-  border-radius: 8px;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.48);
+  border-radius: 12px;
 }
 
 .btn_wrap > button:first-child {
-  background-color: var(--profile-btn-2-bg);
-  color: var(--profile-btn-2-text);
+  background-color: var(--product-status-filter-point-bg);
+  color: var(--product-status-filter-point-text);
 }
 
 .profile_detail_wrap {
