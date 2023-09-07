@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.product.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 
@@ -23,4 +24,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p  WHERE p.productCategory = :productCategory AND p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC")
     List<Product> findByTitleContainsInCategory(ProductCategory productCategory, String keyword);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Product p " +
+            "SET p.status = :productStatus " +
+            "WHERE p.id = :productId")
+    void updateProductStatus(Long productId, ProductStatus productStatus);
 }

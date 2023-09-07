@@ -1,16 +1,22 @@
 package woorifisa.goodfriends.backend.order.application;
 
 import org.springframework.stereotype.Service;
+import woorifisa.goodfriends.backend.order.domain.ConfirmStatus;
 import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
+import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
 import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
+import woorifisa.goodfriends.backend.order.dto.response.OrderViewOneResponse;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
+import woorifisa.goodfriends.backend.product.domain.ProductStatus;
+import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,40 +35,55 @@ public class OrderService {
         this.userRepository = userRepository;
     }
 
-    public Long saveOrder(OrderSaveRequest request) {
+    public Long saveOrder(Long userId, OrderSaveRequest request) {
 
-        if(orderRepository.findByProductIdAndUserId(request.getProductId(), request.getUserId()) != null){
+        if(orderRepository.findByProductIdAndUserId(request.getProductId(), userId) != null){
             throw new AlreadyOrderedException();
         }
 
         Product foundProduct = productRepository.getById(request.getProductId());
-        User foundUser = userRepository.getById(request.getUserId());
+        User foundUser = userRepository.getById(userId);
 
-        Order newOrder = createOrder(foundProduct, foundUser, request);
+        Order newOrder = orderRepository.save(createOrder(foundProduct, foundUser, request));
         return newOrder.getId();
     }
 
     private Order createOrder(Product product, User user, OrderSaveRequest request) {
-        return orderRepository.save(Order.builder()
+        Order newOrder = Order.builder()
                         .product(product)
                         .user(user)
-                        .confirm(false)
+                        .confirmStatus(ConfirmStatus.ORDERING)
                         .possibleDate(request.getPossibleDateStart() + " ~ " + request.getPossibleDateEnd())
                         .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
                         .requirements(request.getRequirements())
-                        .build());
+                        .build();
+        return newOrder;
     }
 
-    public List<OrderViewAllResponse> viewAllOrder(Long productId) {
+    public OrderViewAllResponse viewAllOrder(Long productId) {
 
-        List<Order> orders = orderRepository.findByProductId(productId);
-
-        return orders.stream()
+        List<OrderViewOneResponse> responses = orderRepository.findOrdersAndUserByProductId(productId).stream()
                 .map(order -> {
-                    User user = userRepository.getById(order.getUser().getId());
-                    return new OrderViewAllResponse(order.getId(), user.getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+                    OrderViewOneResponse response =  new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(), order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+                    return response;
                 })
                 .collect(Collectors.toList());
+
+        return new OrderViewAllResponse(responses);
+    }
+
+    @Transactional
+    public UserDealResponse dealOrder(Long orderId) {
+
+        orderRepository.updateConfirmStatus(orderId, ConfirmStatus.COMPLETED);
+
+        Order order = orderRepository.getById(orderId);
+        productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
+        User user = userRepository.getById(order.getUser().getId());
+
+        UserDealResponse response = new UserDealResponse(user.getNickname(), user.getProfileImageUrl(), user.getEmail());
+
+        return response;
     }
 
 }
