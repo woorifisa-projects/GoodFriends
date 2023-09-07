@@ -1,7 +1,7 @@
 import { AxiosError, type AxiosResponse } from 'axios';
 import type { IResultType, INoContent } from '@/types/api';
 import { apiInstance } from '..';
-import type { IGetAllUsers,IeditUser } from '@/types/allUsers';
+import type { IGetAllUsers,IeditUser } from '@/types/allUserInfo';
 
 const api = apiInstance();
 

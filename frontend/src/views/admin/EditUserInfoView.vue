@@ -87,7 +87,7 @@
 <script setup lang="ts">
 import { ADMIN } from '@/constants/strings/admin';
 import { ref } from 'vue';
-import allUserAPI from '@/apis/admin/allUsers';
+import allUserAPI from '@/apis/admin/allUserInfo';
 import router from '@/router';
 
 const { item, data } = history.state;

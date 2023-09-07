@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import Table from '@/components/CommonTable.vue';
 import router from '@/router';
-import allUserAPI from '@/apis/admin/allUsers';
+import allUserAPI from '@/apis/admin/allUserInfo';
 import type { IDataType } from '@/types/table';
 const usersApi = await allUserAPI.selectLog();
 const data: Array<IDataType> = [];
