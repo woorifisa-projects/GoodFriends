@@ -10,16 +10,11 @@ public class ProfileUpdateRequest {
     private String email;
     @NotBlank(message = "회원 닉네임이 공백일 수 없습니다.")
     private String nickName;
-
     @NotBlank(message = "회원 핸드폰 번호는 공백일 수 없습니다.")
     private String mobileNumber;
-
     @NotBlank(message = "회원 주소는 공백일 수 없습니다.")
     private String address;
-
-    @NotBlank(message = "회원 계좌종류는 공백일 수 없습니다.")
     private AccountType accountType;
-
     @NotNull(message = "회원 계좌번호는 공백일 수 없습니다.")
     private int accountNumber;
 

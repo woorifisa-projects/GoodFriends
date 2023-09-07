@@ -24,7 +24,7 @@ public class Profile extends BaseCreateTimeEntity {
     private User user;
 
     @Column(name = "mobile_phone")
-    private String mobilePhone;
+    private String mobileNumber;
 
     @Column(name = "address")
     private String address;
@@ -41,8 +41,8 @@ public class Profile extends BaseCreateTimeEntity {
         return id;
     }
 
-    public String getMobilePhone() {
-        return mobilePhone;
+    public String getMobileNumber() {
+        return mobileNumber;
     }
 
     public String getAddress() {
@@ -57,8 +57,8 @@ public class Profile extends BaseCreateTimeEntity {
         return accountNumber;
     }
 
-    public void updateMobilePhone(String mobilePhone) {
-        this.mobilePhone = mobilePhone;
+    public void updateMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 
     public void updateAddress(String address) {
