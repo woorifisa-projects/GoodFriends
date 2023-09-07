@@ -1,10 +1,15 @@
+<p align="middle">
+  <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fwoowacourse-teams%2F2022-goodfriends&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+</p>
+
 <div align="center">
 <img width ="500" src="https://github.com/woorifisa-projects/GoodFriends/assets/83820185/e4dd46f4-37a0-4c01-a0da-0dc1ad2274d4"/>
  <h2> 친구처럼 안전한 중고 거래 서비스, 굿프렌즈 🤹🏻‍♀️ </h2>
 
-[<img src="https://img.shields.io/badge/-github wiki-yellow?style=flat&logo=google-chrome&logoColor=black" />](https://github.com/woorifisa-projects/GoodFriends/wiki)
-[<img src="https://img.shields.io/badge/-tech blog-blue?style=flat&logo=google-chrome&logoColor=black" />](https://goodfriends-team.tistory.com/)
-[<img src="https://img.shields.io/badge/release-v1.1.0-critical?style=flat&logo=google-chrome&logoColor=black" />](https://github.com/woorifisa-projects/GoodFriends/tree/v1.0.0)
+[![wiki](http://img.shields.io/badge/-GitHub%20WiKi-black?style=flat&logo=github&logoColor=white&link=https://github.com/woorifisa-projects/GoodFriends/wiki)](https://github.com/woorifisa-projects/GoodFriends/wiki)
+[![Release](https://img.shields.io/github/v/release/woorifisa-projects/GoodFriends?color=blue)](https://github.com/woorifisa-projects/GoodFriends/releases/tag/v1.1.0)
+[![tistory](http://img.shields.io/badge/-Tistory-3db39e?style=flat&logo=tistory&logoColor=white&link=https://goodfriends-team.tistory.com//)](https://goodfriends-team.tistory.com/)
+
 
 </div>
 
