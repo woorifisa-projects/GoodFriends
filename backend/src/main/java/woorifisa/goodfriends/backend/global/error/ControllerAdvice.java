@@ -15,6 +15,7 @@ import woorifisa.goodfriends.backend.global.error.dto.ErrorReportRequest;
 import woorifisa.goodfriends.backend.global.error.dto.ErrorResponse;
 import woorifisa.goodfriends.backend.infrastructure.oauth.exception.OAuthException;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
+import woorifisa.goodfriends.backend.order.exception.NotFoundOrderException;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.product.exception.NotFoundImageFileException;
 import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
@@ -71,7 +72,8 @@ public class ControllerAdvice {
             NotFoundTokenException.class,
             NotFoundProductException.class,
             NotFoundImageFileException.class,
-            NotFoundUserException.class
+            NotFoundUserException.class,
+            NotFoundOrderException.class
     })
     public ResponseEntity<ErrorResponse> handleNotFoundData(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
