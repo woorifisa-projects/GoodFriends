@@ -7,7 +7,7 @@ const api = apiInstance();
 
 const manageLogAPI = {
   endPoint: {
-    userLog: 'api/admin/user-log/record'
+    userLog: 'api/admin/log'
   },
   headers: {},
   selectLog: (): Promise<IResultType<Array<IGetUserLog>>> => {
