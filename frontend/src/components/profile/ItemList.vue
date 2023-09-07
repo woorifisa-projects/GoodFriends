@@ -9,6 +9,7 @@
           <div class="detail">
             <div>{{ item.name }}</div>
             <div>{{ item.date }}</div>
+            <div>{{ item.status }}</div>
           </div>
         </div>
       </li>
@@ -48,6 +49,7 @@ const onClick = (item: IItem) => {
   gap: 20px;
   padding: 12px 20px;
   width: 100%;
+  height: fit-content;
   border: 1px solid rgb(235, 235, 235);
   border-radius: 10px;
   box-shadow: 1px 1px 7px #0000001b;
@@ -82,7 +84,9 @@ const onClick = (item: IItem) => {
   height: 100%;
   padding: 20px;
   text-align: center;
-  line-height: 58px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 24px;
 }
 
@@ -91,8 +95,9 @@ const onClick = (item: IItem) => {
     height: 60px;
   }
   .detail > div {
-    font-size: 18px;
+    font-size: 15px;
     line-height: 24px;
+    padding: 0;
   }
   .item > .img {
     width: 50px;

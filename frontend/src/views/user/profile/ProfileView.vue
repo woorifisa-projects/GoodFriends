@@ -8,8 +8,14 @@
       <div class="profile_detail_wrap">
         <div class="profile_detail">
           <div class="item">
-            <label>{{ PROFILE.EMAIL }}</label>
-            <input v-model="store.email" type="email" disabled />
+            <label>{{ PROFILE.ACCOUNT }}</label>
+            <select name="bank" id="bank" v-model="userInputInfo.bank" :disabled="isDisabled">
+              <option value="default" disabled>은행</option>
+              <option :value="account.value" v-for="(account, index) in accountList" :key="index">
+                {{ account.name }}
+              </option>
+            </select>
+            <input v-model="userInputInfo.account" type="text" :disabled="isDisabled" />
           </div>
 
           <div class="item">
@@ -64,8 +70,17 @@ const user = ref({
 const userInputInfo = ref({
   nickName: user.value.nickName,
   mobileNumber: user.value.mobileNumber,
-  address: user.value.address
+  address: user.value.address,
+  account: '000',
+  bank: 'default'
 });
+const accountList = ref([
+  { value: 'k', name: '국민' },
+  { value: 'w', name: '우리' },
+  { value: 's', name: '신한' },
+  { value: 'h', name: '하나' },
+  { value: 'n', name: '농협' }
+]);
 const isDisabled = ref(true);
 const searchAddress = (data: string) => {
   userInputInfo.value.address = data;
@@ -75,7 +90,15 @@ const onClickEdit = async () => {
     isDisabled.value = false;
     return;
   }
-
+  if (userInputInfo.value.account.length < 7) {
+    alert('계좌번호');
+    return;
+  }
+  console.log(userInputInfo.value.bank);
+  if (userInputInfo.value.bank === 'default') {
+    alert('은행');
+    return;
+  }
   if (!checkPhoneNumber(userInputInfo.value.mobileNumber)) {
     alert(ALERT.PHONE);
     return;
@@ -92,6 +115,13 @@ const onClickEdit = async () => {
   loadingStore.setLoading(false);
   if (res.isSuccess) {
     user.value = { ...userInputInfo.value, ...user.value };
+
+    // store.setProfile(
+    //   user.value.nickName,
+    //   user.value.mobileNumber,
+    //   user.value.address,
+    //   account
+    // );
     isDisabled.value = true;
   } else {
     alert(res.message);
@@ -124,7 +154,9 @@ watchEffect(() => {
   userInputInfo.value = {
     nickName: store.nickName,
     mobileNumber: store.mobileNumber,
-    address: store.address
+    address: store.address,
+    account: '000',
+    bank: 'default'
   };
 });
 </script>
@@ -146,16 +178,24 @@ watchEffect(() => {
 }
 
 .btn_wrap > button {
-  background-color: var(--profile-btn-1-bg);
-  color: var(--profile-btn-1-text);
+  cursor: pointer;
+  font-family: 'LINESeedKR-Bd';
+  font-size: 15px;
+  border: 1px solid black;
+  height: 40px;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--product-status-filter-bg);
+  color: var(--product-status-filter-base-text);
   padding: 16px 20px;
-  border-radius: 8px;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.48);
+  border-radius: 12px;
 }
 
 .btn_wrap > button:first-child {
-  background-color: var(--profile-btn-2-bg);
-  color: var(--profile-btn-2-text);
+  background-color: var(--product-status-filter-point-bg);
+  color: var(--product-status-filter-point-text);
 }
 
 .profile_detail_wrap {
@@ -201,16 +241,24 @@ watchEffect(() => {
   width: 50%;
   display: flex;
   align-items: center;
-  border: none;
   border: 1px solid black;
   height: fit-content;
   padding: 12px;
+}
+.item > select {
+  width: fit-content;
+  padding: 12px;
+  text-align: center;
 }
 .item > input:disabled,
 .item > select:disabled {
   background-color: white;
   color: black;
   border: none;
+}
+.item > select:disabled {
+  border: 1px solid lightgray;
+  border-radius: 6px;
 }
 
 @media screen and (max-width: 1023px) {

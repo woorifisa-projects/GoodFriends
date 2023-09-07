@@ -1,7 +1,7 @@
 <template>
   <div id="wrap">
     <DefaultHeader />
-    <RouterView id="main" />
+    <RouterView class="main" />
     <LoadingIcon v-if="store.isLoading" />
     <DefaultFooter />
   </div>
@@ -25,19 +25,19 @@ const store = useLoadingStore();
   font-family: 'LINESeedKR-Rg';
 }
 
-#main {
+.main {
   width: 100%;
   padding: 10px 200px;
 }
 
 @media screen and (max-width: 1023px) {
-  #main {
+  .main {
     padding: 10px 0;
   }
 }
 
 @media screen and (max-width: 767px) {
-  #main {
+  .main {
     padding: 10px 0;
   }
 }

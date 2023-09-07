@@ -1,12 +1,12 @@
 <template>
   <div id="footer">
-    <div class="logo">
+    <!-- <div class="logo">
       <img :src="LOGO_IMG" alt="" />
-    </div>
+    </div> -->
     <ul class="links">
       <li>Copyright ⓒ 2023. Good Friends. All rights reserved.</li>
     </ul>
-    <ul class="icons">
+    <!-- <ul class="icons">
       <li>
         <a href="https://github.com/woorifisa/GoodFriends">
           <img class="icon" src="@/assets/images/github.png" alt="github icon" />
@@ -17,7 +17,7 @@
           <img class="icon" src="@/assets/images/blog.png" alt="blog icon" />
         </a>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
@@ -34,7 +34,7 @@ import { LOGO_IMG } from '@/constants/images';
   height: 150px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   padding: 0 200px;

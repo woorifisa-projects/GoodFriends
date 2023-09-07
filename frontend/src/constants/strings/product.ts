@@ -1,3 +1,5 @@
+import type { IStringToString } from '@/types/dynamic';
+
 export const PRODUCT = {
   PRICE: '가격',
   DESCRIPTION: '상세 내용',
@@ -23,7 +25,13 @@ export const ORDER_MODAL = {
   DATE: '날짜: ',
   TIME: '시간: ',
   REQUIREMENT: '요청사항',
-  SUBMIT: '주문서 제출하기',
+  SUBMIT: '제출하기',
   ALERT_TIME: '시간을 정확히 입력해주세요(mm:dd)',
   ALERT_DATE: '날짜를 정확히 입력해주세요'
+};
+
+export const PRODUCT_STATUS: IStringToString = {
+  SELL: '판매중',
+  RESERVATION: '예약중',
+  COMPLETED: '거래완료'
 };

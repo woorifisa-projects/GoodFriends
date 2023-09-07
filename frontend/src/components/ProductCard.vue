@@ -6,7 +6,7 @@
     :key="product.id"
   >
     <div class="img">
-      <img :src="product.imageUrl" alt="임시 이미지" />
+      <img :src="product.imageUrl || image" alt="임시 이미지" />
     </div>
     <div class="detail">
       <p class="title">{{ product.title }}</p>
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import type { IAllProduct, IAllProductAdmin } from '@/types/product';
+import image from '@/assets/tmp/images/image.png';
 
 const props = defineProps({
   products: {
@@ -51,13 +52,18 @@ const emits = defineEmits(['click']);
   height: 250px;
   overflow: hidden;
 
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
   background-color: white;
 
-  border: 1px solid black;
+  border: 1px solid rgb(164, 164, 164);
   border-radius: 12px;
 }
 .card > .img > img {
   width: 100%;
+  object-fit: cover;
 }
 .detail {
   display: flex;

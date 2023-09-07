@@ -11,6 +11,7 @@ export const uploadFile = async (
         const res = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.addEventListener('load', (e) => {
+            // 이미지가 중복되면
             if (
               !e.target?.result ||
               savedFiles.includes(file) ||

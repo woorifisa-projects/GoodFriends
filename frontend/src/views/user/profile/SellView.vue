@@ -18,10 +18,10 @@ import type { IItem } from '@/types/profile';
 import { ref } from 'vue';
 
 const tmpItemList = ref<Array<IItem>>([
-  { id: 1, name: '판매 물품명1', date: 'yyyy-mm-dd', path: '/profile/sell' },
-  { id: 2, name: '판매 물품명2', date: 'yyyy-mm-dd', path: '/profile/sell' },
-  { id: 3, name: '판매 물품명3', date: 'yyyy-mm-dd', path: '/profile/sell' },
-  { id: 4, name: '판매 물품명4', date: 'yyyy-mm-dd', path: '/profile/sell' }
+  { id: 1, name: '판매 물품명1', date: 'yyyy-mm-dd', path: '/profile/sell', status: 'SELL' },
+  { id: 2, name: '판매 물품명2', date: 'yyyy-mm-dd', path: '/profile/sell', status: 'SELL' },
+  { id: 3, name: '판매 물품명3', date: 'yyyy-mm-dd', path: '/profile/sell', status: 'SELL' },
+  { id: 4, name: '판매 물품명4', date: 'yyyy-mm-dd', path: '/profile/sell', status: 'SELL' }
 ]);
 
 const productStatus = [

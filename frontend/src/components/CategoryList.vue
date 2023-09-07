@@ -24,12 +24,12 @@
           :class="category === props.selectedCategory ? `selected` : ``"
           @click="onClickCategory(category)"
         >
-          {{ category }}
+          {{ CATEGORY[category] }}
         </button>
       </li>
     </ul>
-    <div v-else>카테고리 열기</div>
-    <button @click="openCategory">{{ smallCategoryIsOpen ? `닫기` : `열기` }}</button>
+    <div v-else @click="openCategory">카테고리 열기</div>
+    <button @click="openCategory">{{ smallCategoryIsOpen ? `닫기` : `` }}</button>
   </div>
 </template>
 
@@ -50,7 +50,6 @@ const smallCategoryIsOpen = ref(false);
 const categoryPageNumber = ref(0);
 const viewCategoryNumber = ref(8);
 
-// TODO: 수정 -> 서버로부터
 const categories = ref(CATEGORY_LIST);
 
 const openCategory = () => {
@@ -91,9 +90,13 @@ const viewCategory = computed(() => {
 .category > button {
   font-size: 16px;
   padding: 12px;
+  transition: all 0.2s ease;
 }
 .category > button:active {
   opacity: 0.4;
+}
+.category > button:hover {
+  transform: scale(1.1);
 }
 .category > ul {
   width: 950px;
@@ -111,7 +114,6 @@ const viewCategory = computed(() => {
 .category > ul > li > button {
   background-color: var(--category-item-bg);
 
-  /* width: 100px; */
   min-width: 100px;
   max-width: fit-content;
   padding: 16px 0;
@@ -121,8 +123,12 @@ const viewCategory = computed(() => {
 
   font-family: 'LINESeedKR-Bd';
   font-size: 16px;
-}
 
+  transition: all 0.15s ease;
+}
+.category > ul > li > button:hover {
+  transform: scale(1.05);
+}
 .category > ul > li > .selected {
   background-color: var(--category-item-point-bg);
   color: var(--category-item-point-text);
@@ -140,6 +146,7 @@ const viewCategory = computed(() => {
     flex-direction: column;
     align-items: end;
     width: 100%;
+    font-family: 'LINESeedKR-Bd';
   }
   .small-category > ul {
     width: fit-content;
@@ -147,7 +154,7 @@ const viewCategory = computed(() => {
   }
   .small-category > div {
     width: 100%;
-    background-color: rgb(232, 249, 255);
+    background-color: var(--category-item-point-bg);
     border: 1px solid rgba(135, 135, 135, 0.32);
     border-radius: 12px;
     padding: 12px 24px;
@@ -155,6 +162,7 @@ const viewCategory = computed(() => {
     font-size: 18px;
     font-weight: 700;
     justify-content: right;
+    cursor: pointer;
   }
 }
 </style>

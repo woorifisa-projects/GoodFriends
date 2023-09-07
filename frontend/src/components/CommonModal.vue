@@ -47,16 +47,11 @@ const closeClick = (e: Event) => {
   background-color: rgba(213, 213, 213, 0.527);
 }
 .modal-front {
-  min-width: 60%;
-  max-width: 89%;
-  min-height: 70%;
-  max-height: 90%;
-
   background-color: rgb(255, 255, 255);
   box-shadow: 1px 1px 10px rgba(145, 145, 145, 0.495);
   border: 1px solid rgba(102, 102, 102, 0.587);
   border-radius: 16px;
 
-  padding: 32px;
+  overflow: auto;
 }
 </style>

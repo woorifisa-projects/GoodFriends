@@ -1,7 +1,12 @@
 <template>
   <CommonModalVue :is-visible="props.isVisible" @updateVisible="emits('update:isVisible', $event)">
-    <div class="modal">
-      <div class="modal-title">{{ ORDER_MODAL.TIME }}</div>
+    <div class="modal" :class="isClickSubmit ? `modal-hidden` : `view`">
+      <div class="modal-title">{{ ORDER_MODAL.TITLE }}</div>
+      <div class="close-btn">
+        <button @click="emits('update:isVisible', false)">
+          <span class="material-icons-outlined"> cancel </span>
+        </button>
+      </div>
       <div class="modal-date">
         <div class="modal-text">
           <p v-for="(text, index) in ORDER_MODAL.CONTENTS" :key="index">
@@ -33,9 +38,18 @@
       </div>
       <div class="modal-requirement">
         <label for="requirement"> {{ ORDER_MODAL.REQUIREMENT }}</label>
-        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <textarea v-model="requirement" name="" id="" cols="30" rows="10"></textarea>
+        <div class="max-length">{{ requirement.length }} / {{ maxLength }}</div>
       </div>
-      <button @click="onClickOrderSubmit">{{ ORDER_MODAL.SUBMIT }}</button>
+      <button @click="checkInput">{{ ORDER_MODAL.SUBMIT }}</button>
+    </div>
+    <div class="confirm-window" :class="isClickSubmit ? `view` : `hidden`">
+      <p>정말 제출하시겠습니까?</p>
+      <p>주문서는 수정이 불가능합니다.</p>
+      <div class="confirm-btn-wrap">
+        <button @click="onClickSubmit">네</button>
+        <button @click="isClickSubmit = false">아니요</button>
+      </div>
     </div>
   </CommonModalVue>
 </template>
@@ -45,11 +59,11 @@ import CommonModalVue from '@/components/CommonModal.vue';
 import { ORDER_MODAL } from '@/constants/strings/product';
 import { dateFormat } from '@/utils/format';
 import { checkTime, compareDate, compareTime } from '@/utils/date';
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const props = defineProps({
   productId: {
-    type: Number,
+    type: String,
     required: true
   },
   isVisible: {
@@ -62,8 +76,11 @@ const emits = defineEmits(['update:isVisible']);
 
 const wantedDate = ref([new Date(), new Date()]);
 const wantedTime = ref(['', '']);
+const requirement = ref('');
+const maxLength = ref(200);
+const isClickSubmit = ref(false);
 
-const onClickOrderSubmit = () => {
+const checkInput = () => {
   const currentDate = new Date();
   if (
     compareDate(currentDate, wantedDate.value[0]) < 0 ||
@@ -80,10 +97,13 @@ const onClickOrderSubmit = () => {
     alert(ORDER_MODAL.ALERT_TIME);
     return;
   }
-  emits('update:isVisible', false);
-  // TODO: 주문서 제출
+  isClickSubmit.value = true;
 };
 
+const onClickSubmit = () => {
+  // TODO: 주문서 제출
+  emits('update:isVisible', false);
+};
 const onChangeDate = (event: Event, index: number) => {
   const date = (event.target as HTMLInputElement).value;
   wantedDate.value[index] = new Date(date);
@@ -91,6 +111,7 @@ const onChangeDate = (event: Event, index: number) => {
 
 const onChangeTime = (event: Event, index: number) => {
   const time = (event.target as HTMLInputElement).value.replace(/\D/g, '');
+  console.log(time);
   if (time.length === 0) return '';
 
   const hours = time.slice(0, 2);
@@ -98,12 +119,15 @@ const onChangeTime = (event: Event, index: number) => {
 
   wantedTime.value[index] = `0${hours}`.slice(-2) + ':' + `${minute}00`.slice(0, 2);
 };
+
+watchEffect(() => {
+  requirement.value = requirement.value.slice(0, maxLength.value);
+});
 </script>
 
 <style scoped>
 .modal {
-  width: 100%;
-
+  width: 50vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -112,20 +136,42 @@ const onChangeTime = (event: Event, index: number) => {
   gap: 12px;
 
   font-size: 24px;
-  overflow: auto;
+  overflow: hidden;
+  position: relative;
+  padding: 32px;
+}
+.modal-hidden {
+  /* filter: brightness(90%); */
+  filter: blur(4px);
+}
+.view {
+  visibility: visible;
+}
+.hidden {
+  visibility: hidden;
 }
 .modal > .modal-title {
   width: 100%;
   border-bottom: 1px solid black;
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 36px;
+  font-family: 'LINESeedKR-Bd';
 }
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.close-btn > button > span {
+  font-size: 32px;
+}
+
 .modal-date {
   display: flex;
   flex-direction: column;
 }
 .modal-date > .modal-text {
   margin: 12px 0;
+  font-size: 24px;
 }
 .modal-input {
   display: flex;
@@ -135,7 +181,9 @@ const onChangeTime = (event: Event, index: number) => {
   margin-top: 12px;
 }
 .modal-input > span {
+  font-family: 'LINESeedKR-Rg';
   width: 60px;
+  font-size: 24px;
 }
 .modal > .modal-requirement {
   width: 60%;
@@ -143,36 +191,97 @@ const onChangeTime = (event: Event, index: number) => {
   flex-direction: column;
 }
 .modal-requirement > label {
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 6px;
+  font-family: 'LINESeedKR-Bd';
 }
 .modal-requirement > textarea {
   padding: 12px;
   font-size: 18px;
+  font-family: 'LINESeedKR-Rg';
+  height: 200px;
 }
 .modal > button {
-  margin-top: 12px;
   padding: 12px 18px;
+  font-family: 'LINESeedKR-Bd';
 
   border: 1px solid rgba(130, 130, 130, 0.732);
-  box-shadow: 1px 1px 10px rgba(145, 145, 145, 0.524);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+
+  font-size: 18px;
+
+  margin-bottom: 12px;
 }
 .modal > button:active {
   background-color: rgb(219, 219, 219);
 }
+.modal > button:hover {
+  transform: scale(1.05);
+  background-color: #fcc61f;
+}
+.max-length {
+  font-size: 12px;
+  text-align: end;
+}
+.confirm-window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 10px 20px;
+  font-size: 24px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+.confirm-btn-wrap {
+  margin-top: 12px;
+  display: flex;
+  gap: 24px;
+  justify-content: space-around;
+}
+.confirm-btn-wrap > button {
+  border: 1px solid black;
+  padding: 8px 18px;
+  font-size: 18px;
+  border-radius: 12px;
+  flex: 1;
+  transition: transform 0.3s ease;
+}
+.confirm-btn-wrap > button:hover {
+  transform: scale(1.03);
+}
+.confirm-btn-wrap > button:first-child {
+  background-color: lightblue;
+}
 
 input[type='date'],
 input[type='text'] {
-  background-color: skyblue;
+  /* background-color: #fcc61f; */
   padding: 13px;
-  font-family: 'Roboto Mono', monospace;
-  color: #ffffff;
+  color: #000;
   font-size: 16px;
-  border: none;
+  font-family: 'LINESeedKR-Rg';
+  border: 1px solid black;
   outline: none;
   border-radius: 5px;
 }
 input[type='text'] {
   width: 100px;
+}
+
+@media screen and (max-width: 1200px) {
+  .modal {
+    width: 90vw;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .modal {
+    width: 100vw;
+    height: 90vh;
+  }
 }
 </style>

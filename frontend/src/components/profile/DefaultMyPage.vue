@@ -13,6 +13,9 @@
             </label>
           </div>
         </div>
+        <div class="email">
+          {{ user.email }}
+        </div>
       </div>
       <div class="main first-main">
         <!-- 추후 추가 내용 -->
@@ -67,7 +70,8 @@ const store = useUserInfoStore();
 const user = ref({
   imageUrl: store.imageUrl,
   nickName: store.nickName,
-  id: store.id
+  id: store.id,
+  email: store.email
 });
 
 const navList = ref([
@@ -112,7 +116,8 @@ watchEffect(() => {
   user.value = {
     imageUrl: store.imageUrl,
     nickName: store.nickName,
-    id: store.id
+    id: store.id,
+    email: store.email
   };
 });
 </script>
@@ -132,6 +137,7 @@ watchEffect(() => {
 
 .wrap > div {
   margin: 20px;
+  /* border: 1px solid black; */
 }
 
 .side {
@@ -141,10 +147,12 @@ watchEffect(() => {
   align-items: center;
   position: relative;
 }
-.side > .name {
-  font-size: 18px;
+.side > .email {
+  width: 100%;
+  font-size: 16px;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 12px;
+  border-bottom: 1px solid lightgray;
 
   display: flex;
   position: relative;
