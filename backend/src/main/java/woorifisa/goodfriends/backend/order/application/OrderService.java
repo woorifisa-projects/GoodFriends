@@ -43,7 +43,7 @@ public class OrderService {
     }
 
     private Order createOrder(Product product, User user, OrderSaveRequest request) {
-        return Order.builder()
+        Order newOrder = Order.builder()
                         .product(product)
                         .user(user)
                         .confirm(false)
@@ -51,6 +51,7 @@ public class OrderService {
                         .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
                         .requirements(request.getRequirements())
                         .build();
+        return newOrder;
     }
 
     public List<OrderViewAllResponse> viewAllOrder(Long productId) {
@@ -60,7 +61,8 @@ public class OrderService {
         return orders.stream()
                 .map(order -> {
                     User user = userRepository.getById(order.getUser().getId());
-                    return new OrderViewAllResponse(order.getId(), user.getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+                    OrderViewAllResponse response =  new OrderViewAllResponse(order.getId(), user.getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+                    return response;
                 })
                 .collect(Collectors.toList());
     }
