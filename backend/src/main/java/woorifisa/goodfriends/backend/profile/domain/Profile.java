@@ -29,6 +29,12 @@ public class Profile extends BaseCreateTimeEntity {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "account_type")
+    private AccountType accountType;
+
+    @Column(name = "account_number")
+    private int accountNumber;
+
     protected Profile() {
     }
     public Long getId() {
@@ -43,11 +49,26 @@ public class Profile extends BaseCreateTimeEntity {
         return address;
     }
 
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
+    }
+
     public void updateMobilePhone(String mobilePhone) {
         this.mobilePhone = mobilePhone;
     }
 
     public void updateAddress(String address) {
         this.address = address;
+    }
+
+    public void updateAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+    public void updateAccountNumber(int accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

@@ -33,7 +33,7 @@ public class ProfileController {
         return ResponseEntity.ok().body(profileViewResponse);
     }
 
-    @PatchMapping("/me/info") // 닉네임, 핸드폰, 주소 수정
+    @PatchMapping("/me/info") // 닉네임, 핸드폰, 주소, 계좌종류 및 계좌번호
     public ResponseEntity<Void> update(@AuthenticationPrincipal LoginUser loginUser,
                                        @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
         profileService.update(loginUser.getId(), profileUpdateRequest);

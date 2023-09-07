@@ -52,10 +52,14 @@ public class ProfileService {
                     .user(user)
                     .mobilePhone(request.getMobileNumber())
                     .address(request.getAddress())
+                    .accountType(request.getAccountType())
+                    .accountNumber(request.getAccountNumber())
                     .build());
         } else { // 기존에 프로필이 있는 경우, 프로필 정보(핸드폰, 주소)를 수정해서 저장한다.
             profile.updateMobilePhone(request.getMobileNumber());
             profile.updateAddress(request.getAddress());
+            profile.updateAccountType(request.getAccountType());
+            profile.updateAccountNumber(request.getAccountNumber());
             profileRepository.save(profile);
         }
     }

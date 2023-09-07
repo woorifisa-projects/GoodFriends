@@ -1,6 +1,9 @@
 package woorifisa.goodfriends.backend.profile.dto.request;
 
+import woorifisa.goodfriends.backend.profile.domain.AccountType;
+
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class ProfileUpdateRequest {
 
@@ -14,14 +17,24 @@ public class ProfileUpdateRequest {
     @NotBlank(message = "회원 주소는 공백일 수 없습니다.")
     private String address;
 
+    @NotBlank(message = "회원 계좌종류는 공백일 수 없습니다.")
+    private AccountType accountType;
+
+    @NotNull(message = "회원 계좌번호는 공백일 수 없습니다.")
+    private int accountNumber;
+
     protected ProfileUpdateRequest() {
     }
 
-    public ProfileUpdateRequest(String email, String nickName, String mobileNumber, String address) {
+    public ProfileUpdateRequest(String email, String nickName,
+                                String mobileNumber, String address,
+                                AccountType accountType, int accountNumber) {
         this.email = email;
         this.nickName = nickName;
         this.mobileNumber = mobileNumber;
         this.address = address;
+        this.accountType = accountType;
+        this.accountNumber = accountNumber;
     }
 
     public String getEmail() {
@@ -39,5 +52,13 @@ public class ProfileUpdateRequest {
 
     public String getAddress() {
         return address;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public int getAccountNumber() {
+        return accountNumber;
     }
 }
