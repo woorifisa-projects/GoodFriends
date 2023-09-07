@@ -1,9 +1,6 @@
 package woorifisa.goodfriends.backend.user.domain;
 
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 
@@ -75,5 +72,9 @@ public class User extends BaseTimeEntity {
     }
     public void updateProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public boolean isActivated() {
+        return activated;
     }
 }

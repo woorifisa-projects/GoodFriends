@@ -37,7 +37,7 @@ const tableDataKey = [
   'result'
 ];
 const tableHeader = {
-  user_id: '피해자ID',
+  user_id: '피해자 이메일',
   do_user_nickname: '피해자 닉네임',
   product_category: '상품 카테고리',
   product_title: '상품이름',

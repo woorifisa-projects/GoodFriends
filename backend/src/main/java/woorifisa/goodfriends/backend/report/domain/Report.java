@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.declaration.domain;
+package woorifisa.goodfriends.backend.report.domain;
 
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
@@ -24,7 +24,7 @@ import javax.persistence.Embedded;
 @SuperBuilder
 @Table(name = "declarations")
 @Entity
-public class Declaration extends BaseCreateTimeEntity {
+public class Report extends BaseCreateTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class Declaration extends BaseCreateTimeEntity {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private DeclarationCategory declarationCategory;
+    private ReportCategory reportCategory;
 
     @Column(name = "content")
     @Embedded
@@ -52,7 +52,7 @@ public class Declaration extends BaseCreateTimeEntity {
     @Enumerated(EnumType.STRING)
     private ReportStatus reportStatus;
 
-    protected Declaration() {
+    protected Report() {
     }
 
     public Long getId() {
@@ -67,8 +67,8 @@ public class Declaration extends BaseCreateTimeEntity {
         return user;
     }
 
-    public DeclarationCategory getDeclarationCategory() {
-        return declarationCategory;
+    public ReportCategory getReportCategory() {
+        return reportCategory;
     }
 
     public Content getContent() {
