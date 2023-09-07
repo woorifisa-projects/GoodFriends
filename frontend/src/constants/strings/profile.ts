@@ -13,7 +13,8 @@ export const PROFILE = {
   PHONE_NUMBER: '핸드폰',
   ADDRESS: '주소',
   BIRTHDAY: '생년월일',
-  GET_ADDRESS: '도로명주소 찾기'
+  GET_ADDRESS: '도로명주소 찾기',
+  ACCOUNT: '계좌번호'
 };
 
 export const ALERT = {
