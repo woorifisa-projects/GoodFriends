@@ -5,7 +5,7 @@
         <button @click="onClickBannerBtn('prev')" :disabled="viewImage === 0">
           <span class="material-icons-outlined"> arrow_back_ios </span>
         </button>
-        <img :src="data.imageUrls[viewImage]" alt="" />
+        <img :src="data.imageUrls[viewImage] || image" alt="" />
         <button
           @click="onClickBannerBtn('next')"
           :disabled="viewImage === data.imageUrls.length - 1"
@@ -33,7 +33,7 @@
             </select>
           </div>
           <div class="status" v-else>{{ PRODUCT_STATUS[data.status] }}</div>
-          <div class="price">{{ data.sellPrice }}원</div>
+          <div class="price">{{ data.sellPrice.toLocaleString() }}원</div>
           <div class="category">{{ CATEGORY[data.productCategory] }}</div>
           <div class="date">{{ PRODUCT.CREATE_AT }}: {{ data.createdDate }}</div>
         </div>
@@ -46,13 +46,18 @@
       <div>{{ data.nickName }}</div>
     </div>
     <div class="product-detail">{{ data.description }}</div>
-    <OrderModal v-model:is-visible="isVisible" :product-id="0" />
+    <OrderModal v-model:is-visible="orderModalVisible" :product-id="id" />
+    <ConfirmModal
+      :content="[`정말로 삭제하시겠습니까?`, `삭제후 다시 복구는 불가능합니다.`]"
+      v-model:is-visible="confirm.isVisible"
+      v-model:response="confirm.response"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import router from '@/router';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import OrderModal from '@/components/OrderModal.vue';
 import { PRODUCT, PRODUCT_STATUS } from '@/constants/strings/product';
@@ -63,6 +68,9 @@ import { useLoadingStore } from '@/stores/loading';
 import { goPageWithReload } from '@/utils/goPage';
 import { dateFormat } from '@/utils/format';
 import type { IDetailProduct } from '@/types/product';
+import image from '@/assets/tmp/images/image.png';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import ConfirmModal from '@/components/ConfirmModal.vue';
 
 const store = useUserInfoStore();
 const route = useRoute();
@@ -88,7 +96,12 @@ const data = ref<IDetailProduct>({
   productCategory: '',
   sellPrice: 0
 });
-const isVisible = ref(false);
+
+const orderModalVisible = ref(false);
+const confirm = ref({
+  isVisible: false,
+  response: false
+});
 
 const onClickBannerBtn = (flag: string) => {
   if (flag === 'next') {
@@ -103,6 +116,18 @@ const onClickEditBtn = () => {
 
 // TODO: 확인 후 삭제하도록 수정
 const onClickDelete = async () => {
+  confirm.value.isVisible = true;
+};
+
+const onClickReport = () => {
+  // TODO: 신고하기
+};
+
+const onClickOrder = () => {
+  orderModalVisible.value = true;
+};
+watchEffect(async () => {
+  if (!confirm.value.response) return;
   loadingStore.setLoading(true);
   const res = await productAPI.deleteProduct(store.accessToken, id);
   if (res.isSuccess) {
@@ -112,18 +137,12 @@ const onClickDelete = async () => {
     alert(res.message);
     loadingStore.setLoading(true);
   }
-};
-
-const onClickReport = () => {
-  // TODO: 신고하기
-};
-
-const onClickOrder = () => {
-  isVisible.value = true;
-};
-
+});
 onMounted(async () => {
-  const res = await productAPI.getProduct(store.accessToken, id);
+  const res = await productAPI.getProduct(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || store.accessToken,
+    id
+  );
   if (res.isSuccess && res.data) {
     data.value = res.data;
     data.value.createdDate = dateFormat(new Date(res.data.createdDate));
