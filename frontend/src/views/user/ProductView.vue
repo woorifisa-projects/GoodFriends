@@ -129,7 +129,10 @@ const onClickOrder = () => {
 watchEffect(async () => {
   if (!confirm.value.response) return;
   loadingStore.setLoading(true);
-  const res = await productAPI.deleteProduct(store.accessToken, id);
+  const res = await productAPI.deleteProduct(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    id
+  );
   if (res.isSuccess) {
     goPageWithReload('');
     loadingStore.setLoading(true);
@@ -140,7 +143,7 @@ watchEffect(async () => {
 });
 onMounted(async () => {
   const res = await productAPI.getProduct(
-    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || store.accessToken,
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
     id
   );
   if (res.isSuccess && res.data) {

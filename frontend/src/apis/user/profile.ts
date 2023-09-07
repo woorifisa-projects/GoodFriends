@@ -11,7 +11,7 @@ const profileAPI = {
     getProfile: `api/profile/me`
   },
 
-  getProfile: (token: string): Promise<IResultType<IProfile>> => {
+  getProfile: (token: string | null): Promise<IResultType<IProfile>> => {
     return api
       .get(profileAPI.endPoint.getProfile, {
         headers: { Authorization: `Bearer ${token}` }
@@ -31,7 +31,7 @@ const profileAPI = {
         return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
-  editProfile: (token: string, body: IProfileEdit): Promise<INoContent> => {
+  editProfile: (token: string | null, body: IProfileEdit): Promise<INoContent> => {
     return api
       .patch(profileAPI.endPoint.editProfile, body, {
         headers: { ...headers, Authorization: `Bearer ${token}` }
@@ -50,7 +50,7 @@ const profileAPI = {
         return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
-  editProfileImg: (token: string, formData: FormData): Promise<INoContent> => {
+  editProfileImg: (token: string | null, formData: FormData): Promise<INoContent> => {
     return api
       .patch(profileAPI.endPoint.editProfileImg, formData, {
         headers: {

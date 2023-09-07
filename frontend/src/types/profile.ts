@@ -10,14 +10,23 @@ export interface IItem {
 export interface IProfileEdit {
   nickName: string;
   address: string;
-  email: string;
   mobileNumber: string;
+  accountType: string;
+  accountNumber: string;
+}
+
+export interface IProfilePinia {
+  id: number;
+  nickName: string;
+  imageUrl: string;
+  email: string;
 }
 
 // 프로필 정보 조회시 사용할 interface
 export interface IProfile extends IProfileEdit {
   id: number;
   imageUrl: string;
+  email: string;
 }
 
 declare global {

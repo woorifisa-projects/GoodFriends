@@ -57,12 +57,13 @@
 
 <script setup lang="ts">
 import { PROFILE_SIDEBAR } from '@/constants/strings/profile';
-import { ref, watchEffect } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { uploadFile } from '@/utils/file';
 import { useUserInfoStore } from '@/stores/userInfo';
 import profileAPI from '@/apis/user/profile';
 import { useLoadingStore } from '@/stores/loading';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
 
 const route = useRoute();
 const store = useUserInfoStore();
@@ -103,7 +104,10 @@ const onClickProfileImageUpload = async (event: Event) => {
   const loadingStore = useLoadingStore();
 
   loadingStore.setLoading(true);
-  const res = await profileAPI.editProfileImg(store.accessToken, formData);
+  const res = await profileAPI.editProfileImg(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    formData
+  );
   loadingStore.setLoading(false);
   if (res.isSuccess) {
     user.value.imageUrl = previewImg[0];
@@ -113,12 +117,12 @@ const onClickProfileImageUpload = async (event: Event) => {
 };
 
 watchEffect(() => {
-  user.value = {
-    imageUrl: store.imageUrl,
-    nickName: store.nickName,
-    id: store.id,
-    email: store.email
-  };
+  user.value = store.getInfo();
+});
+
+onMounted(() => {
+  user.value = store.getInfo();
+  console.log(user.value);
 });
 </script>
 
