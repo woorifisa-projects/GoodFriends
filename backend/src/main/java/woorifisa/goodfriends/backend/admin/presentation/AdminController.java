@@ -131,8 +131,8 @@ public class AdminController {
     
     // 상품 신고 전체 조회
     @GetMapping("/report/products")
-    public ResponseEntity<ReportsResponse> viewAllProductReports() {
-        ReportsResponse reportsResponse = adminService.viewAllProductReports();
+    public ResponseEntity<ReportsResponse> viewAllProductsReport() {
+        ReportsResponse reportsResponse = adminService.viewAllProductsReport();
         return ResponseEntity.ok().body(reportsResponse); // 200
     }
 }

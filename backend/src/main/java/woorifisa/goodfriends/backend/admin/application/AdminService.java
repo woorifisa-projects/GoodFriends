@@ -274,7 +274,7 @@ public class AdminService {
     }
 
     // 상품 신고 전체 조회
-    public ReportsResponse viewAllProductReports() {
+    public ReportsResponse viewAllProductsReport() {
         List<ReportResponse> declarationResponses = reportRepository.findAllReportByIdDesc()
                 .stream()
                 .map(ReportResponse::new)
