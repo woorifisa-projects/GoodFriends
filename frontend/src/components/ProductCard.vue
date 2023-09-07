@@ -6,7 +6,7 @@
     :key="product.id"
   >
     <div class="img">
-      <img :src="product.imageUrl" alt="임시 이미지" />
+      <img :src="product.imageUrl || image" alt="임시 이미지" />
     </div>
     <div class="detail">
       <p class="title">{{ product.title }}</p>
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import type { IAllProduct, IAllProductAdmin } from '@/types/product';
+import image from '@/assets/tmp/images/image.png';
 
 const props = defineProps({
   products: {
