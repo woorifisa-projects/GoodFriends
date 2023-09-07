@@ -2,34 +2,34 @@
   <div class="editUserInfo-Page">
     <div class="editUserInfo-Grid">
       <div class="page-logo">
-        <span class="page-logo-in-1"></span
-        ><span class="page-logo-in-2">{{ ADMIN.EDIT_USER_TITLE }}</span>
+        <span class="page-logo-in-1"></span>
+        <span class="page-logo-in-2">{{ title }}{{ ADMIN.EDIT_USER_TITLE }}</span>
       </div>
       <div class="totlaUserInfo">
         <div class="userInfo1">
-          <div class="user-img"><img src="@/assets/tmp/images/image.png" alt="profile img" /></div>
+          <div class="user-img">
+            <img :src="profileImg" alt="profile img" />
+          </div>
+
           <div class="userInfo1-1">
             <!-- TODO: ban, amark, average -->
             <div class="userInfo1-1-detail">
               <span class="userInfo-in-1">{{ ADMIN.MARK }}</span
-              ><span class="userInfo-in-2">⭐</span>
+              ><span class="userInfo-in-2">{{ authMark }}</span>
             </div>
             <div class="userInfo1-1-detail">
               <span class="userInfo-in-1">{{ ADMIN.BAN }}</span
-              ><span class="userInfo-in-2">{{ banCount }}</span>
+              ><span class="userInfo-in-2"
+                ><input class="input-bancount" v-model="banCount"
+              /></span>
             </div>
           </div>
         </div>
         <div class="userInfo2">
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">{{ ADMIN.EMAIL }}&nbsp;</div>
-            <input class="input-user" v-model="email" />
+            <div class="userInfo2-detailInfo">{{ ADMIN.NICKNAME }}&nbsp;</div>
+            <input class="input-user" v-model="nickname" />
           </div>
-          <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">{{ ADMIN.BIRTH }}&nbsp;</div>
-            <input class="input-user" v-model="birth" />
-          </div>
-
           <div class="userInfo2-info">
             <div class="userInfo2-detailInfo">{{ ADMIN.PHONE }}&nbsp;</div>
             <input class="input-user" v-model="phone" />
@@ -39,9 +39,9 @@
             <input class="input-user" v-model="address" />
           </div>
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">{{ ADMIN.MAIL_AUTH }}&nbsp;</div>
+            <div class="userInfo2-detailInfo">{{ ADMIN.PHONE_AUTH }}&nbsp;</div>
             <div class="detail-buttons">
-              <span class="mail-auth-check">{{ email_auth }}</span>
+              <span class="mail-auth-check">{{ phone_auth }}</span>
             </div>
           </div>
           <div class="userInfo2-info">
@@ -84,24 +84,36 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
 import { ADMIN } from '@/constants/strings/admin';
 import { ref } from 'vue';
+import allUserAPI from '@/apis/admin/allUserInfo';
+import router from '@/router';
 
-const { item } = history.state;
-//TODO:  console.log(item); // 전달 받은 데이터 확인용
-const banCount = ref(item.count);
-const authMark = ref();
+const { item, data } = history.state;
+const resultData = data[item.id - 1];
+const nickname = ref(resultData.nickname);
+const title = resultData.nickname + '님의 ';
+const profileImg = resultData.profileImageUrl;
+const banCount = ref(resultData.banCount);
+const phone = ref(resultData.phone);
+const address = ref(resultData.address);
 
-//TODO: 이메일, 생년월일, 연락처, 주소
-const email = ref(item.email);
-const birth = ref();
-const phone = ref();
-const address = ref();
-const Activity = ref();
+let phone_auth_temp = '미완료';
+let authMark_temp = 'X';
+if (resultData.phone !== null && resultData.phone !== undefined) {
+  phone_auth_temp = '완료';
+  authMark_temp = '🌟';
+}
+const authMark = ref(authMark_temp);
+const phone_auth = ref(phone_auth_temp);
+const Activity = ref(resultData.activated);
+if (resultData.activated === '활성화') {
+  Activity.value = true;
+} else if (resultData.activated === '비활성화') {
+  Activity.value = false;
+}
 
-//TODO: 활성화 여부 관련 로직
 const clickActivity = (event: Event, choice: string) => {
   if (choice === 'yes') {
     Activity.value = true;
@@ -110,21 +122,24 @@ const clickActivity = (event: Event, choice: string) => {
   }
 };
 
-//TODO: 메일인증 관련 함수
-const email_auth = ref('미완료');
-const admin_authCheck = (item: Boolean) => {
-  item = true;
-  if (item === true) {
-    email_auth.value = '완료';
-  } else if (item === false) {
-    email_auth.value = '미완료';
-  }
+let clickEdit = async () => {
+  let userInputInfo = ref({
+    nickname: nickname.value,
+    mobilePhone: phone.value,
+    address: address.value,
+    activated: Activity.value,
+    banCount: banCount.value
+  });
+
+  const editApi = await allUserAPI.postUser(resultData.userid, {
+    ...userInputInfo.value
+  });
+  router.push('/admin/manage/user');
 };
-
-//TODO: 수정완료/계정최종삭제 기능
-const clickEdit = () => {};
-const clickDelete = () => {};
-
+const clickDelete = async () => {
+  const deleteApi = await allUserAPI.deleteUser(resultData.userid);
+  router.push('/admin/manage/user');
+};
 //계정 삭제시 모달창 관련
 const showModal = ref(false);
 const openModal = () => {
@@ -137,10 +152,10 @@ const closeModal = () => {
 
 <style scoped>
 .activity-yes {
-  background-color: #6db1ff;
+  background-color: #e7ff6d;
 }
 .activity-no {
-  background-color: #6db1ff;
+  background-color: #e7ff6d;
 }
 .editUserInfo-Page {
   display: flex;
@@ -156,7 +171,6 @@ const closeModal = () => {
   border: 1px solid rgb(173, 173, 173);
   border-radius: 16px;
 }
-
 .page-logo {
   width: 600px;
   height: 80px;
@@ -165,7 +179,6 @@ const closeModal = () => {
   justify-content: center;
   align-items: center;
 }
-
 .totlaUserInfo {
   display: flex;
   justify-content: center;
@@ -178,6 +191,7 @@ const closeModal = () => {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  gap: 7px;
 }
 .userInfo2 {
   width: 300px;
@@ -205,6 +219,11 @@ const closeModal = () => {
   align-items: center;
   overflow: hidden;
 }
+.editImg {
+  padding: 4px;
+  width: 119px;
+  border: 1px solid rgb(173, 173, 173);
+}
 .userInfo1-1 {
   padding-top: 10px;
   display: flex;
@@ -212,7 +231,6 @@ const closeModal = () => {
   align-items: center;
   gap: 15px;
 }
-
 .userInfo1-1-detail {
   width: 220px;
   height: 40px;
@@ -232,11 +250,12 @@ const closeModal = () => {
   justify-content: center;
   gap: 3px;
 }
-
+.input-bancount {
+  width: 20px;
+}
 .mail-auth-check {
   width: 60px;
 }
-
 .detail-button {
   width: 60px;
   border: 1px solid rgb(173, 173, 173);
@@ -257,7 +276,6 @@ const closeModal = () => {
   gap: 10px;
   padding: 20px;
 }
-
 .work-btn {
   width: 80px;
   height: 40px;
@@ -265,7 +283,6 @@ const closeModal = () => {
   font-size: 15px;
   border-radius: 16px;
 }
-
 .modal {
   display: block;
   position: fixed;
@@ -276,7 +293,6 @@ const closeModal = () => {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
 }
-
 .modal-content {
   background-color: #fefefe;
   margin: 20% auto;
@@ -303,7 +319,6 @@ const closeModal = () => {
   font-size: 28px;
   font-weight: bold;
 }
-
 .close:hover,
 .close:focus {
   color: black;

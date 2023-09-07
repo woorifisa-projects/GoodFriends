@@ -72,6 +72,7 @@
 
 <script setup lang="ts">
 import { ADMIN_DECLARATION } from '@/constants/strings/admin';
+import router from '@/router';
 import { ref } from 'vue';
 
 //TODO: 이메일, 닉네임, 연락처, 신고카테고리, 상품카테고리, 피해날짜, 피해내용
@@ -84,7 +85,9 @@ const damage_date = ref('');
 const damage_des = ref('');
 
 //TODO: 뒤로가기/삭제하기/처리완료 기능
-const clickBack = () => {};
+const clickBack = () => {
+  router.push('/admin/declaration');
+};
 const clickDelete = () => {};
 const clickSuccess = () => {};
 </script>

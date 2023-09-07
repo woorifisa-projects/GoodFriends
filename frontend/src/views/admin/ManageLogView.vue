@@ -38,10 +38,10 @@ if (logApi.isSuccess === true && logApi.data) {
 
 const tableDataKey = ['email', 'nickname', 'ban', 'last_modified_at'];
 const tableHeader = {
-  email: '계정',
+  email: '이메일',
   nickname: '닉네임',
   ban: '신고당한 횟수',
-  last_modified_at: '마지막 접속날짜'
+  last_modified_at: '최신일자'
 };
 </script>
 
