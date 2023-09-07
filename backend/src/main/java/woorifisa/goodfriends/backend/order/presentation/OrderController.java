@@ -8,6 +8,7 @@ import woorifisa.goodfriends.backend.order.application.OrderService;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
 import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
 import woorifisa.goodfriends.backend.order.dto.response.OrderViewOneResponse;
+import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
 
 import java.net.URI;
 import java.util.List;
@@ -36,5 +37,10 @@ public class OrderController {
         return ResponseEntity.ok().body(responses);
     }
 
-
+    @PostMapping("/deal/{orderId}")
+    public ResponseEntity<UserDealResponse> dealOrder(@AuthenticationPrincipal LoginUser loginUser,
+                                                      @PathVariable Long orderId) {
+        UserDealResponse response = orderService.dealOrder(orderId);
+        return ResponseEntity.ok().body(response);
+    }
 }
