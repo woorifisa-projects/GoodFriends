@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.declaration.domain;
+package woorifisa.goodfriends.backend.report.domain;
 
 public enum ReportStatus {
     PROCESSING, // 처리중
