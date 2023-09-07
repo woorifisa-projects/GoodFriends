@@ -24,6 +24,9 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
+import woorifisa.goodfriends.backend.report.domain.ReportRepository;
+import woorifisa.goodfriends.backend.report.dto.response.ReportResponse;
+import woorifisa.goodfriends.backend.report.dto.response.ReportsResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
@@ -43,17 +46,16 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-
     private final ProductImageRepository productImageRepository;
-
     private final S3Service s3Service;
-
     private final ProfileRepository profileRepository;
-
     private final TokenCreator tokenCreator;
-    public AdminService(AdminRepository adminRepository, UserRepository userRepository, ProductRepository productRepository,
-                        ProductImageRepository productImageRepository, S3Service s3Service,
-                        ProfileRepository profileRepository, TokenCreator tokenCreator) {
+    private final ReportRepository reportRepository;
+
+    public AdminService(AdminRepository adminRepository, UserRepository userRepository,
+                        ProductRepository productRepository, ProductImageRepository productImageRepository,
+                        S3Service s3Service, ProfileRepository profileRepository, TokenCreator tokenCreator,
+                        ReportRepository reportRepository) {
         this.adminRepository = adminRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
@@ -61,6 +63,7 @@ public class AdminService {
         this.s3Service = s3Service;
         this.profileRepository = profileRepository;
         this.tokenCreator = tokenCreator;
+        this.reportRepository = reportRepository;
     }
 
     public AccessTokenResponse login(String root, String password) {
@@ -268,5 +271,14 @@ public class AdminService {
         for (ProductImage productImage : productImages) {
             s3Service.deleteFile(productImage.getImageUrl());
         }
+    }
+
+    // 상품 신고 전체 조회
+    public ReportsResponse viewAllProductsReport() {
+        List<ReportResponse> declarationResponses = reportRepository.findAllReportByIdDesc()
+                .stream()
+                .map(ReportResponse::new)
+                .collect(Collectors.toList());
+        return new ReportsResponse(declarationResponses);
     }
 }

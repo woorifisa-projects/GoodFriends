@@ -17,6 +17,7 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
+import woorifisa.goodfriends.backend.report.dto.response.ReportsResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -127,5 +128,11 @@ public class AdminController {
         adminService.deleteById(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+    
+    // 상품 신고 전체 조회
+    @GetMapping("/report/products")
+    public ResponseEntity<ReportsResponse> viewAllProductsReport() {
+        ReportsResponse reportsResponse = adminService.viewAllProductsReport();
+        return ResponseEntity.ok().body(reportsResponse); // 200
+    }
 }
