@@ -30,7 +30,7 @@ public class ProfileService {
 
         // profile 정보가 없을 경우 주소와 핸드폰 번호는 null 로 반환
         if (profile == null) {
-            profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), null, null, null, 0);
+            profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), null, null, null, null);
         }else{
             profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), profile.getAddress(), profile.getMobileNumber(), profile.getAccountType(), profile.getAccountNumber());
         }

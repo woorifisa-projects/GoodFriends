@@ -10,11 +10,11 @@ public class ProfileViewResponse {
     private final String address;
     private final String mobileNumber;
     private final AccountType accountType;
-    private final int accountNumber;
+    private final String accountNumber;
 
     public ProfileViewResponse(Long id, String imageUrl, String nickName,
                                String email, String address, String mobileNumber,
-                               AccountType accountType, int accountNumber) {
+                               AccountType accountType, String accountNumber) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.nickName = nickName;
@@ -51,7 +51,7 @@ public class ProfileViewResponse {
         return accountType;
     }
 
-    public int getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 }

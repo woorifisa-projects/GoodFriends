@@ -33,7 +33,7 @@ public class Profile extends BaseCreateTimeEntity {
     private AccountType accountType;
 
     @Column(name = "account_number")
-    private int accountNumber;
+    private String accountNumber;
 
     protected Profile() {
     }
@@ -53,7 +53,7 @@ public class Profile extends BaseCreateTimeEntity {
         return accountType;
     }
 
-    public int getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
@@ -68,7 +68,7 @@ public class Profile extends BaseCreateTimeEntity {
     public void updateAccountType(AccountType accountType) {
         this.accountType = accountType;
     }
-    public void updateAccountNumber(int accountNumber) {
+    public void updateAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 }

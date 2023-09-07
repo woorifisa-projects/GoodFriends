@@ -16,14 +16,14 @@ public class ProfileUpdateRequest {
     private String address;
     private AccountType accountType;
     @NotNull(message = "회원 계좌번호는 공백일 수 없습니다.")
-    private int accountNumber;
+    private String accountNumber;
 
     protected ProfileUpdateRequest() {
     }
 
     public ProfileUpdateRequest(String email, String nickName,
                                 String mobileNumber, String address,
-                                AccountType accountType, int accountNumber) {
+                                AccountType accountType, String accountNumber) {
         this.email = email;
         this.nickName = nickName;
         this.mobileNumber = mobileNumber;
@@ -53,7 +53,7 @@ public class ProfileUpdateRequest {
         return accountType;
     }
 
-    public int getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 }
