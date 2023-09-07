@@ -10,7 +10,6 @@ import woorifisa.goodfriends.backend.product.application.ProductService;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
