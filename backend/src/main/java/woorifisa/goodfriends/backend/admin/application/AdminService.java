@@ -101,8 +101,8 @@ public class AdminService {
                     Profile profile = (Profile) result[1];
 
                     return new UserInfoResponse(
-                            user.getEmail(), user.getNickname(), user.getProfileImageUrl(), user.getCreatedAt(), user.getLastModifiedAt()
-                            , user.getBan(), profile.getMobilePhone(), profile.getAddress()
+                            user.getId(),user.getEmail(), user.getNickname(), user.getProfileImageUrl(), user.getCreatedAt(), user.getLastModifiedAt()
+                            , user.getBan(), profile.getMobilePhone(), profile.getAddress(), user.isActivated()
                     );
                 }).collect(Collectors.toList());
 
@@ -112,14 +112,20 @@ public class AdminService {
     // 사용자 정보 수정
     public void updateUserInfo(Long userId, UserUpdateRequest request) {
         User user = userRepository.getById(userId);
+        Profile profile = profileRepository.getByUserId(userId);
         userRepository.save(User.builder()
                 .id(userId)
                 .email(user.getEmail())
                 .nickname(request.getNickname())
                 .profileImageUrl(user.getProfileImageUrl())
                 .ban(request.getBanCount())
-                // .activated(request.getActivated())
-                .createdAt(user.getCreatedAt())
+                .activated(request.isActivated())
+                .build());
+        profileRepository.save(Profile.builder()
+                .id(profile.getId())
+                .user(user)
+                .mobilePhone(request.getMobilePhone())
+                .address(request.getAddress())
                 .build());
 
     }

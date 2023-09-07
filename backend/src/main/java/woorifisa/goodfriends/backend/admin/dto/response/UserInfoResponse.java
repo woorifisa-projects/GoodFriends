@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class UserInfoResponse {
 
+    private Long id;
     private String email;
     private String nickname;
     private String profileImageUrl;
@@ -21,10 +22,11 @@ public class UserInfoResponse {
     private int banCount;
     private String phone;
     private String address;
-//    private boolean info_activated;
+    private boolean activated;
 
 
-    public UserInfoResponse(String email, String nickname, String profileImageUrl, LocalDateTime createdAt, LocalDateTime lastModifiedAt, int banCount, String phone, String address) {
+    public UserInfoResponse(Long id,String email, String nickname, String profileImageUrl, LocalDateTime createdAt, LocalDateTime lastModifiedAt, int banCount, String phone, String address, boolean activated) {
+        this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
@@ -33,5 +35,6 @@ public class UserInfoResponse {
         this.banCount = banCount;
         this.phone = phone;
         this.address = address;
+        this.activated = activated;
     }
 }
