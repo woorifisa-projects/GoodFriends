@@ -36,16 +36,25 @@
         </li>
       </ul>
     </div>
+    <ConfirmModal
+      v-model:is-visible="isVisible"
+      v-model:response="response"
+      :content="['정말 거래하시겠습니까?', '이후 취소는 불가능합니다.']"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import image from '@/assets/tmp/images/image.png';
 import { PRODUCT } from '@/constants/strings/product';
 import type { IOrderResponse } from '@/types/order';
+import ConfirmModal from '@/components/ConfirmModal.vue';
 const route = useRoute();
+
+const isVisible = ref(false);
+const response = ref(false);
 
 const id = ref(route.params.id);
 
@@ -163,8 +172,13 @@ const onClickItem = (event: Event) => {
 };
 
 const onClickDeal = () => {
-  // TODO: api
+  isVisible.value = true;
 };
+watchEffect(() => {
+  console.log(response.value);
+  if (!response.value) return;
+  // TODO: api
+});
 </script>
 
 <style scoped>
