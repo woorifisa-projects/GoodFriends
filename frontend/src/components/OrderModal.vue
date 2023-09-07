@@ -1,6 +1,6 @@
 <template>
   <CommonModalVue :is-visible="props.isVisible" @updateVisible="emits('update:isVisible', $event)">
-    <div class="modal">
+    <div class="modal" :class="isClickSubmit ? `modal-hidden` : `view`">
       <div class="modal-title">{{ ORDER_MODAL.TITLE }}</div>
       <div class="close-btn">
         <button @click="emits('update:isVisible', false)">
@@ -41,7 +41,15 @@
         <textarea v-model="requirement" name="" id="" cols="30" rows="10"></textarea>
         <div class="max-length">{{ requirement.length }} / {{ maxLength }}</div>
       </div>
-      <button @click="onClickOrderSubmit">{{ ORDER_MODAL.SUBMIT }}</button>
+      <button @click="checkInput">{{ ORDER_MODAL.SUBMIT }}</button>
+    </div>
+    <div class="confirm-window" :class="isClickSubmit ? `view` : `hidden`">
+      <p>정말 제출하시겠습니까?</p>
+      <p>주문서는 수정이 불가능합니다.</p>
+      <div class="confirm-btn-wrap">
+        <button @click="onClickSubmit">네</button>
+        <button @click="isClickSubmit = false">아니요</button>
+      </div>
     </div>
   </CommonModalVue>
 </template>
@@ -70,8 +78,9 @@ const wantedDate = ref([new Date(), new Date()]);
 const wantedTime = ref(['', '']);
 const requirement = ref('');
 const maxLength = ref(200);
+const isClickSubmit = ref(false);
 
-const onClickOrderSubmit = () => {
+const checkInput = () => {
   const currentDate = new Date();
   if (
     compareDate(currentDate, wantedDate.value[0]) < 0 ||
@@ -88,10 +97,13 @@ const onClickOrderSubmit = () => {
     alert(ORDER_MODAL.ALERT_TIME);
     return;
   }
-  emits('update:isVisible', false);
-  // TODO: 주문서 제출
+  isClickSubmit.value = true;
 };
 
+const onClickSubmit = () => {
+  // TODO: 주문서 제출
+  emits('update:isVisible', false);
+};
 const onChangeDate = (event: Event, index: number) => {
   const date = (event.target as HTMLInputElement).value;
   wantedDate.value[index] = new Date(date);
@@ -127,6 +139,16 @@ watchEffect(() => {
   overflow: hidden;
   position: relative;
   padding: 32px;
+}
+.modal-hidden {
+  /* filter: brightness(90%); */
+  filter: blur(4px);
+}
+.view {
+  visibility: visible;
+}
+.hidden {
+  visibility: hidden;
 }
 .modal > .modal-title {
   width: 100%;
@@ -202,6 +224,39 @@ watchEffect(() => {
   font-size: 12px;
   text-align: end;
 }
+.confirm-window {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 10px 20px;
+  font-size: 24px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+.confirm-btn-wrap {
+  margin-top: 12px;
+  display: flex;
+  gap: 24px;
+  justify-content: space-around;
+}
+.confirm-btn-wrap > button {
+  border: 1px solid black;
+  padding: 8px 18px;
+  font-size: 18px;
+  border-radius: 12px;
+  flex: 1;
+  transition: transform 0.3s ease;
+}
+.confirm-btn-wrap > button:hover {
+  transform: scale(1.03);
+}
+.confirm-btn-wrap > button:first-child {
+  background-color: lightblue;
+}
+
 input[type='date'],
 input[type='text'] {
   /* background-color: #fcc61f; */
