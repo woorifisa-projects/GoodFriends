@@ -251,7 +251,7 @@ const closeModal = () => {
   gap: 3px;
 }
 .input-bancount {
-  width: 18px;
+  width: 20px;
 }
 .mail-auth-check {
   width: 60px;
