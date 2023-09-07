@@ -23,12 +23,15 @@ const allUserAPI = {
           code: res.status
         };
       })
-      .catch((error: AxiosError) => {
-        return {
-          isSuccess: false,
-          message: error.message,
-          code: error.status
-        };
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
   deleteUser: (id: string) : Promise<INoContent> =>{
@@ -38,24 +41,37 @@ const allUserAPI = {
         .then((res: AxiosResponse) =>{
         return{
                isSuccess:true,
-               message:'',
+               message:'삭제 완료',
                code:res.status
               };
               })
-              .catch((error: AxiosError)=>{
-                console.log(error);
-                return{isSuccess: false, message:error.message, code: error.status};
-              });    
+              .catch((error) => {
+                if (error.response) {
+                  return {
+                    isSuccess: false,
+                    message: error.response.data.message,
+                    code: error.response.status
+                  };
+                }
+                return { isSuccess: false, message: error.message, code: error.response.status };
+              });
    },
    postUser: (id:number, body: IeditUser) : Promise<INoContent> => {
     return api
     .put(allUserAPI.endPoint.postUser+id, body)
 
     .then((res: AxiosResponse) => {
-      return {isSuccess: true, message: '업데이트완료', code: res.status};
+      return {isSuccess: true, message: '업데이트 완료', code: res.status};
     })
-    .catch((error:AxiosError)=>{
-      return {isSuccess:false, message: error.message, code: error.status};
+    .catch((error) => {
+      if (error.response) {
+        return {
+          isSuccess: false,
+          message: error.response.data.message,
+          code: error.response.status
+        };
+      }
+      return { isSuccess: false, message: error.message, code: error.response.status };
     });
 }
 };
