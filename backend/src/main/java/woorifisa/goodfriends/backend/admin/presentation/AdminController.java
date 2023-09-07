@@ -42,6 +42,37 @@ public class AdminController {
         return ResponseEntity.ok().body(response);
     }
 
+    // 사용자 로그기록 전체 조회
+    @GetMapping("/log")
+    public ResponseEntity<UserLogRecordsResponse> entryRecord() {
+        UserLogRecordsResponse response = adminService.findUserLogRecord();
+        return ResponseEntity.ok(response);
+    }
+
+    // 사용자 정보 전체 조회
+    @GetMapping("/user/view")
+    public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
+        List<UserInfoResponse> userInfoResponse = adminService.getAllUsers();
+        return ResponseEntity.ok().body(userInfoResponse);
+    }
+
+    // 사용자 정보 수정
+    @PutMapping("/user/edit/{userId}")
+    public ResponseEntity<Void> updateUserInfo(@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest){
+        adminService.updateUserInfo(userId,userUpdateRequest);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+
+    }
+
+    // 사용자 정보 삭제
+    @DeleteMapping("/user/remove/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
+
+        adminService.deleteUserInfo(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+    }
+
+    // 상품 등록
     @PostMapping("/products/new")
     public ResponseEntity<Void> saveProduct(Authentication authentication,
                                                            @RequestPart ProductSaveRequest request,
@@ -52,30 +83,35 @@ public class AdminController {
         return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }
 
-    @GetMapping("/products/view")
-    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
-        ProductViewsAllResponse responses = adminService.viewAllProduct();
-        return ResponseEntity.ok().body(responses);
-    }
-
+    // 상품 검색
     @GetMapping("/products/view/search")
     public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String keyword) {
         ProductViewsAllResponse responses = adminService.viewSearchProduct(keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
 
+    // 상품 전체 조회
+    @GetMapping("/products/view")
+    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
+        ProductViewsAllResponse responses = adminService.viewAllProduct();
+        return ResponseEntity.ok().body(responses);
+    }
+
+    // 상품 상세 조회
     @GetMapping("/products/view/{productId}")
     public ResponseEntity<ProductViewOneResponse> viewOneProduct(@PathVariable Long productId) {
         ProductViewOneResponse response = adminService.viewOneProduct(productId);
         return ResponseEntity.ok().body(response);
     }
 
+    // 수정할 상품 조회
     @GetMapping("/products/edit/{productId}")
     public ResponseEntity<ProductUpdateResponse> showSelectedProduct(@PathVariable Long productId){
         ProductUpdateResponse response = adminService.showSelectedProduct(productId);
         return ResponseEntity.ok().body(response);
     }
 
+    // 상품 수정
     @PutMapping("/products/edit/{productId}")
     public ResponseEntity<Void> updateProduct(@PathVariable Long productId,
                                                                @RequestPart ProductUpdateRequest request,
@@ -85,39 +121,11 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // 상품 삭제
     @DeleteMapping("/products/remove/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) throws MalformedURLException {
         adminService.deleteById(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //관리자가 사용자들 로그기록 조회
-    @GetMapping("/user-log/record")
-    public ResponseEntity<UserLogRecordsResponse> entryRecord() {
-        UserLogRecordsResponse response = adminService.findUserLogRecord();
-        return ResponseEntity.ok(response);
-    }
-
-    //관리자가 사용자 정보를 삭제
-    @DeleteMapping("/user/remove/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
-
-        adminService.deleteUserInfo(userId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
-    }
-
-    //관리자가 사용자 정보 업데이트
-    @PutMapping("/user/edit/{userId}")
-    public ResponseEntity<Void> updateUserInfo(@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest){
-        adminService.updateUserInfo(userId,userUpdateRequest);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
-
-    }
-
-    //관리자가 전체사용자 정보 조회
-    @GetMapping("/view")
-    public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
-        List<UserInfoResponse> userInfoResponse = adminService.getAllUsers();
-        return ResponseEntity.ok().body(userInfoResponse);
-    }
 }

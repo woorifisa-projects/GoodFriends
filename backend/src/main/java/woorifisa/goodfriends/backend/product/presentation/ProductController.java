@@ -31,7 +31,8 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping("/new")
+    // 상품 등록
+    @PostMapping
     public ResponseEntity<Void> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                             @RequestPart ProductSaveRequest request,
                                             @RequestPart List<MultipartFile> multipartFiles) throws IOException {
@@ -40,32 +41,37 @@ public class ProductController {
             return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }
 
-    @GetMapping("/view")
-    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
-        ProductViewsAllResponse responses = productService.viewAllProduct();
+    // 상품 검색
+    @GetMapping("/search")
+    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String productCategory, @RequestParam String keyword) {
+        ProductViewsAllResponse responses = productService.viewSearchProduct(productCategory, keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
 
-    @GetMapping("/view/category")
+    // 상품 카테고리별 조회
+    @GetMapping("/category")
     public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@RequestParam String productCategory) {
         ProductCategory category = ProductCategory.valueOf(productCategory);
         ProductViewsAllResponse responses = productService.viewProductByCategory(category);
         return ResponseEntity.ok().body(responses); // 200
     }
 
-    @GetMapping("/view/search")
-    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String productCategory, @RequestParam String keyword) {
-        ProductViewsAllResponse responses = productService.viewSearchProduct(productCategory, keyword);
+    // 상품 전체 조회
+    @GetMapping
+    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
+        ProductViewsAllResponse responses = productService.viewAllProduct();
         return ResponseEntity.ok().body(responses); // 200
     }
 
-    @GetMapping("/view/{productId}")
+    // 상품 상세 조회
+    @GetMapping("/{productId}")
     public ResponseEntity<ProductViewOneResponse> viewOneProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                                                  @PathVariable Long productId) {
         ProductViewOneResponse response = productService.viewOneProduct(productId);
         return ResponseEntity.ok().body(response); // 200
     }
 
+    // 수정할 상품 상세 조회
     @GetMapping("/edit/{productId}")
     public ResponseEntity<ProductUpdateResponse> showSelectedProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                                                      @PathVariable Long productId){
@@ -73,6 +79,7 @@ public class ProductController {
             return ResponseEntity.ok().body(response); // 200
     }
 
+    // 상품 수정
     @PutMapping("/edit/{productId}")
     public ResponseEntity<Void> updateProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                               @PathVariable Long productId,
@@ -83,6 +90,7 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
     }
 
+    // 상품 삭제
     @DeleteMapping("/remove/{productId}")
     public ResponseEntity<Void> deleteProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                               @PathVariable Long productId) throws MalformedURLException {

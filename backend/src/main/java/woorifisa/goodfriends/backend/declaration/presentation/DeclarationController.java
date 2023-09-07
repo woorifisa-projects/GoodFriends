@@ -20,7 +20,7 @@ public class DeclarationController {
         this.declarationService = declarationService;
     }
 
-    @PostMapping("/{productId}/new")
+    @PostMapping("/{productId}")
     public ResponseEntity<Void> saveReport(@AuthenticationPrincipal LoginUser loginUser,
                                            @PathVariable Long productId,
                                            @Valid @RequestBody DeclarationSaveRequest request) {

@@ -15,7 +15,7 @@ import woorifisa.goodfriends.backend.user.application.UserService;
 import javax.validation.Valid;
 import java.io.IOException;
 
-@RequestMapping("/api/profiles")
+@RequestMapping("/api/profile")
 @RestController
 public class ProfileController {
 
@@ -25,6 +25,12 @@ public class ProfileController {
     public ProfileController(ProfileService profileService, UserService userService) {
         this.profileService = profileService;
         this.userService = userService;
+    }
+
+    @GetMapping("/me")  // 본인 프로필 조회
+    public ResponseEntity<ProfileViewResponse> viewProfile(@AuthenticationPrincipal LoginUser loginUser) {
+        ProfileViewResponse profileViewResponse = profileService.viewProfile(loginUser.getId());
+        return ResponseEntity.ok().body(profileViewResponse);
     }
 
     @PatchMapping("/me/info") // 닉네임, 핸드폰, 주소 수정
@@ -40,11 +46,5 @@ public class ProfileController {
         userService.saveProfileImage(loginUser.getId(), multipartFile);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/me")  // 본인 프로필 조회
-    public ResponseEntity<ProfileViewResponse> viewProfile(@AuthenticationPrincipal LoginUser loginUser) {
-        ProfileViewResponse profileViewResponse = profileService.viewProfile(loginUser.getId());
-        return ResponseEntity.ok().body(profileViewResponse);
     }
 }
