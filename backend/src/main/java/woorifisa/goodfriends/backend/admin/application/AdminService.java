@@ -79,6 +79,54 @@ public class AdminService {
         return new AccessTokenResponse(authToken.getId(), authToken.getAccessToken());
     }
 
+    // 사용자 로그기록 전체 조회
+    public UserLogRecordsResponse findUserLogRecord() {
+        List<UserLogRecordResponse> userResponses = userRepository.findAll()
+                .stream()
+                .map(UserLogRecordResponse::new)
+                .sorted(Comparator.comparing(UserLogRecordResponse::getLastModifiedAt).reversed())
+                .collect(Collectors.toList());
+        return new UserLogRecordsResponse(userResponses);
+    }
+
+    // 사용자 정보 전체 조회
+    public List<UserInfoResponse> getAllUsers() {
+        List<Object[]> results = userRepository.getAllUserInfo();
+        List<UserInfoResponse> userInfoList = results.stream()
+                .map(result -> {
+                    User user = (User) result[0];
+                    Profile profile = (Profile) result[1];
+
+                    return new UserInfoResponse(
+                            user.getEmail(), user.getNickname(), user.getProfileImageUrl(), user.getCreatedAt(), user.getLastModifiedAt()
+                            , user.getBan(), profile.getMobilePhone(), profile.getAddress()
+                    );
+                }).collect(Collectors.toList());
+
+        return userInfoList;
+    }
+
+    // 사용자 정보 수정
+    public void updateUserInfo(Long userId, UserUpdateRequest request) {
+        User user = userRepository.getById(userId);
+        userRepository.save(User.builder()
+                .id(userId)
+                .email(user.getEmail())
+                .nickname(request.getNickname())
+                .profileImageUrl(user.getProfileImageUrl())
+                .ban(request.getBanCount())
+                // .activated(request.getActivated())
+                .createdAt(user.getCreatedAt())
+                .build());
+
+    }
+
+    // 사용자 정보 삭제
+    public void deleteUserInfo(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    // 상품 등록
     public Long saveProduct(long adminId, ProductSaveRequest request) throws IOException {
         Admin foundAdmin = adminRepository.getById(adminId);
 
@@ -121,16 +169,18 @@ public class AdminService {
         return savedImages;
     }
 
-    public ProductViewsAllResponse viewAllProduct() {
-        List<Product> products = productRepository.findAllOrderByIdDesc();
+    // 상품 검색
+    public ProductViewsAllResponse viewSearchProduct(String keyword) {
+        List<Product> products = productRepository.findByTitleContains(keyword);
 
         List<ProductViewAllResponse> responses = createViewList(products);
 
         return new ProductViewsAllResponse(responses);
     }
 
-    public ProductViewsAllResponse viewSearchProduct(String keyword) {
-        List<Product> products = productRepository.findByTitleContains(keyword);
+    // 상품 전체 조회
+    public ProductViewsAllResponse viewAllProduct() {
+        List<Product> products = productRepository.findAllOrderByIdDesc();
 
         List<ProductViewAllResponse> responses = createViewList(products);
 
@@ -156,6 +206,8 @@ public class AdminService {
                 })
                 .collect(Collectors.toList());
     }
+
+    // 상품 상세 조회
     public ProductViewOneResponse viewOneProduct(Long id) {
         Product product = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
@@ -173,12 +225,14 @@ public class AdminService {
         return response;
     }
 
+    // 수정할 상품
     public ProductUpdateResponse showSelectedProduct(Long id) {
         Product selectedProduct = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(id);
         return new ProductUpdateResponse(selectedProduct, images);
     }
 
+    // 상품 수정
     @Transactional
     public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) throws IOException {
         Product selectedProduct = productRepository.getById(id);
@@ -203,61 +257,16 @@ public class AdminService {
         return new ProductUpdateResponse(updatedProduct, savedImageUrls);
     }
 
-    public void deleteImageByProductId(Long productId) throws MalformedURLException {
-        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
-        for (ProductImage productImage : productImages) {
-            s3Service.deleteFile(productImage.getImageUrl());
-        }
-    }
-
+    // 상품 삭제
     public void deleteById(Long productId) throws MalformedURLException {
         deleteImageByProductId(productId);
         productRepository.deleteById(productId);
     }
 
-    //  관리자가 사용자 정보 가져오기
-    public UserLogRecordsResponse findUserLogRecord() {
-        List<UserLogRecordResponse> userResponses = userRepository.findAll()
-                .stream()
-                .map(UserLogRecordResponse::new)
-                .sorted(Comparator.comparing(UserLogRecordResponse::getLastModifiedAt).reversed())
-                .collect(Collectors.toList());
-        return new UserLogRecordsResponse(userResponses);
-    }
-
-    // 관리자가 사용자 정보 삭제
-    public void deleteUserInfo(Long userId) {
-        userRepository.deleteById(userId);
-    }
-
-    // 관리자가 사용자 정보 수정
-    public void updateUserInfo(Long userId, UserUpdateRequest request) {
-        User user = userRepository.getById(userId);
-        userRepository.save(User.builder()
-                .id(userId)
-                .email(user.getEmail())
-                .nickname(request.getNickname())
-                .profileImageUrl(user.getProfileImageUrl())
-                .ban(request.getBanCount())
-//  비활성화              .activated(request.getActivated())
-                .createdAt(user.getCreatedAt())
-                .build());
-
-    }
-    //사용자 전체 조회
-    public List<UserInfoResponse> getAllUsers() {
-        List<Object[]> results = userRepository.getAllUserInfo();
-        List<UserInfoResponse> userInfoList = results.stream()
-                .map(result -> {
-                    User user = (User) result[0];
-                    Profile profile = (Profile) result[1];
-
-                    return new UserInfoResponse(
-                            user.getEmail(), user.getNickname(), user.getProfileImageUrl(), user.getCreatedAt(), user.getLastModifiedAt()
-                            , user.getBan(), profile.getMobilePhone(), profile.getAddress()
-                    );
-                }).collect(Collectors.toList());
-
-        return userInfoList;
+    public void deleteImageByProductId(Long productId) throws MalformedURLException {
+        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
+        for (ProductImage productImage : productImages) {
+            s3Service.deleteFile(productImage.getImageUrl());
+        }
     }
 }

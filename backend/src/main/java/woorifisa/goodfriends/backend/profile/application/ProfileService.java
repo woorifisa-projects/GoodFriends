@@ -22,6 +22,22 @@ public class ProfileService {
         this.userRepository = userRepository;
     }
 
+    public ProfileViewResponse viewProfile(Long userId) {
+        User user = userRepository.getById(userId);
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+
+        ProfileViewResponse profileViewResponse;
+
+        // profile 정보가 없을 경우 주소와 핸드폰 번호는 null 로 반환
+        if (profile == null) {
+            profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), null, null);
+        }else{
+            profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), profile.getAddress(), profile.getMobilePhone());
+        }
+
+        return profileViewResponse;
+    }
+
     public void update(Long userId, ProfileUpdateRequest request) {
         User user = userRepository.getById(userId);
 
@@ -42,21 +58,5 @@ public class ProfileService {
             profile.updateAddress(request.getAddress());
             profileRepository.save(profile);
         }
-    }
-
-    public ProfileViewResponse viewProfile(Long userId) {
-        User user = userRepository.getById(userId);
-        Profile profile = profileRepository.findByUserId(userId).orElse(null);
-
-        ProfileViewResponse profileViewResponse;
-
-        // profile 정보가 없을 경우 주소와 핸드폰 번호는 null 로 반환
-        if (profile == null) {
-            profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), null, null);
-        }else{
-            profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), profile.getAddress(), profile.getMobilePhone());
-        }
-
-        return profileViewResponse;
     }
 }

@@ -7,14 +7,14 @@ const api = apiInstance();
 
 const productAPI = {
   endPoint: {
-    getAll: `api/products/view`,
-    postProduct: `api/products/new`,
-    getProduct: `api/products/view/`,
-    getEditProduct: `api/products/edit/`,
+    getAll: `api/products`,
+    postProduct: `api/products`,
+    getProduct: `api/products`,
+    getEditProduct: `api/products/edit`,
     editProduct: `api/products/edit/`,
     deleteProduct: `api/products/remove/`,
-    getCategoryProduct: `api/products/view/category`,
-    getSerchTitleProduct: `api/products/view/search`
+    getCategoryProduct: `api/products/category`,
+    getSerchTitleProduct: `api/products/search`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IAllProduct>>> => {
@@ -159,11 +159,11 @@ const productAPI = {
     // 카테고리별 조회
     return api
       .get(productAPI.endPoint.getCategoryProduct, {
-        params: { productCategory },
+        params: { productCategory }
       })
       .then((res: AxiosResponse) => {
         const { data } = res;
-        return { isSuccess: true, data: data.responses,  code: res.status };
+        return { isSuccess: true, data: data.responses, code: res.status };
       })
       .catch((error) => {
         if (error.response) {
@@ -176,11 +176,14 @@ const productAPI = {
         return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
-  getSearchTitleProduct: (productCategory: string, keyword: string): Promise<IResultType<Array<IAllProduct>>> => {
+  getSearchTitleProduct: (
+    productCategory: string,
+    keyword: string
+  ): Promise<IResultType<Array<IAllProduct>>> => {
     // 제목으로 상품 검색
     return api
       .get(productAPI.endPoint.getSerchTitleProduct, {
-        params: { productCategory,keyword },
+        params: { productCategory, keyword }
       })
       .then((res: AxiosResponse) => {
         const { data } = res;

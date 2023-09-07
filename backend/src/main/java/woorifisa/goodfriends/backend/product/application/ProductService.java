@@ -1,7 +1,5 @@
 package woorifisa.goodfriends.backend.product.application;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
@@ -14,7 +12,6 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
-import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
@@ -66,6 +63,11 @@ public class ProductService {
         return newProduct.getId();
     }
 
+    public boolean existProfile(Long userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        return profile != null;
+    }
+
     private Product createProduct(User user, ProductSaveRequest request) {
         return productRepository.save(Product.builder()
                 .user(user)
@@ -75,15 +77,6 @@ public class ProductService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .build());
-    }
-
-    private String saveImage(Long productId, MultipartFile image) throws IOException {
-        String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
-        String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
-
-        productImageRepository.save(new ProductImage(productRepository.getById(productId), savedImageUrl));
-
-        return savedImageUrl;
     }
 
     private List<String> saveImages(Long productId, List<MultipartFile> images) throws IOException {
@@ -96,8 +89,25 @@ public class ProductService {
         return savedImages;
     }
 
-    public ProductViewsAllResponse viewAllProduct() {
-        List<Product> products = productRepository.findAllOrderByIdDesc();
+    private String saveImage(Long productId, MultipartFile image) throws IOException {
+        String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
+        String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
+
+        productImageRepository.save(new ProductImage(productRepository.getById(productId), savedImageUrl));
+
+        return savedImageUrl;
+    }
+
+    public ProductViewsAllResponse viewSearchProduct(String productCategory, String keyword) {
+        List<Product> products;
+
+        if(productCategory.equals("ALL")){
+            products = productRepository.findByTitleContains(keyword);
+        }
+        else {
+            ProductCategory category = ProductCategory.valueOf(productCategory);
+            products = productRepository.findByTitleContainsInCategory(category, keyword);
+        }
 
         List<ProductViewAllResponse> responses = createViewList(products);
 
@@ -112,16 +122,8 @@ public class ProductService {
         return new ProductViewsAllResponse(responses);
     }
 
-    public ProductViewsAllResponse viewSearchProduct(String productCategory, String keyword) {
-        List<Product> products;
-
-        if(productCategory.equals("ALL")){
-            products = productRepository.findByTitleContains(keyword);
-        }
-        else {
-            ProductCategory category = ProductCategory.valueOf(productCategory);
-            products = productRepository.findByTitleContainsInCategory(category, keyword);
-        }
+    public ProductViewsAllResponse viewAllProduct() {
+        List<Product> products = productRepository.findAllOrderByIdDesc();
 
         List<ProductViewAllResponse> responses = createViewList(products);
 
@@ -177,6 +179,11 @@ public class ProductService {
         return new ProductUpdateResponse(selectedProduct, images);
     }
 
+    public boolean verifyUser(Long userId, Long productId) {
+        Product product = productRepository.getById(productId);
+        return product.getUser().getId() == userId;
+    }
+
     @Transactional
     public void updateProduct(ProductUpdateRequest request, Long userId, Long productId) throws IOException {
         if(!verifyUser(userId, productId)){
@@ -202,12 +209,6 @@ public class ProductService {
                 .build());
     }
 
-    public void deleteImageByProductId(Long productId) throws MalformedURLException {
-        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
-        for(ProductImage productImage : productImages){
-            s3Service.deleteFile(productImage.getImageUrl());
-        }
-    }
     public void deleteById(Long userId, Long productId) throws MalformedURLException {
         if(!verifyUser(userId, productId)){
             throw new NotAccessThisProduct();
@@ -216,14 +217,10 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    public boolean verifyUser(Long userId, Long productId) {
-        Product product = productRepository.getById(productId);
-        return product.getUser().getId() == userId;
+    public void deleteImageByProductId(Long productId) throws MalformedURLException {
+        List<ProductImage> productImages = productImageRepository.findByProductId(productId);
+        for (ProductImage productImage : productImages) {
+            s3Service.deleteFile(productImage.getImageUrl());
+        }
     }
-
-    public boolean existProfile(Long userId) {
-        Profile profile = profileRepository.findByUserId(userId).orElse(null);
-        return profile != null;
-    }
-
 }

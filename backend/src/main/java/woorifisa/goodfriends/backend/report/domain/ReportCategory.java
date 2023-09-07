@@ -1,6 +1,6 @@
-package woorifisa.goodfriends.backend.declaration.domain;
+package woorifisa.goodfriends.backend.report.domain;
 
-public enum DeclarationCategory {
+public enum ReportCategory {
     PROHIBITED_GOODS, // 판매금지 물품이에요
     USED_TRANSACTION_POST, // 중고 거래 게시글이 아니에요
     PROFESSIONAL_VENDOR, // 전문 판매업자 같아요

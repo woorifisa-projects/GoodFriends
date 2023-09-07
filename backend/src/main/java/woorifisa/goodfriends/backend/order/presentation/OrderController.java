@@ -19,13 +19,13 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<Long> saveOrder(@RequestBody OrderSaveRequest request) {
         Long orderId = orderService.saveOrder(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
     }
 
-    @GetMapping("/view/{productId}")
+    @GetMapping("/{productId}")
     public ResponseEntity<List<OrderViewAllResponse>> viewAllOrder(@PathVariable Long productId) {
         List<OrderViewAllResponse> responses = orderService.viewAllOrder(productId);
         return ResponseEntity.ok().body(responses);
