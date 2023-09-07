@@ -102,7 +102,7 @@ public class AdminService {
 
                     return new UserInfoResponse(
                             user.getId(),user.getEmail(), user.getNickname(), user.getProfileImageUrl(), user.getCreatedAt(), user.getLastModifiedAt()
-                            , user.getBan(), profile.getMobilePhone(), profile.getAddress(), user.isActivated()
+                            , user.getBan(), profile.getMobileNumber(), profile.getAddress(), user.isActivated()
                     );
                 }).collect(Collectors.toList());
 
@@ -124,7 +124,7 @@ public class AdminService {
         profileRepository.save(Profile.builder()
                 .id(profile.getId())
                 .user(user)
-                .mobilePhone(request.getMobilePhone())
+                .mobileNumber(request.getMobilePhone())
                 .address(request.getAddress())
                 .build());
 

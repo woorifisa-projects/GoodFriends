@@ -25,6 +25,30 @@ import image from '@/assets/tmp/images/image.png';
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
 import type { IAllProductAdmin } from '@/types/product';
+import manageLogAPI from '@/apis/admin/log';
+import type { IDataType } from '@/types/table';
+
+const logApi = await manageLogAPI.selectLog();
+
+const data: Array<IDataType> = [];
+
+if (logApi.isSuccess === true && logApi.data) {
+  const temp = logApi.data;
+  for (let i = 0; i < temp.length; i++) {
+    const item = temp[i];
+
+    let dataObject = {
+      id: i + 1,
+      email: item.email,
+      nickname: item.nickname,
+      ban: item.banCount.toString(),
+      last_modified_at: item.lastModifiedAt
+    };
+    data.push(dataObject);
+  }
+} else if (logApi.isSuccess === false) {
+  alert('페이지 오류입니다.');
+}
 
 const products = ref<Array<IAllProductAdmin>>([
   {
