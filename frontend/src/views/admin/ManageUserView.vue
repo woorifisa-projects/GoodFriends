@@ -49,24 +49,13 @@ const onClickDetailUser = (item: IDataType) => {
   });
 };
 //TODO: api 사용자데이터 가져오기
-const tableDataKey = [
-  'email',
-  'nickname',
-  'createdAt',
-  'lastModifiedAt',
-  'banCount',
-  'phone',
-  'address',
-  'activated'
-];
+const tableDataKey = ['email', 'nickname', 'createdAt', 'lastModifiedAt', 'banCount', 'activated'];
 const tableHeader = {
   email: '이메일',
   nickname: '닉네임',
-  createdAt: '계정생성일',
-  lastModifiedAt: '최근 접속일',
+  createdAt: '생성일자',
+  lastModifiedAt: '최신일자',
   banCount: '신고당한 횟수',
-  phone: '연락처',
-  address: '주소',
   activated: '활성화여부'
 };
 </script>
