@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
-import woorifisa.goodfriends.backend.profile.dto.response.ProfileUpdateResponse;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
