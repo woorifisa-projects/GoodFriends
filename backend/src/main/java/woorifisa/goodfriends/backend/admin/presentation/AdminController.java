@@ -50,7 +50,7 @@ public class AdminController {
     }
 
     // 사용자 정보 전체 조회
-    @GetMapping("/user/view")
+    @GetMapping("/user")
     public ResponseEntity<List<UserInfoResponse>> getAllUsers(){
         List<UserInfoResponse> userInfoResponse = adminService.getAllUsers();
         return ResponseEntity.ok().body(userInfoResponse);
@@ -73,7 +73,7 @@ public class AdminController {
     }
 
     // 상품 등록
-    @PostMapping("/products/new")
+    @PostMapping("/products")
     public ResponseEntity<Void> saveProduct(Authentication authentication,
                                                            @RequestPart ProductSaveRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
@@ -84,21 +84,21 @@ public class AdminController {
     }
 
     // 상품 검색
-    @GetMapping("/products/view/search")
+    @GetMapping("/products/search")
     public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String keyword) {
         ProductViewsAllResponse responses = adminService.viewSearchProduct(keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
 
     // 상품 전체 조회
-    @GetMapping("/products/view")
+    @GetMapping("/products")
     public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
         ProductViewsAllResponse responses = adminService.viewAllProduct();
         return ResponseEntity.ok().body(responses);
     }
 
     // 상품 상세 조회
-    @GetMapping("/products/view/{productId}")
+    @GetMapping("/products/{productId}")
     public ResponseEntity<ProductViewOneResponse> viewOneProduct(@PathVariable Long productId) {
         ProductViewOneResponse response = adminService.viewOneProduct(productId);
         return ResponseEntity.ok().body(response);
