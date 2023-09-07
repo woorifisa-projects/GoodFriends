@@ -27,7 +27,9 @@ public class Order extends BaseTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    private boolean confirm;
+    @Column(name = "confirm_status")
+    @Enumerated(EnumType.STRING)
+    private ConfirmStatus confirmStatus;
 
     @Column(nullable = false)
     private String possibleDate;
@@ -52,8 +54,8 @@ public class Order extends BaseTimeEntity {
         return user;
     }
 
-    public boolean isConfirm() {
-        return confirm;
+    public ConfirmStatus getConfirmStatus() {
+        return confirmStatus;
     }
 
     public String getPossibleDate() {
