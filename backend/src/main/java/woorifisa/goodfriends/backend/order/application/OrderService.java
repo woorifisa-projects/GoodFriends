@@ -5,6 +5,7 @@ import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
 import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
+import woorifisa.goodfriends.backend.order.dto.response.OrderViewOneResponse;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
@@ -54,17 +55,17 @@ public class OrderService {
         return newOrder;
     }
 
-    public List<OrderViewAllResponse> viewAllOrder(Long productId) {
+    public OrderViewAllResponse viewAllOrder(Long productId) {
+        List<Order> orders = orderRepository.findordersInfoByProductId(productId);
 
-        List<Order> orders = orderRepository.findByProductId(productId);
-
-        return orders.stream()
+        List<OrderViewOneResponse> responses = orders.stream()
                 .map(order -> {
-                    User user = userRepository.getById(order.getUser().getId());
-                    OrderViewAllResponse response =  new OrderViewAllResponse(order.getId(), user.getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+                    OrderViewOneResponse response =  new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(), order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
                     return response;
                 })
                 .collect(Collectors.toList());
+
+        return new OrderViewAllResponse(responses);
     }
 
 }

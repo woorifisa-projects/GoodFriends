@@ -1,6 +1,5 @@
 package woorifisa.goodfriends.backend.order.presentation;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
@@ -8,6 +7,7 @@ import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
 import woorifisa.goodfriends.backend.order.application.OrderService;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
 import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
+import woorifisa.goodfriends.backend.order.dto.response.OrderViewOneResponse;
 
 import java.net.URI;
 import java.util.List;
@@ -22,18 +22,19 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<Long> saveOrder(@AuthenticationPrincipal LoginUser loginUser,
                                           @RequestBody OrderSaveRequest request) {
         Long orderId = orderService.saveOrder(loginUser.getId(), request);
         return ResponseEntity.created(URI.create("/orders/" + orderId)).build();
     }
 
-    @GetMapping("/view/{productId}")
-    public ResponseEntity<List<OrderViewAllResponse>> viewAllOrder(@AuthenticationPrincipal LoginUser loginUser,
+    @GetMapping("/{productId}")
+    public ResponseEntity<OrderViewAllResponse> viewAllOrder(@AuthenticationPrincipal LoginUser loginUser,
                                                                    @PathVariable Long productId) {
-        List<OrderViewAllResponse> responses = orderService.viewAllOrder(productId);
+        OrderViewAllResponse responses = orderService.viewAllOrder(productId);
         return ResponseEntity.ok().body(responses);
     }
+
 
 }
