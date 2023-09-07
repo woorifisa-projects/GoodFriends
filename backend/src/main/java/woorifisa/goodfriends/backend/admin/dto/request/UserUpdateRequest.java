@@ -6,13 +6,16 @@ import lombok.Builder;
 public class UserUpdateRequest {
 
     private final String nickname;
-
+    private final String mobilePhone;
+    private final String address;
     private final boolean activated;
 
     private final int banCount;
 
-    public UserUpdateRequest(String nickname, boolean activated, int banCount) {
+    public UserUpdateRequest(String nickname, String mobilePhone,String address,boolean activated, int banCount) {
         this.nickname = nickname;
+        this.mobilePhone = mobilePhone;
+        this.address = address;
         this.activated = activated;
         this.banCount = banCount;
     }
@@ -21,7 +24,15 @@ public class UserUpdateRequest {
         return nickname;
     }
 
-    public boolean getActivated() {
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public boolean isActivated() {
         return activated;
     }
 
