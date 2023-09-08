@@ -1,3 +1,5 @@
+import { ACCOUNT } from "../account";
+
 export const ADMIN_SIDEBAR = {
   LOGO: 'GoodFriends',
   MANAGER: '관리자',
@@ -17,13 +19,15 @@ export const ADMIN = {
   BIRTH: '생년월일',
   PHONE: '연락처',
   ADDRESS: '주소',
-  PHONE_AUTH: '인증여부',
+  PHONE_AUTH: '인증여부 : ',
   CHECK_ACTIVITY: '활성화여부',
   EDIT: '수정 완료',
   DELETE: '계정 삭제',
   YES: '예',
   NO: '아니오',
-  ASK_ACCOUNT_DELETE: '계정을 삭제하시겠습니까?'
+  ASK_ACCOUNT_DELETE: '계정을 삭제하시겠습니까?',
+  BANK : '은행',
+  ACCOUNT : '은행계좌'
 };
 
 export const ADMIN_PRODUCT = {
