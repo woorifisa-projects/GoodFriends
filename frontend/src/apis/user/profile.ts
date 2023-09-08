@@ -6,9 +6,9 @@ import { type AxiosResponse } from 'axios';
 const api = apiInstance();
 const profileAPI = {
   endPoint: {
-    editProfile: `api/profile/me/info`,
-    editProfileImg: `api/profile/me/profile-image`,
-    getProfile: `api/profile/me`
+    editProfile: `api/profile/me/info/`,
+    editProfileImg: `api/profile/me/profile-image/`,
+    getProfile: `api/profile/me/`
   },
 
   getProfile: (token: string | null): Promise<IResultType<IProfile>> => {
