@@ -105,10 +105,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
-import { uploadFile } from '@/utils/file';
+import { uploadFile, urlToFile } from '@/utils/file';
 import router from '@/router';
 import { CATEGORY, CATEGORY_LIST } from '@/constants/category';
 import adminProductAPI from '@/apis/admin/adminProduct';
@@ -118,6 +118,7 @@ import { checkProductValue } from '@/utils/validation';
 import { dateFormat } from '@/utils/format';
 import type { IPostProduct } from '@/types/product';
 import { PRODUCT } from '@/constants/strings/product';
+import { goPageWithReload } from '@/utils/goPage';
 
 const previewImg = ref<Array<string>>([]);
 const inputImage = ref<Array<File>>([]);
@@ -216,6 +217,46 @@ const clickCancle = () => {
   // TODO: 이전 페이지 이동
   router.push('/admin/product/manage');
 };
+  
+onMounted(async () => {
+  loadingStore.setLoading(true);
+
+  const res = await adminProductAPI.getEditProduct(store.accessToken, id);
+
+  loadingStore.setLoading(false);
+
+  if (res.data === undefined || !res.isSuccess) {
+    alert(res.message);
+    router.go(-1);
+    return;
+  }
+  const resData = res.data;
+  const imageUrl = resData.imageUrls || [];
+
+  previewImg.value = imageUrl;
+
+  const images = await urlToFile(imageUrl);
+
+  if (images === null) {
+    alert('이미지를 불러오는 중 오류가 발생했습니다');
+    goPageWithReload('product/manage');
+    return;
+  }
+
+  images.forEach(async (promiseFile: Promise<File | null>) => {
+    const file = await promiseFile;
+    if (!file) throw new Error('파일 변환 과정중 오류 발생');
+    inputImage.value.push(file);
+  });
+
+  data.value = {
+    title: resData.title,
+    productCategory: resData.productCategory,
+    description: resData.description,
+    sellPrice: resData.sellPrice
+  };
+  loadingStore.setLoading(false);
+})
 </script>
 
 <style scoped>

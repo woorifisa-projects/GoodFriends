@@ -10,7 +10,6 @@ const adminProductAPI = {
         postProduct: `api/admin/products/`,
         getSearchTitleProduct: `api/admin/products/search/`,
         getAll: `api/admin/products/`,
-        getProduct: `api/admin/products/`,
         getEditProduct: `api/admin/products/edit/`,
         editProduct: `api/admin/products/edit/`,
         deleteProduct: `api/admin/products/remove/`
@@ -92,101 +91,78 @@ const adminProductAPI = {
             return { isSuccess: false, message: error.message, code: error.response.status };
         });
     },
-    getProduct: (token: string, productId: string): Promise<IResultType<IDetailProduct>> => {
-        // 상품 상세 조회
-        return api
-          .get(adminProductAPI.endPoint.getProduct + productId, {
-            headers: {
-              ...headers,
-              Authorization: `Bearer ${token}`
-            }
-          })
-          .then((res: AxiosResponse) => {
-            return { isSuccess: true, data: res.data, code: res.status };
-          })
-          .catch((error) => {
-            if (error.response) {
-              return {
-                isSuccess: false,
-                message: error.response.data.message,
-                code: error.response.status
-              };
-            }
-            return { isSuccess: false, message: error.message, code: error.response.status };
-          });
-      },
-      getEditProduct: (token: string, productId: string): Promise<IResultType<IDetailEditProduct>> => {
-        // 수정할 상품 조회
-        return api
-          .get(adminProductAPI.endPoint.getEditProduct + productId, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          })
-          .then((res: AxiosResponse) => {
-            console.log(res);
-            return { isSuccess: true, data: res.data, code: res.status };
-          })
-          .catch((error) => {
-            if (error.response) {
-              return {
-                isSuccess: false,
-                message: error.response.data.message,
-                code: error.response.status
-              };
-            }
-            return { isSuccess: false, message: error.message, code: error.response.status };
-          });
-      },
-      editProduct: (token: string, productId: string, formData: FormData): Promise<INoContent> => {
-        // 상품 수정
-        return api
-          .put(adminProductAPI.endPoint.editProduct + productId, formData, {
-            headers: {
-              ...headers,
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${token}`
-            }
-          })
-          .then((res: AxiosResponse) => {
-            console.log(res);
-            return { isSuccess: true, message: '', code: res.status };
-          })
-          .catch((error) => {
-            if (error.response) {
-              return {
-                isSuccess: false,
-                message: error.response.data.message,
-                code: error.response.status
-              };
-            }
-            return { isSuccess: false, message: error.message, code: error.response.status };
-          });
-      },
-      deleteProduct: (token: string, productId: string): Promise<INoContent> => {
-        // 상품 삭제
-        return api
-          .delete(adminProductAPI.endPoint.deleteProduct + productId, {
-            headers: {
-              ...headers,
-              Authorization: `Bearer ${token}`
-            }
-          })
-          .then((res: AxiosResponse) => {
-            console.log(res);
-            return { isSuccess: true, message: '', code: res.status };
-          })
-          .catch((error) => {
-            if (error.response) {
-              return {
-                isSuccess: false,
-                message: error.response.data.message,
-                code: error.response.status
-              };
-            }
-            return { isSuccess: false, message: error.message, code: error.response.status };
-          });
-      }
+    getEditProduct: (token: string, productId: string): Promise<IResultType<IDetailEditProduct>> => {
+      // 수정할 상품 조회
+      return api
+        .get(adminProductAPI.endPoint.getEditProduct + productId, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then((res: AxiosResponse) => {
+          console.log(res);
+          return { isSuccess: true, data: res.data, code: res.status };
+        })
+        .catch((error) => {
+          if (error.response) {
+            return {
+              isSuccess: false,
+              message: error.response.data.message,
+              code: error.response.status
+            };
+          }
+          return { isSuccess: false, message: error.message, code: error.response.status };
+        });
+    },
+    editProduct: (token: string, productId: string, formData: FormData): Promise<INoContent> => {
+      // 상품 수정
+      return api
+        .put(adminProductAPI.endPoint.editProduct + productId, formData, {
+          headers: {
+            ...headers,
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then((res: AxiosResponse) => {
+          console.log(res);
+          return { isSuccess: true, message: '', code: res.status };
+        })
+        .catch((error) => {
+          if (error.response) {
+            return {
+              isSuccess: false,
+              message: error.response.data.message,
+              code: error.response.status
+            };
+          }
+          return { isSuccess: false, message: error.message, code: error.response.status };
+        });
+    },
+    deleteProduct: (token: string, productId: string): Promise<INoContent> => {
+      // 상품 삭제
+      return api
+        .delete(adminProductAPI.endPoint.deleteProduct + productId, {
+          headers: {
+            ...headers,
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then((res: AxiosResponse) => {
+          console.log(res);
+          return { isSuccess: true, message: '', code: res.status };
+        })
+        .catch((error) => {
+          if (error.response) {
+            return {
+              isSuccess: false,
+              message: error.response.data.message,
+              code: error.response.status
+            };
+          }
+          return { isSuccess: false, message: error.message, code: error.response.status };
+        });
+    }
 };
 
 export default adminProductAPI;
