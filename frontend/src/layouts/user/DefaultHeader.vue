@@ -176,9 +176,8 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
 
-  background: var(--header-bg);
+  background: #fff;
   box-shadow: 2px 2px 10px rgba(202, 202, 202, 0.389);
-  backdrop-filter: blur(10px);
   z-index: 99;
   user-select: none;
 }
@@ -243,7 +242,8 @@ onMounted(async () => {
   top: 100px;
   right: 250px;
 
-  background: var(--popover-bg);
+  /* background: var(--popover-bg); */
+  background-color: #fefefe;
   box-shadow: 1px 1px 10px rgba(183, 183, 183, 0.779);
   border-radius: 20px;
 
@@ -260,7 +260,8 @@ onMounted(async () => {
 }
 
 .popover::after {
-  border-bottom: 10px solid var(--popover-bg);
+  /* border-bottom: 10px solid var(--popover-bg); */
+  border-bottom: 10px solid #fefefe;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 0px solid transparent;
