@@ -102,7 +102,7 @@ public class AdminService {
 
                     return new UserInfoResponse(
                             user.getId(),user.getEmail(), user.getNickname(), user.getProfileImageUrl(), user.getCreatedAt(), user.getLastModifiedAt()
-                            , user.getBan(), profile.getMobileNumber(), profile.getAddress(), user.isActivated()
+                            , user.getBan(), profile.getMobileNumber(), profile.getAddress(), user.isActivated(),profile.getAccountType(),profile.getAccountNumber()
                     );
                 }).collect(Collectors.toList());
 
