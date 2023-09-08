@@ -28,11 +28,6 @@ public class Offender extends BaseCreateTimeEntity {
     protected Offender() {
     }
 
-    public Offender(User user, LocalDateTime limitedDate) {
-        this.user = user;
-        this.limitedDate = limitedDate;
-    }
-
     public Long getId() {
         return id;
     }
