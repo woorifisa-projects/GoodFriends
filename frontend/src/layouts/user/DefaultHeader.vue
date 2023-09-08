@@ -142,6 +142,10 @@ watchEffect(() => {
   }
 });
 
+watchEffect(() => {
+  user.value.imageUrl = store.imageUrl;
+});
+
 onMounted(async () => {
   const token = localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN);
   if (token) {

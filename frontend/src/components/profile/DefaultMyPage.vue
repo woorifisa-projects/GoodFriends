@@ -111,6 +111,7 @@ const onClickProfileImageUpload = async (event: Event) => {
   loadingStore.setLoading(false);
   if (res.isSuccess) {
     user.value.imageUrl = previewImg[0];
+    store.setUserProfileImage(previewImg[0]);
     return;
   }
   alert(res.message);
