@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @SuperBuilder
-@Table(name = "offenders")
+@Table(name = "offenders") // 부정행위자
 @Entity
 public class Offender extends BaseCreateTimeEntity {
 
@@ -20,7 +20,6 @@ public class Offender extends BaseCreateTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // 외래 키로 사용할 컬럼 지정
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     protected Offender() {
