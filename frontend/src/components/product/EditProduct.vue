@@ -2,13 +2,24 @@
   <div class="form-product">
     <div class="form">
       <div class="input-detail">
-        <div class="title detail">
-          <input type="text" id="title" placeholder="제목을 입력해주세요" v-model="data.title" />
+        <div class="title-price">
+          <div>
+            <label for="">제목</label>
+            <input type="text" id="title" placeholder="제목" v-model="data.title" />
+          </div>
+
+          <div>
+            <label for="">가격</label>
+            <input
+              onfocus="this.select()"
+              type="number"
+              placeholder="가격"
+              id="price"
+              v-model="data.sellPrice"
+            />
+          </div>
         </div>
-        <div class="price detail">
-          <label for="price">{{ PRODUCT.PRICE }}</label>
-          <input onfocus="this.select()" type="number" id="price" v-model="data.sellPrice" />
-        </div>
+
         <div class="explain detail">
           <label for="explain">{{ PRODUCT.DESCRIPTION }}</label>
           <textarea name="" id="explain" cols="30" rows="10" v-model="data.description"></textarea>
@@ -25,6 +36,15 @@
         </div>
       </div>
       <div class="select-detail">
+        <div class="category">
+          <span for="category">{{ PRODUCT.CATEGORY }}</span>
+          <select name="" id="" v-model="data.productCategory">
+            <option disabled value="ALL">{{ PRODUCT.PLEASE_SELECT }}</option>
+            <option v-for="(category, index) in categories.slice(1)" :key="index" :value="category">
+              {{ CATEGORY[category] }}
+            </option>
+          </select>
+        </div>
         <div class="image">
           <span for="image">{{ PRODUCT.IMAGE }}</span>
           <div class="image-label">
@@ -51,19 +71,6 @@
             </div>
           </div>
         </div>
-        <div class="category">
-          <span for="category">{{ PRODUCT.CATEGORY }}</span>
-          <select name="" id="" v-model="data.productCategory">
-            <option disabled value="ALL">{{ PRODUCT.PLEASE_SELECT }}</option>
-            <option v-for="(category, index) in categories.slice(1)" :key="index" :value="category">
-              {{ CATEGORY[category] }}
-            </option>
-          </select>
-        </div>
-        <!-- <div class="date">
-          <span for="date">{{ PRODUCT.CREATE_AT }}</span>
-          <input type="date" :value="dateFormat(registerDate)" @change="onChangeDate" disabled />
-        </div> -->
       </div>
     </div>
   </div>
@@ -71,7 +78,6 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from 'vue';
-import { dateFormat } from '@/utils/format';
 import { uploadFile, urlToFile } from '@/utils/file';
 import { useRoute } from 'vue-router';
 import { PRODUCT } from '@/constants/strings/product';
@@ -113,13 +119,7 @@ const data = ref<IPostProduct>({
 
 const inputImage = ref<Array<File>>([]);
 const previewImg = ref<Array<string>>([]);
-const registerDate = ref(new Date());
 const store = useUserInfoStore();
-
-const onChangeDate = (event: Event) => {
-  const date = (event.target as HTMLInputElement).value;
-  registerDate.value = new Date(date);
-};
 
 const uploadImage = async (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
@@ -275,9 +275,12 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 750px;
 
   margin: 64px 0;
+}
+.form > div {
+  border-radius: 6px;
 }
 .form {
   display: flex;
@@ -287,8 +290,7 @@ onMounted(async () => {
 }
 
 .input-detail {
-  flex: 2;
-
+  flex: 3;
   background-color: white;
   box-shadow: 1px 1px 10px rgba(168, 168, 168, 0.596);
   display: flex;
@@ -297,24 +299,26 @@ onMounted(async () => {
   padding: 20px;
 
   border: 1px solid rgb(173, 173, 173);
-  border-radius: 16px;
 }
 
 .input-detail input,
 .input-detail textarea {
   font-size: 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 12px;
   font-family: 'LINESeedKR-Rg';
 }
 .input-detail textarea {
   border: 1px solid rgb(200, 200, 200);
+  height: 450px;
 }
 .text-length {
   text-align: end;
 }
 .input-detail label {
+  font-family: 'LINESeedKR-Bd';
+
   font-size: 18px;
 }
 
@@ -323,40 +327,39 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
 }
+.title-price {
+  position: relative;
+  display: flex;
+  padding: 12px;
+  gap: 12px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 
-.input-detail > .title {
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-
-  background-color: var(--edit-product-point-bg);
-
-  border: 1px solid lightgray;
   border-bottom: none;
 }
+.title-price > div > input {
+  width: 100%;
+  border: 1px solid rgb(200, 200, 200);
+}
+.title-price > div > label {
+  font-family: 'LINESeedKR-Bd';
 
-.input-detail > .price {
-  background-color: var(--edit-product-point-bg);
-  border: 1px solid lightgray;
-  border-top: none;
-  flex-direction: row;
-  align-items: center;
-  justify-content: end;
-  gap: 36px;
+  position: absolute;
+  top: -1px;
+  background-color: white;
 }
-.price > label {
-  font-size: 24px;
+.title-price > div:first-child {
+  flex: 3;
 }
-.input-detail > .price > input {
-  width: 400px;
-  font-family: 'LINESeedKR-Rg';
+.title-price > div:last-child {
+  flex: 2;
 }
 
 .input-detail > .explain {
-  border: 1px solid lightgray;
   border-top: none;
 
-  border-bottom-left-radius: 16px;
-  border-bottom-right-radius: 16px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 .select-detail {
   flex: 1;
@@ -365,16 +368,15 @@ onMounted(async () => {
   flex-direction: column;
   gap: 24px;
 
-  height: fit-content;
+  height: 100%;
 
   box-sizing: border-box;
 
-  background-color: white;
+  /* background-color: white; */
   box-shadow: 1px 1px 10px rgba(168, 168, 168, 0.596);
   border: 1px solid rgb(173, 173, 173);
-  border-radius: 16px;
 
-  padding: 20px;
+  padding: 30px 20px;
 }
 .select-detail > div {
   display: flex;
@@ -404,7 +406,7 @@ onMounted(async () => {
   align-items: center;
 }
 .image label {
-  margin-top: 12px;
+  margin-top: 16px;
   display: inline-block;
 
   width: fit-content;
@@ -418,6 +420,7 @@ onMounted(async () => {
   cursor: pointer;
 
   transition: all 0.3s ease;
+  font-family: 'LINESeedKR-Bd';
 }
 
 .image label:hover {
@@ -430,8 +433,8 @@ onMounted(async () => {
   text-align: end;
 }
 .image-wrap {
-  border: 1px solid rgb(195, 195, 195);
-  box-shadow: 1px 1px 10px rgba(176, 176, 176, 0.578);
+  border: 1px solid rgba(195, 195, 195, 0.618);
+  box-shadow: 1px 1px 10px rgba(207, 207, 207, 0.446);
 
   margin-top: 8px;
   padding: 6px;
@@ -442,7 +445,7 @@ onMounted(async () => {
 
   overflow-x: auto;
 
-  height: 140px;
+  height: 340px;
 }
 .image-card {
   position: relative;
@@ -466,7 +469,7 @@ onMounted(async () => {
   width: 20px;
   height: 20px;
   background-color: #ffffff;
-  border-radius: 16px;
+  border-radius: 6px;
 
   cursor: pointer;
 }
@@ -477,7 +480,7 @@ onMounted(async () => {
 .buttons {
   display: flex;
   justify-content: space-around;
-  margin-top: 24px;
+  margin-top: 16px;
   gap: 24px;
   padding: 0 32px;
 }
@@ -487,8 +490,9 @@ onMounted(async () => {
   font-size: 24px;
   padding: 8px 24px;
   border: 1px solid rgb(110, 110, 110);
-  border-radius: 12px;
+  border-radius: 6px;
   transition: all 0.3s ease;
+  font-family: 'LINESeedKR-Bd';
 }
 
 button:hover {
