@@ -50,7 +50,6 @@ export const ADMIN_DECLARATION = {
   DEC_NICKNAME : '피해자 닉네임',
   DEC_PHONE : '피해자 연락처',
   DEC_CATEGORY : '신고 카테고리',
-  DEC_DAMAGE_AMOUNT : '피해금액',
   DEC_PRODUCT_CATEGORY : '상품 카테고리 : ',
   DEC_DAMAGE_DATE : '신고날짜',
   DEC_DES: '신고내용',
