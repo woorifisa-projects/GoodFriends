@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.offender.domain.Offender;
+import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.report.domain.Report;
 import woorifisa.goodfriends.backend.report.domain.ReportRepository;
 import woorifisa.goodfriends.backend.report.dto.request.ReportSaveRequest;
@@ -22,12 +23,14 @@ public class ReportService {
     private final ProductRepository productRepository;
     private final ReportRepository reportRepository;
 
-    public ReportService(UserRepository userRepository,
-                         ProductRepository productRepository,
-                         ReportRepository reportRepository) {
+    private final OffenderRepository offenderRepository;
+
+    public ReportService(UserRepository userRepository, ProductRepository productRepository,
+                         ReportRepository reportRepository, OffenderRepository offenderRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.reportRepository = reportRepository;
+        this.offenderRepository = offenderRepository;
     }
 
     @Transactional
@@ -44,12 +47,16 @@ public class ReportService {
         int updatedBan = foundProduct.getUser().getBan() + 1;
         foundProduct.getUser().updateBan(updatedBan);
 
-        // 신고 당한 유저의 ban 횟수가 3이면 비활성화 상태로 변경, 부정행위자에 추가
+
+        // 신고 당한 유저의 ban 횟수가 3번 이상이면 비활성화 상태로 변경
         if(updatedBan >= 3) {
             boolean notActivated = false;
             foundProduct.getUser().updateActivated(notActivated);
 
-            createOffender(foundProduct.getUser());
+            Offender offender = createOffender(foundProduct.getUser());
+
+            // 신고 당한 횟수가 3번 이상일 때 부정행위자 테이블에 추가
+            offenderRepository.save(offender);
         }
 
         // 신고당한 유저의 신고 당한 횟수 업데이트
@@ -67,10 +74,10 @@ public class ReportService {
         return newReport;
     }
 
-    private void createOffender(User offenderUser) {
-        Offender.builder()
+    private Offender createOffender(User offenderUser) {
+        Offender newOffender =  Offender.builder()
                 .user(offenderUser)
-                .limitedDate(offenderUser.getLastModifiedAt())
                 .build();
+        return newOffender;
     }
 }

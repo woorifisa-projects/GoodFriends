@@ -23,8 +23,6 @@ public class Offender extends BaseCreateTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    private LocalDateTime limitedDate;
-
     protected Offender() {
     }
 
@@ -36,7 +34,4 @@ public class Offender extends BaseCreateTimeEntity {
         return user;
     }
 
-    public LocalDateTime getLimitedDate() {
-        return limitedDate;
-    }
 }
