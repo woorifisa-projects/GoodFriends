@@ -189,6 +189,10 @@ const createFormData = (data:  Ref<IPostProduct>, inputImage: Ref<Array<File>>) 
 }
 
 const clickEdit = async () => {
+  if (props.type === 'add') {
+    return;
+  }
+
   const formData = createFormData(data, inputImage);
   if(formData === undefined) {
     return;
@@ -205,12 +209,26 @@ const clickEdit = async () => {
     router.go(-1);
 };
 
-const clickDelete = () => {
-  // TODO: 현재 게시물 삭제 API 호출
-  console.log('삭제 버튼 클릭');
+const clickDelete = async () => {
+  if (props.type === 'add') {
+    return;
+  }
+
+  loadingStore.setLoading(true);
+  const res = await adminProductAPI.deleteProduct(store.accessToken, id);
+  loadingStore.setLoading(false);
+  if (res.isSuccess) {
+    goPageWithReload('admin/product/manage');
+    return;
+  }
+  alert(res.message);
 };
 
 const clickAdd = async () => {
+  if (props.type === 'edit') {
+    return;
+  }
+
   const formData = createFormData(data, inputImage);
   if(formData === undefined) {
     return;
@@ -233,6 +251,10 @@ const clickCancle = () => {
 };
   
 onMounted(async () => {
+  if (props.type === 'add') {
+    return;
+  }
+
   loadingStore.setLoading(true);
 
   const res = await adminProductAPI.getEditProduct(store.accessToken, id);
@@ -253,7 +275,7 @@ onMounted(async () => {
 
   if (images === null) {
     alert('이미지를 불러오는 중 오류가 발생했습니다');
-    goPageWithReload('product/manage');
+    goPageWithReload('admin/product/manage');
     return;
   }
 
