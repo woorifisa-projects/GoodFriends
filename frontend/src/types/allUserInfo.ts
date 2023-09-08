@@ -8,7 +8,9 @@ export interface IGetAllUsers {
     banCount: number;
     phone: number;
     address: string;
-    activated: string
+    activated: string;
+    accountType: number;
+    accountNumber: string;
   }
   
   export interface IeditUser {

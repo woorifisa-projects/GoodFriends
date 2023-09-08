@@ -8,14 +8,13 @@
       <div class="totlaUserInfo">
         <div class="userInfo1">
           <div class="user-img">
-            <img :src="profileImg" alt="profile img" />
+            <img class="profie-img" :src="profileImg" alt="profile img" />
           </div>
 
           <div class="userInfo1-1">
-            <!-- TODO: ban, amark, average -->
             <div class="userInfo1-1-detail">
-              <span class="userInfo-in-1">{{ ADMIN.MARK }}</span
-              ><span class="userInfo-in-2">{{ authMark }}</span>
+              <span class="userInfo-in-1">{{ ADMIN.PHONE_AUTH }}</span
+              ><span class="userInfo-in-2">{{ phone_auth }}</span>
             </div>
             <div class="userInfo1-1-detail">
               <span class="userInfo-in-1">{{ ADMIN.BAN }}</span
@@ -39,9 +38,15 @@
             <input class="input-user" v-model="address" />
           </div>
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">{{ ADMIN.PHONE_AUTH }}&nbsp;</div>
+            <div class="userInfo2-detailInfo">{{ ADMIN.BANK }}&nbsp;</div>
             <div class="detail-buttons">
-              <span class="mail-auth-check">{{ phone_auth }}</span>
+              <span class="bank-check">{{ bank }}</span>
+            </div>
+          </div>
+          <div class="userInfo2-info">
+            <div class="userInfo2-detailInfo">{{ ADMIN.ACCOUNT }}&nbsp;</div>
+            <div class="detail-buttons">
+              <span class="bank-check">{{ bankAccount }}</span>
             </div>
           </div>
           <div class="userInfo2-info">
@@ -89,6 +94,7 @@ import { ADMIN } from '@/constants/strings/admin';
 import { ref } from 'vue';
 import allUserAPI from '@/apis/admin/allUserInfo';
 import router from '@/router';
+import { ACCOUNT } from '@/constants/account';
 
 const { item, data } = history.state;
 const resultData = data[item.id - 1];
@@ -98,6 +104,18 @@ const profileImg = resultData.profileImageUrl;
 const banCount = ref(resultData.banCount);
 const phone = ref(resultData.phone);
 const address = ref(resultData.address);
+let bank_temp = '';
+for (let key in ACCOUNT) {
+  let account = ACCOUNT[key];
+  if (key === resultData.accountType) {
+    bank_temp = account;
+    break;
+  } else {
+    bank_temp = '등록된 은행 없음';
+  }
+}
+const bank = ref(bank_temp);
+const bankAccount = ref(resultData.accountNumber);
 
 let phone_auth_temp = '미완료';
 let authMark_temp = 'X';
@@ -217,7 +235,12 @@ const closeModal = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  /* overflow: hidden; */
+  object-fit: cover;
+}
+.profie-img {
+  width: 100%;
+  height: 100%;
 }
 .editImg {
   padding: 4px;
@@ -256,6 +279,8 @@ const closeModal = () => {
 .mail-auth-check {
   width: 60px;
 }
+.bank-check {
+}
 .detail-button {
   width: 60px;
   border: 1px solid rgb(173, 173, 173);
@@ -274,7 +299,7 @@ const closeModal = () => {
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  padding: 20px;
+  padding: 35px;
 }
 .work-btn {
   width: 80px;

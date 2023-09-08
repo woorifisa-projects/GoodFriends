@@ -1,3 +1,5 @@
+import { ACCOUNT } from "../account";
+
 export const ADMIN_SIDEBAR = {
   LOGO: 'GoodFriends',
   MANAGER: '관리자',
@@ -17,13 +19,15 @@ export const ADMIN = {
   BIRTH: '생년월일',
   PHONE: '연락처',
   ADDRESS: '주소',
-  PHONE_AUTH: '인증여부',
+  PHONE_AUTH: '인증여부 : ',
   CHECK_ACTIVITY: '활성화여부',
   EDIT: '수정 완료',
   DELETE: '계정 삭제',
   YES: '예',
   NO: '아니오',
-  ASK_ACCOUNT_DELETE: '계정을 삭제하시겠습니까?'
+  ASK_ACCOUNT_DELETE: '계정을 삭제하시겠습니까?',
+  BANK : '은행',
+  ACCOUNT : '은행계좌'
 };
 
 export const ADMIN_PRODUCT = {
@@ -44,12 +48,11 @@ export const ADMIN_DECLARATION = {
   DEC_TITLE : '신고 관리',
   DEC_DO_ID : '피해자 이메일',
   DEC_NICKNAME : '피해자 닉네임',
-  DEC_PHONE : '연락처',
+  DEC_PHONE : '피해자 연락처',
   DEC_CATEGORY : '신고 카테고리',
-  DEC_DAMAGE_AMOUNT : '피해금액',
-  DEC_PRODUCT_CATEGORY : '상품 카테고리',
-  DEC_DAMAGE_DATE : '피해날짜',
-  DEC_DES: '피해내용',
+  DEC_PRODUCT_CATEGORY : '상품 카테고리 : ',
+  DEC_DAMAGE_DATE : '신고날짜',
+  DEC_DES: '신고내용',
   DEC_CLICK_BACK:'뒤로가기',
   DEC_CLICK_DELETE:'삭제하기',
   DEC_CLICK_SUCCESS:'처리완료'

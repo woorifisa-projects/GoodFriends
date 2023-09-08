@@ -2,13 +2,12 @@
   <div class="declarationInfo-Page">
     <div class="declarationInfo-Grid">
       <div class="page-logo">
-        <span class="page-logo-in-1"></span
-        ><span class="page-logo-in-2">{{ ADMIN_DECLARATION.DEC_TITLE }}</span>
+        <span class="page-logo-in-1"></span><span class="page-logo-in-2">{{ dec_title }}</span>
       </div>
       <div class="total-DeclarationInfo">
         <div class="decInfo1">
           <div class="product-img">
-            <img src="@/assets/tmp/images/image.png" alt="profile img" />
+            <img class="IMG-product" src="@/assets/tmp/images/image.png" alt="profile img" />
           </div>
           <div class="decInfo1-1">
             <div class="decInfo1-1-detail">
@@ -34,10 +33,6 @@
           <div class="decInfo2-info">
             <div class="decInfo2-detailInfo">{{ ADMIN_DECLARATION.DEC_CATEGORY }}&nbsp;</div>
             <input class="input-user" v-model="dec_category" />
-          </div>
-          <div class="decInfo2-info">
-            <div class="decInfo2-detailInfo">{{ ADMIN_DECLARATION.DEC_DAMAGE_AMOUNT }}&nbsp;</div>
-            <input class="input-user" v-model="pr_category" />
           </div>
         </div>
       </div>
@@ -75,7 +70,8 @@ import { ADMIN_DECLARATION } from '@/constants/strings/admin';
 import router from '@/router';
 import { ref } from 'vue';
 
-//TODO: 이메일, 닉네임, 연락처, 신고카테고리, 상품카테고리, 피해날짜, 피해내용
+//TODO:  상품제목, 이메일, 닉네임, 연락처, 신고카테고리, 상품카테고리, 피해날짜, 피해내용
+const dec_title = ref('상품제목');
 const email = ref('');
 const nickname = ref('');
 const phone = ref();
@@ -142,7 +138,7 @@ const clickSuccess = () => {};
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
 }
 .decInfo2-info {
   display: flex;
@@ -161,6 +157,10 @@ const clickSuccess = () => {};
   justify-content: center;
   align-items: center;
   overflow: hidden;
+}
+.IMG-product {
+  width: 100%;
+  height: 100%;
 }
 .decInfo1-1 {
   padding-top: 10px;
