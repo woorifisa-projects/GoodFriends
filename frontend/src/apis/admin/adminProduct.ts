@@ -187,4 +187,6 @@ const adminProductAPI = {
             return { isSuccess: false, message: error.message, code: error.response.status };
           });
       }
-}
+};
+
+export default adminProductAPI;

@@ -29,7 +29,7 @@
               <div class="product-Info">{{ ADMIN_PRODUCT.PRODUCT_TITLE }}</div>
             </div>
             <div class="product-Info-Detail">
-              <input class="input-product-title" v-model="inputProductTitle" />
+              <input class="input-product-title" v-model="data.title" />
             </div>
           </div>
 
@@ -38,7 +38,7 @@
               <div class="product-Info">{{ ADMIN_PRODUCT.PRODUCT_CATEGORY }}</div>
             </div>
             <div class="product-Info-Detail">
-              <select name="" class="seelct-category" v-model="selectedCategory">
+              <select name="" class="seelct-category" v-model="data.productCategory">
                 <option disabled value="0">{{ ADMIN_PRODUCT.PRODCUT_DEFAULT_CATEGORY }}</option>
                 <option v-for="(category, index) in categories" :key="index" :value="category">
                   {{ CATEGORY[category] }}
@@ -50,21 +50,21 @@
           <div class="product-title-total">
             <div class="product-Info">{{ ADMIN_PRODUCT.PRODUCT_PRICE }}</div>
             <div class="product-Info-Detail">
-              <input class="input-product-title" v-model="inputProductPrice" />
+              <input class="input-product-title" v-model="data.sellPrice" />
             </div>
           </div>
 
           <div class="product-title-total">
             <div class="product-Info">{{ ADMIN_PRODUCT.PRODUCT_SELL_DATE }}</div>
             <div class="product-Info-Detail">
-              <input class="input-product-title" v-model="inputProductDate" />
+              <input class="input-product-title" :value="dateFormat(registerDate)" />
             </div>
           </div>
 
           <div class="product-title-total">
             <div class="product-Info">{{ ADMIN_PRODUCT.PRODUCT_DESCRIPTION }}</div>
             <div class="product-Info-Detail">
-              <textarea class="input-product-des" v-model="inputProductDes"></textarea>
+              <textarea class="input-product-des" v-model="data.description"></textarea>
             </div>
           </div>
 
@@ -111,12 +111,19 @@ import { ADMIN_PRODUCT } from '@/constants/strings/admin';
 import { uploadFile } from '@/utils/file';
 import router from '@/router';
 import { CATEGORY, CATEGORY_LIST } from '@/constants/category';
+import adminProductAPI from '@/apis/admin/adminProduct';
+import { useAdminStore } from '@/stores/admin';
+import { useLoadingStore } from '@/stores/loading';
+import { checkProductValue } from '@/utils/validation';
+import { dateFormat } from '@/utils/format';
+import type { IPostProduct } from '@/types/product';
+import { PRODUCT } from '@/constants/strings/product';
 
 const previewImg = ref<Array<string>>([]);
 const inputImage = ref<Array<File>>([]);
+const registerDate = ref(new Date());
 const inputProductTitle = ref('');
 const inputProductPrice = ref(0);
-const inputProductDate = ref('');
 const inputProductDes = ref('');
 const selectedCategory = ref('0');
 const categories = CATEGORY_LIST;
@@ -128,6 +135,13 @@ const props = defineProps({
     },
     required: true
   }
+});
+
+const data = ref<IPostProduct>({
+  title: '',
+  productCategory: 'ALL',
+  description: '',
+  sellPrice: 0
 });
 
 // TODO: 이미지 관련 작업 백엔드 연동시 재확인 필요
@@ -143,7 +157,10 @@ const onClickDeleteBtn = (index: number) => {
 
 // TODO: API 요청 -> price, name, content, category, image, date 가져오기
 const route = useRoute();
+const loadingStore = useLoadingStore();
+const store = useAdminStore();
 const id = route.params.id;
+
 // -------------------------
 
 const clickEdit = () => {
@@ -154,9 +171,36 @@ const clickDelete = () => {
   // TODO: 현재 게시물 삭제 API 호출
   console.log('삭제 버튼 클릭');
 };
-const clickAdd = () => {
+const clickAdd = async () => {
   // TODO: 현재 게시물 등록 API 호출
-  console.log('등록 버튼 클릭');
+
+  // 모든 값들이 존재 하는지 체크
+  const checkData = checkProductValue(data.value);
+  if (!checkData.isSuccess) {
+    alert(checkData.type);
+    return;
+  }
+
+  loadingStore.setLoading(true);
+
+  const formData = new FormData();
+  Array.from(inputImage.value).map((v) => {
+    formData.append('multipartFiles', v);
+  });
+
+  if (formData.getAll('multipartFiles').length === 0) {
+    formData.append('multipartFiles', new Blob());
+  }
+
+  formData.append(
+    'request',
+    new Blob([JSON.stringify(data.value)], {
+      type: 'application/json'
+    })
+  );
+
+  return await adminProductAPI.postProduct(store.accessToken, formData);
+
 };
 const clickCancle = () => {
   // TODO: 이전 페이지 이동
