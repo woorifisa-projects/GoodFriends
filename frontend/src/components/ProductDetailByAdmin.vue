@@ -157,7 +157,7 @@ const onClickDeleteBtn = (index: number) => {
 const route = useRoute();
 const loadingStore = useLoadingStore();
 const store = useAdminStore();
-const id = route.params.id;
+const id = route.params.id?.toString() || '0';
 // -------------------------
 const createFormData = (data:  Ref<IPostProduct>, inputImage: Ref<Array<File>>) => {
   // 모든 값들이 존재 하는지 체크
@@ -187,10 +187,24 @@ const createFormData = (data:  Ref<IPostProduct>, inputImage: Ref<Array<File>>) 
 
   return formData;
 }
-const clickEdit = () => {
-  // TODO: 현재 게시물 수정 API 호출
-  console.log('수정 버튼 클릭');
+
+const clickEdit = async () => {
+  const formData = createFormData(data, inputImage);
+  if(formData === undefined) {
+    return;
+  }
+
+  const res = await adminProductAPI.editProduct(store.accessToken, id, formData);
+  if(res.isSuccess) {
+    alert(res.message);
+  }
+  else {
+    alert(res.message);
+    return;
+  }
+    router.go(-1);
 };
+
 const clickDelete = () => {
   // TODO: 현재 게시물 삭제 API 호출
   console.log('삭제 버튼 클릭');

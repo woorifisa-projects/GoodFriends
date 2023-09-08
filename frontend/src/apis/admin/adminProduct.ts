@@ -126,7 +126,7 @@ const adminProductAPI = {
         })
         .then((res: AxiosResponse) => {
           console.log(res);
-          return { isSuccess: true, message: '', code: res.status };
+          return { isSuccess: true, message: '수정되었습니다.', code: res.status };
         })
         .catch((error) => {
           if (error.response) {
