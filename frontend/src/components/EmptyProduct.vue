@@ -1,11 +1,18 @@
 <template>
   <div class="empty">
-    <p>{{ PRODUCT.NOTHING }}</p>
+    <p>{{ props.text }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { PRODUCT } from '@/constants/strings/product';
+
+const props = defineProps({
+  text: {
+    type: String,
+    default: '찾으시는 상품이 없어요 ㅠ.ㅠ'
+  }
+});
 </script>
 
 <style scoped>

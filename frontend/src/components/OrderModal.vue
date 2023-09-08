@@ -60,6 +60,10 @@ import { ORDER_MODAL } from '@/constants/strings/product';
 import { dateFormat } from '@/utils/format';
 import { checkTime, compareDate, compareTime } from '@/utils/date';
 import { ref, watchEffect } from 'vue';
+import type { IPostOrder } from '@/types/order';
+import orderAPI from '@/apis/user/order';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { useLoadingStore } from '@/stores/loading';
 
 const props = defineProps({
   productId: {
@@ -79,6 +83,8 @@ const wantedTime = ref(['', '']);
 const requirement = ref('');
 const maxLength = ref(200);
 const isClickSubmit = ref(false);
+const loadingStore = useLoadingStore();
+const isSubmit = ref(true);
 
 const checkInput = () => {
   const currentDate = new Date();
@@ -100,8 +106,29 @@ const checkInput = () => {
   isClickSubmit.value = true;
 };
 
-const onClickSubmit = () => {
-  // TODO: 주문서 제출
+const onClickSubmit = async () => {
+  const body: IPostOrder = {
+    productId: +props.productId,
+    possibleDateStart: dateFormat(wantedDate.value[0]),
+    possibleDateEnd: dateFormat(wantedDate.value[1]),
+    possibleTimeStart: wantedTime.value[0],
+    possibleTimeEnd: wantedTime.value[1],
+    requirements: requirement.value
+  };
+  loadingStore.setLoading(true);
+  const res = await orderAPI.postOrder(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    body
+  );
+  loadingStore.setLoading(false);
+
+  if (!res.isSuccess) {
+    alert(res.message);
+    return;
+  }
+
+  isSubmit.value = true;
+  isClickSubmit.value = false;
   emits('update:isVisible', false);
 };
 const onChangeDate = (event: Event, index: number) => {

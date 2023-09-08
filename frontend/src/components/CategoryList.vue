@@ -88,7 +88,7 @@ const viewCategory = computed(() => {
   gap: 12px;
 }
 .category > button {
-  font-size: 16px;
+  font-size: 12px;
   padding: 12px;
   transition: all 0.2s ease;
 }

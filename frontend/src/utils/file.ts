@@ -19,6 +19,7 @@ export const uploadFile = async (
             )
               return;
             // TODO: 이미지 유효성 검사
+            if (file.size > 5000000) return;
             savedFiles.push(file);
             resolve(e.target?.result?.toString());
           });
