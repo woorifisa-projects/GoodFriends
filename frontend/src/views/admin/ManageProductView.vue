@@ -50,6 +50,7 @@ if (logApi.isSuccess === true && logApi.data) {
   }
 } else if (logApi.isSuccess === false) {
   alert('페이지 오류입니다.');
+  router.push('/404');
 }
 
 const products = ref<Array<IAllProductAdmin>>([]);
