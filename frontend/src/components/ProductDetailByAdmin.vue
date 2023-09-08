@@ -105,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
 import { uploadFile } from '@/utils/file';
@@ -122,11 +122,8 @@ import { PRODUCT } from '@/constants/strings/product';
 const previewImg = ref<Array<string>>([]);
 const inputImage = ref<Array<File>>([]);
 const registerDate = ref(new Date());
-const inputProductTitle = ref('');
-const inputProductPrice = ref(0);
-const inputProductDes = ref('');
-const selectedCategory = ref('0');
 const categories = CATEGORY_LIST;
+
 const props = defineProps({
   type: {
     type: String,
@@ -160,20 +157,8 @@ const route = useRoute();
 const loadingStore = useLoadingStore();
 const store = useAdminStore();
 const id = route.params.id;
-
 // -------------------------
-
-const clickEdit = () => {
-  // TODO: 현재 게시물 수정 API 호출
-  console.log('수정 버튼 클릭');
-};
-const clickDelete = () => {
-  // TODO: 현재 게시물 삭제 API 호출
-  console.log('삭제 버튼 클릭');
-};
-const clickAdd = async () => {
-  // TODO: 현재 게시물 등록 API 호출
-
+const createFormData = (data:  Ref<IPostProduct>, inputImage: Ref<Array<File>>) => {
   // 모든 값들이 존재 하는지 체크
   const checkData = checkProductValue(data.value);
   if (!checkData.isSuccess) {
@@ -199,9 +184,34 @@ const clickAdd = async () => {
     })
   );
 
-  return await adminProductAPI.postProduct(store.accessToken, formData);
-
+  return formData;
+}
+const clickEdit = () => {
+  // TODO: 현재 게시물 수정 API 호출
+  console.log('수정 버튼 클릭');
 };
+const clickDelete = () => {
+  // TODO: 현재 게시물 삭제 API 호출
+  console.log('삭제 버튼 클릭');
+};
+
+const clickAdd = async () => {
+  const formData = createFormData(data, inputImage);
+  if(formData === undefined) {
+    return;
+  }
+
+  const res = await adminProductAPI.postProduct(store.accessToken, formData);
+  if(res.isSuccess) {
+    alert(res.message);
+  }
+  else {
+    alert(res.message);
+    return;
+  }
+    router.go(-1);
+};
+
 const clickCancle = () => {
   // TODO: 이전 페이지 이동
   router.push('/admin/product/manage');
