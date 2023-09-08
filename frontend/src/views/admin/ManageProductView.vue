@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
 
 import router from '@/router';
@@ -52,48 +52,7 @@ if (logApi.isSuccess === true && logApi.data) {
   alert('페이지 오류입니다.');
 }
 
-const products = ref<Array<IAllProductAdmin>>([
-  {
-    id: 0,
-    imageUrl: image,
-    title: 'title',
-    address: '주소가 길어지면 어떻게 될려나 길어지면 길어지면 길어지면 길어지면',
-    sellPrice: 1000,
-    status: 'sell'
-  },
-  {
-    id: 1,
-    imageUrl: image,
-    title: 'title1',
-    address: 'address',
-    sellPrice: 1000,
-    status: 'sell'
-  },
-  {
-    id: 2,
-    imageUrl: image,
-    title: 'title2',
-    address: 'address',
-    sellPrice: 1000,
-    status: 'sell'
-  },
-  {
-    id: 3,
-    imageUrl: image,
-    title: 'title3',
-    address: 'address',
-    sellPrice: 1000,
-    status: 'sell'
-  },
-  {
-    id: 4,
-    imageUrl: image,
-    title: 'title4',
-    address: 'address',
-    sellPrice: 1000,
-    status: 'sell'
-  }
-]);
+const products = ref<Array<IAllProductAdmin>>([]);
 
 const keyword = ref('');
 
@@ -115,6 +74,15 @@ const onClickProductCard = (id: number) => {
   //router.push(`/admin/product/manage/${id}`); //임시코드(사용자-상품수정페이지)
   router.push(`/admin/product/edit/${id}`);
 };
+
+onMounted(async () => {
+  const res = await adminProductAPI.getAll(store.accessToken);
+  if (res.isSuccess && res.data) {
+    products.value = res.data;
+  } else {
+    console.error(res.message);
+  }
+});
 </script>
 
 <style scoped>
