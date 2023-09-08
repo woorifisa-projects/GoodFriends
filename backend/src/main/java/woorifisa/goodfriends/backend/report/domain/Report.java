@@ -22,7 +22,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Embedded;
 
 @SuperBuilder
-@Table(name = "declarations")
+@Table(name = "reports")
 @Entity
 public class Report extends BaseCreateTimeEntity {
 
