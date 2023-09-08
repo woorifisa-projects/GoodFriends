@@ -220,7 +220,7 @@ const clickDelete = async () => {
   const res = await adminProductAPI.deleteProduct(store.accessToken, id);
   loadingStore.setLoading(false);
   if (res.isSuccess) {
-    goPageWithReload('admin/product/manage');
+    router.go(-1);
     return;
   }
   alert(res.message);
@@ -249,7 +249,7 @@ const clickAdd = async () => {
 
 const clickCancle = () => {
   // TODO: 이전 페이지 이동
-  router.push('/admin/product/manage');
+  router.go(-1);
 };
   
 onMounted(async () => {
@@ -277,7 +277,7 @@ onMounted(async () => {
 
   if (images === null) {
     alert('이미지를 불러오는 중 오류가 발생했습니다');
-    goPageWithReload('admin/product/manage');
+    router.go(-1);
     return;
   }
 
