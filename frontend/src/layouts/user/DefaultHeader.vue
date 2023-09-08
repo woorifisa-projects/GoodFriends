@@ -144,6 +144,7 @@ watchEffect(() => {
 
 watchEffect(() => {
   user.value.imageUrl = store.imageUrl;
+  user.value.nickName = store.nickName;
 });
 
 onMounted(async () => {
