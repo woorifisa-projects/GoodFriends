@@ -7,11 +7,11 @@ const api = apiInstance();
 
 const orderAPI = {
   endPoint: {
-    getOrder: `api/order/`,
+    getOrder: `api/orders/`,
     postOrder: `api/orders/`
   },
   headers: {},
-  getOrder: (token: string, productId: string): Promise<IResultType<IOrderResponse>> => {
+  getOrder: (token: string, productId: string): Promise<IResultType<Array<IOrderResponse>>> => {
     return api
       .get(orderAPI.endPoint.getOrder + productId, {
         headers: {
@@ -21,7 +21,7 @@ const orderAPI = {
       })
       .then((res: AxiosResponse) => {
         console.log(res);
-        return { isSuccess: true, data: res.data.response, code: res.status };
+        return { isSuccess: true, data: res.data.responses, code: res.status };
       })
       .catch((error) => {
         if (error.response) {
