@@ -8,10 +8,6 @@
         <ol>
           <li>
             <div class="report-number-1">
-              <div class="circle">1</div>
-              <h2 class="semi-title">아래에 신고 사유를 선택해 주세요.</h2>
-            </div>
-            <div class="report-number-2">
               <div class="circle">2</div>
               <h2 class="semi-title">해당 게시글을 신고하는 이유를 적어주세요.</h2>
             </div>
@@ -61,15 +57,6 @@
 .report-detail {
 }
 .report-number-1 {
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  margin-bottom: 24px;
-  cursor: pointer;
-  opacity: 1;
-  transition: opacity 0.3s;
-}
-.report-number-2 {
   display: flex;
   -webkit-box-align: center;
   align-items: center;
