@@ -15,3 +15,9 @@ export interface IPostOrder {
   possibleTimeEnd: string;
   requirements: string;
 }
+
+export interface IPurchaser {
+  nickName: string;
+  profileImageUrl: string;
+  email: string;
+}

@@ -17,7 +17,7 @@
           <EmptyProduct />
         </div>
         <li v-else class="order" v-for="order in orderList" :key="order.id">
-          <div class="info" @click="onClickItem">
+          <div class="info" @click="onClickItem($event, order.id)">
             <div>{{ order.nickName }}</div>
             <div>{{ order.possibleDate }}</div>
             <div>{{ order.possibleTime }}</div>
@@ -39,11 +39,8 @@
         </li>
       </ul>
     </div>
-    <ConfirmModal
-      v-model:is-visible="isVisible"
-      v-model:response="response"
-      :content="['정말 거래하시겠습니까?', '이후 취소는 불가능합니다.']"
-    />
+    <ConfirmModal v-model:is-visible="isVisible" v-model:response="response" :content="contents" />
+    <!-- :content="['정말 거래하시겠습니까?', '이후 취소는 불가능합니다.']" -->
   </div>
 </template>
 
@@ -63,6 +60,7 @@ const route = useRoute();
 const isVisible = ref(false);
 const response = ref(false);
 const id = route.params.id.toString();
+const clickOrderId = ref(0);
 
 const orderList = ref<Array<IOrderResponse>>();
 const product = ref({
@@ -70,18 +68,30 @@ const product = ref({
   title: 'title'
 });
 
-const onClickItem = (event: Event) => {
+const contents = ref(['정말 거래하시겠습니까?', '이후 취소는 불가능합니다.']);
+
+const onClickItem = (event: Event, id: number) => {
   const target = event.target as HTMLDivElement;
   target.classList.toggle('open');
+  clickOrderId.value = id;
 };
 
 const onClickDeal = () => {
   isVisible.value = true;
 };
-watchEffect(() => {
+watchEffect(async () => {
   console.log(response.value);
   if (!response.value) return;
   // TODO: api
+  const res = await orderAPI.dealOrder(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    clickOrderId.value.toString()
+  );
+  if (res.isSuccess) {
+    console.log(res.data);
+    isVisible.value = true;
+    contents.value = [`이름: ${res.data?.nickName}`, `이메일: ${res.data?.email}`];
+  }
 });
 
 onMounted(async () => {
