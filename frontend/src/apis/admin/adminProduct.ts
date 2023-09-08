@@ -96,6 +96,7 @@ const adminProductAPI = {
       return api
         .get(adminProductAPI.endPoint.getEditProduct + productId, {
           headers: {
+            ...headers,
             Authorization: `Bearer ${token}`
           }
         })
