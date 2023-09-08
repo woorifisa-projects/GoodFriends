@@ -34,7 +34,9 @@ if (usersApi.isSuccess === true && usersApi.data) {
       banCount: item.banCount,
       phone: item.phone,
       address: item.address,
-      activated: item.activated ? '활성화' : '비활성화'
+      activated: item.activated ? '활성화' : '비활성화',
+      accountType: item.accountType,
+      accountNumber: item.accountNumber
     };
     data.push(dataObject);
   }
