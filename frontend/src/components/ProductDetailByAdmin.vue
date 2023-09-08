@@ -120,11 +120,6 @@ import type { IPostProduct } from '@/types/product';
 import { PRODUCT } from '@/constants/strings/product';
 import { goPageWithReload } from '@/utils/goPage';
 
-const inputImage = ref<Array<File>>([]);
-const previewImg = ref<Array<string>>([]);
-const registerDate = ref(new Date());
-const categories = CATEGORY_LIST;
-
 const props = defineProps({
   type: {
     type: String,
@@ -142,6 +137,11 @@ const data = ref<IPostProduct>({
   sellPrice: 0
 });
 
+const inputImage = ref<Array<File>>([]);
+const previewImg = ref<Array<string>>([]);
+const registerDate = ref(new Date());
+const categories = CATEGORY_LIST;
+
 // TODO: 이미지 관련 작업 백엔드 연동시 재확인 필요
 const uploadImage = async (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
@@ -151,6 +151,7 @@ const uploadImage = async (event: Event) => {
 
 const onClickDeleteBtn = (index: number) => {
   previewImg.value.splice(index, 1);
+  inputImage.value.splice(index, 1);
 };
 
 // TODO: API 요청 -> price, name, content, category, image, date 가져오기
@@ -160,7 +161,7 @@ const store = useAdminStore();
 const id = route.params.id?.toString() || '0';
 // -------------------------
 
-const createFormData = (data:  Ref<IPostProduct>, inputImage: Ref<Array<File>>) => {
+const createFormData = () => {
   // 모든 값들이 존재 하는지 체크
   const checkData = checkProductValue(data.value);
   if (!checkData.isSuccess) {
@@ -194,7 +195,7 @@ const clickEdit = async () => {
     return;
   }
   console.log(inputImage);
-  const formData = createFormData(data, inputImage);
+  const formData = createFormData();
   if(formData === undefined) {
     return;
   }
@@ -230,7 +231,7 @@ const clickAdd = async () => {
     return;
   }
 
-  const formData = createFormData(data, inputImage);
+  const formData = createFormData();
   if(formData === undefined) {
     return;
   }
