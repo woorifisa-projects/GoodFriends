@@ -299,7 +299,7 @@ const closeModal = () => {
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  padding: 20px;
+  padding: 35px;
 }
 .work-btn {
   width: 80px;
