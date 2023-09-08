@@ -120,8 +120,8 @@ import type { IPostProduct } from '@/types/product';
 import { PRODUCT } from '@/constants/strings/product';
 import { goPageWithReload } from '@/utils/goPage';
 
-const previewImg = ref<Array<string>>([]);
 const inputImage = ref<Array<File>>([]);
+const previewImg = ref<Array<string>>([]);
 const registerDate = ref(new Date());
 const categories = CATEGORY_LIST;
 
@@ -143,10 +143,10 @@ const data = ref<IPostProduct>({
 });
 
 // TODO: 이미지 관련 작업 백엔드 연동시 재확인 필요
-const uploadImage = (event: Event) => {
+const uploadImage = async (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
   if (!fileList) return;
-  uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
+  await uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
 };
 
 const onClickDeleteBtn = (index: number) => {
@@ -159,6 +159,7 @@ const loadingStore = useLoadingStore();
 const store = useAdminStore();
 const id = route.params.id?.toString() || '0';
 // -------------------------
+
 const createFormData = (data:  Ref<IPostProduct>, inputImage: Ref<Array<File>>) => {
   // 모든 값들이 존재 하는지 체크
   const checkData = checkProductValue(data.value);
@@ -192,7 +193,7 @@ const clickEdit = async () => {
   if (props.type === 'add') {
     return;
   }
-
+  console.log(inputImage);
   const formData = createFormData(data, inputImage);
   if(formData === undefined) {
     return;
