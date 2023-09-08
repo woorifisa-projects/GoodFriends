@@ -14,8 +14,8 @@
           <div class="userInfo1-1">
             <!-- TODO: ban, amark, average -->
             <div class="userInfo1-1-detail">
-              <span class="userInfo-in-1">{{ ADMIN.MARK }}</span
-              ><span class="userInfo-in-2">{{ authMark }}</span>
+              <span class="userInfo-in-1">{{ ADMIN.PHONE_AUTH }}</span
+              ><span class="userInfo-in-2">{{ phone_auth }}</span>
             </div>
             <div class="userInfo1-1-detail">
               <span class="userInfo-in-1">{{ ADMIN.BAN }}</span
@@ -39,9 +39,15 @@
             <input class="input-user" v-model="address" />
           </div>
           <div class="userInfo2-info">
-            <div class="userInfo2-detailInfo">{{ ADMIN.PHONE_AUTH }}&nbsp;</div>
+            <div class="userInfo2-detailInfo">{{ ADMIN.BANK }}&nbsp;</div>
             <div class="detail-buttons">
-              <span class="mail-auth-check">{{ phone_auth }}</span>
+              <span class="bank-check">{{ bank }}</span>
+            </div>
+          </div>
+          <div class="userInfo2-info">
+            <div class="userInfo2-detailInfo">{{ ADMIN.ACCOUNT }}&nbsp;</div>
+            <div class="detail-buttons">
+              <span class="bank-check">{{ bankAccount }}</span>
             </div>
           </div>
           <div class="userInfo2-info">
@@ -98,6 +104,10 @@ const profileImg = resultData.profileImageUrl;
 const banCount = ref(resultData.banCount);
 const phone = ref(resultData.phone);
 const address = ref(resultData.address);
+const bank = ref(resultData.accountType);
+const bankAccount = ref(resultData.accountNumber);
+
+console.log(resultData);
 
 let phone_auth_temp = '미완료';
 let authMark_temp = 'X';
@@ -255,6 +265,8 @@ const closeModal = () => {
 }
 .mail-auth-check {
   width: 60px;
+}
+.bank-check {
 }
 .detail-button {
   width: 60px;
