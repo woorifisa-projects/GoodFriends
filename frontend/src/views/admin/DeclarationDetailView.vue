@@ -2,8 +2,7 @@
   <div class="declarationInfo-Page">
     <div class="declarationInfo-Grid">
       <div class="page-logo">
-        <span class="page-logo-in-1"></span
-        ><span class="page-logo-in-2">{{ ADMIN_DECLARATION.DEC_TITLE }}</span>
+        <span class="page-logo-in-1"></span><span class="page-logo-in-2">{{ dec_title }}</span>
       </div>
       <div class="total-DeclarationInfo">
         <div class="decInfo1">
@@ -75,7 +74,8 @@ import { ADMIN_DECLARATION } from '@/constants/strings/admin';
 import router from '@/router';
 import { ref } from 'vue';
 
-//TODO: 이메일, 닉네임, 연락처, 신고카테고리, 상품카테고리, 피해날짜, 피해내용
+//TODO:  상품제목, 이메일, 닉네임, 연락처, 신고카테고리, 상품카테고리, 피해날짜, 피해내용
+const dec_title = ref('상품제목');
 const email = ref('');
 const nickname = ref('');
 const phone = ref();
