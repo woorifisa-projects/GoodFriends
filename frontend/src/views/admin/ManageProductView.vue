@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="search-bar">
-      <input type="text" id="search" @keyup.enter="onClickSearch" />
+      <input type="text" id="search" @keyup.enter="onClickSearch" v-model="keyword"/>
       <label @click="onClickSearch">
         <span class="material-icons-outlined"> search </span>
       </label>
@@ -27,9 +27,11 @@ import ProductCardVue from '@/components/ProductCard.vue';
 import type { IAllProductAdmin } from '@/types/product';
 import manageLogAPI from '@/apis/admin/log';
 import type { IDataType } from '@/types/table';
+import adminProductAPI from '@/apis/admin/adminProduct';
+import { useAdminStore } from '@/stores/admin';
 
 const logApi = await manageLogAPI.selectLog();
-
+const store = useAdminStore();
 const data: Array<IDataType> = [];
 
 if (logApi.isSuccess === true && logApi.data) {
@@ -93,8 +95,16 @@ const products = ref<Array<IAllProductAdmin>>([
   }
 ]);
 
-const onClickSearch = () => {
-  // TODO: 상품 검색
+const keyword = ref('');
+
+const onClickSearch = async () => {
+  const res = await adminProductAPI.getSearchTitleProduct(store.accessToken, keyword.value);
+  if(res.isSuccess && res.data) {
+    products.value = res.data;
+  }
+  else {
+    products.value = [];
+  }
 };
 
 const onClickAddProduct = () => {
