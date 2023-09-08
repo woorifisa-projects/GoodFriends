@@ -29,7 +29,7 @@ public class User extends BaseTimeEntity {
 
     private int ban;
 
-    private  boolean activated;
+    private  boolean activated = true;
 
     protected User() {
     }
@@ -45,6 +45,10 @@ public class User extends BaseTimeEntity {
         if (!matcher.matches()) {
             throw new InvalidUserException();
         }
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     public Long getId() {
@@ -66,6 +70,9 @@ public class User extends BaseTimeEntity {
     public int getBan() {
         return ban;
     }
+    public boolean isActivated() {
+        return activated;
+    }
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
@@ -74,7 +81,11 @@ public class User extends BaseTimeEntity {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public boolean isActivated() {
-        return activated;
+    public void updateBan(int ban) {
+        this.ban = ban;
     }
+    public void updateActivated(boolean activated) {
+        this.activated = activated;
+    }
+
 }

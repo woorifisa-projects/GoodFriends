@@ -30,4 +30,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "SET p.status = :productStatus " +
             "WHERE p.id = :productId")
     void updateProductStatus(Long productId, ProductStatus productStatus);
+
+    @Query("SELECT p FROM Product p " +
+            "JOIN FETCH User u " +
+            "ON p.id = :productId " +
+            "AND p.user.id = u.id")
+    Product getByProductIdAndUserId(Long productId);
 }
