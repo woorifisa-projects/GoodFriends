@@ -142,10 +142,13 @@ watchEffect(async () => {
   }
 });
 onMounted(async () => {
+  loadingStore.setLoading(true);
   const res = await productAPI.getProduct(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
     id
   );
+  loadingStore.setLoading(false);
+
   if (res.isSuccess && res.data) {
     data.value = res.data;
     data.value.createdDate = dateFormat(new Date(res.data.createdDate));
