@@ -2,13 +2,13 @@
   <div id="main-page">
     <CommonBannerVue />
     <div class="main">
-      <CategoryList v-model:selectedCategory="selectedCategory" />
       <div class="search-bar">
         <input type="text" id="search" @keyup.enter="onClickSearch" v-model="keyword" />
         <label @click="onClickSearch">
           <span class="material-icons-outlined"> search </span>
         </label>
       </div>
+      <CategoryList v-model:selectedCategory="selectedCategory" />
       <div v-if="products.length" class="card-list">
         <ProductCardVue :products="products" @click="onClickProductCard" />
       </div>
@@ -42,8 +42,7 @@ const onClickSearch = async () => {
   const res = await productAPI.getSearchTitleProduct(selectedCategory.value, keyword.value);
   if (res.isSuccess && res.data) {
     products.value = res.data;
-  }
-  else {
+  } else {
     products.value = [];
   }
 };
@@ -56,8 +55,8 @@ const onClickProductCard = (id: number) => {
   router.push(`product/${id}`);
 };
 
-watchEffect(async() => {
-  if(selectedCategory.value === 'ALL'){
+watchEffect(async () => {
+  if (selectedCategory.value === 'ALL') {
     const res = await productAPI.getAll();
     if (res.isSuccess && res.data) {
       products.value = res.data;
@@ -71,8 +70,7 @@ watchEffect(async() => {
   const res = await productAPI.getCategoryProduct(selectedCategory.value);
   if (res.isSuccess && res.data) {
     products.value = res.data;
-  }
-  else {
+  } else {
     products.value = [];
   }
 });
@@ -103,22 +101,26 @@ onMounted(async () => {
 
 .search-bar {
   position: relative;
-  width: 100%;
+  width: 40%;
   margin-top: 12px;
+  margin-right: 24px;
+  right: 0;
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
+  margin-left: auto;
 }
 .search-bar > input {
-  width: 80%;
+  width: 274px;
   padding: 12px;
   font-size: 18px;
-  padding-right: 36px;
+  border-radius: 24px;
+  border: 1px solid black;
 }
 .search-bar > label {
   position: absolute;
-  right: calc(10% + 12px);
+  right: 12px;
   top: 12px;
   cursor: pointer;
 }
@@ -128,7 +130,9 @@ onMounted(async () => {
   padding: 24px;
 
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 15px;
   justify-items: center;
   align-content: center;
   gap: 24px;
@@ -137,12 +141,13 @@ onMounted(async () => {
   position: sticky;
   bottom: 32px;
   text-align: end;
-  padding-right: 200px;
+  padding-right: 20px;
 }
 .add-button > button {
-  border: 2px solid #dfa700;
+  border: 1px solid black;
   box-shadow: 1px 1px 10px rgba(123, 123, 123, 0.45);
-  background-color: var(--product-add-btn-bg);
+  /* background-color: var(--product-add-btn-bg); */
+  background-color: white;
   color: var(--product-add-btn-text);
   border-radius: 50%;
   width: 64px;
@@ -151,12 +156,12 @@ onMounted(async () => {
 .add-button > button > span {
   line-height: 32px;
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 @media screen and (max-width: 1200px) {
   .card-list {
-    grid-template-columns: 1fr 1fr;
+    /* grid-template-columns: 1fr 1fr; */
   }
   .add-button {
     padding-right: 24px;

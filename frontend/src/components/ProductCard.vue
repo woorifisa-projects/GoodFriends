@@ -6,7 +6,7 @@
     :key="product.id"
   >
     <div class="img">
-      <img :src="product.imageUrl || image" alt="임시 이미지" />
+      <img :src="product.imageUrl || image" alt="임시 이미지" loading="lazy" />
     </div>
     <div class="detail">
       <p class="title">{{ product.title }}</p>
@@ -33,11 +33,13 @@ const emits = defineEmits(['click']);
 .card {
   box-sizing: content-box;
   background-color: white;
-  padding: 12px;
-  width: 250px;
-  height: 350px;
+  /* padding: 12px; */
+  overflow: hidden;
+  width: 300px;
+  height: 400px;
 
   box-shadow: 1px 1px 10px rgb(196, 196, 196);
+  border: 1px solid lightgray;
   border-radius: 12px;
 
   cursor: pointer;
@@ -45,11 +47,11 @@ const emits = defineEmits(['click']);
   transition: all 0.5s ease;
 }
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 .card > .img {
-  width: 250px;
-  height: 250px;
+  width: 300px;
+  height: 300px;
   overflow: hidden;
 
   display: flex;
@@ -58,8 +60,8 @@ const emits = defineEmits(['click']);
 
   background-color: white;
 
-  border: 1px solid rgb(164, 164, 164);
-  border-radius: 12px;
+  /* border: 1px solid rgb(164, 164, 164);
+  border-radius: 12px; */
 }
 .card > .img > img {
   width: 100%;
@@ -69,7 +71,7 @@ const emits = defineEmits(['click']);
   display: flex;
   flex-direction: column;
   gap: 4px;
-
+  padding: 0 12px;
   text-align: center;
 }
 .detail > p {
@@ -82,12 +84,16 @@ const emits = defineEmits(['click']);
   font-size: 24px;
   font-weight: 600;
 
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid lightgray;
 }
 .detail > .address {
+  padding-right: 10px;
   font-size: 16px;
+  text-align: right;
 }
 .detail > .price {
+  padding-right: 10px;
+
   text-align: right;
 }
 </style>
