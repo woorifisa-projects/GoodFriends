@@ -10,10 +10,10 @@ const redirectUri = import.meta.env.VITE_APP_REDIRECT_URI;
 
 const loginAPI = {
   endPoint: {
-    urlLogin: `api/auth/google/oauth-uri?oauthProvier=${oauthProvier}&redirectUri=${redirectUri}`,
-    getAccessToken: `api/auth/google/token`,
-    logout: `api/auth/logout`,
-    getAccessTokenWithRefresh: 'api/auth/token/access'
+    urlLogin: `api/auth/google/oauth-uri?oauthProvier=${oauthProvier}&redirectUri=${redirectUri}/`,
+    getAccessToken: `api/auth/google/token/`,
+    logout: `api/auth/logout/`,
+    getAccessTokenWithRefresh: 'api/auth/token/access/'
   },
   headers: {},
   getUrl: (): Promise<IResultType<string>> => {

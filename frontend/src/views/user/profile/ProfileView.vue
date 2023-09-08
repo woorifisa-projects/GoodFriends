@@ -9,13 +9,18 @@
         <div class="profile_detail">
           <div class="item">
             <label>{{ PROFILE.ACCOUNT }}</label>
-            <select name="bank" id="bank" v-model="userInputInfo.bank" :disabled="isDisabled">
+            <select
+              name="bank"
+              id="bank"
+              v-model="userInputInfo.accountType"
+              :disabled="isDisabled"
+            >
               <option value="default" disabled>은행</option>
-              <option :value="account.value" v-for="(account, index) in accountList" :key="index">
-                {{ account.name }}
+              <option :value="account" v-for="(account, index) in accountList" :key="index">
+                {{ ACCOUNT[account] }}
               </option>
             </select>
-            <input v-model="userInputInfo.account" type="text" :disabled="isDisabled" />
+            <input v-model="userInputInfo.accountNumber" type="text" :disabled="isDisabled" />
           </div>
 
           <div class="item">
@@ -52,7 +57,7 @@
 <script setup lang="ts">
 import { ALERT, PLACEHOLDER, PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
-import { ref, watchEffect } from 'vue';
+import { onMounted, ref } from 'vue';
 import { checkPhoneNumber } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
 import AddressAPI from '@/components/AddressAPI.vue';
@@ -60,28 +65,26 @@ import { useRoute } from 'vue-router';
 import { useUserInfoStore } from '@/stores/userInfo';
 import profileAPI from '@/apis/user/profile';
 import { useLoadingStore } from '@/stores/loading';
+import type { IProfileEdit } from '@/types/profile';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { ACCOUNT, ACCOUNT_LIST } from '@/constants/account';
+import { goPageWithReload } from '@/utils/goPage';
+import { ERROR_MSG } from '@/constants/strings/error';
 
 const router = useRoute();
 const store = useUserInfoStore();
 const loadingStore = useLoadingStore();
-const user = ref({
-  ...store.getProfile()
+
+const userInputInfo = ref<IProfileEdit>({
+  nickName: '',
+  address: '',
+  mobileNumber: '',
+  accountType: '',
+  accountNumber: ''
 });
-const userInputInfo = ref({
-  nickName: user.value.nickName,
-  mobileNumber: user.value.mobileNumber,
-  address: user.value.address,
-  account: '000',
-  bank: 'default'
-});
-const accountList = ref([
-  { value: 'k', name: '국민' },
-  { value: 'w', name: '우리' },
-  { value: 's', name: '신한' },
-  { value: 'h', name: '하나' },
-  { value: 'n', name: '농협' }
-]);
+const accountList = ref(ACCOUNT_LIST);
 const isDisabled = ref(true);
+
 const searchAddress = (data: string) => {
   userInputInfo.value.address = data;
 };
@@ -90,12 +93,12 @@ const onClickEdit = async () => {
     isDisabled.value = false;
     return;
   }
-  if (userInputInfo.value.account.length < 7) {
+  if (userInputInfo.value.accountNumber.length < 7) {
     alert('계좌번호');
     return;
   }
-  console.log(userInputInfo.value.bank);
-  if (userInputInfo.value.bank === 'default') {
+  console.log(userInputInfo.value.accountType);
+  if (userInputInfo.value.accountType === 'default') {
     alert('은행');
     return;
   }
@@ -107,22 +110,15 @@ const onClickEdit = async () => {
     alert(ALERT.NAME);
     return;
   }
+
   loadingStore.setLoading(true);
-  const res = await profileAPI.editProfile(store.accessToken, {
-    ...userInputInfo.value,
-    email: store.email
+  const res = await profileAPI.editProfile(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '', {
+    ...userInputInfo.value
   });
   loadingStore.setLoading(false);
   if (res.isSuccess) {
-    user.value = { ...userInputInfo.value, ...user.value };
-
-    // store.setProfile(
-    //   user.value.nickName,
-    //   user.value.mobileNumber,
-    //   user.value.address,
-    //   account
-    // );
     isDisabled.value = true;
+    store.setUserNickName(userInputInfo.value.nickName);
   } else {
     alert(res.message);
   }
@@ -145,19 +141,14 @@ const checkUserName = (nickName: string) => {
   return true;
 };
 
-watchEffect(() => {
-  user.value = {
-    nickName: store.nickName,
-    mobileNumber: store.mobileNumber,
-    address: store.address
-  };
-  userInputInfo.value = {
-    nickName: store.nickName,
-    mobileNumber: store.mobileNumber,
-    address: store.address,
-    account: '000',
-    bank: 'default'
-  };
+onMounted(async () => {
+  const res = await profileAPI.getProfile(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN));
+  if (!res.isSuccess || !res.data) {
+    alert(ERROR_MSG.LOGIN);
+    goPageWithReload();
+    return;
+  }
+  userInputInfo.value = { ...res.data };
 });
 </script>
 

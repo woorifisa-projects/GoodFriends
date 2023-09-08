@@ -72,7 +72,10 @@ const onClickLoginBtn = async () => {
 };
 
 const onClickLogoutBtn = async () => {
-  const res = await loginAPI.logout(store.id, store.accessToken);
+  const res = await loginAPI.logout(
+    store.id,
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || ''
+  );
   if (res.isSuccess) {
     localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
     goPageWithReload();
@@ -117,12 +120,12 @@ const saveInfo = async (token: string) => {
   const res = await profileAPI.getProfile(token);
 
   if (res.isSuccess && res.data) {
-    store.setAllInfo(res.data, token);
     user.value = {
       id: res.data.id,
       nickName: res.data.nickName,
       imageUrl: res.data.imageUrl
     };
+    store.setUserInfo(res.data);
     return true;
   }
 
@@ -137,6 +140,11 @@ watchEffect(() => {
   } else {
     window.removeEventListener('click', closePopover);
   }
+});
+
+watchEffect(() => {
+  user.value.imageUrl = store.imageUrl;
+  user.value.nickName = store.nickName;
 });
 
 onMounted(async () => {

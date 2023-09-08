@@ -11,7 +11,7 @@
     <div class="detail">
       <p class="title">{{ product.title }}</p>
       <p class="address">{{ product.address }}</p>
-      <p class="price">{{ product.sellPrice }}원</p>
+      <p class="price">{{ product.sellPrice.toLocaleString() }}원</p>
     </div>
   </div>
 </template>

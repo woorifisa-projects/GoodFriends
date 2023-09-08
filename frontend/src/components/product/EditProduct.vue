@@ -85,6 +85,7 @@ import { useLoadingStore } from '@/stores/loading';
 import router from '@/router';
 import type { IPostProduct } from '@/types/product';
 import type { IStringToFunction } from '@/types/dynamic';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
@@ -163,10 +164,17 @@ const submit = async () => {
 
   const submit: IStringToFunction = {
     edit: async () => {
-      return await productAPI.editProduct(store.accessToken, id, formData);
+      return await productAPI.editProduct(
+        localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+        id,
+        formData
+      );
     },
     add: async () => {
-      return await productAPI.postProduct(store.accessToken, formData);
+      return await productAPI.postProduct(
+        localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+        formData
+      );
     }
   };
 
@@ -196,7 +204,10 @@ const remove = async () => {
   if (props.type === 'add') return;
 
   loadingStore.setLoading(true);
-  const res = await productAPI.deleteProduct(store.accessToken, id);
+  const res = await productAPI.deleteProduct(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    id
+  );
   loadingStore.setLoading(false);
   if (res.isSuccess) {
     goPageWithReload('');
@@ -218,7 +229,10 @@ onMounted(async () => {
 
   loadingStore.setLoading(true);
 
-  const res = await productAPI.getEditProduct(store.accessToken, id);
+  const res = await productAPI.getEditProduct(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    id
+  );
 
   loadingStore.setLoading(false);
 
