@@ -27,7 +27,7 @@ const adminProductAPI = {
             }
         })
         .then((res: AxiosResponse) => {
-            return { isSuccess: true, message: '', code: res.status };
+            return { isSuccess: true, message: '등록되었습니다.', code: res.status };
         })
         .catch((error) => {
             if(error.response) {
