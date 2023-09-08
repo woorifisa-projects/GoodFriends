@@ -13,7 +13,10 @@
           <div>가능한 날짜</div>
           <div>가능한 시간</div>
         </div>
-        <li class="order" v-for="order in orderList" :key="order.id">
+        <div v-if="!orderList">
+          <EmptyProduct />
+        </div>
+        <li v-else class="order" v-for="order in orderList" :key="order.id">
           <div class="info" @click="onClickItem">
             <div>{{ order.nickName }}</div>
             <div>{{ order.possibleDate }}</div>
@@ -45,122 +48,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import image from '@/assets/tmp/images/image.png';
 import { PRODUCT } from '@/constants/strings/product';
 import type { IOrderResponse } from '@/types/order';
 import ConfirmModal from '@/components/ConfirmModal.vue';
+import orderAPI from '@/apis/user/order';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import EmptyProduct from '@/components/EmptyProduct.vue';
+import router from '@/router';
 const route = useRoute();
 
 const isVisible = ref(false);
 const response = ref(false);
+const id = route.params.id.toString();
 
-const id = ref(route.params.id);
-
-const orderList = ref<Array<IOrderResponse>>([
-  {
-    id: 1,
-    userId: 1,
-    profileImageUrl: image,
-    nickName: '작업완료함1',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements:
-      '에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다!v 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다!s 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다!v 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다! 에어팟 구매하고 싶습니다!s'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  },
-  {
-    id: 2,
-    userId: 2,
-    profileImageUrl: image,
-    nickName: 'nickname2',
-    possibleDate: '2023-08-30 ~ 2023-09-01',
-    possibleTime: '12:00 ~ 16:00',
-    requirements: '에어팟 구매하고 싶습니다!'
-  }
-]);
-
+const orderList = ref<Array<IOrderResponse>>();
 const product = ref({
   image,
   title: 'title'
@@ -178,6 +82,18 @@ watchEffect(() => {
   console.log(response.value);
   if (!response.value) return;
   // TODO: api
+});
+
+onMounted(async () => {
+  const res = await orderAPI.getOrder(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '', id);
+  if (!res.isSuccess) {
+    alert(res.message);
+    router.go(-1);
+  }
+  if (res.data) {
+    orderList.value = res.data;
+  }
+  console.log(res);
 });
 </script>
 
@@ -252,6 +168,11 @@ watchEffect(() => {
 }
 .info > div {
   pointer-events: none;
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .info-detail {
   opacity: 0;
