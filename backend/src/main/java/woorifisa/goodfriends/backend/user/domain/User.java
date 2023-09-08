@@ -81,5 +81,11 @@ public class User extends BaseTimeEntity {
         this.profileImageUrl = profileImageUrl;
     }
 
+    public void updateBan(int ban) {
+        this.ban = ban;
     }
+    public void updateActivated(boolean activated) {
+        this.activated = activated;
+    }
+
 }
