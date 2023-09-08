@@ -7,14 +7,14 @@ const api = apiInstance();
 
 const productAPI = {
   endPoint: {
-    getAll: `api/products`,
-    postProduct: `api/products`,
-    getProduct: `api/products`,
-    getEditProduct: `api/products/edit`,
+    getAll: `api/products/`,
+    postProduct: `api/products/`,
+    getProduct: `api/products/`,
+    getEditProduct: `api/products/edit/`,
     editProduct: `api/products/edit/`,
     deleteProduct: `api/products/remove/`,
     getCategoryProduct: `api/products/category`,
-    getSerchTitleProduct: `api/products/search`
+    getSerchTitleProduct: `api/products/search/`
   },
   headers: {},
   getAll: (): Promise<IResultType<Array<IAllProduct>>> => {
