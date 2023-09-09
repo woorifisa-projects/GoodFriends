@@ -117,8 +117,9 @@ import { useLoadingStore } from '@/stores/loading';
 import { checkProductValue } from '@/utils/validation';
 import { dateFormat } from '@/utils/format';
 import type { IPostProduct } from '@/types/product';
-import { PRODUCT } from '@/constants/strings/product';
-import { goPageWithReload } from '@/utils/goPage';
+
+const route = useRoute();
+const loadingStore = useLoadingStore();
 
 const props = defineProps({
   type: {
@@ -155,8 +156,6 @@ const onClickDeleteBtn = (index: number) => {
 };
 
 // TODO: API 요청 -> price, name, content, category, image, date 가져오기
-const route = useRoute();
-const loadingStore = useLoadingStore();
 const store = useAdminStore();
 const id = route.params.id?.toString() || '0';
 // -------------------------
@@ -186,7 +185,7 @@ const createFormData = () => {
       type: 'application/json'
     })
   );
-
+  loadingStore.setLoading(false);
   return formData;
 }
 
@@ -194,13 +193,16 @@ const clickEdit = async () => {
   if (props.type === 'add') {
     return;
   }
-  console.log(inputImage);
+
   const formData = createFormData();
   if(formData === undefined) {
     return;
   }
 
+  loadingStore.setLoading(true);
   const res = await adminProductAPI.editProduct(store.accessToken, id, formData);
+  loadingStore.setLoading(false);
+
   if(res.isSuccess) {
     alert(res.message);
   }
@@ -219,6 +221,7 @@ const clickDelete = async () => {
   loadingStore.setLoading(true);
   const res = await adminProductAPI.deleteProduct(store.accessToken, id);
   loadingStore.setLoading(false);
+
   if (res.isSuccess) {
     router.go(-1);
     return;
@@ -236,7 +239,10 @@ const clickAdd = async () => {
     return;
   }
 
+  loadingStore.setLoading(true);
   const res = await adminProductAPI.postProduct(store.accessToken, formData);
+  loadingStore.setLoading(false);
+
   if(res.isSuccess) {
     alert(res.message);
   }
@@ -258,9 +264,7 @@ onMounted(async () => {
   }
 
   loadingStore.setLoading(true);
-
   const res = await adminProductAPI.getEditProduct(store.accessToken, id);
-
   loadingStore.setLoading(false);
 
   if (res.data === undefined || !res.isSuccess) {
