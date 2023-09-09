@@ -2,26 +2,28 @@
   <div id="app">
     <section class="report">
       <div>
-        <h1 class="title">상품 신고</h1>
+        <h1 class="title">{{ REPORT.TITLE_PRODUCT }}</h1>
       </div>
       <div class="report-detail">
         <ol>
           <li>
-            <div class="report-number">
-              <div class="circle">1</div>
-              <h2 class="semi-title">아래에 신고 사유를 선택해 주세요.</h2>
+            <div class="report-content">
+              <div class="circle">{{ REPORT.CIRCLE_ONE }}</div>
+              <h2 class="semi-title">{{ REPORT.SEMI_TITLE_ONE }}</h2>
             </div>
             <div style="height: 754.797px; overflow: visible">
               <div>
                 <div class="category">
-                  <div class="category-1">판매 금지 물품이에요.</div>
-                  <div class="category-2">중고거래 게시글이 아니에요.</div>
-                  <div class="category-3">전문 판매업자 같아요.</div>
-                  <div class="category-4">사기 글이에요.</div>
-                  <div class="category-5">거래 / 환불 분쟁</div>
-                  <div class="category-6">기타 사유</div>
+                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_ONE }}</div>
+                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_TWO }}</div>
+                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_THREE }}</div>
+                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_FOUR }}</div>
+                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_FIVE }}</div>
+                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_ETC }}</div>
                 </div>
-                <button class="p-button" type="button" aria-disabled="false">다음</button>
+                <button class="p-button" type="button" aria-disabled="false">
+                  {{ REPORT.BUTTON }}
+                </button>
               </div>
             </div>
           </li>
@@ -31,7 +33,9 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { REPORT } from '@/constants/strings/report';
+</script>
 
 <style scoped>
 #app {
@@ -58,9 +62,7 @@
   font-size: 20px;
   align-items: center;
 }
-.report-detail {
-}
-.report-number {
+.report-content {
   display: flex;
   -webkit-box-align: center;
   align-items: center;
@@ -86,7 +88,7 @@
   flex-direction: column;
   margin-bottom: 40px;
 }
-.category-1 {
+.category-content {
   background-color: rgb(249, 250, 251);
   border-radius: 6px;
   width: 100%;
@@ -99,66 +101,6 @@
   margin-bottom: 12px;
   /* border: 0.1px solid rgb(173, 173, 173); */
 }
-.category-2 {
-  background-color: rgb(249, 250, 251);
-  border-radius: 6px;
-  width: 100%;
-  padding: 16px 24px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
-  color: rgb(78, 89, 104);
-  margin: 0;
-  margin-bottom: 12px;
-}
-.category-3 {
-  background-color: rgb(249, 250, 251);
-  border-radius: 6px;
-  width: 100%;
-  padding: 16px 24px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
-  color: rgb(78, 89, 104);
-  margin: 0;
-  margin-bottom: 12px;
-}
-.category-4 {
-  background-color: rgb(249, 250, 251);
-  border-radius: 6px;
-  width: 100%;
-  padding: 16px 24px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
-  color: rgb(78, 89, 104);
-  margin: 0;
-  margin-bottom: 12px;
-}
-.category-5 {
-  background-color: rgb(249, 250, 251);
-  border-radius: 6px;
-  width: 100%;
-  padding: 16px 24px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
-  color: rgb(78, 89, 104);
-  margin: 0;
-  margin-bottom: 12px;
-}
-.category-6 {
-  background-color: rgb(249, 250, 251);
-  border-radius: 6px;
-  width: 100%;
-  padding: 16px 24px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
-  color: rgb(78, 89, 104);
-  margin: 0;
-  margin-bottom: 12px;
-}
 .p-button {
   border-radius: var(--radius-m);
   line-height: 26px;
@@ -167,7 +109,6 @@
   width: 100%;
   color: azure;
   padding: 16px 24px;
-  font-size: 20px;
   font-family: 'LINESeedKR-Bd';
   flex: 1;
 }

@@ -2,22 +2,24 @@
   <div id="app">
     <section class="report">
       <div>
-        <h1 class="title">상품 신고</h1>
+        <h1 class="title">{{ REPORT.TITLE_PRODUCT }}</h1>
       </div>
-      <div class="report-detail">
+      <div>
         <ol>
           <li>
-            <div class="report-number-1">
-              <div class="circle">2</div>
-              <h2 class="semi-title">해당 게시글을 신고하는 이유를 적어주세요.</h2>
+            <div class="report-content">
+              <div class="circle">{{ REPORT.CIRCLE_TWO }}</div>
+              <h2 class="semi-title">{{ REPORT.SEMI_TITLE_TWO }}</h2>
             </div>
             <div style="height: 754.797px; overflow: visible">
               <div>
                 <div class="content">
-                  <h3 class="content-title">신고 내용</h3>
-                  <div class="content-box">신고 내용을 적어주세요</div>
+                  <h3 class="report-content">{{ REPORT.REPORT_CONTENT }}</h3>
+                  <div class="report-detail">{{ REPORT.REPORT_DETAIL }}</div>
                 </div>
-                <button class="p-button" type="button" aria-disabled="false">다음</button>
+                <button class="p-button" type="button" aria-disabled="false">
+                  {{ REPORT.BUTTON }}
+                </button>
               </div>
             </div>
           </li>
@@ -27,7 +29,9 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { REPORT } from '@/constants/strings/report';
+</script>
 
 <style scoped>
 #app {
@@ -54,13 +58,11 @@
   font-size: 20px;
   align-items: center;
 }
-.report-detail {
-}
-.report-number-1 {
+.report-content {
   display: flex;
   -webkit-box-align: center;
   align-items: center;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
   cursor: pointer;
   opacity: 1;
   transition: opacity 0.3s;
@@ -82,10 +84,10 @@
   flex-direction: column;
   margin-bottom: 40px;
 }
-.content-title {
+.report-content {
   font-size: 24px;
 }
-.content-box {
+.report-detail {
   background-color: rgb(249, 250, 251);
   border: 1px solid rgb(200, 200, 200);
   border-radius: 6px;
