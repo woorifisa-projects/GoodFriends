@@ -1,0 +1,38 @@
+import { apiInstance, headers } from '..';
+import type { INoContent } from '@/types/api';
+import type { IPostReport } from '@/types/report';
+import { type AxiosResponse } from 'axios';
+
+const api = apiInstance();
+
+const reportAPI = {
+  endPoint: {
+    postReport: `api/report/`
+  },
+  headers: {},
+  postReport: (token: string, body: IPostReport): Promise<INoContent> => {
+    // 상품 신고 등록
+    return api
+      .post(reportAPI.endPoint.postReport, body, {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res: AxiosResponse) => {
+        return { isSuccess: true, message: '', code: res.status };
+      })
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
+      });
+  }
+};
+
+export default reportAPI;
