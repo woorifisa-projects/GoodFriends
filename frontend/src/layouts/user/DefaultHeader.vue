@@ -208,10 +208,15 @@ onMounted(async () => {
   font-weight: 300;
 }
 
-.wrap button {
+.wrap > div > button {
   background-color: transparent;
-  font-size: 16px;
+  font-size: 20px;
   font-family: 'LINESeedKR-Bd';
+  color: var(--profile-label-bg);
+  transition: color 0.3s ease;
+}
+.wrap > div > button:hover {
+  color: var(--edit-product-point-bg);
 }
 
 #login {
@@ -224,7 +229,7 @@ onMounted(async () => {
   height: 60px;
   overflow: hidden;
   border-radius: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.306);
+  border: 1px solid rgb(240, 240, 240);
 
   display: flex;
   justify-content: center;
@@ -235,7 +240,7 @@ onMounted(async () => {
 .profile > img {
   width: 120%;
   object-fit: cover;
-  z-index: -1;
+  pointer-events: none;
 }
 .popover {
   position: absolute;
@@ -250,7 +255,7 @@ onMounted(async () => {
   padding: 20px;
 
   width: 200px;
-  height: 300px;
+  height: 280px;
 
   display: flex;
   flex-direction: column;
@@ -268,7 +273,7 @@ onMounted(async () => {
 
   content: '';
   position: absolute;
-  bottom: 300px;
+  bottom: 280px;
   right: 20px;
 }
 
@@ -282,7 +287,7 @@ onMounted(async () => {
   align-items: center;
 
   border-radius: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.26);
+  /* border: 1px solid rgb(240, 240, 240); */
   background-color: white;
 
   overflow: hidden;
@@ -299,13 +304,14 @@ onMounted(async () => {
 }
 .content > div {
   width: 100%;
-  border: 1px solid black;
+  /* border: 1px solid rgb(240, 240, 240); */
   border-radius: 10px;
   font-size: 18px;
   text-align: center;
   background: var(--popover-btn-bg);
   color: var(--popover-btn-text);
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .content > div:first-child {
@@ -313,9 +319,10 @@ onMounted(async () => {
   background: transparent;
   cursor: default;
   font-family: 'LINESeedKR-Bd';
-  /* text overflow */
 }
-
+.content > div:nth-child(2n):hover {
+  transform: scale(1.04);
+}
 @media screen and (max-width: 1023px) {
   .header {
     padding: 0;

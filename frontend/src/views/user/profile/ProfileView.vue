@@ -166,13 +166,14 @@ onMounted(async () => {
   display: flex;
   flex-direction: row-reverse;
   gap: 20px;
+  padding-right: 48px;
 }
 
 .btn_wrap > button {
   cursor: pointer;
   font-family: 'LINESeedKR-Bd';
   font-size: 15px;
-  border: 1px solid black;
+  border: 1px solid rgb(240, 240, 240);
   height: 40px;
   width: 80px;
   display: flex;
@@ -184,7 +185,7 @@ onMounted(async () => {
   border-radius: 12px;
 }
 
-.btn_wrap > button:first-child {
+.btn_wrap > button:last-child {
   background-color: var(--product-status-filter-point-bg);
   color: var(--product-status-filter-point-text);
 }
@@ -205,8 +206,9 @@ onMounted(async () => {
 .item {
   flex: 1;
 
-  width: 100%;
-  border: 1px solid rgb(180, 180, 180);
+  /* width: 100%; */
+  width: fit-content;
+  /* border: 1px solid rgb(240, 240, 240); */
   border-radius: 8px;
   display: flex;
   overflow: hidden;
@@ -217,39 +219,59 @@ onMounted(async () => {
 .item > label {
   height: 100%;
   width: 100px;
-  padding: 16px;
-  background: var(--profile-label-bg);
-  color: var(--profile-label-text);
+  /* padding: 16px; */
+  /* background: var(--profile-label-bg);
+  color: var(--profile-label-text); */
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'LINESeedKR-Bd';
+  margin-right: 24px;
+  font-size: 20px;
 }
 
 .item > input,
 .item > select {
-  width: 50%;
+  /* width: 50%; */
   display: flex;
   align-items: center;
-  border: 1px solid black;
+  border: none;
   height: fit-content;
+  font-size: 20px;
+}
+.item > input {
+  max-width: fit-content;
+  min-width: 100px;
+  /* border-bottom: 1px solid #888; */
+  text-decoration: underline;
+  text-underline-offset: 3px;
   padding: 12px;
 }
 .item > select {
-  width: fit-content;
+  width: 85px;
+
   padding: 12px;
-  text-align: center;
+  /* border: 1px solid #888; */
+  width: fit-content;
+  text-align: left;
+  border-radius: 6px;
 }
+
 .item > input:disabled,
 .item > select:disabled {
   background-color: white;
   color: black;
   border: none;
+  text-decoration: none;
 }
 .item > select:disabled {
-  border: 1px solid lightgray;
+  width: 85px;
+  /* border: 1px solid lightgray; */
   border-radius: 6px;
+  -webkit-appearance: none; /* 네이티브 외형 감추기 */
+  -moz-appearance: none;
+  appearance: none;
 }
 
 @media screen and (max-width: 1023px) {

@@ -9,7 +9,7 @@
           <div class="detail">
             <div>{{ item.name }}</div>
             <div>{{ item.date }}</div>
-            <div>{{ item.status }}</div>
+            <div class="status">{{ item.status }}</div>
           </div>
         </div>
       </li>
@@ -34,32 +34,36 @@ const onClick = (item: IItem) => {
 
 <style scoped>
 .wrap {
-  margin: 20px;
+  margin: 20px 56px;
 }
 
 .wrap > ul {
   display: flex;
   flex-direction: column;
+}
+.wrap > ul > li {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
-
 .item {
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 12px 20px;
+  padding: 10px 20px;
   width: 100%;
   height: fit-content;
-  border: 1px solid rgb(235, 235, 235);
+  border: 1px solid rgb(240, 240, 240);
   border-radius: 10px;
-  box-shadow: 1px 1px 7px #0000001b;
+  box-shadow: 0px 0px 3px #0000001b;
 }
 
 .item > .img {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   overflow: hidden;
-  border: 1px solid gray;
+  border: 1px solid rgb(240, 240, 240);
+  box-shadow: 0px 0px 2px #888;
   border-radius: 20px;
 }
 
@@ -71,7 +75,6 @@ const onClick = (item: IItem) => {
   display: flex;
   justify-content: space-around;
   /* border: 1px solid gray; */
-  height: 100px;
   width: calc(100% - 100px);
   border-radius: 20px;
   overflow: hidden;
@@ -81,15 +84,17 @@ const onClick = (item: IItem) => {
 .detail > div {
   /* background-color: rgb(232, 232, 232); */
   width: 100%;
-  height: 100%;
-  padding: 20px;
+  /* height: 100%; */
+  /* padding: 20px; */
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  font-size: 20px;
 }
-
+.detail > div:last-child {
+  font-size: 18px;
+}
 @media screen and (max-width: 1023px) {
   .detail {
     height: 60px;
