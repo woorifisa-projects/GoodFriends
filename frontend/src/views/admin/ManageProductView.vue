@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="search-bar">
-      <input type="text" id="search" @keyup.enter="onClickSearch" />
+      <input type="text" id="search" @keyup.enter="onClickSearch" v-model="keyword"/>
       <label @click="onClickSearch">
         <span class="material-icons-outlined"> search </span>
       </label>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import image from '@/assets/tmp/images/image.png';
 
 import router from '@/router';
@@ -27,9 +27,11 @@ import ProductCardVue from '@/components/ProductCard.vue';
 import type { IAllProductAdmin } from '@/types/product';
 import manageLogAPI from '@/apis/admin/log';
 import type { IDataType } from '@/types/table';
+import adminProductAPI from '@/apis/admin/adminProduct';
+import { useAdminStore } from '@/stores/admin';
 
 const logApi = await manageLogAPI.selectLog();
-
+const store = useAdminStore();
 const data: Array<IDataType> = [];
 
 if (logApi.isSuccess === true && logApi.data) {
@@ -48,53 +50,21 @@ if (logApi.isSuccess === true && logApi.data) {
   }
 } else if (logApi.isSuccess === false) {
   alert('페이지 오류입니다.');
+  router.push('/404');
 }
 
-const products = ref<Array<IAllProductAdmin>>([
-  {
-    id: 0,
-    imageUrl: image,
-    title: 'title',
-    address: '주소가 길어지면 어떻게 될려나 길어지면 길어지면 길어지면 길어지면',
-    sellPrice: 1000,
-    status: 'sell'
-  },
-  {
-    id: 1,
-    imageUrl: image,
-    title: 'title1',
-    address: 'address',
-    sellPrice: 1000,
-    status: 'sell'
-  },
-  {
-    id: 2,
-    imageUrl: image,
-    title: 'title2',
-    address: 'address',
-    sellPrice: 1000,
-    status: 'sell'
-  },
-  {
-    id: 3,
-    imageUrl: image,
-    title: 'title3',
-    address: 'address',
-    sellPrice: 1000,
-    status: 'sell'
-  },
-  {
-    id: 4,
-    imageUrl: image,
-    title: 'title4',
-    address: 'address',
-    sellPrice: 1000,
-    status: 'sell'
-  }
-]);
+const products = ref<Array<IAllProductAdmin>>([]);
 
-const onClickSearch = () => {
-  // TODO: 상품 검색
+const keyword = ref('');
+
+const onClickSearch = async () => {
+  const res = await adminProductAPI.getSearchTitleProduct(store.accessToken, keyword.value);
+  if(res.isSuccess && res.data) {
+    products.value = res.data;
+  }
+  else {
+    products.value = [];
+  }
 };
 
 const onClickAddProduct = () => {
@@ -105,6 +75,15 @@ const onClickProductCard = (id: number) => {
   //router.push(`/admin/product/manage/${id}`); //임시코드(사용자-상품수정페이지)
   router.push(`/admin/product/edit/${id}`);
 };
+
+onMounted(async () => {
+  const res = await adminProductAPI.getAll(store.accessToken);
+  if (res.isSuccess && res.data) {
+    products.value = res.data;
+  } else {
+    console.error(res.message);
+  }
+});
 </script>
 
 <style scoped>

@@ -2,6 +2,7 @@ package woorifisa.goodfriends.backend.product.domain;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,6 +18,8 @@ public interface ProductImageRepository extends JpaRepository<ProductImage, Long
 
     List<ProductImage> findByProductId(Long productId);
 
+    @Modifying(clearAutomatically = true)
+    @Query(value = "DELETE FROM product_images WHERE product_id = :productId", nativeQuery = true)
     void deleteByProductId(Long productId);
 
 }
