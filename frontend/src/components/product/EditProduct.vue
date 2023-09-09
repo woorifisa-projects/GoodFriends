@@ -1,7 +1,7 @@
 <template>
   <div class="form-product">
     <div class="form">
-      <div class="input-detail">
+      <div class="input-detail box">
         <div class="title-price">
           <div>
             <label for="">제목</label>
@@ -25,7 +25,7 @@
           <textarea name="" id="explain" cols="30" rows="10" v-model="data.description"></textarea>
           <div class="text-length">{{ data.description.length }}/{{ maxLength }}</div>
         </div>
-        <div class="buttons">
+        <div class="buttons input-buttons">
           <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">
             {{ PRODUCT.DELETE }}
           </button>
@@ -35,7 +35,7 @@
           </button>
         </div>
       </div>
-      <div class="select-detail">
+      <div class="select-detail box">
         <div class="category">
           <span for="category">{{ PRODUCT.CATEGORY }}</span>
           <select name="" id="" v-model="data.productCategory">
@@ -70,6 +70,15 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="buttons select-buttons">
+          <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">
+            {{ PRODUCT.DELETE }}
+          </button>
+          <button v-else @click="save">{{ PRODUCT.TEMPORARY }}</button>
+          <button class="submit-btn" @click="submit">
+            {{ props.type === 'edit' ? PRODUCT.EDIT : PRODUCT.SUBMIT }}
+          </button>
         </div>
       </div>
     </div>
@@ -292,13 +301,11 @@ onMounted(async () => {
 .input-detail {
   flex: 3;
   background-color: white;
-  box-shadow: 1px 1px 10px rgba(168, 168, 168, 0.596);
+
   display: flex;
   flex-direction: column;
 
   padding: 20px;
-
-  border: 1px solid rgb(173, 173, 173);
 }
 
 .input-detail input,
@@ -373,8 +380,6 @@ onMounted(async () => {
   box-sizing: border-box;
 
   /* background-color: white; */
-  box-shadow: 1px 1px 10px rgba(168, 168, 168, 0.596);
-  border: 1px solid rgb(173, 173, 173);
 
   padding: 30px 20px;
 }
@@ -396,6 +401,12 @@ onMounted(async () => {
   margin-top: 12px;
   font-family: 'LINESeedKR-Rg';
   cursor: pointer;
+}
+.select-detail select {
+  width: fit-content;
+  padding: 6px 10px;
+  border: none;
+  border: 1px solid rgb(240, 240, 240);
 }
 .image {
   width: 100%;
@@ -433,8 +444,8 @@ onMounted(async () => {
   text-align: end;
 }
 .image-wrap {
-  border: 1px solid rgba(195, 195, 195, 0.618);
-  box-shadow: 1px 1px 10px rgba(207, 207, 207, 0.446);
+  border: 1px solid rgb(240, 240, 240);
+  box-shadow: 0px 0px 5px rgba(207, 207, 207, 0.446);
 
   margin-top: 8px;
   padding: 6px;
@@ -491,7 +502,7 @@ onMounted(async () => {
   padding: 8px 24px;
   border: 1px solid rgb(110, 110, 110);
   border-radius: 6px;
-  transition: all 0.3s ease;
+  transition: filter 0.3s ease;
   font-family: 'LINESeedKR-Bd';
 }
 
@@ -507,6 +518,13 @@ button:hover {
 .submit-btn {
   color: #ffffff;
   background-color: var(--edit-product-btn-1-bg);
+}
+.select-buttons {
+  visibility: hidden;
+}
+.box {
+  box-shadow: 0px 0px 5px rgb(240, 240, 240);
+  border: 1px solid rgb(240, 240, 240);
 }
 
 input[type='number']::-webkit-outer-spin-button,
@@ -527,9 +545,6 @@ input[type='file'] {
 }
 
 @media screen and (max-width: 1023px) {
-  .form-product {
-    margin-top: 64px;
-  }
   .input-detail input,
   .input-detail textarea {
     font-size: 18px;
@@ -560,11 +575,26 @@ input[type='file'] {
 }
 
 @media screen and (max-width: 767px) {
-  .form {
-    flex-direction: column-reverse;
-  }
   .image-wrap {
     height: 120px;
+  }
+  .form {
+    flex-direction: column;
+    min-height: 1000px;
+  }
+  .form-product {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    min-height: fit-content;
+    height: fit-content;
+    overflow: auto;
+  }
+  .input-buttons {
+    visibility: hidden;
+  }
+  .select-buttons {
+    visibility: visible;
+    display: flex;
   }
 }
 </style>
