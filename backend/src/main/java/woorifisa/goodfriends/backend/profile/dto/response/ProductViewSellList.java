@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.product.dto.response;
+package woorifisa.goodfriends.backend.profile.dto.response;
 
 import lombok.Getter;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;

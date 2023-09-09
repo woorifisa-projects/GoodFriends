@@ -1,15 +1,13 @@
 package woorifisa.goodfriends.backend.profile.presentation;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewsSellList;
+import woorifisa.goodfriends.backend.profile.dto.response.ProductViewsSellList;
 import woorifisa.goodfriends.backend.profile.application.ProfileService;
-import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
 import woorifisa.goodfriends.backend.user.application.UserService;
