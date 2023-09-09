@@ -12,5 +12,5 @@ export const REPORT = {
   CATEGORY_CONTENT_ETC: '기타 사유',
   REPORT_CONTENT: '신고 내용',
   REPORT_DETAIL: '신고 내용을 적어주세요',
-  BUTTON: '다음'
+  BUTTON: '굿프렌즈팀에게 제출하기'
 };

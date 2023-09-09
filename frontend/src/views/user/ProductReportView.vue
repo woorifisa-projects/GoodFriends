@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="report-main">
     <section class="report">
       <div>
         <h1 class="title">{{ REPORT.TITLE_PRODUCT }}</h1>
@@ -31,7 +31,7 @@
                   <h3 class="content-title">{{ REPORT.REPORT_CONTENT }}</h3>
                   <div class="content-detail">{{ REPORT.REPORT_DETAIL }}</div>
                 </div>
-                <button class="p-button" type="button" aria-disabled="false">
+                <button class="submit-btn" @click="submit">
                   {{ REPORT.BUTTON }}
                 </button>
               </div>
@@ -44,11 +44,49 @@
 </template>
 
 <script setup lang="ts">
+import { useLoadingStore } from '@/stores/loading';
+import { ref } from 'vue';
 import { REPORT } from '@/constants/strings/report';
+import type { IPostReport } from '@/types/report';
+import { checkReportCategory, checkReporDetail } from '@/utils/validation';
+import reportAPI from '@/apis/user/report';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const loadingStore = useLoadingStore();
+
+const data = ref<IPostReport>({
+  reportCategory: '',
+  reportDetail: ''
+});
+
+const isDisabled = ref(true);
+const id = route.params.id?.toString() || '0';
+
+const submit = async () => {
+  // 신고 카테고리, 신고 내용 값이 들어있는지 체크
+  if (!checkReportCategory(data.value)) {
+    alert('신고카테고리');
+    return;
+  }
+  if (!checkReporDetail(data.value)) {
+    alert('신고내용');
+    return;
+  }
+  loadingStore.setLoading(true);
+  const res = await reportAPI.postReport(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '', {
+    ...data.value
+  });
+  loadingStore.setLoading(false);
+  if (res.isSuccess) {
+    isDisabled.value = true;
+  }
+};
 </script>
 
 <style scoped>
-#app {
+.report-main {
   margin: 0;
   font-weight: normal;
   font-family: 'LINESeedKR-Rg';
@@ -134,7 +172,7 @@ import { REPORT } from '@/constants/strings/report';
   margin-bottom: 12px;
   height: 350px;
 }
-.p-button {
+.submit-btn {
   border-radius: var(--radius-m);
   line-height: 26px;
   background-color: #3182f6;
@@ -144,6 +182,7 @@ import { REPORT } from '@/constants/strings/report';
   padding: 16px 24px;
   font-family: 'LINESeedKR-Bd';
   flex: 1;
+  font-size: 20px;
 }
 .category-content:hover {
   filter: brightness(90%);
