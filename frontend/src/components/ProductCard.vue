@@ -10,6 +10,7 @@
     </div>
     <div class="detail">
       <p class="title">{{ product.title }}</p>
+      <div class="line"></div>
       <p class="address">{{ product.address }}</p>
       <p class="price">{{ product.sellPrice.toLocaleString() }}원</p>
     </div>
@@ -36,9 +37,9 @@ const emits = defineEmits(['click']);
   /* padding: 12px; */
   overflow: hidden;
   width: 300px;
-  height: 400px;
+  height: 410px;
 
-  box-shadow: 1px 1px 10px rgb(196, 196, 196);
+  box-shadow: 1px 1px 3px rgba(218, 218, 218, 0.446);
   border: 1px solid lightgray;
   border-radius: 12px;
 
@@ -50,6 +51,7 @@ const emits = defineEmits(['click']);
   transform: scale(1.02);
 }
 .card > .img {
+  padding: 24px;
   width: 300px;
   height: 300px;
   overflow: hidden;
@@ -59,9 +61,6 @@ const emits = defineEmits(['click']);
   justify-content: center;
 
   background-color: white;
-
-  /* border: 1px solid rgb(164, 164, 164);
-  border-radius: 12px; */
 }
 .card > .img > img {
   width: 100%;
@@ -82,17 +81,25 @@ const emits = defineEmits(['click']);
 }
 .detail > .title {
   font-size: 24px;
+  margin: auto;
   font-weight: 600;
+  width: 252px;
 
-  border-bottom: 1px solid lightgray;
+  /* border-bottom: 1px solid lightgray; */
+}
+.line {
+  width: 252px;
+  text-align: center;
+  margin: auto;
+  border: 0.7px solid lightgray;
 }
 .detail > .address {
-  padding-right: 10px;
+  padding-right: 14px;
   font-size: 16px;
   text-align: right;
 }
 .detail > .price {
-  padding-right: 10px;
+  padding-right: 14px;
 
   text-align: right;
 }
