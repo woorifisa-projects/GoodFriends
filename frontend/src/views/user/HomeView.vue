@@ -2,13 +2,21 @@
   <div id="main-page">
     <CommonBannerVue />
     <div class="main">
-      <div class="search-bar">
-        <input type="text" id="search" @keyup.enter="onClickSearch" v-model="keyword" />
-        <label @click="onClickSearch">
-          <span class="material-icons-outlined"> search </span>
-        </label>
+      <div class="search">
+        <div class="search-bar">
+          <input
+            type="text"
+            id="search"
+            @keyup.enter="onClickSearch"
+            v-model="keyword"
+            placeholder="상품 검색하기"
+          />
+          <label @click="onClickSearch">
+            <span class="material-icons-outlined"> search </span>
+          </label>
+        </div>
+        <CategoryList v-model:selectedCategory="selectedCategory" />
       </div>
-      <CategoryList v-model:selectedCategory="selectedCategory" />
       <div v-if="products.length" class="card-list">
         <ProductCardVue :products="products" @click="onClickProductCard" />
       </div>
@@ -98,10 +106,14 @@ onMounted(async () => {
   /* margin-top: 24px; */
   padding: 10px 200px;
 }
+.search {
+  display: flex;
+  flex-direction: column;
+}
 
 .search-bar {
   position: relative;
-  width: 40%;
+  width: 100%;
   margin-top: 12px;
   margin-right: 24px;
   right: 0;
@@ -116,13 +128,15 @@ onMounted(async () => {
   padding: 12px;
   font-size: 18px;
   border-radius: 24px;
-  border: 1px solid black;
+  border: 1px solid rgb(240, 240, 240);
 }
 .search-bar > label {
   position: absolute;
   right: 12px;
   top: 12px;
   cursor: pointer;
+  color: #888888;
+  /* color: rgb(240, 240, 240); */
 }
 .card-list {
   margin: auto;
@@ -144,11 +158,11 @@ onMounted(async () => {
   padding-right: 20px;
 }
 .add-button > button {
-  border: 1px solid black;
-  box-shadow: 1px 1px 10px rgba(123, 123, 123, 0.45);
+  border: 1px solid rgb(240, 240, 240);
+  box-shadow: 1px 1px 6px rgba(161, 161, 161, 0.224);
   /* background-color: var(--product-add-btn-bg); */
   background-color: white;
-  color: var(--product-add-btn-text);
+  color: #888888;
   border-radius: 50%;
   width: 64px;
   height: 64px;
@@ -171,6 +185,22 @@ onMounted(async () => {
 @media screen and (max-width: 1023px) {
   #main-page {
     padding: 10px 0;
+  }
+  .search {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 48px;
+  }
+  .search-bar {
+    width: fit-content;
+    /* height: fit-content; */
+    margin-top: 0;
+    margin-left: 0;
+  }
+  .search-bar > label {
+    margin-top: 12px;
   }
   .main {
     padding: 0;
@@ -210,6 +240,9 @@ onMounted(async () => {
   }
   .card-list {
     grid-template-columns: 1fr;
+  }
+  .search {
+    padding: 0 12px;
   }
 }
 </style>
