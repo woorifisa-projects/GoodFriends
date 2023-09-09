@@ -3,7 +3,7 @@ export interface IReport {
   id: number;
 }
 
-// 상품 신고 등록시 사용할 interface
+// 게시글 신고 등록시 사용할 interface
 export interface IPostReport {
   reportCategory: string;
   reportDetail: string;

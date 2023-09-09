@@ -1,5 +1,5 @@
 export const REPORT = {
-  TITLE_PRODUCT: '상품 신고',
+  TITLE_PRODUCT: '게시글 신고',
   CIRCLE_ONE: '1',
   CIRCLE_TWO: '2',
   SEMI_TITLE_ONE: '아래에 신고 사유를 선택해 주세요.',

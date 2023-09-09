@@ -112,7 +112,7 @@ const submit = async () => {
   font-size: 36px;
   font-weight: 700;
   line-height: 47px;
-  color: rgb(51, 61, 75);
+  color: rgb(0, 0, 0);
   font-family: 'LINESeedKR-Bd';
   margin: 20px 0;
 }

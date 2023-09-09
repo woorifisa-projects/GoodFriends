@@ -11,7 +11,7 @@ const reportAPI = {
   },
   headers: {},
   postReport: (token: string, body: IPostReport): Promise<INoContent> => {
-    // 상품 신고 등록
+    // 게시글 신고 등록
     return api
       .post(reportAPI.endPoint.postReport, body, {
         headers: {

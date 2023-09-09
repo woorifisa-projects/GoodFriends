@@ -9,7 +9,7 @@ import SellView from '@/views/user/profile/SellView.vue';
 import AddProduct from '@/views/user/AddProductView.vue';
 import EditProduct from '@/views/user/EditProductView.vue';
 import ProductView from '@/views/user/ProductView.vue';
-import ProductReportView from '@/views/user/ProductReportView.vue';
+import BoardReportView from '@/views/user/BoardReportView.vue';
 import NotFoundView from '@/views/user/NotFoundView.vue';
 import OrderView from '@/views/user/OrderView.vue';
 import ReceiveCodeView from '@/views/user/ReceiveCodeView.vue';
@@ -37,7 +37,7 @@ const router = createRouter({
         { path: 'profile/:id/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/:id/sell', name: 'sell', component: SellView },
         { path: 'product/:id', name: 'product', component: ProductView },
-        { path: 'report/:id', name: 'report category', component: ProductReportView },
+        { path: 'report/:id', name: 'report category', component: BoardReportView },
         { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
