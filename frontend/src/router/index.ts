@@ -38,12 +38,7 @@ const router = createRouter({
         { path: 'profile/:id/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/:id/sell', name: 'sell', component: SellView },
         { path: 'product/:id', name: 'product', component: ProductView },
-        { path: 'product/report/:id/1', name: 'report category', component: ProductReportView },
-        {
-          path: 'product/report/:id/2',
-          name: 'report content',
-          component: ProductReportContentView
-        },
+        { path: 'report/:id', name: 'report category', component: ProductReportView },
         { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },

@@ -7,19 +7,29 @@
       <div class="report-detail">
         <ol>
           <li>
-            <div class="report-content">
-              <div class="circle">{{ REPORT.CIRCLE_ONE }}</div>
-              <h2 class="semi-title">{{ REPORT.SEMI_TITLE_ONE }}</h2>
+            <div class="report-reason">
+              <div class="reason-circle">{{ REPORT.CIRCLE_ONE }}</div>
+              <h2 class="reason-title">{{ REPORT.SEMI_TITLE_ONE }}</h2>
             </div>
-            <div style="height: 754.797px; overflow: visible">
+            <div style="height: 500px; overflow: visible">
+              <div class="report-category">
+                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_ONE }}</div>
+                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_TWO }}</div>
+                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_THREE }}</div>
+                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_FOUR }}</div>
+                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_FIVE }}</div>
+                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_ETC }}</div>
+              </div>
+            </div>
+            <div class="report-reason">
+              <div class="reason-circle">{{ REPORT.CIRCLE_TWO }}</div>
+              <h2 class="reason-title">{{ REPORT.SEMI_TITLE_TWO }}</h2>
+            </div>
+            <div style="height: 500px; overflow: visible">
               <div>
-                <div class="category">
-                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_ONE }}</div>
-                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_TWO }}</div>
-                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_THREE }}</div>
-                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_FOUR }}</div>
-                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_FIVE }}</div>
-                  <div class="category-content">{{ REPORT.CATEGORY_CONTENT_ETC }}</div>
+                <div class="report-content">
+                  <h3 class="content-title">{{ REPORT.REPORT_CONTENT }}</h3>
+                  <div class="content-detail">{{ REPORT.REPORT_DETAIL }}</div>
                 </div>
                 <button class="p-button" type="button" aria-disabled="false">
                   {{ REPORT.BUTTON }}
@@ -58,11 +68,7 @@ import { REPORT } from '@/constants/strings/report';
   font-family: 'LINESeedKR-Bd';
   margin: 20px 0;
 }
-.semi-title {
-  font-size: 20px;
-  align-items: center;
-}
-.report-content {
+.report-reason {
   display: flex;
   -webkit-box-align: center;
   align-items: center;
@@ -71,7 +77,7 @@ import { REPORT } from '@/constants/strings/report';
   opacity: 1;
   transition: opacity 0.3s;
 }
-.circle {
+.reason-circle {
   width: 32px;
   height: 32px;
   background-color: #3182f6;
@@ -81,9 +87,14 @@ import { REPORT } from '@/constants/strings/report';
   align-items: center;
   font-size: 16px; /* 숫자의 크기를 조절할 수 있습니다. */
   color: white; /* 숫자의 색상을 설정할 수 있습니다. */
-  margin: 5px;
+  margin: 0px;
 }
-.category {
+.reason-title {
+  font-size: 20px;
+  align-items: center;
+  margin-left: 10px;
+}
+.report-category {
   display: flex;
   flex-direction: column;
   margin-bottom: 40px;
@@ -101,6 +112,28 @@ import { REPORT } from '@/constants/strings/report';
   margin-bottom: 12px;
   /* border: 0.1px solid rgb(173, 173, 173); */
 }
+.report-content {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+.content-title {
+  font-size: 24px;
+}
+.content-detail {
+  background-color: rgb(249, 250, 251);
+  border: 1px solid rgb(200, 200, 200);
+  border-radius: 6px;
+  width: 100%;
+  padding: 12px 18px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: rgb(78, 89, 104);
+  margin: 0;
+  margin-bottom: 12px;
+  height: 350px;
+}
 .p-button {
   border-radius: var(--radius-m);
   line-height: 26px;
@@ -112,22 +145,7 @@ import { REPORT } from '@/constants/strings/report';
   font-family: 'LINESeedKR-Bd';
   flex: 1;
 }
-.category-1:hover {
-  filter: brightness(90%);
-}
-.category-2:hover {
-  filter: brightness(90%);
-}
-.category-3:hover {
-  filter: brightness(90%);
-}
-.category-4:hover {
-  filter: brightness(90%);
-}
-.category-5:hover {
-  filter: brightness(90%);
-}
-.category-6:hover {
+.category-content:hover {
   filter: brightness(90%);
 }
 button:hover {
