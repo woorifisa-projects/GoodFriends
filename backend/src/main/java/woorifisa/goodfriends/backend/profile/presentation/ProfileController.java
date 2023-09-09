@@ -1,11 +1,13 @@
 package woorifisa.goodfriends.backend.profile.presentation;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsSellList;
 import woorifisa.goodfriends.backend.profile.application.ProfileService;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
@@ -46,5 +48,13 @@ public class ProfileController {
         userService.saveProfileImage(loginUser.getId(), multipartFile);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/me/sell-list") //
+    public ResponseEntity<ProductViewsSellList> sellProductList(@AuthenticationPrincipal LoginUser loginUser,
+                                                                @RequestParam String productStatus) {
+        ProductViewsSellList responses = profileService.sellProductList(loginUser.getId(), productStatus);
+
+        return ResponseEntity.ok().body(responses);
     }
 }

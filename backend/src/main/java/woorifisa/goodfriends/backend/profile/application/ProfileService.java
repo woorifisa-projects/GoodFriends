@@ -2,12 +2,22 @@ package woorifisa.goodfriends.backend.profile.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import woorifisa.goodfriends.backend.product.domain.Product;
+import woorifisa.goodfriends.backend.product.domain.ProductImageRepository;
+import woorifisa.goodfriends.backend.product.domain.ProductRepository;
+import woorifisa.goodfriends.backend.product.domain.ProductStatus;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewSellList;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsSellList;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -16,9 +26,15 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
 
-    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository) {
+    private final ProductRepository productRepository;
+
+    private final ProductImageRepository productImageRepository;
+
+    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.productImageRepository = productImageRepository;
     }
 
     public ProfileViewResponse viewProfile(Long userId) {
@@ -61,5 +77,29 @@ public class ProfileService {
             profile.updateAccountNumber(request.getAccountNumber());
             profileRepository.save(profile);
         }
+    }
+
+    public ProductViewsSellList sellProductList(Long userId, String productStatus) {
+        List<Product> products;
+
+        if(productStatus.equals("ALL")) {
+            products = productRepository.findAllByUserId(userId);
+        }
+        else {
+            ProductStatus status = ProductStatus.valueOf(productStatus);
+            products = productRepository.findAllByProductStatusAndUserId(status, userId);
+        }
+
+        List<ProductViewSellList> responses = products.stream()
+                .map(product -> {
+                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
+                        ProductViewSellList response = new ProductViewSellList(
+                                product.getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
+
+                        return response;
+                })
+                .collect(Collectors.toList());
+
+        return new ProductViewsSellList(responses);
     }
 }
