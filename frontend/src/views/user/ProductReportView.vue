@@ -29,7 +29,16 @@
               <div>
                 <div class="report-content">
                   <h3 class="content-title">{{ REPORT.REPORT_CONTENT }}</h3>
-                  <div class="content-detail">{{ REPORT.REPORT_DETAIL }}</div>
+                  <div class="content-detail">
+                    <label for="detail"> </label>
+                    <textarea
+                      name=""
+                      id="detail"
+                      placeholder="신고 내용을 적어주세요"
+                      v-model="data.reportDetail"
+                    ></textarea>
+                    <div class="text-length">{{ data.reportDetail.length }} / {{ maxLength }}</div>
+                  </div>
                 </div>
                 <button class="submit-btn" @click="submit">
                   {{ REPORT.BUTTON }}
@@ -63,6 +72,7 @@ const data = ref<IPostReport>({
 
 const isDisabled = ref(true);
 const id = route.params.id?.toString() || '0';
+const maxLength = ref(200);
 
 const submit = async () => {
   // 신고 카테고리, 신고 내용 값이 들어있는지 체크
@@ -110,7 +120,7 @@ const submit = async () => {
   display: flex;
   -webkit-box-align: center;
   align-items: center;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
   cursor: pointer;
   opacity: 1;
   transition: opacity 0.3s;
@@ -118,7 +128,7 @@ const submit = async () => {
 .reason-circle {
   width: 32px;
   height: 32px;
-  background-color: #3182f6;
+  background-color: #198bf3;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -157,32 +167,36 @@ const submit = async () => {
 }
 .content-title {
   font-size: 24px;
+  margin-bottom: 10px;
 }
-.content-detail {
+.content-detail textarea {
   background-color: rgb(249, 250, 251);
   border: 1px solid rgb(200, 200, 200);
   border-radius: 6px;
   width: 100%;
   padding: 12px 18px;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 24px;
   color: rgb(78, 89, 104);
   margin: 0;
   margin-bottom: 12px;
-  height: 350px;
+  height: 300px;
+}
+.text-length {
+  text-align: end;
 }
 .submit-btn {
+  flex: 1;
+  font-family: 'LINESeedKR-Bd';
+  font-size: 20px;
+  padding: 16px 24px;
   border-radius: var(--radius-m);
   line-height: 26px;
-  background-color: #3182f6;
   justify-content: center;
   width: 100%;
   color: azure;
-  padding: 16px 24px;
-  font-family: 'LINESeedKR-Bd';
-  flex: 1;
-  font-size: 20px;
+  background-color: #198bf3;
 }
 .category-content:hover {
   filter: brightness(90%);
