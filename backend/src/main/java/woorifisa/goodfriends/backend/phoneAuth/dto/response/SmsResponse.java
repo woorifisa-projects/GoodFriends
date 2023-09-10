@@ -11,18 +11,16 @@ public class SmsResponse {
     private LocalDateTime requestTime;
     private String statusCode;
     private String statusName;
-    private String smsConfirmNum;
+    public SmsResponse() {
 
-    public SmsResponse(String smsConfirmNum){
-        this.smsConfirmNum = smsConfirmNum;
     }
 
-    public SmsResponse(String requestId, LocalDateTime requestTime, String statusCode, String statusName, String smsConfirmNum) {
+
+    public SmsResponse(String requestId, LocalDateTime requestTime, String statusCode, String statusName) {
         this.requestId = requestId;
         this.requestTime = requestTime;
         this.statusCode = statusCode;
         this.statusName = statusName;
-        this.smsConfirmNum = smsConfirmNum;
     }
 
     public String getRequestId() {
@@ -39,9 +37,5 @@ public class SmsResponse {
 
     public String getStatusName() {
         return statusName;
-    }
-
-    public String getSmsConfirmNum() {
-        return smsConfirmNum;
     }
 }
