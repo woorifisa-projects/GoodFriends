@@ -15,17 +15,27 @@
               v-model="userInputInfo.accountType"
               :disabled="isDisabled"
             >
-              <option value="default" disabled>은행</option>
+              <option value="default" disabled>{{ SELECT.ACCOUNT_SELECT }}</option>
               <option :value="account" v-for="(account, index) in accountList" :key="index">
                 {{ ACCOUNT[account] }}
               </option>
             </select>
-            <input v-model="userInputInfo.accountNumber" type="text" :disabled="isDisabled" />
+            <input
+              v-model="userInputInfo.accountNumber"
+              type="text"
+              :placeholder="PLACEHOLDER.ACCOUNT_INPUT"
+              :disabled="isDisabled"
+            />
           </div>
 
           <div class="item">
             <label>{{ PROFILE.NICKNAME }}</label>
-            <input type="text" v-model="userInputInfo.nickName" :disabled="isDisabled" />
+            <input
+              type="text"
+              v-model="userInputInfo.nickName"
+              :placeholder="PLACEHOLDER.NICKNAME_INPUT"
+              :disabled="isDisabled"
+            />
           </div>
           <div class="item">
             <label>{{ PROFILE.PHONE_NUMBER }}</label>
@@ -35,7 +45,7 @@
               :disabled="isDisabled"
               @change="onChangePhoneNumber"
               @input="onInputPhoneNumber"
-              :placeholder="PLACEHOLDER.PHONE"
+              :placeholder="PLACEHOLDER.PHONE_INPUT"
             />
           </div>
           <div class="item">
@@ -43,7 +53,7 @@
             <input
               type="text"
               v-model="userInputInfo.address"
-              placeholder="주소를 입력해주세요"
+              :placeholder="PLACEHOLDER.ADDRESS_INPUT"
               disabled
             />
             <AddressAPI v-show="!isDisabled" @click="searchAddress" :text="PROFILE.GET_ADDRESS" />
@@ -55,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ALERT, PLACEHOLDER, PROFILE } from '@/constants/strings/profile';
+import { ALERT, PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { onMounted, ref } from 'vue';
 import { checkPhoneNumber } from '@/utils/validation';
@@ -70,6 +80,7 @@ import { LOCAL_STORAGE } from '@/constants/localStorage';
 import { ACCOUNT, ACCOUNT_LIST } from '@/constants/account';
 import { goPageWithReload } from '@/utils/goPage';
 import { ERROR_MSG } from '@/constants/strings/error';
+import { PLACEHOLDER, SELECT } from '@/constants/strings/defaultInput';
 
 const router = useRoute();
 const store = useUserInfoStore();
@@ -79,7 +90,7 @@ const userInputInfo = ref<IProfileEdit>({
   nickName: '',
   address: '',
   mobileNumber: '',
-  accountType: '',
+  accountType: 'default',
   accountNumber: ''
 });
 const accountList = ref(ACCOUNT_LIST);

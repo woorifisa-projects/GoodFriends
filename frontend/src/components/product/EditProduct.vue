@@ -4,16 +4,21 @@
       <div class="input-detail box">
         <div class="title-price">
           <div>
-            <label for="">제목</label>
-            <input type="text" id="title" placeholder="제목" v-model="data.title" />
+            <label for="">{{ LABEL.TITLE_LABEL }}</label>
+            <input
+              type="text"
+              id="title"
+              :placeholder="PLACEHOLDER.TITLE_INPUT"
+              v-model="data.title"
+            />
           </div>
 
           <div>
-            <label for="">가격</label>
+            <label for="">{{ LABEL.PRICE_LABEL }}</label>
             <input
               onfocus="this.select()"
               type="number"
-              placeholder="가격"
+              :placeholder="PLACEHOLDER.PRICE_INPUT"
               id="price"
               v-model="data.sellPrice"
             />
@@ -21,7 +26,7 @@
         </div>
 
         <div class="explain detail">
-          <label for="explain">{{ PRODUCT.DESCRIPTION }}</label>
+          <label for="explain">{{ LABEL.DESCRIPTION_LABEL }}</label>
           <textarea name="" id="explain" cols="30" rows="10" v-model="data.description"></textarea>
           <div class="text-length">{{ data.description.length }}/{{ maxLength }}</div>
         </div>
@@ -39,7 +44,7 @@
         <div class="category">
           <span for="category">{{ PRODUCT.CATEGORY }}</span>
           <select name="" id="" v-model="data.productCategory">
-            <option disabled value="ALL">{{ PRODUCT.PLEASE_SELECT }}</option>
+            <option disabled value="ALL">{{ SELECT.CATEGORY_SELECT }}</option>
             <option v-for="(category, index) in categories.slice(1)" :key="index" :value="category">
               {{ CATEGORY[category] }}
             </option>
@@ -49,7 +54,7 @@
           <span for="image">{{ PRODUCT.IMAGE }}</span>
           <div class="image-label">
             <label for="image">
-              {{ PRODUCT.UPLOAD }}
+              {{ LABEL.FILE_LABEL }}
             </label>
             <div class="image-length">{{ inputImage.length }}/{{ maxImage }}</div>
           </div>
@@ -101,6 +106,7 @@ import router from '@/router';
 import type { IPostProduct } from '@/types/product';
 import type { IStringToFunction } from '@/types/dynamic';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { LABEL, PLACEHOLDER, SELECT } from '@/constants/strings/defaultInput';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();

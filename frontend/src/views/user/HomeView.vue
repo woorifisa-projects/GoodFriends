@@ -9,7 +9,7 @@
             id="search"
             @keyup.enter="onClickSearch"
             v-model="keyword"
-            placeholder="상품 검색하기"
+            :placeholder="PLACEHOLDER.SEARCH_INPUT"
           />
           <label @click="onClickSearch">
             <span class="material-icons-outlined"> search </span>
@@ -39,6 +39,7 @@ import CategoryList from '@/components/CategoryList.vue';
 import productAPI from '@/apis/user/product';
 import type { IAllProduct } from '@/types/product';
 import EmptyProduct from '@/components/EmptyProduct.vue';
+import { PLACEHOLDER } from '@/constants/strings/defaultInput';
 
 const selectedCategory = ref('ALL');
 
