@@ -15,7 +15,6 @@ public class SmsResponse {
 
     }
 
-
     public SmsResponse(String requestId, LocalDateTime requestTime, String statusCode, String statusName) {
         this.requestId = requestId;
         this.requestTime = requestTime;

@@ -22,14 +22,16 @@ public class SmsController {
         this.smsService = smsService;
     }
 
+    //SMS 인증번호 전송
     @PostMapping("/user")
-    public void phoneNumberAuth(@RequestBody Request request) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
+    public ResponseEntity<SmsResponse> phoneNumberAuth(@RequestBody Request request) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
         this.createPhoneAuthNum = new CreatePhoneAuthNum();
         SmsResponse data = smsService.sendSms(request.getRecipientPhoneNumber(),createPhoneAuthNum.getAuthNumber());
-//        return ResponseEntity.ok().body(data);
 
+        return ResponseEntity.ok().body(data);
     }
 
+    //SMS 인증번호 검증
     @GetMapping("/user/check/{inputAuthNum}")
     public String receiveAuthNumber (@PathVariable int inputAuthNum){
         String result = smsService.checkPhoneAuthNum(inputAuthNum,createPhoneAuthNum.getAuthNumber());
