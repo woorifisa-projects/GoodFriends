@@ -9,7 +9,7 @@ import org.apache.commons.codec.binary.Base64;
 
 public class CreateSignature {
 
-    public String getSignature(String time,String accessKey,String secretKey,String serviceId) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
+    public String getSignature(Long time,String accessKey,String secretKey,String serviceId) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
         String space = " ";
         String newLine = "\n";
         String method = "POST";
