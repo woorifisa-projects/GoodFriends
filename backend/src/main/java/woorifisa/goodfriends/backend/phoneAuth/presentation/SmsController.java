@@ -3,7 +3,7 @@ package woorifisa.goodfriends.backend.phoneAuth.presentation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import woorifisa.goodfriends.backend.phoneAuth.application.CreatePhoneAuthNum;
+import woorifisa.goodfriends.backend.phoneAuth.domain.CreatePhoneAuthNum;
 import woorifisa.goodfriends.backend.phoneAuth.application.SmsService;
 import woorifisa.goodfriends.backend.phoneAuth.dto.request.Request;
 import woorifisa.goodfriends.backend.phoneAuth.dto.response.SmsResponse;

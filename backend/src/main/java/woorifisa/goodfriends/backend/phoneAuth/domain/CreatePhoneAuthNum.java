@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.phoneAuth.application;
+package woorifisa.goodfriends.backend.phoneAuth.domain;
 
 public class CreatePhoneAuthNum {
 
