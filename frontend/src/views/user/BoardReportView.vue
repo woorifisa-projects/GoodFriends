@@ -13,12 +13,21 @@
             </div>
             <div style="height: 500px; overflow: visible">
               <div class="report-category">
-                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_ONE }}</div>
-                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_TWO }}</div>
-                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_THREE }}</div>
-                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_FOUR }}</div>
-                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_FIVE }}</div>
-                <div class="category-content">{{ REPORT.CATEGORY_CONTENT_ETC }}</div>
+                <div>
+                  <label
+                    v-for="category in REPORT.CATEGORIES"
+                    :key="category"
+                    class="category-item"
+                  >
+                    <input
+                      type="radio"
+                      :value="category"
+                      v-model="data.reportCategory"
+                      class="category-radio"
+                    />
+                    {{ category }}
+                  </label>
+                </div>
               </div>
             </div>
             <div class="report-reason">
@@ -72,7 +81,7 @@ const data = ref<IPostReport>({
 
 const isDisabled = ref(true);
 const id = route.params.id?.toString() || '0';
-const maxLength = ref(200);
+const maxLength = ref(300);
 
 const submit = async () => {
   // 신고 카테고리, 신고 내용 값이 들어있는지 체크
@@ -85,12 +94,17 @@ const submit = async () => {
     return;
   }
   loadingStore.setLoading(true);
-  const res = await reportAPI.postReport(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '', {
-    ...data.value
-  });
+  const res = await reportAPI.postReport(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    id,
+    {
+      ...data.value
+    }
+  );
   loadingStore.setLoading(false);
   if (res.isSuccess) {
     isDisabled.value = true;
+    alert('신고가 접수되었습니다.');
   }
 };
 </script>
@@ -147,7 +161,27 @@ const submit = async () => {
   flex-direction: column;
   margin-bottom: 40px;
 }
+.category-item {
+  display: flex;
+  align-items: center;
+
+  background-color: rgb(249, 250, 251);
+  border-radius: 6px;
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: rgb(78, 89, 104);
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+.category-radio {
+  margin-right: 8px; /* 라디오 버튼 간의 간격 조절 */
+}
 .category-content {
+  /* 현재 사용안함 -> category-item으로 대체 */
   background-color: rgb(249, 250, 251);
   border-radius: 6px;
   width: 100%;
@@ -159,6 +193,12 @@ const submit = async () => {
   margin: 0;
   margin-bottom: 12px;
   /* border: 0.1px solid rgb(173, 173, 173); */
+}
+/* 선택된 라디오 버튼 스타일 */
+.category-item input[type='radio']:checked {
+  border-color: #198bf3; /* 선택된 상태의 테두리 색상 */
+  background-color: #198bf3; /* 선택된 상태의 배경 색상 */
+  color: #fff; /* 선택된 상태의 텍스트 색상 */
 }
 .report-content {
   display: flex;
@@ -198,7 +238,7 @@ const submit = async () => {
   color: azure;
   background-color: #198bf3;
 }
-.category-content:hover {
+.category-item:hover {
   filter: brightness(90%);
 }
 button:hover {

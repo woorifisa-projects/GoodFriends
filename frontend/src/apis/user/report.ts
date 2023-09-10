@@ -10,16 +10,17 @@ const reportAPI = {
     postReport: `api/report/`
   },
   headers: {},
-  postReport: (token: string, body: IPostReport): Promise<INoContent> => {
+  postReport: (token: string, productId: string, body: IPostReport): Promise<INoContent> => {
     // 게시글 신고 등록
     return api
-      .post(reportAPI.endPoint.postReport, body, {
+      .post(reportAPI.endPoint.postReport + productId, body, {
         headers: {
           ...headers,
           Authorization: `Bearer ${token}`
         }
       })
       .then((res: AxiosResponse) => {
+        console.log(res);
         return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error) => {
