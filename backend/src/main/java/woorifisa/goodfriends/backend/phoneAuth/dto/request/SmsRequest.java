@@ -2,7 +2,7 @@ package woorifisa.goodfriends.backend.phoneAuth.dto.request;
 
 
 import lombok.Builder;
-import woorifisa.goodfriends.backend.phoneAuth.dto.MessageDto;
+import woorifisa.goodfriends.backend.phoneAuth.dto.MessagesDto;
 import java.util.List;
 
 
@@ -14,15 +14,15 @@ public class SmsRequest {
     private String countryCode;
     private String from;
     private String content;
-    private List<MessageDto> message;
+    private List<MessagesDto> messages;
 
-    public SmsRequest(String type, String contentType, String countryCode, String from, String content, List<MessageDto> message) {
+    public SmsRequest(String type, String contentType, String countryCode, String from, String content, List<MessagesDto> messages) {
         this.type = type;
         this.contentType = contentType;
         this.countryCode = countryCode;
         this.from = from;
         this.content = content;
-        this.message = message;
+        this.messages = messages;
     }
 
     public String getType() {
@@ -45,7 +45,7 @@ public class SmsRequest {
         return content;
     }
 
-    public List<MessageDto> getMessage() {
-        return message;
+    public List<MessagesDto> getMessages() {
+        return messages;
     }
 }
