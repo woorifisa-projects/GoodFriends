@@ -40,7 +40,7 @@ public class ReportService {
         User foundUser = userRepository.getById(loginUser.getId());
         Product foundProduct = productRepository.getByProductIdAndUserId(productId);
 
-        Report newReport = createBoardReport(foundUser, foundProduct, request);
+        Report newReport = createReport(foundUser, foundProduct, request);
         reportRepository.save(newReport);
 
         // 신고 당한 유저는 횟수 + 1 증가
@@ -63,7 +63,7 @@ public class ReportService {
         userRepository.save(foundProduct.getUser());
         return newReport.getId();
     }
-    private Report createBoardReport(User user, Product product , ReportSaveRequest request) {
+    private Report createReport(User user, Product product , ReportSaveRequest request) {
         Report newReport = Report.builder()
                 .reportCategory(request.getReportCategory())
                 .content(request.getContent())
