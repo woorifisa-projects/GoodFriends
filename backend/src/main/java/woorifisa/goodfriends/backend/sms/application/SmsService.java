@@ -76,7 +76,7 @@ public class SmsService {
 
         HttpEntity<String> body = new HttpEntity<>(jsonBody,headers);
 
-//        System.out.println(jsonBody);
+        System.out.println(jsonBody);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
