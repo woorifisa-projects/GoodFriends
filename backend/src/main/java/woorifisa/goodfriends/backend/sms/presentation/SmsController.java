@@ -1,12 +1,12 @@
-package woorifisa.goodfriends.backend.phoneAuth.presentation;
+package woorifisa.goodfriends.backend.sms.presentation;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import woorifisa.goodfriends.backend.phoneAuth.domain.CreatePhoneAuthNum;
-import woorifisa.goodfriends.backend.phoneAuth.application.SmsService;
-import woorifisa.goodfriends.backend.phoneAuth.dto.request.Request;
-import woorifisa.goodfriends.backend.phoneAuth.dto.response.SmsResponse;
+import woorifisa.goodfriends.backend.sms.domain.CreatePhoneAuthNum;
+import woorifisa.goodfriends.backend.sms.application.SmsService;
+import woorifisa.goodfriends.backend.sms.dto.request.Request;
+import woorifisa.goodfriends.backend.sms.dto.response.SmsResponse;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;

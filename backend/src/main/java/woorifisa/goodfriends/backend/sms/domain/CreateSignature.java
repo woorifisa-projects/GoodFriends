@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.phoneAuth.domain;
+package woorifisa.goodfriends.backend.sms.domain;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
