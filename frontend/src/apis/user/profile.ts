@@ -9,7 +9,8 @@ const profileAPI = {
     editProfile: `api/profile/me/info/`,
     editProfileImg: `api/profile/me/profile-image/`,
     getProfile: `api/profile/me/`,
-    getSellList: `api/profile/me/sell-list`
+    getSellList: `api/profile/me/sell-list`,
+    getPurchaseList: `api/profile/me/purchase-list`
   },
 
   getProfile: (token: string | null): Promise<IResultType<IProfile>> => {
@@ -81,6 +82,33 @@ const profileAPI = {
     return api
       .get(profileAPI.endPoint.getSellList, {
         params: { productStatus },
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res: AxiosResponse) => {
+        const { data } = res;
+        return { isSuccess: true, data: data.responses, code: res.status };
+      })
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
+      });
+  },
+  getPurchaseList: (
+    token: string,
+    confirmStatus: string
+  ): Promise<IResultType<Array<ISellAndPurchaseList>>> => {
+    return api
+      .get(profileAPI.endPoint.getPurchaseList, {
+        params: { confirmStatus },
         headers: {
           ...headers,
           Authorization: `Bearer ${token}`
