@@ -30,7 +30,14 @@ export const ORDER_MODAL = {
 };
 
 export const PRODUCT_STATUS: IStringToString = {
+  ALL: '전체',
   SELL: '판매중',
   RESERVATION: '예약중',
   COMPLETED: '거래완료'
+};
+
+export const CONFIRM_STATUS: IStringToString = {
+  ALL: '전체',
+  ORDERING: '주문중',
+  COMPLETED: '주문완료'
 };
