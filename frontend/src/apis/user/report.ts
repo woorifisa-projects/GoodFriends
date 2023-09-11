@@ -7,13 +7,14 @@ const api = apiInstance();
 
 const reportAPI = {
   endPoint: {
-    postReport: `api/report/`
+    postReport: `api/report`
   },
   headers: {},
   postReport: (token: string, productId: string, body: IPostReport): Promise<INoContent> => {
     // 게시글 신고 등록
     return api
-      .post(reportAPI.endPoint.postReport + productId, body, {
+      .post(reportAPI.endPoint.postReport, body, {
+        params: { productId },
         headers: {
           ...headers,
           Authorization: `Bearer ${token}`

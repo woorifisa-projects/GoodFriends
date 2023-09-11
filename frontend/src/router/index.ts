@@ -37,7 +37,11 @@ const router = createRouter({
         { path: 'profile/:id/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/:id/sell', name: 'sell', component: SellView },
         { path: 'product/:id', name: 'product', component: ProductView },
-        { path: 'report/:id', name: 'report category', component: BoardReportView },
+        {
+          path: 'report/:productId',
+          name: 'board report',
+          component: BoardReportView
+        },
         { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
