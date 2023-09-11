@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
+import woorifisa.goodfriends.backend.offender.domain.Offender;
+import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.product.domain.*;
 import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
@@ -11,6 +13,7 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
+import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
@@ -37,16 +40,25 @@ public class ProductService {
     private final S3Service s3Service;
 
     private final ProfileRepository profileRepository;
+    private final OffenderRepository offenderRepository;
 
-    public ProductService(UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, S3Service s3Service, ProfileRepository profileRepository) {
+    public ProductService(UserRepository userRepository, ProductRepository productRepository,
+                          ProductImageRepository productImageRepository, S3Service s3Service,
+                          ProfileRepository profileRepository, OffenderRepository offenderRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.s3Service = s3Service;
         this.profileRepository = profileRepository;
+        this.offenderRepository = offenderRepository;
     }
 
     public Long saveProduct(Long userId, ProductSaveRequest request) throws IOException {
+
+        //부정행위자로 등록된 유저는 상품 등록 못하도록
+        if(existOffender(userId)) {
+            throw new NotAccessProduct();
+        }
 
         //프로필 등록해야 상품 등록 가능하도록
         if(!existProfile(userId)) {
@@ -61,6 +73,10 @@ public class ProductService {
         saveImages(newProduct.getId(), request.getImageUrls());
 
         return newProduct.getId();
+    }
+    public boolean existOffender(Long userId) {
+        Offender offender = offenderRepository.findByUserId(userId).orElse(null);
+        return offender != null;
     }
 
     public boolean existProfile(Long userId) {
