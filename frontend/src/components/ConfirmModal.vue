@@ -1,7 +1,6 @@
 <template>
   <CommonModalVue :is-visible="props.isVisible" @updateVisible="emits('update:isVisible', $event)">
     <div class="modal">
-      <div class="modal-title">확인창</div>
       <div class="modal-contents">
         <div>
           <p v-for="(text, index) in props.content" :key="index">{{ text }}</p>
@@ -74,13 +73,17 @@ const updateResponse = (event: Event) => {
   font-family: 'LINESeedKR-Bd';
   font-size: 18px;
   width: 100px;
-  border: 1px solid lightgray;
+  border: 1px solid rgb(240, 240, 240);
   border-radius: 12px;
   padding: 12px 18px;
-}
 
+  transition: transform 0.3s ease;
+}
+.yes-btn:hover {
+  transform: scale(1.03);
+}
 .yes-btn {
-  background-color: lightblue;
+  background-color: var(--color-yellow);
 }
 @media screen and (max-width: 1200px) {
   /* .modal {

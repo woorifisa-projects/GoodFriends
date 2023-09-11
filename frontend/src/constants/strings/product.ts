@@ -8,9 +8,7 @@ export const PRODUCT = {
   EDIT: '수정하기',
   SUBMIT: '등록하기',
   IMAGE: '이미지',
-  UPLOAD: '업로드',
   CATEGORY: '카테고리',
-  PLEASE_SELECT: '선택해주세요',
   CREATE_AT: '등록일',
   REPORT: '신고하기',
   ORDER: '주문하기',
@@ -27,7 +25,8 @@ export const ORDER_MODAL = {
   REQUIREMENT: '요청사항',
   SUBMIT: '제출하기',
   ALERT_TIME: '시간을 정확히 입력해주세요(mm:dd)',
-  ALERT_DATE: '날짜를 정확히 입력해주세요'
+  ALERT_DATE: '날짜를 정확히 입력해주세요',
+  CONFIRM: ['정말 제출하시겠습니까?', '주문서는 수정이 불가능합니다.']
 };
 
 export const PRODUCT_STATUS: IStringToString = {

@@ -22,8 +22,3 @@ export const ALERT = {
   BIRTHDAY: '생년월일을 정확히 입력해주세요',
   NAME: '이름은 최소 2글자 이상, 중복되면 안됩니다'
 };
-
-export const PLACEHOLDER = {
-  BIRTHDAY: '생년월일은 8글자, yyyy-mm-dd 형식으로 입력해주세요',
-  PHONE: '핸드폰 번호를 작성해주세요'
-};

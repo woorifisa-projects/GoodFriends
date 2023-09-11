@@ -21,7 +21,7 @@ const store = useLoadingStore();
 #wrap {
   min-height: 100%;
   position: relative;
-  padding-bottom: 150px;
+  padding-bottom: 70px;
   font-family: 'LINESeedKR-Rg';
 }
 

@@ -33,30 +33,23 @@ const emits = defineEmits(['click']);
 </script>
 
 <style scoped>
-/* 
-#f6f4f9
-#fca3b9
-#fcd752
- */
 .filter {
   width: 100%;
   padding: 18px 24px 0px 24px;
+  padding-right: 56px;
   display: flex;
   flex-direction: row-reverse;
-  gap: 24px;
+  gap: 12px;
 }
 
 .filter > div {
   width: 80%;
   display: flex;
-  border: 1px solid black;
+  border: 2px solid rgb(240, 240, 240);
   border-radius: 12px;
 }
 .filter > div {
   width: 80px;
-  /*  */
-  background-color: var(--product-status-filter-bg);
-  color: var(--product-status-filter-base-text);
   text-align: center;
   border-radius: 12px;
   overflow: hidden;
@@ -72,9 +65,8 @@ const emits = defineEmits(['click']);
   height: 100%;
 }
 .filter > div > input:checked + label {
-  /*  */
-  background-color: var(--product-status-filter-point-bg);
-  color: var(--product-status-filter-point-text);
+  background-color: var(--color-yellow);
+  color: black;
 }
 .filter > div > label {
   display: block;

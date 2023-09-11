@@ -22,8 +22,8 @@
       </div>
     </div>
     <div class="wrap">
-      <div class="side">
-        <div class="list">
+      <div class="side second-side">
+        <div class="list box">
           <div class="list-item">
             <span>{{ PROFILE_SIDEBAR.MY_INFO }}</span>
             <ul>
@@ -48,7 +48,7 @@
           </div>
         </div>
       </div>
-      <div class="main second-main">
+      <div class="main second-main box">
         <slot />
       </div>
     </div>
@@ -83,10 +83,6 @@ const navList = ref([
   {
     name: '판매목록',
     path: `/profile/${user.value.id}/sell`
-  },
-  {
-    name: '거래후기',
-    path: '/'
   }
 ]);
 
@@ -157,7 +153,7 @@ onMounted(() => {
   font-size: 16px;
   text-align: center;
   margin-top: 12px;
-  border-bottom: 1px solid lightgray;
+  /* border-bottom: 1px solid rgb(240, 240, 240); */
 
   display: flex;
   position: relative;
@@ -171,7 +167,8 @@ onMounted(() => {
   transition: all 0.3s ease;
 }
 .list-item li:hover {
-  transform: scale(1.03);
+  border-bottom: 1px solid var(--color-yellow);
+  transform: scale(1.01);
 }
 
 .main {
@@ -179,9 +176,7 @@ onMounted(() => {
 }
 
 .second-main {
-  box-shadow: 2px 2px 17px rgb(186, 186, 186);
   min-height: 500px;
-  border-radius: 16px;
 }
 .img-wrap {
   width: 220px;
@@ -192,7 +187,7 @@ onMounted(() => {
   width: 220px;
   height: 220px;
 
-  border: 1px solid black;
+  border: 1px solid rgb(240, 240, 240);
   border-radius: 100%;
 
   overflow: hidden;
@@ -215,23 +210,27 @@ onMounted(() => {
 }
 .img-wrap > .profile-img-upload > label > span {
   background-color: white;
-  border: 1px solid rgba(138, 138, 138, 0.529);
+  border: 1px solid rgba(240, 240, 240, 1);
   border-radius: 50%;
   padding: 2px;
   transform: scale(1.5);
   cursor: pointer;
+  color: #888;
 }
 .list {
   width: 100%;
-  margin: 10px;
-  padding: 10px;
-
-  height: 480px;
+  margin: 0 10px;
+  padding: 16px;
+  /* height: 100%; */
   position: sticky;
+  height: 500px;
   top: 120px;
   background: white;
-  box-shadow: 2px 2px 17px rgb(186, 186, 186);
   border-radius: 16px;
+}
+.second-side {
+  background-color: transparent;
+  border: none;
 }
 
 .list-item > span {
@@ -249,10 +248,9 @@ onMounted(() => {
 .item {
   padding: 8px 16px;
 
-  background: var(--profile-list-base);
-  border: 1px solid lightgray;
+  border-bottom: 1px solid rgb(240, 240, 240);
 
-  border-radius: 8px;
+  /* border-radius: 8px; */
 }
 
 a {
@@ -261,19 +259,20 @@ a {
   height: 100%;
 }
 .cur {
-  background-color: var(--profile-list-point-bg);
-}
-
-.cur > a {
-  color: var(--profile-list-point-text);
+  border-bottom: 2px solid var(--color-yellow);
 }
 
 .first-main {
   /* TODO: 이후 거래 횟수 등 데이터 추가할 시 제거 */
-  background: linear-gradient(to bottom, lightgreen, white);
+  background: linear-gradient(to bottom, lightyellow, white);
   border-radius: 16px;
 }
 
+.box {
+  border-radius: 8px;
+  /* box-shadow: 1px 1px 10px rgba(186, 186, 186, 0.225); */
+  box-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.446);
+}
 @media screen and (max-width: 1023px) {
 }
 
@@ -296,7 +295,6 @@ a {
     height: fit-content;
 
     background: white;
-    box-shadow: 2px 2px 17px rgb(186, 186, 186);
     border-radius: 16px;
     display: flex;
     gap: 16px;

@@ -15,17 +15,27 @@
               v-model="userInputInfo.accountType"
               :disabled="isDisabled"
             >
-              <option value="default" disabled>은행</option>
+              <option value="default" disabled>{{ SELECT.ACCOUNT_SELECT }}</option>
               <option :value="account" v-for="(account, index) in accountList" :key="index">
                 {{ ACCOUNT[account] }}
               </option>
             </select>
-            <input v-model="userInputInfo.accountNumber" type="text" :disabled="isDisabled" />
+            <input
+              v-model="userInputInfo.accountNumber"
+              type="text"
+              :placeholder="PLACEHOLDER.ACCOUNT_INPUT"
+              :disabled="isDisabled"
+            />
           </div>
 
           <div class="item">
             <label>{{ PROFILE.NICKNAME }}</label>
-            <input type="text" v-model="userInputInfo.nickName" :disabled="isDisabled" />
+            <input
+              type="text"
+              v-model="userInputInfo.nickName"
+              :placeholder="PLACEHOLDER.NICKNAME_INPUT"
+              :disabled="isDisabled"
+            />
           </div>
           <div class="item">
             <label>{{ PROFILE.PHONE_NUMBER }}</label>
@@ -35,7 +45,7 @@
               :disabled="isDisabled"
               @change="onChangePhoneNumber"
               @input="onInputPhoneNumber"
-              :placeholder="PLACEHOLDER.PHONE"
+              :placeholder="PLACEHOLDER.PHONE_INPUT"
             />
           </div>
           <div class="item">
@@ -43,7 +53,7 @@
             <input
               type="text"
               v-model="userInputInfo.address"
-              placeholder="주소를 입력해주세요"
+              :placeholder="PLACEHOLDER.ADDRESS_INPUT"
               disabled
             />
             <AddressAPI v-show="!isDisabled" @click="searchAddress" :text="PROFILE.GET_ADDRESS" />
@@ -55,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { ALERT, PLACEHOLDER, PROFILE } from '@/constants/strings/profile';
+import { ALERT, PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { onMounted, ref } from 'vue';
 import { checkPhoneNumber } from '@/utils/validation';
@@ -70,6 +80,7 @@ import { LOCAL_STORAGE } from '@/constants/localStorage';
 import { ACCOUNT, ACCOUNT_LIST } from '@/constants/account';
 import { goPageWithReload } from '@/utils/goPage';
 import { ERROR_MSG } from '@/constants/strings/error';
+import { PLACEHOLDER, SELECT } from '@/constants/strings/defaultInput';
 
 const router = useRoute();
 const store = useUserInfoStore();
@@ -79,7 +90,7 @@ const userInputInfo = ref<IProfileEdit>({
   nickName: '',
   address: '',
   mobileNumber: '',
-  accountType: '',
+  accountType: 'default',
   accountNumber: ''
 });
 const accountList = ref(ACCOUNT_LIST);
@@ -166,27 +177,25 @@ onMounted(async () => {
   display: flex;
   flex-direction: row-reverse;
   gap: 20px;
+  padding-right: 48px;
 }
 
 .btn_wrap > button {
   cursor: pointer;
   font-family: 'LINESeedKR-Bd';
   font-size: 15px;
-  border: 1px solid black;
+  border: 1px solid rgb(240, 240, 240);
   height: 40px;
   width: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--product-status-filter-bg);
-  color: var(--product-status-filter-base-text);
   padding: 16px 20px;
   border-radius: 12px;
 }
 
-.btn_wrap > button:first-child {
-  background-color: var(--product-status-filter-point-bg);
-  color: var(--product-status-filter-point-text);
+.btn_wrap > button:last-child {
+  background-color: var(--color-yellow);
 }
 
 .profile_detail_wrap {
@@ -205,8 +214,7 @@ onMounted(async () => {
 .item {
   flex: 1;
 
-  width: 100%;
-  border: 1px solid rgb(180, 180, 180);
+  width: fit-content;
   border-radius: 8px;
   display: flex;
   overflow: hidden;
@@ -217,39 +225,52 @@ onMounted(async () => {
 .item > label {
   height: 100%;
   width: 100px;
-  padding: 16px;
-  background: var(--profile-label-bg);
-  color: var(--profile-label-text);
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'LINESeedKR-Bd';
+  margin-right: 24px;
+  font-size: 20px;
 }
 
 .item > input,
 .item > select {
-  width: 50%;
   display: flex;
   align-items: center;
-  border: 1px solid black;
+  border: none;
   height: fit-content;
+  font-size: 20px;
+}
+.item > input {
+  max-width: fit-content;
+  min-width: 100px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   padding: 12px;
 }
 .item > select {
-  width: fit-content;
+  width: 85px;
+
   padding: 12px;
-  text-align: center;
+  width: fit-content;
+  text-align: left;
+  border-radius: 6px;
 }
+
 .item > input:disabled,
 .item > select:disabled {
   background-color: white;
   color: black;
   border: none;
+  text-decoration: none;
 }
 .item > select:disabled {
-  border: 1px solid lightgray;
+  width: 85px;
   border-radius: 6px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 @media screen and (max-width: 1023px) {

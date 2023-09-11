@@ -30,7 +30,7 @@ function getRoadAddress() {
   padding: 12px 24px;
   border: none;
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid #888;
   border-radius: 6px;
 
   cursor: pointer;
