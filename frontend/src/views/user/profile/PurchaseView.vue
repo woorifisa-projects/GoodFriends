@@ -6,7 +6,7 @@
       :checkedStatus="checkedStatus"
       :type="CONFIRM_STATUS"
     />
-    <ItemList :items="purchaseList" :type="CONFIRM_STATUS" />
+    <ItemList :items="purchaseList" :type="CONFIRM_STATUS" :message="PRODUCT.PURCHASE_PRODUCT" />
   </DefaultMyPage>
 </template>
 
@@ -18,7 +18,8 @@ import type { ISellAndPurchaseList } from '@/types/profile';
 import { onMounted, ref } from 'vue';
 import profileAPI from '@/apis/user/profile';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
-import { CONFIRM_STATUS } from '@/constants/strings/product';
+import { CONFIRM_STATUS, PRODUCT } from '@/constants/strings/product';
+import { useLoadingStore } from '@/stores/loading';
 
 const purchaseList = ref<Array<ISellAndPurchaseList>>([]);
 const productStatus = ['ALL', 'ORDERING', 'COMPLETED'];
@@ -46,7 +47,10 @@ const onClickFilter = async (status: string) => {
 };
 
 onMounted(async () => {
+  const loadingStore = useLoadingStore();
+  loadingStore.setLoading(true);
   await getList('ALL', true);
+  loadingStore.setLoading(false);
 });
 </script>
 

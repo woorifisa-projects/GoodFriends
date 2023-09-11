@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <ul>
-      <li>
+      <li v-if="props.items.length">
         <div class="item" v-for="item in props.items" :key="item.productId" @click="onClick(item)">
           <div class="img">
             <img :src="item.imageUrl || tmpImage" alt="" />
@@ -13,6 +13,7 @@
           </div>
         </div>
       </li>
+      <EmptyProductVue v-else :text="props.message" />
     </ul>
   </div>
 </template>
@@ -23,6 +24,8 @@ import type { IStringToString } from '@/types/dynamic';
 import type { ISellAndPurchaseList } from '@/types/profile';
 import { tmpImage } from '@/utils/image';
 import { computed, ref, type PropType, onMounted } from 'vue';
+import EmptyProductVue from '../EmptyProduct.vue';
+import { PRODUCT } from '@/constants/strings/product';
 
 const props = defineProps({
   items: {
@@ -32,6 +35,10 @@ const props = defineProps({
   type: {
     type: Object as PropType<IStringToString>,
     required: true
+  },
+  message: {
+    type: String,
+    default: PRODUCT.NOTHING
   }
 });
 
