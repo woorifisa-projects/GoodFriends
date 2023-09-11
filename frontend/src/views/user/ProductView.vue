@@ -116,6 +116,7 @@ const onClickDelete = async () => {
 
 const onClickReport = () => {
   // TODO: 신고하기
+  router.push(`/report/` + id);
 };
 
 const onClickOrder = () => {

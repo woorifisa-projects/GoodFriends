@@ -1,5 +1,6 @@
 import { CATEGORY } from '@/constants/category';
 import type { IPostProduct } from '@/types/product';
+import type { IPostReport } from '@/types/report';
 
 export const checkBirthday = (birthday: string) => {
   const [year, month, day, tmp] = birthday.split('-').map(Number);
@@ -39,6 +40,20 @@ export const checkProductValue = (product: IPostProduct) => {
   ) {
     // 카테고리(ALL 제외)
     return { isSuccess: false, type: 'category' };
+  }
+  return { isSuccess: true };
+};
+
+export const checkReportCategory = (report: IPostReport) => {
+  if (!report.reportCategory) {
+    return { isSuccess: false, type: 'reportCategory' };
+  }
+  return { isSuccess: true };
+};
+
+export const checkReporDetail = (report: IPostReport) => {
+  if (!report.reportDetail) {
+    return { isSuccess: false, type: 'reportDetail' };
   }
   return { isSuccess: true };
 };

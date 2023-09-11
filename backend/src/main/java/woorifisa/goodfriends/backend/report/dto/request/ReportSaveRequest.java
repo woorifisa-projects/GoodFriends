@@ -11,6 +11,9 @@ public class ReportSaveRequest {
 
     private Content content;
 
+    protected ReportSaveRequest() {
+    }
+
     public ReportSaveRequest(ReportCategory reportCategory, Content content) {
         this.reportCategory = reportCategory;
         this.content = content;
