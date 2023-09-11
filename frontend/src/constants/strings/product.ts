@@ -25,7 +25,8 @@ export const ORDER_MODAL = {
   REQUIREMENT: '요청사항',
   SUBMIT: '제출하기',
   ALERT_TIME: '시간을 정확히 입력해주세요(mm:dd)',
-  ALERT_DATE: '날짜를 정확히 입력해주세요'
+  ALERT_DATE: '날짜를 정확히 입력해주세요',
+  CONFIRM: ['정말 제출하시겠습니까?', '주문서는 수정이 불가능합니다.']
 };
 
 export const PRODUCT_STATUS: IStringToString = {

@@ -44,8 +44,8 @@
       <button @click="checkInput">{{ ORDER_MODAL.SUBMIT }}</button>
     </div>
     <div class="confirm-window" :class="isClickSubmit ? `view` : `hidden`">
-      <p>정말 제출하시겠습니까?</p>
-      <p>주문서는 수정이 불가능합니다.</p>
+      <p v-for="(message, index) in ORDER_MODAL.CONFIRM" :key="index">{{ message }}</p>
+
       <div class="confirm-btn-wrap">
         <button @click="isClickSubmit = false">아니요</button>
         <button @click="onClickSubmit">네</button>
@@ -287,7 +287,6 @@ watchEffect(() => {
 
 input[type='date'],
 input[type='text'] {
-  /* background-color: #fcc61f; */
   padding: 13px;
   color: #000;
   font-size: 16px;

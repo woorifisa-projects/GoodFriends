@@ -137,7 +137,6 @@ onMounted(async () => {
   top: 12px;
   cursor: pointer;
   color: #888888;
-  /* color: rgb(240, 240, 240); */
 }
 .card-list {
   margin: auto;
@@ -145,7 +144,6 @@ onMounted(async () => {
   padding: 24px;
 
   display: grid;
-  /* grid-template-columns: 1fr 1fr 1fr; */
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   grid-gap: 15px;
   justify-items: center;
@@ -174,9 +172,6 @@ onMounted(async () => {
 }
 
 @media screen and (max-width: 1200px) {
-  .card-list {
-    /* grid-template-columns: 1fr 1fr; */
-  }
   .add-button {
     padding-right: 24px;
   }
@@ -195,7 +190,6 @@ onMounted(async () => {
   }
   .search-bar {
     width: fit-content;
-    /* height: fit-content; */
     margin-top: 0;
     margin-left: 0;
   }

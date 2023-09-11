@@ -34,7 +34,6 @@ const emits = defineEmits(['click']);
 .card {
   box-sizing: content-box;
   background-color: white;
-  /* padding: 12px; */
   overflow: hidden;
   width: 300px;
   height: 410px;
@@ -84,8 +83,6 @@ const emits = defineEmits(['click']);
   margin: auto;
   font-weight: 600;
   width: 252px;
-
-  /* border-bottom: 1px solid lightgray; */
 }
 .line {
   width: 252px;

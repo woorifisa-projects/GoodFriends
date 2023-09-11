@@ -214,9 +214,7 @@ onMounted(async () => {
 .item {
   flex: 1;
 
-  /* width: 100%; */
   width: fit-content;
-  /* border: 1px solid rgb(240, 240, 240); */
   border-radius: 8px;
   display: flex;
   overflow: hidden;
@@ -238,7 +236,6 @@ onMounted(async () => {
 
 .item > input,
 .item > select {
-  /* width: 50%; */
   display: flex;
   align-items: center;
   border: none;
@@ -248,7 +245,6 @@ onMounted(async () => {
 .item > input {
   max-width: fit-content;
   min-width: 100px;
-  /* border-bottom: 1px solid #888; */
   text-decoration: underline;
   text-underline-offset: 3px;
   padding: 12px;
@@ -257,7 +253,6 @@ onMounted(async () => {
   width: 85px;
 
   padding: 12px;
-  /* border: 1px solid #888; */
   width: fit-content;
   text-align: left;
   border-radius: 6px;
@@ -272,9 +267,8 @@ onMounted(async () => {
 }
 .item > select:disabled {
   width: 85px;
-  /* border: 1px solid lightgray; */
   border-radius: 6px;
-  -webkit-appearance: none; /* 네이티브 외형 감추기 */
+  -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 }

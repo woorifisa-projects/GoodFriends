@@ -8,7 +8,7 @@
       </p>
       <p>{{ message }}</p>
     </div>
-    <button @click="goHome">메인화면으로 이동</button>
+    <button @click="goHome">{{ ERROR_MSG.GO_HOME }}</button>
   </div>
 </template>
 

@@ -1,7 +1,6 @@
 <template>
   <CommonModalVue :is-visible="props.isVisible" @updateVisible="emits('update:isVisible', $event)">
     <div class="modal">
-      <!-- <div class="modal-title">확인창</div>   -->
       <div class="modal-contents">
         <div>
           <p v-for="(text, index) in props.content" :key="index">{{ text }}</p>

@@ -40,8 +40,6 @@ const props = defineProps({
 });
 const emits = defineEmits(['update:selectedCategory']);
 
-const smallCategoryIsOpen = ref(false);
-
 const categoryPageNumber = ref(0);
 const viewCategoryNumber = ref(8);
 
@@ -154,7 +152,6 @@ const viewCategory = computed(() => {
     border: 1px solid rgb(240, 240, 240);
     border-radius: 12px;
     padding: 10px;
-    /* width: 30%; */
     font-size: 20px;
     font-family: 'LINESeedKR-Rg';
     color: #888;
