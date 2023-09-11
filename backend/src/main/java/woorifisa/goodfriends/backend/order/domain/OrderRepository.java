@@ -13,8 +13,8 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
 
     @Query("SELECT o FROM Order o " +
             "JOIN FETCH User u " +
-            "ON o.product.id = :productId " +
-            "AND o.user.id = u.id")
+            "ON o.user.id = u.id " +
+            "AND o.product.id = :productId")
     List<Order> findOrdersAndUserByProductId(Long productId);
 
     @Modifying(clearAutomatically = true)
@@ -26,4 +26,17 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     default Order getById(Long orderId) {
         return findById(orderId).orElseThrow(NotFoundOrderException::new);
     }
+
+    @Query("SELECT o FROM Order o " +
+            "JOIN FETCH Product p " +
+            "ON o.product.id = p.id " +
+            "AND o.user.id = :userId")
+    List<Order> findOrdersAndProductByUserId(Long userId);
+
+    @Query("SELECT o FROM Order o " +
+            "JOIN FETCH Product p " +
+            "ON o.product.id = p.id " +
+            "AND o.user.id = :userId " +
+            "AND o.confirmStatus = :confirmStatus")
+    List<Order> findOrdersAndProductByUserIdAndConfirmStatus(Long userId, ConfirmStatus confirmStatus);
 }

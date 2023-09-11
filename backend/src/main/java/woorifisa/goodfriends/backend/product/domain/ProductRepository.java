@@ -36,4 +36,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "ON p.id = :productId " +
             "AND p.user.id = u.id")
     Product getByProductIdAndUserId(Long productId);
+
+    @Query("SELECT p FROM Product p WHERE p.user.id = :userId ORDER BY p.id DESC")
+    List<Product> findAllByUserId(Long userId);
+
+    @Query("SELECT p FROM Product p WHERE p.status = :status AND p.user.id = :userId ORDER BY p.id DESC")
+    List<Product> findAllByProductStatusAndUserId(ProductStatus status, Long userId);
 }
