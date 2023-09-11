@@ -1,8 +1,8 @@
-package woorifisa.goodfriends.backend.phoneAuth.dto.request;
+package woorifisa.goodfriends.backend.sms.dto.request;
 
 
 import lombok.Builder;
-import woorifisa.goodfriends.backend.phoneAuth.dto.MessagesDto;
+import woorifisa.goodfriends.backend.sms.dto.MessagesDto;
 import java.util.List;
 
 

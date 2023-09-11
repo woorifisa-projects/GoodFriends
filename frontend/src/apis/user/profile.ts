@@ -1,6 +1,8 @@
 import { apiInstance, headers } from '..';
 import type { IResultType, INoContent } from '@/types/api';
-import type { IProfile, IProfileEdit, ISellAndPurchaseList } from '@/types/profile';
+
+import type { IPhoneAUth, IProfile, IProfileEdit,ISellAndPurchaseList } from '@/types/profile';
+
 import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
@@ -9,8 +11,12 @@ const profileAPI = {
     editProfile: `api/profile/me/info/`,
     editProfileImg: `api/profile/me/profile-image/`,
     getProfile: `api/profile/me/`,
+
+    sendPhoneAuth: 'api/sms/user',
+    checkPhoneAuth: 'api/sms/user/check/'
     getSellList: `api/profile/me/sell-list`,
     getPurchaseList: `api/profile/me/purchase-list`
+
   },
 
   getProfile: (token: string | null): Promise<IResultType<IProfile>> => {
@@ -128,6 +134,49 @@ const profileAPI = {
         }
         return { isSuccess: false, message: error.message, code: error.response.status };
       });
+  },
+  sendPhoneAuth: (token: string | null, body: IPhoneAUth): Promise<INoContent> => {
+    return api
+      .post(profileAPI.endPoint.sendPhoneAuth,body
+      )
+      .then((res: AxiosResponse) => {
+        return {
+          isSuccess: true,
+          message: '인증번호 전송 성공',
+          code: res.status
+        };
+      })
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.response.status };
+      });
+  },
+  checkPhoneAuth:(token: string | null, num : number): Promise<IResultType<IProfile>> =>{
+    return api
+    .get(profileAPI.endPoint.checkPhoneAuth+num)
+    .then((res: AxiosResponse) => {
+      return {
+        isSuccess: true,
+        message: res.data,
+        code: res.status
+      };
+    })
+    .catch((error) => {
+      if (error.response) {
+        return {
+          isSuccess: false,
+          message: error.response.data.message,
+          code: error.response.status
+        };
+      }
+      return { isSuccess: false, message: error.message, code: error.response.status };
+    });
   }
 };
 

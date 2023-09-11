@@ -2,6 +2,7 @@ interface ACCOUNT_TYPE {
   [key: string]: string;
 }
 export const ACCOUNT: ACCOUNT_TYPE = {
+  DEFAULT : '은행',
   KOOKMIN: '국민',
   SHINHAN: '신한',
   HANA: '하나',

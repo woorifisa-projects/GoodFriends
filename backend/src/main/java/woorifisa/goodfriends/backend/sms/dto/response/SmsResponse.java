@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.phoneAuth.dto.response;
+package woorifisa.goodfriends.backend.sms.dto.response;
 
 
 import lombok.Builder;

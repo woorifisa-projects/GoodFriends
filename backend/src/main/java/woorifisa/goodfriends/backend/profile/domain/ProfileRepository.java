@@ -18,4 +18,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
     default Profile getByUserId(Long userId) {
         return findByUserId(userId).orElseThrow(NotFoundProfile::new);
     }
+
+    boolean existsByMobileNumber(final String mobileNumber);
 }
