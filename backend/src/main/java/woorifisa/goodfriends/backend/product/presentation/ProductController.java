@@ -26,6 +26,7 @@ import java.util.List;
 @RestController
 public class ProductController {
 
+    private static final int PAGE_SIZE = 12;
     private final ProductService productService;
 
     public ProductController(ProductService productService, UserService userService) {
@@ -44,7 +45,7 @@ public class ProductController {
 
     // 상품 검색
     @GetMapping("/search")
-    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@PageableDefault(size=12) Pageable pageable,
+    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
                                                                      @RequestParam String productCategory,
                                                                      @RequestParam String keyword) {
         ProductViewsAllResponse responses = productService.viewSearchProduct(pageable, productCategory, keyword);
@@ -53,7 +54,7 @@ public class ProductController {
 
     // 상품 카테고리별 조회
     @GetMapping("/category")
-    public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@PageableDefault(size=12) Pageable pageable,
+    public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
                                                                          @RequestParam String productCategory) {
         ProductCategory category = ProductCategory.valueOf(productCategory);
         ProductViewsAllResponse responses = productService.viewProductByCategory(pageable, category);
@@ -62,7 +63,7 @@ public class ProductController {
 
     // 상품 전체 조회
     @GetMapping
-    public ResponseEntity<ProductViewsAllResponse> viewAllProduct(@PageableDefault(size=12) Pageable pageable) {
+    public ResponseEntity<ProductViewsAllResponse> viewAllProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable) {
         ProductViewsAllResponse responses = productService.viewAllProduct(pageable);
         return ResponseEntity.ok().body(responses); // 200
     }
