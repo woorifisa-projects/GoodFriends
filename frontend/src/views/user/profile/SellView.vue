@@ -38,6 +38,7 @@ const getList = async (status: string, important = false) => {
   }
   if (!res.data) return;
   sellList.value = res.data;
+  checkedStatus.value = status;
 };
 
 const onClickFilter = async (status: string) => {
