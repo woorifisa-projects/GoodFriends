@@ -2,14 +2,14 @@
   <div class="wrap">
     <ul>
       <li>
-        <div class="item" v-for="item in props.items" :key="item.id" @click="onClick(item)">
+        <div class="item" v-for="item in props.items" :key="item.productId" @click="onClick(item)">
           <div class="img">
-            <img src="@/assets/tmp/images/image.png" alt="" />
+            <img :src="item.imageUrl || tmpImage" alt="" />
           </div>
           <div class="detail">
-            <div>{{ item.name }}</div>
-            <div>{{ item.date }}</div>
-            <div class="status">{{ item.status }}</div>
+            <div>{{ title(item.title) }}</div>
+            <div>{{ item.sellPrice.toLocaleString() }}원</div>
+            <div class="status">{{ props.type[item.status] }}</div>
           </div>
         </div>
       </li>
@@ -18,18 +18,43 @@
 </template>
 
 <script setup lang="ts">
-import type { IItem } from '@/types/profile';
+import router from '@/router';
+import type { IStringToString } from '@/types/dynamic';
+import type { ISellAndPurchaseList } from '@/types/profile';
+import { tmpImage } from '@/utils/image';
+import { computed, ref, type PropType, onMounted } from 'vue';
 
 const props = defineProps({
   items: {
-    type: Array<IItem>,
+    type: Array<ISellAndPurchaseList>,
+    required: true
+  },
+  type: {
+    type: Object as PropType<IStringToString>,
     required: true
   }
 });
 
-const onClick = (item: IItem) => {
-  // TODO: 상세 페이지 완성 후 수정 + 삭제 기능 추가할 시 삭제 및 페이지 이동으로 수정
+const onClick = (item: ISellAndPurchaseList) => {
+  router.push('/product/' + item.productId);
 };
+const maxTitle = ref(window.innerWidth > 1023 ? 20 : 10);
+const title = computed(() => {
+  return (title: string) =>
+    title.length > maxTitle.value ? title.substring(0, maxTitle.value) + '...' : title;
+});
+
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    const { innerWidth } = window;
+    console.log(innerWidth);
+    if (innerWidth > 1023) {
+      maxTitle.value = 20;
+    } else {
+      maxTitle.value = 6;
+    }
+  });
+});
 </script>
 
 <style scoped>
@@ -73,8 +98,8 @@ const onClick = (item: IItem) => {
 
 .detail {
   display: flex;
+  gap: 5px;
   justify-content: space-around;
-  /* border: 1px solid gray; */
   width: calc(100% - 100px);
   border-radius: 20px;
   overflow: hidden;
@@ -82,17 +107,24 @@ const onClick = (item: IItem) => {
 }
 
 .detail > div {
-  /* background-color: rgb(232, 232, 232); */
+  flex: 1;
+  max-width: 700px;
   width: 100%;
-  /* height: 100%; */
-  /* padding: 20px; */
-  text-align: center;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   font-size: 20px;
+  text-align: left;
+}
+.detail > div:first-child {
+  flex: 4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .detail > div:last-child {
+  justify-content: end;
+
   font-size: 18px;
 }
 @media screen and (max-width: 1023px) {
@@ -100,13 +132,22 @@ const onClick = (item: IItem) => {
     height: 60px;
   }
   .detail > div {
-    font-size: 15px;
-    line-height: 24px;
+    font-size: 14px;
+    line-height: 20px;
     padding: 0;
   }
   .item > .img {
     width: 50px;
     height: 50px;
+  }
+  .detail > div:first-child {
+    flex: 2;
+  }
+  .detail > div:nth-child(2) {
+    font-size: 13px;
+  }
+  .detail > div:last-child {
+    font-size: 12px;
   }
 }
 
