@@ -23,11 +23,9 @@ import { onMounted, ref } from 'vue';
 
 const sellList = ref<Array<ISellAndPurchaseList>>([]);
 const productStatus = ['ALL', 'SELL', 'RESERVATION', 'COMPLETED'];
-const checkedStatus = ref('ALL');
+const checkedStatus = ref('');
 
-const onClickFilter = async (status: string) => {
-  console.log(status);
-  if (checkedStatus.value === status) return;
+const getList = async (status: string) => {
   const res = await profileAPI.getSellList(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
     status
@@ -36,22 +34,18 @@ const onClickFilter = async (status: string) => {
     alert(res.message);
     return;
   }
-  checkedStatus.value = status;
   if (!res.data) return;
   sellList.value = res.data;
 };
 
+const onClickFilter = async (status: string) => {
+  console.log(status);
+  if (checkedStatus.value === status) return;
+  await getList(status);
+};
+
 onMounted(async () => {
-  const res = await profileAPI.getSellList(
-    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
-    'ALL'
-  );
-  if (!res.isSuccess) {
-    alert(res.message);
-    return;
-  }
-  if (!res.data) return;
-  sellList.value = res.data;
+  await getList('ALL');
 });
 </script>
 
