@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.product.application;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
@@ -98,15 +99,15 @@ public class ProductService {
         return savedImageUrl;
     }
 
-    public ProductViewsAllResponse viewSearchProduct(String productCategory, String keyword) {
+    public ProductViewsAllResponse viewSearchProduct(Pageable pageable, String productCategory, String keyword) {
         List<Product> products;
 
         if(productCategory.equals("ALL")){
-            products = productRepository.findByTitleContains(keyword);
+            products = productRepository.findByTitleContains(pageable, keyword);
         }
         else {
             ProductCategory category = ProductCategory.valueOf(productCategory);
-            products = productRepository.findByTitleContainsInCategory(category, keyword);
+            products = productRepository.findByTitleContainsInCategory(pageable, category, keyword);
         }
 
         List<ProductViewAllResponse> responses = createViewList(products);
@@ -114,16 +115,16 @@ public class ProductService {
         return new ProductViewsAllResponse(responses);
     }
 
-    public ProductViewsAllResponse viewProductByCategory(ProductCategory productCategory) {
-        List<Product> products = productRepository.findByProductCategory(productCategory);
+    public ProductViewsAllResponse viewProductByCategory(Pageable pageable, ProductCategory productCategory) {
+        List<Product> products = productRepository.findByProductCategory(pageable, productCategory);
 
         List<ProductViewAllResponse> responses = createViewList(products);
 
         return new ProductViewsAllResponse(responses);
     }
 
-    public ProductViewsAllResponse viewAllProduct() {
-        List<Product> products = productRepository.findAllOrderByIdDesc();
+    public ProductViewsAllResponse viewAllProduct(Pageable pageable) {
+        List<Product> products = productRepository.findAllOrderByIdDesc(pageable);
 
         List<ProductViewAllResponse> responses = createViewList(products);
 
