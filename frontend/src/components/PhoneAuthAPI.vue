@@ -38,10 +38,7 @@ const input_phoneAuthNum = ref();
 const sendPhone = async () => {
   const formatBefore = props.phoneNum;
   const formatAfter = formatBefore?.replace(/-/g, '');
-  console.log(formatAfter?.toString());
   isButtonVisible.value = true;
-  console.log(isButtonVisible);
-
   countdownVisible.value = true;
 
   const timer = setInterval(() => {
