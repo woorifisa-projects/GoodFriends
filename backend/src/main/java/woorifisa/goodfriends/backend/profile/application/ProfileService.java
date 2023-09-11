@@ -50,11 +50,6 @@ public class ProfileService {
 
     public ProfileViewResponse viewProfile(Long userId) {
 
-        //부정행위자로 등록된 유저는 상품 등록 못하도록
-        if(existOffender(userId)) {
-            throw new NotAccessProduct();
-        }
-
         User user = userRepository.getById(userId);
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
 
@@ -70,12 +65,13 @@ public class ProfileService {
         return profileViewResponse;
     }
 
-    public boolean existOffender(Long userId) {
-        Offender offender = offenderRepository.findByUserId(userId).orElse(null);
-        return offender != null;
-    }
-
     public void update(Long userId, ProfileUpdateRequest request) {
+
+        //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
+        if(existOffender(userId)) {
+            throw new NotAccessProduct();
+        }
+
         User user = userRepository.getById(userId);
 
         user.updateNickname(request.getNickName());
@@ -99,6 +95,11 @@ public class ProfileService {
             profile.updateAccountNumber(request.getAccountNumber());
             profileRepository.save(profile);
         }
+    }
+
+    public boolean existOffender(Long userId) {
+        Offender offender = offenderRepository.findByUserId(userId).orElse(null);
+        return offender != null;
     }
 
     public ProductViewsSellList sellProductList(Long userId, String productStatus) {

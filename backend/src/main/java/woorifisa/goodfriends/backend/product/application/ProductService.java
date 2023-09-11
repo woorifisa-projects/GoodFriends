@@ -168,7 +168,7 @@ public class ProductService {
 
     public ProductViewOneResponse viewOneProduct(Long userId, Long productId) {
 
-        //부정행위자로 등록된 유저는 상품 등록 못하도록
+        //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
         if(existOffender(userId)) {
             throw new NotAccessProduct();
         }
