@@ -49,6 +49,7 @@ const pageNumber = ref(0);
 const currentSearch = ref('ALL');
 const isEnd = ref(false);
 const preScroll = ref(0);
+const CARD_SIZE = 400;
 
 const getProduct: IStringToFunction = {
   SEARCH: (page: number) =>
@@ -74,7 +75,7 @@ const handleNotificationListScroll = async () => {
   preScroll.value = scrollLocation;
   const windowHeight = window.innerHeight; // 스크린 창
   const fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
-  if (scrollLocation + windowHeight + 100 > fullHeight) {
+  if (scrollLocation + windowHeight + CARD_SIZE > fullHeight) {
     pageNumber.value += 1;
     const res = await getProduct[currentSearch.value](pageNumber.value);
     if (!res.isSuccess) {
