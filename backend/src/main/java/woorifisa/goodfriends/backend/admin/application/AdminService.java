@@ -181,7 +181,7 @@ public class AdminService {
 
     // 상품 검색
     public ProductViewsAllResponse viewSearchProduct(String keyword) {
-        List<Product> products = productRepository.findByTitleContains(keyword);
+        List<Product> products = productRepository.findByTitleContains(Pageable.unpaged(), keyword);
 
         List<ProductViewAllResponse> responses = createViewList(products);
 

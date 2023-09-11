@@ -44,8 +44,10 @@ public class ProductController {
 
     // 상품 검색
     @GetMapping("/search")
-    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String productCategory, @RequestParam String keyword) {
-        ProductViewsAllResponse responses = productService.viewSearchProduct(productCategory, keyword);
+    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@PageableDefault(size=12) Pageable pageable,
+                                                                     @RequestParam String productCategory,
+                                                                     @RequestParam String keyword) {
+        ProductViewsAllResponse responses = productService.viewSearchProduct(pageable, productCategory, keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
 

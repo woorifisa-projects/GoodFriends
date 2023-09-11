@@ -99,15 +99,15 @@ public class ProductService {
         return savedImageUrl;
     }
 
-    public ProductViewsAllResponse viewSearchProduct(String productCategory, String keyword) {
+    public ProductViewsAllResponse viewSearchProduct(Pageable pageable, String productCategory, String keyword) {
         List<Product> products;
 
         if(productCategory.equals("ALL")){
-            products = productRepository.findByTitleContains(keyword);
+            products = productRepository.findByTitleContains(pageable, keyword);
         }
         else {
             ProductCategory category = ProductCategory.valueOf(productCategory);
-            products = productRepository.findByTitleContainsInCategory(category, keyword);
+            products = productRepository.findByTitleContainsInCategory(pageable, category, keyword);
         }
 
         List<ProductViewAllResponse> responses = createViewList(products);

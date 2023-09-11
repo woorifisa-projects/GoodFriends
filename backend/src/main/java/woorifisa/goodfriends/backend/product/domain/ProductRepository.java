@@ -23,11 +23,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             countQuery = "SELECT count(p) FROM Product p")
     List<Product> findByProductCategory(Pageable pageable, ProductCategory productCategory);
 
-    @Query("SELECT p FROM Product p WHERE p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC")
-    List<Product> findByTitleContains(String keyword);
+    @Query(value = "SELECT p FROM Product p WHERE p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC",
+            countQuery = "SELECT count(p) FROM Product p")
+    List<Product> findByTitleContains(Pageable pageable, String keyword);
 
-    @Query("SELECT p FROM Product p  WHERE p.productCategory = :productCategory AND p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC")
-    List<Product> findByTitleContainsInCategory(ProductCategory productCategory, String keyword);
+    @Query(value = "SELECT p FROM Product p  WHERE p.productCategory = :productCategory AND p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC",
+            countQuery = "SELECT count(p) FROM Product p")
+    List<Product> findByTitleContainsInCategory(Pageable pageable, ProductCategory productCategory, String keyword);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Product p " +
