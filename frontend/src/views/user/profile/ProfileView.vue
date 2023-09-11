@@ -15,7 +15,7 @@
               v-model="userInputInfo.accountType"
               :disabled="isDisabled"
             >
-              <option value="default" disabled>{{ SELECT.ACCOUNT_SELECT }}</option>
+              <option value="DEFAULT" disabled>{{ SELECT.ACCOUNT_SELECT }}</option>
               <option :value="account" v-for="(account, index) in accountList" :key="index">
                 {{ ACCOUNT[account] }}
               </option>
@@ -97,7 +97,7 @@ const userInputInfo = ref<IProfileEdit>({
   nickName: '',
   address: '',
   mobileNumber: '',
-  accountType: 'default',
+  accountType: 'DEFAULT',
   accountNumber: ''
 });
 const accountList = ref(ACCOUNT_LIST);
@@ -132,7 +132,7 @@ const onClickEdit = async () => {
     return;
   }
   console.log(userInputInfo.value.accountType);
-  if (userInputInfo.value.accountType === 'default') {
+  if (userInputInfo.value.accountType === 'DEFAULT') {
     alert('은행');
     return;
   }
@@ -182,7 +182,9 @@ onMounted(async () => {
     goPageWithReload();
     return;
   }
+  console.log(res.data);
   userInputInfo.value = { ...res.data };
+  if (!res.data.accountNumber) userInputInfo.value.accountType = 'DEFAULT';
 });
 </script>
 
