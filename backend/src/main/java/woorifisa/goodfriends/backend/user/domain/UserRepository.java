@@ -31,4 +31,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u, p FROM User u JOIN Profile p ON u.id = p.user.id")
     List<Object[]> getAllUserInfo();
 
+    @Query("SELECT u.ban FROM User u WHERE u.id = :userId")
+    Long findBanById(Long userId);
 }
