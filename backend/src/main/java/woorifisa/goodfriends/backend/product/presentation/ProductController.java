@@ -1,5 +1,7 @@
 package woorifisa.goodfriends.backend.product.presentation;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ import java.util.List;
 @RestController
 public class ProductController {
 
+    private static final int PAGE_SIZE = 12;
     private final ProductService productService;
 
     public ProductController(ProductService productService, UserService userService) {
@@ -42,23 +45,26 @@ public class ProductController {
 
     // 상품 검색
     @GetMapping("/search")
-    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String productCategory, @RequestParam String keyword) {
-        ProductViewsAllResponse responses = productService.viewSearchProduct(productCategory, keyword);
+    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
+                                                                     @RequestParam String productCategory,
+                                                                     @RequestParam String keyword) {
+        ProductViewsAllResponse responses = productService.viewSearchProduct(pageable, productCategory, keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
 
     // 상품 카테고리별 조회
     @GetMapping("/category")
-    public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@RequestParam String productCategory) {
+    public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
+                                                                         @RequestParam String productCategory) {
         ProductCategory category = ProductCategory.valueOf(productCategory);
-        ProductViewsAllResponse responses = productService.viewProductByCategory(category);
+        ProductViewsAllResponse responses = productService.viewProductByCategory(pageable, category);
         return ResponseEntity.ok().body(responses); // 200
     }
 
     // 상품 전체 조회
     @GetMapping
-    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
-        ProductViewsAllResponse responses = productService.viewAllProduct();
+    public ResponseEntity<ProductViewsAllResponse> viewAllProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable) {
+        ProductViewsAllResponse responses = productService.viewAllProduct(pageable);
         return ResponseEntity.ok().body(responses); // 200
     }
 
@@ -66,7 +72,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<ProductViewOneResponse> viewOneProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                                                  @PathVariable Long productId) {
-        ProductViewOneResponse response = productService.viewOneProduct(productId);
+        ProductViewOneResponse response = productService.viewOneProduct(loginUser.getId(), productId);
         return ResponseEntity.ok().body(response); // 200
     }
 

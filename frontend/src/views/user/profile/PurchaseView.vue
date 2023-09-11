@@ -4,8 +4,9 @@
       :product-status="productStatus"
       @click="onClickFilter"
       :checkedStatus="checkedStatus"
+      :type="CONFIRM_STATUS"
     />
-    <ItemList :items="tmpItemList" />
+    <ItemList :items="purchaseList" :type="CONFIRM_STATUS" :message="PRODUCT.PURCHASE_PRODUCT" />
   </DefaultMyPage>
 </template>
 
@@ -13,45 +14,44 @@
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import ItemList from '@/components/profile/ItemList.vue';
 import FilterListVue from '@/components/profile/FilterList.vue';
-import type { IItem } from '@/types/profile';
-import { ref } from 'vue';
+import type { ISellAndPurchaseList } from '@/types/profile';
+import { onMounted, ref } from 'vue';
+import profileAPI from '@/apis/user/profile';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { CONFIRM_STATUS, PRODUCT } from '@/constants/strings/product';
+import { useLoadingStore } from '@/stores/loading';
 
-const tmpItemList = ref<Array<IItem>>([
-  { id: 1, name: '구매 물품명1', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 2, name: '구매 물품명2', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 3, name: '구매 물품명3', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 4, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 5, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 6, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 7, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 8, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 9, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 10, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' },
-  { id: 11, name: '구매 물품명4', date: 'yyyy-mm-dd', path: '/profile/purchase', status: 'SELL' }
-]);
+const purchaseList = ref<Array<ISellAndPurchaseList>>([]);
+const productStatus = ['ALL', 'ORDERING', 'COMPLETED'];
+const checkedStatus = ref('ALL');
 
-const productStatus = [
-  {
-    id: 0,
-    name: '전체',
-    value: 'all'
-  },
-  {
-    id: 1,
-    name: '예약',
-    value: 'reservation'
-  },
-  {
-    id: 2,
-    name: '구매',
-    value: 'purchase'
+const getList = async (status: string, important = false) => {
+  if (!important && checkedStatus.value === status) return;
+  const res = await profileAPI.getPurchaseList(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    status
+  );
+  if (!res.isSuccess) {
+    alert(res.message);
+    return;
   }
-];
-const checkedStatus = ref('all');
-
-const onClickFilter = (status: string) => {
-  console.log('filter: ', status);
+  checkedStatus.value = status;
+  if (!res.data) return;
+  purchaseList.value = res.data;
 };
+
+const onClickFilter = async (status: string) => {
+  console.log(status);
+  if (checkedStatus.value === status) return;
+  await getList(status);
+};
+
+onMounted(async () => {
+  const loadingStore = useLoadingStore();
+  loadingStore.setLoading(true);
+  await getList('ALL', true);
+  loadingStore.setLoading(false);
+});
 </script>
 
 <style scoped></style>

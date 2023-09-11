@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Getter
 public class ProductViewsAllResponse {
 
-    List<ProductViewAllResponse> responses;
+    private List<ProductViewAllResponse> responses;
 
     public ProductViewsAllResponse() {
     }

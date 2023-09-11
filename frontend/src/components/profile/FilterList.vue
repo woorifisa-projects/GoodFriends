@@ -1,30 +1,35 @@
 <template>
   <div class="filter">
-    <div v-for="status in props.productStatus" :key="status.id">
+    <div v-for="(status, index) in props.productStatus" :key="index">
       <input
         type="radio"
-        :id="status.value"
+        :id="status"
         name="filter"
-        :checked="checkedStatus === status.value"
-        @change="emits('click', status.value)"
+        :checked="checkedStatus === status"
+        @change="emits('click', status)"
       />
-      <label :for="status.value">
-        {{ status.name }}
+      <label :for="status">
+        {{ props.type[status] }}
       </label>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { IFilter } from '@/types/product';
+import type { IStringToString } from '@/types/dynamic';
+import type { PropType } from 'vue';
 
 const props = defineProps({
   productStatus: {
-    type: Array<IFilter>,
+    type: Array<string>,
     required: true
   },
   checkedStatus: {
     type: String,
+    required: true
+  },
+  type: {
+    type: Object as PropType<IStringToString>,
     required: true
   }
 });

@@ -13,6 +13,8 @@ import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
+import java.util.Optional;
+
 import static woorifisa.goodfriends.backend.report.domain.ReportStatus.PROCESSING;
 
 @Transactional(readOnly = true)
@@ -40,7 +42,7 @@ public class ReportService {
         User foundUser = userRepository.getById(loginUser.getId());
         Product foundProduct = productRepository.getByProductIdAndUserId(productId);
 
-        Report newReport = createDeclaration(foundUser, foundProduct, request);
+        Report newReport = createReport(foundUser, foundProduct, request);
         reportRepository.save(newReport);
 
         // 신고 당한 유저는 횟수 + 1 증가
@@ -63,7 +65,8 @@ public class ReportService {
         userRepository.save(foundProduct.getUser());
         return newReport.getId();
     }
-    private Report createDeclaration(User user, Product product , ReportSaveRequest request) {
+    @Transactional
+    public Report createReport(User user, Product product , ReportSaveRequest request) {
         Report newReport = Report.builder()
                 .reportCategory(request.getReportCategory())
                 .content(request.getContent())
@@ -74,7 +77,15 @@ public class ReportService {
         return newReport;
     }
 
-    private Offender createOffender(User offenderUser) {
+    @Transactional
+    public Offender createOffender(User offenderUser) {
+        Optional<Offender> existingOffender = offenderRepository.findByUserId(offenderUser.getId());
+
+        if(existingOffender.isPresent()) {
+            return existingOffender.get(); // 이미 Offender로 등록된 경우 해당 Offender로 반환
+        }
+
+        // Offender로 등록되지 않은 경우 새로운 Offender를 생성하여 저장
         Offender newOffender =  Offender.builder()
                 .user(offenderUser)
                 .build();

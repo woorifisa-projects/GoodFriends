@@ -14,7 +14,9 @@ export const PRODUCT = {
   ORDER: '주문하기',
   VIEW_ORDER: '주문서 보기',
   DEAL: '거래하기',
-  NOTHING: '찾으시는 상품이 없어요 ㅠ.ㅠ'
+  NOTHING: '찾으시는 상품이 없어요 ㅠ.ㅠ',
+  SELL_PRODUCT: '해당 조건에 맞는 판매 상품이 없어요',
+  PURCHASE_PRODUCT: '해당 조건에 맞는 구매 상품이 없어요'
 };
 
 export const ORDER_MODAL = {
@@ -30,7 +32,14 @@ export const ORDER_MODAL = {
 };
 
 export const PRODUCT_STATUS: IStringToString = {
+  ALL: '전체',
   SELL: '판매중',
   RESERVATION: '예약중',
   COMPLETED: '거래완료'
+};
+
+export const CONFIRM_STATUS: IStringToString = {
+  ALL: '전체',
+  ORDERING: '주문중',
+  COMPLETED: '주문완료'
 };
