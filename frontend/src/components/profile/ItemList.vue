@@ -87,8 +87,12 @@ onMounted(() => {
   border: 1px solid rgb(240, 240, 240);
   border-radius: 10px;
   box-shadow: 0px 0px 3px #0000001b;
-}
 
+  transition: transform 0.3s ease;
+}
+.item:hover {
+  transform: scale(1.02);
+}
 .item > .img {
   width: 80px;
   height: 80px;
