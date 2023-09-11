@@ -9,7 +9,7 @@ public class ProductViewsSellList {
 
     private List<ProductViewSellList> responses;
 
-    public ProductViewsSellList() {
+    protected ProductViewsSellList() {
     }
 
     public ProductViewsSellList(List<ProductViewSellList> responses) {
