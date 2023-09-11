@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.report.presentation;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
@@ -20,11 +21,11 @@ public class BoardReportController {
         this.reportService = reportService;
     }
 
-    @PostMapping("/{productId}")
+    @PostMapping
     public ResponseEntity<Void> saveReport(@AuthenticationPrincipal LoginUser loginUser,
-                                           @PathVariable Long productId,
+                                           @RequestParam Long productId,
                                            @Valid @RequestBody ReportSaveRequest request) {
         Long boardReportId = reportService.saveReport(loginUser, productId, request);
-        return ResponseEntity.created(URI.create("/report/" + boardReportId)).build();
+        return ResponseEntity.created(URI.create("/report/" + productId + "/" + boardReportId)).build();
     }
 }
