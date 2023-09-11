@@ -2,13 +2,13 @@
   <div class="wrap">
     <ul>
       <li>
-        <div class="item" v-for="item in props.items" :key="item.id" @click="onClick(item)">
+        <div class="item" v-for="item in props.items" :key="item.productId" @click="onClick(item)">
           <div class="img">
-            <img src="@/assets/tmp/images/image.png" alt="" />
+            <img :src="item.imageUrl" alt="" />
           </div>
           <div class="detail">
-            <div>{{ item.name }}</div>
-            <div>{{ item.date }}</div>
+            <div>{{ item.title }}</div>
+            <div>{{ item.sellPrice.toLocaleString() }}원</div>
             <div class="status">{{ item.status }}</div>
           </div>
         </div>
@@ -18,16 +18,18 @@
 </template>
 
 <script setup lang="ts">
-import type { IItem } from '@/types/profile';
+import router from '@/router';
+import type { ISellAndPurchaseList } from '@/types/profile';
 
 const props = defineProps({
   items: {
-    type: Array<IItem>,
+    type: Array<ISellAndPurchaseList>,
     required: true
   }
 });
 
-const onClick = (item: IItem) => {
+const onClick = (item: ISellAndPurchaseList) => {
+  router.push('/product/' + item.productId);
   // TODO: 상세 페이지 완성 후 수정 + 삭제 기능 추가할 시 삭제 및 페이지 이동으로 수정
 };
 </script>

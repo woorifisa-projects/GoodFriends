@@ -4,53 +4,55 @@
       :product-status="productStatus"
       @click="onClickFilter"
       :checkedStatus="checkedStatus"
+      :type="PRODUCT_STATUS"
     />
-    <ItemList :items="tmpItemList" />
+    <ItemList :items="sellList" />
   </DefaultMyPage>
 </template>
 
 <script setup lang="ts">
+import profileAPI from '@/apis/user/profile';
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import FilterListVue from '@/components/profile/FilterList.vue';
 import ItemList from '@/components/profile/ItemList.vue';
-import type { IItem } from '@/types/profile';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { PRODUCT_STATUS } from '@/constants/strings/product';
+import type { ISellAndPurchaseList } from '@/types/profile';
 
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-const tmpItemList = ref<Array<IItem>>([
-  { id: 1, name: '판매 물품명1', date: 'yyyy-mm-dd', path: '/profile/sell', status: 'SELL' },
-  { id: 2, name: '판매 물품명2', date: 'yyyy-mm-dd', path: '/profile/sell', status: 'SELL' },
-  { id: 3, name: '판매 물품명3', date: 'yyyy-mm-dd', path: '/profile/sell', status: 'SELL' },
-  { id: 4, name: '판매 물품명4', date: 'yyyy-mm-dd', path: '/profile/sell', status: 'SELL' }
-]);
+const sellList = ref<Array<ISellAndPurchaseList>>([]);
+const productStatus = ['ALL', 'SELL', 'RESERVATION', 'COMPLETED'];
+const checkedStatus = ref('ALL');
 
-const productStatus = [
-  {
-    id: 0,
-    name: '전체',
-    value: 'all'
-  },
-  {
-    id: 1,
-    name: '판매중',
-    value: 'selling'
-  },
-  {
-    id: 2,
-    name: '예약중',
-    value: 'reservation'
-  },
-  {
-    id: 3,
-    name: '판매 완료',
-    value: 'done'
+const onClickFilter = async (status: string) => {
+  console.log(status);
+  if (checkedStatus.value === status) return;
+  const res = await profileAPI.getSellList(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    status
+  );
+  if (!res.isSuccess) {
+    alert(res.message);
+    return;
   }
-];
-const checkedStatus = ref('all');
-
-const onClickFilter = (status: string) => {
-  console.log('filter: ', status);
+  checkedStatus.value = status;
+  if (!res.data) return;
+  sellList.value = res.data;
 };
+
+onMounted(async () => {
+  const res = await profileAPI.getSellList(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    'ALL'
+  );
+  if (!res.isSuccess) {
+    alert(res.message);
+    return;
+  }
+  if (!res.data) return;
+  sellList.value = res.data;
+});
 </script>
 
 <style scoped></style>
