@@ -1,6 +1,6 @@
 import { apiInstance, headers } from '..';
 import type { IResultType, INoContent } from '@/types/api';
-import type { IProfile, IProfileEdit } from '@/types/profile';
+import type { IProfile, IProfileEdit, ISellAndPurchaseList } from '@/types/profile';
 import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
@@ -8,7 +8,8 @@ const profileAPI = {
   endPoint: {
     editProfile: `api/profile/me/info/`,
     editProfileImg: `api/profile/me/profile-image/`,
-    getProfile: `api/profile/me/`
+    getProfile: `api/profile/me/`,
+    getSellList: `api/profile/me/sell-list`
   },
 
   getProfile: (token: string | null): Promise<IResultType<IProfile>> => {
@@ -61,6 +62,33 @@ const profileAPI = {
       })
       .then((res: AxiosResponse) => {
         return { isSuccess: true, message: '', code: res.status };
+      })
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: error.status };
+      });
+  },
+  getSellList: (
+    token: string,
+    productStatus: string
+  ): Promise<IResultType<Array<ISellAndPurchaseList>>> => {
+    return api
+      .get(profileAPI.endPoint.getSellList, {
+        params: { productStatus },
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res: AxiosResponse) => {
+        const { data } = res;
+        return { isSuccess: true, data: data.responses, code: res.status };
       })
       .catch((error) => {
         if (error.response) {
