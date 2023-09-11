@@ -1,6 +1,6 @@
 import { apiInstance, headers } from '..';
 import type { IResultType, INoContent } from '@/types/api';
-import type { IPhoneAUth, IProfile, IProfileEdit } from '@/types/profile';
+import type { IPhoneAUth, IProfile, IProfileEdit,ISellAndPurchaseList } from '@/types/profile';
 import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
