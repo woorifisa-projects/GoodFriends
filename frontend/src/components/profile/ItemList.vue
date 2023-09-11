@@ -7,9 +7,9 @@
             <img :src="item.imageUrl || tmpImage" alt="" />
           </div>
           <div class="detail">
-            <div>{{ item.title }}</div>
+            <div>{{ title(item.title) }}</div>
             <div>{{ item.sellPrice.toLocaleString() }}원</div>
-            <div class="status">{{ item.status }}</div>
+            <div class="status">{{ props.type[item.status] }}</div>
           </div>
         </div>
       </li>
@@ -19,12 +19,18 @@
 
 <script setup lang="ts">
 import router from '@/router';
+import type { IStringToString } from '@/types/dynamic';
 import type { ISellAndPurchaseList } from '@/types/profile';
 import { tmpImage } from '@/utils/image';
+import { computed, ref, type PropType, onMounted } from 'vue';
 
 const props = defineProps({
   items: {
     type: Array<ISellAndPurchaseList>,
+    required: true
+  },
+  type: {
+    type: Object as PropType<IStringToString>,
     required: true
   }
 });
@@ -32,6 +38,23 @@ const props = defineProps({
 const onClick = (item: ISellAndPurchaseList) => {
   router.push('/product/' + item.productId);
 };
+const maxTitle = ref(window.innerWidth > 1023 ? 20 : 10);
+const title = computed(() => {
+  return (title: string) =>
+    title.length > maxTitle.value ? title.substring(0, maxTitle.value) + '...' : title;
+});
+
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    const { innerWidth } = window;
+    console.log(innerWidth);
+    if (innerWidth > 1023) {
+      maxTitle.value = 20;
+    } else {
+      maxTitle.value = 6;
+    }
+  });
+});
 </script>
 
 <style scoped>
@@ -75,8 +98,8 @@ const onClick = (item: ISellAndPurchaseList) => {
 
 .detail {
   display: flex;
+  gap: 5px;
   justify-content: space-around;
-  /* border: 1px solid gray; */
   width: calc(100% - 100px);
   border-radius: 20px;
   overflow: hidden;
@@ -84,17 +107,24 @@ const onClick = (item: ISellAndPurchaseList) => {
 }
 
 .detail > div {
-  /* background-color: rgb(232, 232, 232); */
+  flex: 1;
+  max-width: 700px;
   width: 100%;
-  /* height: 100%; */
-  /* padding: 20px; */
-  text-align: center;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   font-size: 20px;
+  text-align: left;
+}
+.detail > div:first-child {
+  flex: 4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .detail > div:last-child {
+  justify-content: end;
+
   font-size: 18px;
 }
 @media screen and (max-width: 1023px) {
@@ -102,13 +132,22 @@ const onClick = (item: ISellAndPurchaseList) => {
     height: 60px;
   }
   .detail > div {
-    font-size: 15px;
-    line-height: 24px;
+    font-size: 14px;
+    line-height: 20px;
     padding: 0;
   }
   .item > .img {
     width: 50px;
     height: 50px;
+  }
+  .detail > div:first-child {
+    flex: 2;
+  }
+  .detail > div:nth-child(2) {
+    font-size: 13px;
+  }
+  .detail > div:last-child {
+    font-size: 12px;
   }
 }
 
