@@ -38,7 +38,7 @@ const input_phoneAuthNum = ref();
 const sendPhone = async () => {
   const formatBefore = props.phoneNum;
   const formatAfter = formatBefore?.replace(/-/g, '');
-  if (formatAfter == '') {
+  if (formatAfter === undefined|| formatAfter === '') {
     alert('휴대폰 번호를 입력하세요.');
     return;
   }
