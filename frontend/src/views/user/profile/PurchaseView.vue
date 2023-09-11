@@ -6,7 +6,7 @@
       :checkedStatus="checkedStatus"
       :type="CONFIRM_STATUS"
     />
-    <ItemList :items="purchaseList" />
+    <ItemList :items="purchaseList" :type="CONFIRM_STATUS" />
   </DefaultMyPage>
 </template>
 
@@ -22,10 +22,10 @@ import { CONFIRM_STATUS } from '@/constants/strings/product';
 
 const purchaseList = ref<Array<ISellAndPurchaseList>>([]);
 const productStatus = ['ALL', 'ORDERING', 'COMPLETED'];
-const checkedStatus = ref('');
+const checkedStatus = ref('ALL');
 
-const getList = async (status: string) => {
-  if (checkedStatus.value === status) return;
+const getList = async (status: string, important = false) => {
+  if (!important && checkedStatus.value === status) return;
   const res = await profileAPI.getPurchaseList(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
     status
@@ -46,7 +46,7 @@ const onClickFilter = async (status: string) => {
 };
 
 onMounted(async () => {
-  await getList('ALL');
+  await getList('ALL', true);
 });
 </script>
 

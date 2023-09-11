@@ -6,7 +6,7 @@
       :checkedStatus="checkedStatus"
       :type="PRODUCT_STATUS"
     />
-    <ItemList :items="sellList" />
+    <ItemList :items="sellList" :type="PRODUCT_STATUS" />
   </DefaultMyPage>
 </template>
 
@@ -23,9 +23,10 @@ import { onMounted, ref } from 'vue';
 
 const sellList = ref<Array<ISellAndPurchaseList>>([]);
 const productStatus = ['ALL', 'SELL', 'RESERVATION', 'COMPLETED'];
-const checkedStatus = ref('');
+const checkedStatus = ref('ALL');
 
-const getList = async (status: string) => {
+const getList = async (status: string, important = false) => {
+  if (!important && checkedStatus.value === status) return;
   const res = await profileAPI.getSellList(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
     status
@@ -45,7 +46,7 @@ const onClickFilter = async (status: string) => {
 };
 
 onMounted(async () => {
-  await getList('ALL');
+  await getList('ALL', true);
 });
 </script>
 
