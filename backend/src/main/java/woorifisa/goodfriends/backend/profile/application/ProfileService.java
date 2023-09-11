@@ -135,4 +135,33 @@ public class ProfileService {
 
         return new ProductViewsPurchaseList(responses);
     }
+
+    public ProfileBannerResponse viewProfileBanner(Long userId) {
+        boolean verifiedBadge = existMobileNumber(userId);
+        Long dealCount = sellPurchaseCount(userId);
+        Long banCount = userBanCount(userId);
+
+        ProfileBannerResponse response = new ProfileBannerResponse(verifiedBadge, dealCount, banCount);
+
+        return response;
+    }
+
+    private boolean existMobileNumber(Long userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        return profile != null;
+    }
+
+    private Long sellPurchaseCount(Long userId) {
+        Long sellCount = productRepository.findCountByProductStatusAndUserId(ProductStatus.COMPLETED, userId);
+        Long purchaseCount = orderRepository.findCountByConfirmStatusAndUserId(ConfirmStatus.COMPLETED, userId);
+        Long dealCount = sellCount + purchaseCount;
+
+        return dealCount;
+    }
+
+    private Long userBanCount(Long userId) {
+        Long banCount = userRepository.findBanById(userId);
+
+        return banCount;
+    }
 }
