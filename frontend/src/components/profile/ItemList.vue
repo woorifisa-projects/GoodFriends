@@ -54,7 +54,6 @@ const title = computed(() => {
 onMounted(() => {
   window.addEventListener('resize', () => {
     const { innerWidth } = window;
-    console.log(innerWidth);
     if (innerWidth > 1023) {
       maxTitle.value = 20;
     } else {
