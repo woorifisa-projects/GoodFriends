@@ -51,9 +51,10 @@ public class ProductController {
 
     // 상품 카테고리별 조회
     @GetMapping("/category")
-    public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@RequestParam String productCategory) {
+    public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@PageableDefault(size=12) Pageable pageable,
+                                                                         @RequestParam String productCategory) {
         ProductCategory category = ProductCategory.valueOf(productCategory);
-        ProductViewsAllResponse responses = productService.viewProductByCategory(category);
+        ProductViewsAllResponse responses = productService.viewProductByCategory(pageable, category);
         return ResponseEntity.ok().body(responses); // 200
     }
 

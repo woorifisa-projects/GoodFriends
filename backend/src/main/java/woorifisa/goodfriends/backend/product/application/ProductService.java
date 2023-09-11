@@ -115,8 +115,8 @@ public class ProductService {
         return new ProductViewsAllResponse(responses);
     }
 
-    public ProductViewsAllResponse viewProductByCategory(ProductCategory productCategory) {
-        List<Product> products = productRepository.findByProductCategory(productCategory);
+    public ProductViewsAllResponse viewProductByCategory(Pageable pageable, ProductCategory productCategory) {
+        List<Product> products = productRepository.findByProductCategory(pageable, productCategory);
 
         List<ProductViewAllResponse> responses = createViewList(products);
 

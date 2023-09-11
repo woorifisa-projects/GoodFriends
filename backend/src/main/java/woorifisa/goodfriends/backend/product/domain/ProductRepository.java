@@ -19,8 +19,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             countQuery = "SELECT count(p) FROM Product p")
     List<Product> findAllOrderByIdDesc(Pageable pageable);
 
-    @Query("SELECT p FROM Product p WHERE p.productCategory = :productCategory ORDER BY p.id DESC")
-    List<Product> findByProductCategory(ProductCategory productCategory);
+    @Query(value = "SELECT p FROM Product p WHERE p.productCategory = :productCategory ORDER BY p.id DESC",
+            countQuery = "SELECT count(p) FROM Product p")
+    List<Product> findByProductCategory(Pageable pageable, ProductCategory productCategory);
 
     @Query("SELECT p FROM Product p WHERE p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC")
     List<Product> findByTitleContains(String keyword);
