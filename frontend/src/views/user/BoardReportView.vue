@@ -15,8 +15,9 @@
               <div class="report-category">
                 <div>
                   <label
-                    v-for="category in REPORT.CATEGORIES"
-                    :key="category"
+                    v-for="(category, index) in reportCategories.slice(0)"
+                    :key="index"
+                    :value="category"
                     class="category-item"
                   >
                     <input
@@ -25,7 +26,7 @@
                       v-model="data.reportCategory"
                       class="category-radio"
                     />
-                    {{ category }}
+                    {{ REPORT_CATEGORY[category] }}
                   </label>
                 </div>
               </div>
@@ -44,9 +45,9 @@
                       name=""
                       id="detail"
                       placeholder="신고 내용을 적어주세요"
-                      v-model="data.reportDetail"
+                      v-model="data.content"
                     ></textarea>
-                    <div class="text-length">{{ data.reportDetail.length }} / {{ maxLength }}</div>
+                    <div class="text-length">{{ data.content.length }} / {{ maxLength }}</div>
                   </div>
                 </div>
                 <button class="submit-btn" @click="submit">
@@ -70,17 +71,19 @@ import { checkReportCategory, checkReporDetail } from '@/utils/validation';
 import reportAPI from '@/apis/user/report';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
 import { useRoute } from 'vue-router';
+import { REPORT_CATEGORY, REPORT_CATEGORY_LIST } from '@/constants/reportCategory';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
 
 const data = ref<IPostReport>({
   reportCategory: '',
-  reportDetail: ''
+  content: ''
 });
 
 const isDisabled = ref(true);
-const id = route.params.id?.toString() || '0';
+const id = route.params.productId?.toString() || '0';
+const reportCategories = REPORT_CATEGORY_LIST;
 const maxLength = ref(300);
 
 const submit = async () => {
