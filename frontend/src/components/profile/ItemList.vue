@@ -4,7 +4,7 @@
       <li>
         <div class="item" v-for="item in props.items" :key="item.productId" @click="onClick(item)">
           <div class="img">
-            <img :src="item.imageUrl" alt="" />
+            <img :src="item.imageUrl || tmpImage" alt="" />
           </div>
           <div class="detail">
             <div>{{ item.title }}</div>
@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import router from '@/router';
 import type { ISellAndPurchaseList } from '@/types/profile';
+import { tmpImage } from '@/utils/image';
 
 const props = defineProps({
   items: {
@@ -30,7 +31,6 @@ const props = defineProps({
 
 const onClick = (item: ISellAndPurchaseList) => {
   router.push('/product/' + item.productId);
-  // TODO: 상세 페이지 완성 후 수정 + 삭제 기능 추가할 시 삭제 및 페이지 이동으로 수정
 };
 </script>
 
