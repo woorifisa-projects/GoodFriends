@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.product.application;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
@@ -122,8 +123,8 @@ public class ProductService {
         return new ProductViewsAllResponse(responses);
     }
 
-    public ProductViewsAllResponse viewAllProduct() {
-        List<Product> products = productRepository.findAllOrderByIdDesc();
+    public ProductViewsAllResponse viewAllProduct(Pageable pageable) {
+        List<Product> products = productRepository.findAllOrderByIdDesc(pageable);
 
         List<ProductViewAllResponse> responses = createViewList(products);
 

@@ -1,5 +1,7 @@
 package woorifisa.goodfriends.backend.product.presentation;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,8 +59,8 @@ public class ProductController {
 
     // 상품 전체 조회
     @GetMapping
-    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
-        ProductViewsAllResponse responses = productService.viewAllProduct();
+    public ResponseEntity<ProductViewsAllResponse> viewAllProduct(@PageableDefault(size=12) Pageable pageable) {
+        ProductViewsAllResponse responses = productService.viewAllProduct(pageable);
         return ResponseEntity.ok().body(responses); // 200
     }
 

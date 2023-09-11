@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.product.domain;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,8 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                 .orElseThrow(NotFoundProductException::new);
     }
 
-    @Query("SELECT p FROM Product p ORDER BY p.id DESC")
-    List<Product> findAllOrderByIdDesc();
+    @Query(value = "SELECT p FROM Product p ORDER BY p.id DESC",
+            countQuery = "SELECT count(p) FROM Product p")
+    List<Product> findAllOrderByIdDesc(Pageable pageable);
 
     @Query("SELECT p FROM Product p WHERE p.productCategory = :productCategory ORDER BY p.id DESC")
     List<Product> findByProductCategory(ProductCategory productCategory);
