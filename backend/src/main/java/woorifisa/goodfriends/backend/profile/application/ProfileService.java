@@ -16,9 +16,10 @@ import woorifisa.goodfriends.backend.profile.dto.response.*;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
+import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfile;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,11 @@ public class ProfileService {
 
         Profile profile = profileRepository.findByUserId(userId)
                 .orElse(null);
+
+        Boolean checkPhone = profileRepository.existsByMobileNumber(request.getMobileNumber());
+        if(checkPhone){
+            throw new AlreadyExitPhoneProfile();
+        }
 
         if (profile == null) { // 프로필을 등록하지 않은 경우 새로 생성해서 값을 넣어준다.
             profileRepository.save(profile.builder()

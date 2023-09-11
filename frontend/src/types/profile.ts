@@ -15,6 +15,14 @@ export interface IProfileEdit {
   accountNumber: string;
 }
 
+export interface IPhoneAUth{
+  recipientPhoneNumber: string;
+}
+
+export interface IResultPhoneAuth{
+  result : string;
+}
+
 export interface IProfilePinia {
   id: number;
   nickName: string;
