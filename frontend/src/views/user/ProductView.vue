@@ -1,7 +1,7 @@
 <template>
   <div class="product-page">
     <div class="product-info">
-      <div class="imgs">
+      <div class="imgs box">
         <button @click="onClickBannerBtn('prev')" :disabled="viewImage === 0">
           <span class="material-icons-outlined"> arrow_back_ios </span>
         </button>
@@ -13,25 +13,20 @@
           <span class="material-icons-outlined"> arrow_forward_ios </span>
         </button>
       </div>
-      <div class="info">
+      <div class="info box">
         <div v-if="isWriter" class="wrap-btn">
           <button @click="onClickEditBtn">{{ PRODUCT.EDIT }}</button>
           <button @click="onClickDelete">{{ PRODUCT.DELETE }}</button>
-          <button @click="router.push(`${id}/order`)">{{ PRODUCT.VIEW_ORDER }}</button>
+          <button class="deco-btn" @click="router.push(`${id}/order`)">
+            {{ PRODUCT.VIEW_ORDER }}
+          </button>
         </div>
         <div v-else class="wrap-btn">
           <button @click="onClickReport">{{ PRODUCT.REPORT }}</button>
-          <button @click="onClickOrder">{{ PRODUCT.ORDER }}</button>
+          <button class="deco-btn" @click="onClickOrder">{{ PRODUCT.ORDER }}</button>
         </div>
         <div class="detail-info">
           <div class="name">{{ data.title }}</div>
-          <!-- <div class="status select" v-if="isWriter">
-            <select name="select" id="select">
-              <option value="SELL">판매중</option>
-              <option value="RESERVATION">예약중</option>
-              <option value="COMPLETED">거래완료</option>
-            </select>
-          </div> -->
           <div class="status">{{ PRODUCT_STATUS[data.status] }}</div>
           <div class="price">{{ data.sellPrice.toLocaleString() }}원</div>
           <div class="category">{{ CATEGORY[data.productCategory] }}</div>
@@ -45,7 +40,7 @@
       </div>
       <div>{{ data.nickName }}</div>
     </div>
-    <div class="product-detail">{{ data.description }}</div>
+    <div class="product-detail box">{{ data.description }}</div>
     <OrderModal v-model:is-visible="orderModalVisible" :product-id="id" />
     <ConfirmModal
       :content="[`정말로 삭제하시겠습니까?`, `삭제후 다시 복구는 불가능합니다.`]"
@@ -190,9 +185,6 @@ onMounted(async () => {
   margin: auto;
 
   overflow: hidden;
-
-  border: 1px solid rgba(0, 0, 0, 0.278);
-  border-radius: 8px;
 }
 .imgs > button {
   position: absolute;
@@ -215,10 +207,6 @@ onMounted(async () => {
 
   display: flex;
   flex-direction: column;
-
-  border: 1px solid rgba(159, 159, 159, 0.38);
-
-  box-shadow: 1px 1px 10px rgba(150, 150, 150, 0.247);
 }
 .wrap-btn {
   margin-top: 24px;
@@ -232,13 +220,16 @@ onMounted(async () => {
   padding: 12px 24px;
 
   border-radius: 8px;
-  border: 1px solid rgb(159, 159, 159);
-  box-shadow: 1px 1px 10px rgba(150, 150, 150, 0.247);
+  box-shadow: 0px 0px 3px #888;
   transition: all 0.3s ease;
+  font-family: 'LINESeedKR-Bd';
 }
 .wrap-btn > button:hover {
   transform: scale(1.05);
-  background-color: var(--category-item-point-bg);
+  background-color: var(--color-yellow);
+}
+.deco-btn {
+  background-color: var(--color-yellow);
 }
 .detail-info {
   padding: 24px;
@@ -266,7 +257,6 @@ onMounted(async () => {
   padding: 6px 12px;
   font-family: 'LINESeedKR-Rg';
   border-radius: 10px;
-  border: 1px solid rgb(200, 200, 200);
 }
 .select > select > option {
   font-family: 'LINESeedKR-Rg';
@@ -291,14 +281,14 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 12px;
-
   margin-top: 12px;
+  font-size: 20px;
 }
 .product-user > .img {
   width: 48px;
   height: 48px;
 
-  border: 1px solid rgba(0, 0, 0, 0.358);
+  border: 1px solid rgb(240, 240, 240);
   border-radius: 50%;
 
   overflow: hidden;
@@ -309,12 +299,14 @@ onMounted(async () => {
 .product-detail {
   min-height: 320px;
 
-  border: 1px solid rgba(0, 0, 0, 0.339);
-
   margin-top: 32px;
   margin-bottom: 42px;
   padding: 32px;
   font-size: 32px;
+}
+.box {
+  border: 1px solid rgb(240, 240, 240);
+  box-shadow: 0px 0px 3px #eaeaea;
 }
 @media screen and (max-width: 1023px) {
   .info {

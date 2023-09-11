@@ -5,8 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { PRODUCT } from '@/constants/strings/product';
-
 const props = defineProps({
   text: {
     type: String,

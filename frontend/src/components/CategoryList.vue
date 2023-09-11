@@ -17,19 +17,14 @@
       <span class="material-icons-outlined"> arrow_forward_ios </span>
     </button>
   </div>
-  <div class="category small-category">
-    <ul v-if="smallCategoryIsOpen">
-      <li v-for="(category, index) in categories" :key="index">
-        <button
-          :class="category === props.selectedCategory ? `selected` : ``"
-          @click="onClickCategory(category)"
-        >
-          {{ CATEGORY[category] }}
-        </button>
-      </li>
-    </ul>
-    <div v-else @click="openCategory">카테고리 열기</div>
-    <button @click="openCategory">{{ smallCategoryIsOpen ? `닫기` : `` }}</button>
+  <div class="small-category">
+    <select name="category" id="category" @change="onChangeCategory">
+      <option v-for="(category, index) in categories" :key="index" :value="category">
+        {{ CATEGORY[category] }}
+      </option>
+    </select>
+
+    <!-- <button @click="openCategory">{{ smallCategoryIsOpen ? `닫기` : `` }}</button> -->
   </div>
 </template>
 
@@ -45,15 +40,14 @@ const props = defineProps({
 });
 const emits = defineEmits(['update:selectedCategory']);
 
-const smallCategoryIsOpen = ref(false);
-
 const categoryPageNumber = ref(0);
 const viewCategoryNumber = ref(8);
 
 const categories = ref(CATEGORY_LIST);
 
-const openCategory = () => {
-  smallCategoryIsOpen.value = !smallCategoryIsOpen.value;
+const onChangeCategory = (event: Event) => {
+  const target = event.target as HTMLSelectElement;
+  emits('update:selectedCategory', target.value);
 };
 
 const onClickPrevCategory = () => {
@@ -91,6 +85,7 @@ const viewCategory = computed(() => {
   font-size: 12px;
   padding: 12px;
   transition: all 0.2s ease;
+  color: #888888;
 }
 .category > button:active {
   opacity: 0.4;
@@ -112,16 +107,17 @@ const viewCategory = computed(() => {
   width: fit-content;
 }
 .category > ul > li > button {
-  background-color: var(--category-item-bg);
+  background-color: white;
 
   min-width: 100px;
   max-width: fit-content;
   padding: 16px 0;
 
-  border: 1px solid rgba(66, 66, 66, 0.605);
+  border: 1px solid rgb(240, 240, 240);
   border-radius: 12px;
 
-  font-family: 'LINESeedKR-Bd';
+  font-family: 'LINESeedKR-Rg';
+
   font-size: 16px;
 
   transition: all 0.15s ease;
@@ -130,8 +126,7 @@ const viewCategory = computed(() => {
   transform: scale(1.05);
 }
 .category > ul > li > .selected {
-  background-color: var(--category-item-point-bg);
-  color: var(--category-item-point-text);
+  background-color: var(--color-yellow);
 }
 .small-category {
   display: none;
@@ -142,11 +137,24 @@ const viewCategory = computed(() => {
     display: none;
   }
   .small-category {
+    width: fit-content;
+    padding: 10px;
+
     display: flex;
-    flex-direction: column;
-    align-items: end;
-    width: 100%;
-    font-family: 'LINESeedKR-Bd';
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    font-family: 'LINESeedKR-Rg';
+  }
+
+  .small-category select {
+    border: 1px solid rgb(240, 240, 240);
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 20px;
+    font-family: 'LINESeedKR-Rg';
+    color: #888;
   }
   .small-category > ul {
     width: fit-content;
@@ -154,8 +162,7 @@ const viewCategory = computed(() => {
   }
   .small-category > div {
     width: 100%;
-    background-color: var(--category-item-point-bg);
-    border: 1px solid rgba(135, 135, 135, 0.32);
+    border: 1px solid rgb(240, 240, 240);
     border-radius: 12px;
     padding: 12px 24px;
     text-align: center;

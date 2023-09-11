@@ -1,30 +1,35 @@
 <template>
   <div class="filter">
-    <div v-for="status in props.productStatus" :key="status.id">
+    <div v-for="(status, index) in props.productStatus" :key="index">
       <input
         type="radio"
-        :id="status.value"
+        :id="status"
         name="filter"
-        :checked="checkedStatus === status.value"
-        @change="emits('click', status.value)"
+        :checked="checkedStatus === status"
+        @change="emits('click', status)"
       />
-      <label :for="status.value">
-        {{ status.name }}
+      <label :for="status">
+        {{ props.type[status] }}
       </label>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { IFilter } from '@/types/product';
+import type { IStringToString } from '@/types/dynamic';
+import type { PropType } from 'vue';
 
 const props = defineProps({
   productStatus: {
-    type: Array<IFilter>,
+    type: Array<string>,
     required: true
   },
   checkedStatus: {
     type: String,
+    required: true
+  },
+  type: {
+    type: Object as PropType<IStringToString>,
     required: true
   }
 });
@@ -33,30 +38,23 @@ const emits = defineEmits(['click']);
 </script>
 
 <style scoped>
-/* 
-#f6f4f9
-#fca3b9
-#fcd752
- */
 .filter {
   width: 100%;
   padding: 18px 24px 0px 24px;
+  padding-right: 56px;
   display: flex;
   flex-direction: row-reverse;
-  gap: 24px;
+  gap: 12px;
 }
 
 .filter > div {
   width: 80%;
   display: flex;
-  border: 1px solid black;
+  border: 2px solid rgb(240, 240, 240);
   border-radius: 12px;
 }
 .filter > div {
   width: 80px;
-  /*  */
-  background-color: var(--product-status-filter-bg);
-  color: var(--product-status-filter-base-text);
   text-align: center;
   border-radius: 12px;
   overflow: hidden;
@@ -72,9 +70,8 @@ const emits = defineEmits(['click']);
   height: 100%;
 }
 .filter > div > input:checked + label {
-  /*  */
-  background-color: var(--product-status-filter-point-bg);
-  color: var(--product-status-filter-point-text);
+  background-color: var(--color-yellow);
+  color: black;
 }
 .filter > div > label {
   display: block;

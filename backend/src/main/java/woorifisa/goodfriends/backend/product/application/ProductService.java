@@ -150,8 +150,13 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public ProductViewOneResponse viewOneProduct(Long id) {
-        Product product = productRepository.getById(id);
+    public ProductViewOneResponse viewOneProduct(Long userId, Long productId) {
+
+        if(!existProfile(userId)) {
+            throw new NotFoundProfile(); // 403
+        }
+
+        Product product = productRepository.getById(productId);
         System.out.println(product.getCreatedAt());
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 

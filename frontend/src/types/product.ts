@@ -33,12 +33,6 @@ export interface IDetailEditProduct extends IPostProduct {
   status: string;
   imageUrls: Array<string>;
 }
-// 상품 상태(판매중, 예약중, 거래완료)
-export interface IFilter {
-  id: number;
-  name: string;
-  value: string;
-}
 
 /* 관리자 */
 // 전체 상품 조회시 사용할 interface

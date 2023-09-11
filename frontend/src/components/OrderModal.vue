@@ -44,11 +44,11 @@
       <button @click="checkInput">{{ ORDER_MODAL.SUBMIT }}</button>
     </div>
     <div class="confirm-window" :class="isClickSubmit ? `view` : `hidden`">
-      <p>정말 제출하시겠습니까?</p>
-      <p>주문서는 수정이 불가능합니다.</p>
+      <p v-for="(message, index) in ORDER_MODAL.CONFIRM" :key="index">{{ message }}</p>
+
       <div class="confirm-btn-wrap">
-        <button @click="onClickSubmit">네</button>
         <button @click="isClickSubmit = false">아니요</button>
+        <button @click="onClickSubmit">네</button>
       </div>
     </div>
   </CommonModalVue>
@@ -193,6 +193,7 @@ watchEffect(() => {
 }
 
 .modal-date {
+  width: 60%;
   display: flex;
   flex-direction: column;
 }
@@ -239,13 +240,13 @@ watchEffect(() => {
   font-size: 18px;
 
   margin-bottom: 12px;
+  background-color: #fcc61f;
 }
 .modal > button:active {
   background-color: rgb(219, 219, 219);
 }
 .modal > button:hover {
   transform: scale(1.05);
-  background-color: #fcc61f;
 }
 .max-length {
   font-size: 12px;
@@ -260,8 +261,8 @@ watchEffect(() => {
   padding: 10px 20px;
   font-size: 24px;
   background-color: white;
-  border: 1px solid black;
-  border-radius: 8px;
+  border: 1px solid #88888831;
+  border-radius: 7px;
 }
 .confirm-btn-wrap {
   margin-top: 12px;
@@ -270,7 +271,7 @@ watchEffect(() => {
   justify-content: space-around;
 }
 .confirm-btn-wrap > button {
-  border: 1px solid black;
+  border: 1px solid rgb(240, 240, 240);
   padding: 8px 18px;
   font-size: 18px;
   border-radius: 12px;
@@ -280,13 +281,12 @@ watchEffect(() => {
 .confirm-btn-wrap > button:hover {
   transform: scale(1.03);
 }
-.confirm-btn-wrap > button:first-child {
-  background-color: lightblue;
+.confirm-btn-wrap > button:last-child {
+  background-color: var(--color-yellow);
 }
 
 input[type='date'],
 input[type='text'] {
-  /* background-color: #fcc61f; */
   padding: 13px;
   color: #000;
   font-size: 16px;

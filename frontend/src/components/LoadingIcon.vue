@@ -26,7 +26,7 @@
   height: 270px;
   width: 270px;
   border-radius: 50%;
-  border: dashed 12px var(--category-item-point-bg);
+  border: dashed 10px var(--color-yellow);
   animation-name: spin;
   animation-duration: 6s;
   animation-iteration-count: infinite;

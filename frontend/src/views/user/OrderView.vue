@@ -121,8 +121,8 @@ onMounted(async () => {
   border-bottom: 1px solid rgb(166, 166, 166);
 }
 .product-info > .img {
-  box-shadow: 1px 1px 10px rgba(153, 153, 153, 0.552);
-  border: 1px solid rgb(153, 153, 153);
+  box-shadow: 0px 0px 1px rgba(153, 153, 153, 0.552);
+  border: 1px solid rgb(240, 240, 240);
   border-radius: 16px;
 
   width: 100px;
@@ -145,6 +145,7 @@ onMounted(async () => {
   margin-top: 24px;
 }
 .order-list-header {
+  padding: 0 24px;
   display: flex;
   justify-content: space-around;
   font-size: 16px;
@@ -163,8 +164,9 @@ onMounted(async () => {
 .info {
   height: 80px;
 
-  border: 2px solid var(--order-list-item-border);
-  background-color: var(--order-list-item-bg);
+  border: 1px solid var(--color-yellow);
+  background-color: #fff;
+  z-index: 2;
   border-radius: 18px;
   cursor: pointer;
 
@@ -179,7 +181,6 @@ onMounted(async () => {
 .info > div {
   pointer-events: none;
   flex: 1;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -224,10 +225,10 @@ onMounted(async () => {
   height: 50px;
   overflow: hidden;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid #88888852;
 }
 .requirement {
-  border: 1px solid lightgray;
+  border: 1px solid rgb(240, 240, 240);
   padding: 24px;
   border-radius: 12px;
   height: 300px;
@@ -245,7 +246,7 @@ onMounted(async () => {
   overflow: hidden;
 
   background-color: #fbd668;
-  border: 1px solid lightgray;
+  box-shadow: 1px 1px 2px rgb(202, 202, 202);
   border-radius: 12px;
 
   display: flex;

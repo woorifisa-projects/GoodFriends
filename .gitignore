@@ -10,6 +10,7 @@ build/
 backend/src/main/resources/application.yml
 backend/src/main/resources/application-db.yml
 backend/src/main/resources/application-oauth.yml
+backend/src/main/resources/application-sms.yml
 backend/src/main/resources/application-local.properties
 
 ### STS ###

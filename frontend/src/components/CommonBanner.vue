@@ -67,7 +67,7 @@ setInterval(() => {
   width: 100%;
   height: 100%;
   text-align: center;
-  background-color: #198bf3;
+  background-color: white;
 }
 .banner-img > img {
   height: 100%;

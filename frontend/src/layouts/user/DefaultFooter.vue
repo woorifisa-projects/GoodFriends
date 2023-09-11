@@ -31,7 +31,7 @@ import { LOGO_IMG } from '@/constants/images';
   bottom: 0;
 
   width: 100%;
-  height: 150px;
+  height: 66px;
 
   display: flex;
   justify-content: center;
@@ -40,6 +40,7 @@ import { LOGO_IMG } from '@/constants/images';
   padding: 0 200px;
 
   background: #f2f3f3;
+  box-shadow: rgb(146 153 184 / 5%) 0px -5px 10px;
 }
 .logo {
   width: 200px;
