@@ -2,11 +2,10 @@ package woorifisa.goodfriends.backend.profile.dto.response;
 
 import lombok.Getter;
 import woorifisa.goodfriends.backend.order.domain.ConfirmStatus;
-import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
 @Getter
 public class ProductViewPurchaseList {
-    private final Long id;
+    private final Long productId;
 
     private final String title;
 
@@ -16,8 +15,8 @@ public class ProductViewPurchaseList {
 
     private final String imageUrl;
 
-    public ProductViewPurchaseList(Long id, String title, ConfirmStatus status, int sellPrice, String imageUrl) {
-        this.id = id;
+    public ProductViewPurchaseList(Long productId, String title, ConfirmStatus status, int sellPrice, String imageUrl) {
+        this.productId = productId;
         this.title = title;
         this.status = status;
         this.sellPrice = sellPrice;

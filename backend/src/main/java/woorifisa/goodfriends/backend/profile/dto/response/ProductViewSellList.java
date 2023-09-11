@@ -7,7 +7,7 @@ import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 @Getter
 public class ProductViewSellList {
 
-    private final Long id;
+    private final Long productId;
 
     private final String title;
 
@@ -17,8 +17,8 @@ public class ProductViewSellList {
 
     private final String imageUrl;
 
-    public ProductViewSellList(Long id, String title, ProductStatus status, int sellPrice, String imageUrl) {
-        this.id = id;
+    public ProductViewSellList(Long productId, String title, ProductStatus status, int sellPrice, String imageUrl) {
+        this.productId = productId;
         this.title = title;
         this.status = status;
         this.sellPrice = sellPrice;

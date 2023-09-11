@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
+import woorifisa.goodfriends.backend.profile.dto.response.ProductViewsPurchaseList;
 import woorifisa.goodfriends.backend.profile.dto.response.ProductViewsSellList;
 import woorifisa.goodfriends.backend.profile.application.ProfileService;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
@@ -48,10 +49,18 @@ public class ProfileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/me/sell-list") //
+    @GetMapping("/me/sell-list")
     public ResponseEntity<ProductViewsSellList> sellProductList(@AuthenticationPrincipal LoginUser loginUser,
                                                                 @RequestParam String productStatus) {
         ProductViewsSellList responses = profileService.sellProductList(loginUser.getId(), productStatus);
+
+        return ResponseEntity.ok().body(responses);
+    }
+
+    @GetMapping("/me/purchase-list")
+    public ResponseEntity<ProductViewsPurchaseList> purchaseProductList(@AuthenticationPrincipal LoginUser loginUser,
+                                                                        @RequestParam String confirmStatus){
+        ProductViewsPurchaseList responses = profileService.purchaseProductList(loginUser.getId(), confirmStatus);
 
         return ResponseEntity.ok().body(responses);
     }
