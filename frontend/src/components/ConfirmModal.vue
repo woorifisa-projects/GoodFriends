@@ -84,7 +84,7 @@ const updateResponse = (event: Event) => {
   transform: scale(1.03);
 }
 .yes-btn {
-  background-color: var(--category-item-point-bg);
+  background-color: var(--color-yellow);
 }
 @media screen and (max-width: 1200px) {
   /* .modal {

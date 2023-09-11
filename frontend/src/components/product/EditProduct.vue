@@ -430,7 +430,7 @@ onMounted(async () => {
   padding: 10px 15px;
 
   color: #ffffff;
-  background-color: var(--edit-product-btn-1-bg);
+  background-color: var(--color-blue);
   border: 1px solid #ebebeb;
   border-radius: 0.25em;
 
@@ -518,12 +518,12 @@ button:hover {
 
 .remove-btn {
   color: #ffffff;
-  background-color: var(--edit-product-remove-btn-bg);
+  background-color: var(--color-black);
 }
 
 .submit-btn {
   color: #ffffff;
-  background-color: var(--edit-product-btn-1-bg);
+  background-color: var(--color-blue);
 }
 .select-buttons {
   visibility: hidden;

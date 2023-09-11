@@ -109,7 +109,7 @@ const viewCategory = computed(() => {
   width: fit-content;
 }
 .category > ul > li > button {
-  background-color: var(--category-item-bg);
+  background-color: white;
 
   min-width: 100px;
   max-width: fit-content;
@@ -128,8 +128,7 @@ const viewCategory = computed(() => {
   transform: scale(1.05);
 }
 .category > ul > li > .selected {
-  background-color: var(--category-item-point-bg);
-  color: var(--category-item-point-text);
+  background-color: var(--color-yellow);
 }
 .small-category {
   display: none;
@@ -166,7 +165,6 @@ const viewCategory = computed(() => {
   }
   .small-category > div {
     width: 100%;
-    /* background-color: var(--category-item-point-bg); */
     border: 1px solid rgb(240, 240, 240);
     border-radius: 12px;
     padding: 12px 24px;

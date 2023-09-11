@@ -164,7 +164,7 @@ onMounted(async () => {
 .info {
   height: 80px;
 
-  border: 1px solid var(--profile-list-point-bg);
+  border: 1px solid var(--color-yellow);
   background-color: #fff;
   z-index: 2;
   border-radius: 18px;

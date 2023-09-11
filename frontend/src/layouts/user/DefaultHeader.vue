@@ -176,7 +176,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
 
-  background: #fff;
+  background-color: #fff;
   box-shadow: 2px 2px 10px rgba(202, 202, 202, 0.389);
   z-index: 99;
   user-select: none;
@@ -212,11 +212,11 @@ onMounted(async () => {
   background-color: transparent;
   font-size: 20px;
   font-family: 'LINESeedKR-Bd';
-  color: var(--profile-label-bg);
+  color: var(--color-yellow);
   transition: color 0.3s ease;
 }
 .wrap > div > button:hover {
-  color: var(--edit-product-point-bg);
+  color: var(--color-blue);
 }
 
 #login {
@@ -247,7 +247,6 @@ onMounted(async () => {
   top: 100px;
   right: 250px;
 
-  /* background: var(--popover-bg); */
   background-color: #fefefe;
   box-shadow: 1px 1px 10px rgba(183, 183, 183, 0.779);
   border-radius: 20px;
@@ -265,7 +264,6 @@ onMounted(async () => {
 }
 
 .popover::after {
-  /* border-bottom: 10px solid var(--popover-bg); */
   border-bottom: 10px solid #fefefe;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
@@ -308,8 +306,7 @@ onMounted(async () => {
   border-radius: 10px;
   font-size: 18px;
   text-align: center;
-  background: var(--popover-btn-bg);
-  color: var(--popover-btn-text);
+  background: white;
   cursor: pointer;
   transition: all 0.3s ease;
 }

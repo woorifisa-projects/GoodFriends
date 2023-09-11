@@ -161,7 +161,6 @@ onMounted(async () => {
 .add-button > button {
   border: 1px solid rgb(240, 240, 240);
   box-shadow: 1px 1px 6px rgba(161, 161, 161, 0.224);
-  /* background-color: var(--product-add-btn-bg); */
   background-color: white;
   color: #888888;
   border-radius: 50%;

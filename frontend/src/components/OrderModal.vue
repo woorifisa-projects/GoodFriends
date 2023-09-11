@@ -282,7 +282,7 @@ watchEffect(() => {
   transform: scale(1.03);
 }
 .confirm-btn-wrap > button:last-child {
-  background-color: var(--category-item-point-bg);
+  background-color: var(--color-yellow);
 }
 
 input[type='date'],

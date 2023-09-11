@@ -232,10 +232,10 @@ onMounted(async () => {
 }
 .wrap-btn > button:hover {
   transform: scale(1.05);
-  background-color: var(--category-item-point-bg);
+  background-color: var(--color-yellow);
 }
 .deco-btn {
-  background-color: var(--category-item-point-bg);
+  background-color: var(--color-yellow);
 }
 .detail-info {
   padding: 24px;

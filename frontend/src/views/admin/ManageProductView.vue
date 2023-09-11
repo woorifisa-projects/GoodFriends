@@ -164,7 +164,7 @@ const onClickProductCard = (id: number) => {
 .add-button > button {
   border: 1px solid dodgerblue;
   background-color: dodgerblue;
-  color: var(--product-add-btn-text);
+  color: black;
   border-radius: 50%;
   width: 64px;
   height: 64px;

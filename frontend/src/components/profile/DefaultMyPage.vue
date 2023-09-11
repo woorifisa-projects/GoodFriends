@@ -167,7 +167,7 @@ onMounted(() => {
   transition: all 0.3s ease;
 }
 .list-item li:hover {
-  border-bottom: 1px solid var(--profile-label-bg);
+  border-bottom: 1px solid var(--color-yellow);
   transform: scale(1.01);
 }
 
@@ -248,8 +248,6 @@ onMounted(() => {
 .item {
   padding: 8px 16px;
 
-  /* background: var(--profile-list-base); */
-  /* border: 1px solid lightgray; */
   border-bottom: 1px solid rgb(240, 240, 240);
 
   /* border-radius: 8px; */
@@ -261,12 +259,7 @@ a {
   height: 100%;
 }
 .cur {
-  /* background-color: var(--profile-list-point-bg); */
-  border-bottom: 2px solid var(--profile-label-bg);
-}
-
-.cur > a {
-  /* color: var(--profile-list-point-text); */
+  border-bottom: 2px solid var(--color-yellow);
 }
 
 .first-main {

@@ -190,15 +190,12 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--product-status-filter-bg);
-  color: var(--product-status-filter-base-text);
   padding: 16px 20px;
   border-radius: 12px;
 }
 
 .btn_wrap > button:last-child {
-  background-color: var(--product-status-filter-point-bg);
-  color: var(--product-status-filter-point-text);
+  background-color: var(--color-yellow);
 }
 
 .profile_detail_wrap {
@@ -230,9 +227,6 @@ onMounted(async () => {
 .item > label {
   height: 100%;
   width: 100px;
-  /* padding: 16px; */
-  /* background: var(--profile-label-bg);
-  color: var(--profile-label-text); */
   text-align: center;
   display: flex;
   justify-content: center;

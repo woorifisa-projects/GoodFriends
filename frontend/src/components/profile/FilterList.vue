@@ -50,9 +50,6 @@ const emits = defineEmits(['click']);
 }
 .filter > div {
   width: 80px;
-  /*  */
-  background-color: var(--product-status-filter-bg);
-  color: var(--product-status-filter-base-text);
   text-align: center;
   border-radius: 12px;
   overflow: hidden;
@@ -68,8 +65,7 @@ const emits = defineEmits(['click']);
   height: 100%;
 }
 .filter > div > input:checked + label {
-  /*  */
-  background-color: var(--product-status-filter-point-bg);
+  background-color: var(--color-yellow);
   color: black;
 }
 .filter > div > label {
