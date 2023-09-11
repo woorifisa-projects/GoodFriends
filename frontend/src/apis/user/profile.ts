@@ -11,9 +11,8 @@ const profileAPI = {
     editProfile: `api/profile/me/info/`,
     editProfileImg: `api/profile/me/profile-image/`,
     getProfile: `api/profile/me/`,
-
     sendPhoneAuth: 'api/sms/user',
-    checkPhoneAuth: 'api/sms/user/check/'
+    checkPhoneAuth: 'api/sms/user/check/',
     getSellList: `api/profile/me/sell-list`,
     getPurchaseList: `api/profile/me/purchase-list`
 
