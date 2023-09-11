@@ -37,6 +37,14 @@ export interface IProfile extends IProfileEdit {
   email: string;
 }
 
+export interface ISellAndPurchaseList {
+  productId: number;
+  title: string;
+  status: string;
+  sellPrice: number;
+  imageUrl: string;
+}
+
 declare global {
   interface Window {
     daum: any;
