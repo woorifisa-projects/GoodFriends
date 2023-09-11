@@ -27,8 +27,8 @@
           <div class="list-item">
             <span>{{ PROFILE_SIDEBAR.MY_INFO }}</span>
             <ul>
-              <li :class="route.path === '/profile/' + user.id ? 'item cur' : 'item'">
-                <router-link :to="`/profile/` + user.id">
+              <li>
+                <router-link :to="`/profile/` + id">
                   {{ PROFILE_SIDEBAR.PROFILE }}
                 </router-link>
               </li>
@@ -37,11 +37,7 @@
           <div class="list-item">
             <span>{{ PROFILE_SIDEBAR.DEAL }}</span>
             <ul>
-              <li
-                v-for="(item, index) in navList"
-                v-bind:key="index"
-                :class="route.path === item.path ? 'item cur' : 'item'"
-              >
+              <li v-for="(item, index) in navList" v-bind:key="index">
                 <router-link :to="item.path">{{ item.name }}</router-link>
               </li>
             </ul>
@@ -71,18 +67,17 @@ const store = useUserInfoStore();
 const user = ref({
   imageUrl: store.imageUrl,
   nickName: store.nickName,
-  id: store.id,
   email: store.email
 });
-
+const id = ref(route.params.id.toString());
 const navList = ref([
   {
     name: '구매목록',
-    path: `/profile/${user.value.id}/purchase`
+    path: `/profile/${id.value}/purchase`
   },
   {
     name: '판매목록',
-    path: `/profile/${user.value.id}/sell`
+    path: `/profile/${id.value}/sell`
   }
 ]);
 
@@ -164,7 +159,7 @@ onMounted(() => {
   font-family: 'LINESeedKR-Bd';
 }
 .list-item li {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 .list-item li:hover {
   border-bottom: 1px solid var(--color-yellow);
@@ -246,22 +241,23 @@ onMounted(() => {
 }
 
 .item {
-  padding: 8px 16px;
-
   border-bottom: 1px solid rgb(240, 240, 240);
 
   /* border-radius: 8px; */
 }
 
 a {
+  padding: 8px 16px;
+
   display: block;
   width: 100%;
   height: 100%;
 }
-.cur {
+
+[aria-current] {
+  padding: 8px 16px;
   border-bottom: 2px solid var(--color-yellow);
 }
-
 .first-main {
   /* TODO: 이후 거래 횟수 등 데이터 추가할 시 제거 */
   background: linear-gradient(to bottom, lightyellow, white);

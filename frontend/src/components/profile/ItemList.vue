@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <ul>
-      <li>
+      <li v-if="props.items.length">
         <div class="item" v-for="item in props.items" :key="item.productId" @click="onClick(item)">
           <div class="img">
             <img :src="item.imageUrl || tmpImage" alt="" />
@@ -13,6 +13,7 @@
           </div>
         </div>
       </li>
+      <EmptyProductVue v-else :text="props.message" />
     </ul>
   </div>
 </template>
@@ -23,6 +24,8 @@ import type { IStringToString } from '@/types/dynamic';
 import type { ISellAndPurchaseList } from '@/types/profile';
 import { tmpImage } from '@/utils/image';
 import { computed, ref, type PropType, onMounted } from 'vue';
+import EmptyProductVue from '../EmptyProduct.vue';
+import { PRODUCT } from '@/constants/strings/product';
 
 const props = defineProps({
   items: {
@@ -32,6 +35,10 @@ const props = defineProps({
   type: {
     type: Object as PropType<IStringToString>,
     required: true
+  },
+  message: {
+    type: String,
+    default: PRODUCT.NOTHING
   }
 });
 
@@ -47,7 +54,6 @@ const title = computed(() => {
 onMounted(() => {
   window.addEventListener('resize', () => {
     const { innerWidth } = window;
-    console.log(innerWidth);
     if (innerWidth > 1023) {
       maxTitle.value = 20;
     } else {
@@ -81,8 +87,12 @@ onMounted(() => {
   border: 1px solid rgb(240, 240, 240);
   border-radius: 10px;
   box-shadow: 0px 0px 3px #0000001b;
-}
 
+  transition: transform 0.3s ease;
+}
+.item:hover {
+  transform: scale(1.02);
+}
 .item > .img {
   width: 80px;
   height: 80px;
@@ -98,7 +108,7 @@ onMounted(() => {
 
 .detail {
   display: flex;
-  gap: 5px;
+  gap: 12px;
   justify-content: space-around;
   width: calc(100% - 100px);
   border-radius: 20px;
@@ -113,17 +123,18 @@ onMounted(() => {
   display: flex;
   justify-content: start;
   align-items: center;
-  font-size: 20px;
+  font-size: 14px;
   text-align: left;
 }
 .detail > div:first-child {
+  font-size: 17px;
   flex: 4;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .detail > div:last-child {
-  justify-content: end;
+  justify-content: center;
 
   font-size: 18px;
 }
