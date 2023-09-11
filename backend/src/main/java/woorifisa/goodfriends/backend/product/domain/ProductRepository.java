@@ -15,20 +15,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                 .orElseThrow(NotFoundProductException::new);
     }
 
-    @Query(value = "SELECT p FROM Product p ORDER BY p.id DESC",
-            countQuery = "SELECT count(p) FROM Product p")
+    @Query("SELECT p FROM Product p ORDER BY p.id DESC")
     List<Product> findAllOrderByIdDesc(Pageable pageable);
 
-    @Query(value = "SELECT p FROM Product p WHERE p.productCategory = :productCategory ORDER BY p.id DESC",
-            countQuery = "SELECT count(p) FROM Product p")
+    @Query("SELECT p FROM Product p WHERE p.productCategory = :productCategory ORDER BY p.id DESC")
     List<Product> findByProductCategory(Pageable pageable, ProductCategory productCategory);
 
-    @Query(value = "SELECT p FROM Product p WHERE p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC",
-            countQuery = "SELECT count(p) FROM Product p")
+    @Query("SELECT p FROM Product p WHERE p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC")
     List<Product> findByTitleContains(Pageable pageable, String keyword);
 
-    @Query(value = "SELECT p FROM Product p  WHERE p.productCategory = :productCategory AND p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC",
-            countQuery = "SELECT count(p) FROM Product p")
+    @Query("SELECT p FROM Product p  WHERE p.productCategory = :productCategory AND p.title LIKE CONCAT('%',:keyword,'%') ORDER BY p.id DESC")
     List<Product> findByTitleContainsInCategory(Pageable pageable, ProductCategory productCategory, String keyword);
 
     @Modifying(clearAutomatically = true)
