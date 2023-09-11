@@ -104,7 +104,7 @@ onMounted(() => {
 
 .detail {
   display: flex;
-  gap: 5px;
+  gap: 12px;
   justify-content: space-around;
   width: calc(100% - 100px);
   border-radius: 20px;
@@ -119,17 +119,18 @@ onMounted(() => {
   display: flex;
   justify-content: start;
   align-items: center;
-  font-size: 20px;
+  font-size: 14px;
   text-align: left;
 }
 .detail > div:first-child {
+  font-size: 17px;
   flex: 4;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .detail > div:last-child {
-  justify-content: end;
+  justify-content: center;
 
   font-size: 18px;
 }
