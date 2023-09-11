@@ -11,6 +11,8 @@ export const PROFILE = {
   NICKNAME: '닉네임',
   GENDER: '성별',
   PHONE_NUMBER: '핸드폰',
+  SEND_PHONE_AUTH: '인증번호 전송',
+  CHECK_PHONE: '핸드폰 인증',
   ADDRESS: '주소',
   BIRTHDAY: '생년월일',
   GET_ADDRESS: '도로명주소 찾기',

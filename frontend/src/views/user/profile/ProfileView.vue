@@ -47,6 +47,12 @@
               @input="onInputPhoneNumber"
               :placeholder="PLACEHOLDER.PHONE_INPUT"
             />
+            <PhoneAuthAPI
+              v-show="!isDisabled"
+              @click="checkPhoneAuth"
+              :text="PROFILE.SEND_PHONE_AUTH"
+              :phoneNum="userInputInfo.mobileNumber"
+            />
           </div>
           <div class="item">
             <label>{{ PROFILE.ADDRESS }}</label>
@@ -70,6 +76,7 @@ import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { onMounted, ref } from 'vue';
 import { checkPhoneNumber } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
+import PhoneAuthAPI from '@/components/PhoneAuthAPI.vue';
 import AddressAPI from '@/components/AddressAPI.vue';
 import { useRoute } from 'vue-router';
 import { useUserInfoStore } from '@/stores/userInfo';
@@ -99,9 +106,25 @@ const isDisabled = ref(true);
 const searchAddress = (data: string) => {
   userInputInfo.value.address = data;
 };
+const ischeckPhoneAuth = ref(false);
+const checkPhoneAuth = (isSuccess: boolean) => {
+  if (!isSuccess) {
+    userInputInfo.value.mobileNumber = '';
+    ischeckPhoneAuth.value = false;
+  } else {
+    ischeckPhoneAuth.value = true;
+  }
+};
+const checkPhone = (data: string) => {
+  userInputInfo.value.mobileNumber = data;
+};
 const onClickEdit = async () => {
   if (isDisabled.value) {
     isDisabled.value = false;
+    return;
+  }
+  if (!ischeckPhoneAuth.value) {
+    alert('휴대폰 인증을 해주세요');
     return;
   }
   if (userInputInfo.value.accountNumber.length < 7) {
