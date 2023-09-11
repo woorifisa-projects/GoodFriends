@@ -168,6 +168,11 @@ public class ProductService {
 
     public ProductViewOneResponse viewOneProduct(Long userId, Long productId) {
 
+        //부정행위자로 등록된 유저는 상품 등록 못하도록
+        if(existOffender(userId)) {
+            throw new NotAccessProduct();
+        }
+
         if(!existProfile(userId)) {
             throw new NotFoundProfile(); // 403
         }

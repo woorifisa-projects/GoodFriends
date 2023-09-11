@@ -2,6 +2,8 @@ package woorifisa.goodfriends.backend.profile.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import woorifisa.goodfriends.backend.offender.domain.Offender;
+import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.order.domain.ConfirmStatus;
 import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
@@ -9,6 +11,7 @@ import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductImageRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
+import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
 import woorifisa.goodfriends.backend.profile.dto.response.*;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
@@ -32,15 +35,26 @@ public class ProfileService {
 
     private final OrderRepository orderRepository;
 
-    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, OrderRepository orderRepository) {
+    private final OffenderRepository offenderRepository;
+
+    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository,
+                          ProductRepository productRepository, ProductImageRepository productImageRepository,
+                          OrderRepository orderRepository, OffenderRepository offenderRepository) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.orderRepository = orderRepository;
+        this.offenderRepository = offenderRepository;
     }
 
     public ProfileViewResponse viewProfile(Long userId) {
+
+        //부정행위자로 등록된 유저는 상품 등록 못하도록
+        if(existOffender(userId)) {
+            throw new NotAccessProduct();
+        }
+
         User user = userRepository.getById(userId);
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
 
@@ -54,6 +68,11 @@ public class ProfileService {
         }
 
         return profileViewResponse;
+    }
+
+    public boolean existOffender(Long userId) {
+        Offender offender = offenderRepository.findByUserId(userId).orElse(null);
+        return offender != null;
     }
 
     public void update(Long userId, ProfileUpdateRequest request) {
