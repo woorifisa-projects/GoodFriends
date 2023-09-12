@@ -45,14 +45,14 @@ export const checkProductValue = (product: IPostProduct) => {
 };
 
 export const checkReportCategory = (report: IPostReport) => {
-  if (!report.reportCategory) {
+  if (!report.reportCategory.length) {
     return { isSuccess: false, type: 'reportCategory' };
   }
   return { isSuccess: true };
 };
 
 export const checkReporDetail = (report: IPostReport) => {
-  if (!report.content) {
+  if (!report.content.length) {
     return { isSuccess: false, type: 'content' };
   }
   return { isSuccess: true };
