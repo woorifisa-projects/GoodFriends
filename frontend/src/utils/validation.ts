@@ -53,7 +53,7 @@ export const checkReportCategory = (report: IPostReport) => {
 
 export const checkReporDetail = (report: IPostReport) => {
   if (!report.content) {
-    return { isSuccess: false, type: 'reportDetail' };
+    return { isSuccess: false, type: 'content' };
   }
   return { isSuccess: true };
 };

@@ -38,7 +38,7 @@ const props = defineProps({
     required: true
   }
 });
-const emits = defineEmits(['update:selectedCategory']);
+const emits = defineEmits(['change']);
 
 const categoryPageNumber = ref(0);
 const viewCategoryNumber = ref(8);
@@ -47,7 +47,7 @@ const categories = ref(CATEGORY_LIST);
 
 const onChangeCategory = (event: Event) => {
   const target = event.target as HTMLSelectElement;
-  emits('update:selectedCategory', target.value);
+  emits('change', target.value);
 };
 
 const onClickPrevCategory = () => {
@@ -62,7 +62,7 @@ const onClickNextCategory = () => {
 };
 
 const onClickCategory = (category: string) => {
-  emits('update:selectedCategory', category);
+  emits('change', category);
 };
 
 const viewCategory = computed(() => {
