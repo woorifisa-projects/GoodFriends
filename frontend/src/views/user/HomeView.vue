@@ -15,7 +15,7 @@
             <span class="material-icons-outlined"> search </span>
           </label>
         </div>
-        <CategoryList v-model:selectedCategory="selectedCategory" />
+        <CategoryList :selectedCategory="selectedCategory" @change="changeCategory" />
       </div>
       <div v-if="products.length" class="card-list">
         <ProductCardVue :products="products" @click="onClickProductCard" />
@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref } from 'vue';
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
 import CommonBannerVue from '@/components/CommonBanner.vue';
@@ -40,20 +40,22 @@ import productAPI from '@/apis/user/product';
 import type { IAllProduct } from '@/types/product';
 import EmptyProduct from '@/components/EmptyProduct.vue';
 import { PLACEHOLDER } from '@/constants/strings/defaultInput';
+import type { IStringToFunction } from '@/types/dynamic';
 
 const selectedCategory = ref('ALL');
-
 const keyword = ref('');
-
 const products = ref<Array<IAllProduct>>([]);
+const pageNumber = ref(0);
+const currentSearch = ref('ALL');
+const isEnd = ref(false);
+const preScroll = ref(0);
+const CARD_SIZE = 400;
 
-const onClickSearch = async () => {
-  const res = await productAPI.getSearchTitleProduct(selectedCategory.value, keyword.value);
-  if (res.isSuccess && res.data) {
-    products.value = res.data;
-  } else {
-    products.value = [];
-  }
+const getProduct: IStringToFunction = {
+  SEARCH: (page: number) =>
+    productAPI.getSearchTitleProduct(selectedCategory.value, keyword.value, page),
+  ALL: (page: number) => productAPI.getAll(page),
+  CATEGORY: (page: number) => productAPI.getCategoryProduct(selectedCategory.value, page)
 };
 
 const onClickAddProduct = () => {
@@ -64,33 +66,69 @@ const onClickProductCard = (id: number) => {
   router.push(`product/${id}`);
 };
 
-watchEffect(async () => {
-  if (selectedCategory.value === 'ALL') {
-    const res = await productAPI.getAll();
-    if (res.isSuccess && res.data) {
-      products.value = res.data;
-    } else {
-      console.error(res.message);
-    }
-
+const handleNotificationListScroll = async () => {
+  const scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
+  if (Math.abs(preScroll.value - scrollLocation) < 10) {
+    preScroll.value = scrollLocation;
     return;
   }
-
-  const res = await productAPI.getCategoryProduct(selectedCategory.value);
+  preScroll.value = scrollLocation;
+  const windowHeight = window.innerHeight; // 스크린 창
+  const fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
+  if (scrollLocation + windowHeight + CARD_SIZE > fullHeight) {
+    pageNumber.value += 1;
+    const res = await getProduct[currentSearch.value](pageNumber.value);
+    if (!res.isSuccess) {
+      return;
+    }
+    if (!res.data || res.data.length === 0) {
+      isEnd.value = true;
+      window.removeEventListener('scroll', handleNotificationListScroll);
+      return;
+    }
+    products.value = [...products.value, ...res.data];
+  }
+};
+// 상품 검색
+const onClickSearch = async () => {
+  currentSearch.value = 'SEARCH';
+  pageNumber.value = 0;
+  window.addEventListener('scroll', handleNotificationListScroll);
+  const res = await getProduct[currentSearch.value](pageNumber.value);
   if (res.isSuccess && res.data) {
     products.value = res.data;
   } else {
     products.value = [];
   }
-});
+};
+// 카테고리 변경
+const changeCategory = async (category: string) => {
+  selectedCategory.value = category;
+  pageNumber.value = 0;
+  currentSearch.value = 'CATEGORY';
+  window.addEventListener('scroll', handleNotificationListScroll);
+
+  console.log(selectedCategory.value);
+  if (selectedCategory.value === 'ALL') {
+    currentSearch.value = 'ALL';
+  }
+
+  const res = await getProduct[currentSearch.value](pageNumber.value);
+  if (res.isSuccess && res.data) {
+    products.value = res.data;
+  } else {
+    products.value = [];
+  }
+};
 
 onMounted(async () => {
-  const res = await productAPI.getAll();
+  const res = await getProduct['ALL'](pageNumber.value);
   if (res.isSuccess && res.data) {
     products.value = res.data;
   } else {
     console.error(res.message);
   }
+  window.addEventListener('scroll', handleNotificationListScroll);
 });
 </script>
 

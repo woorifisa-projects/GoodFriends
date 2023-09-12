@@ -4,7 +4,7 @@ export const PLACEHOLDER = {
   DESCRIPTION_TEXTAREA: '자세한 설명',
   SEARCH_INPUT: '검색하기',
   NICKNAME_INPUT: '닉네임을 입력해주세요',
-  PHONE_INPUT: '헨드폰 번호를 입력해주세요',
+  PHONE_INPUT: '번호를 입력해주세요',
   ADDRESS_INPUT: '주소를 입력해주세요',
   ACCOUNT_INPUT: '계좌번호를 입력해주세요'
 };

@@ -2,6 +2,8 @@ package woorifisa.goodfriends.backend.profile.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import woorifisa.goodfriends.backend.offender.domain.Offender;
+import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.order.domain.ConfirmStatus;
 import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
@@ -9,13 +11,15 @@ import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductImageRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
+import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
 import woorifisa.goodfriends.backend.profile.dto.response.*;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
+import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfile;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,15 +36,21 @@ public class ProfileService {
 
     private final OrderRepository orderRepository;
 
-    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, ProductRepository productRepository, ProductImageRepository productImageRepository, OrderRepository orderRepository) {
+    private final OffenderRepository offenderRepository;
+
+    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository,
+                          ProductRepository productRepository, ProductImageRepository productImageRepository,
+                          OrderRepository orderRepository, OffenderRepository offenderRepository) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.orderRepository = orderRepository;
+        this.offenderRepository = offenderRepository;
     }
 
     public ProfileViewResponse viewProfile(Long userId) {
+
         User user = userRepository.getById(userId);
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
 
@@ -57,6 +67,12 @@ public class ProfileService {
     }
 
     public void update(Long userId, ProfileUpdateRequest request) {
+
+        //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
+        if(existOffender(userId)) {
+            throw new NotAccessProduct();
+        }
+
         User user = userRepository.getById(userId);
 
         user.updateNickname(request.getNickName());
@@ -64,6 +80,11 @@ public class ProfileService {
 
         Profile profile = profileRepository.findByUserId(userId)
                 .orElse(null);
+
+        Boolean checkPhone = profileRepository.existsByMobileNumber(request.getMobileNumber());
+        if(checkPhone){
+            throw new AlreadyExitPhoneProfile();
+        }
 
         if (profile == null) { // 프로필을 등록하지 않은 경우 새로 생성해서 값을 넣어준다.
             profileRepository.save(profile.builder()
@@ -80,6 +101,11 @@ public class ProfileService {
             profile.updateAccountNumber(request.getAccountNumber());
             profileRepository.save(profile);
         }
+    }
+
+    public boolean existOffender(Long userId) {
+        Offender offender = offenderRepository.findByUserId(userId).orElse(null);
+        return offender != null;
     }
 
     public ProductViewsSellList sellProductList(Long userId, String productStatus) {
@@ -128,5 +154,34 @@ public class ProfileService {
                 .collect(Collectors.toList());
 
         return new ProductViewsPurchaseList(responses);
+    }
+
+    public ProfileBannerResponse viewProfileBanner(Long userId) {
+        boolean verifiedBadge = existMobileNumber(userId);
+        Long dealCount = sellPurchaseCount(userId);
+        Long banCount = userBanCount(userId);
+
+        ProfileBannerResponse response = new ProfileBannerResponse(verifiedBadge, dealCount, banCount);
+
+        return response;
+    }
+
+    private boolean existMobileNumber(Long userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        return profile != null;
+    }
+
+    private Long sellPurchaseCount(Long userId) {
+        Long sellCount = productRepository.findCountByProductStatusAndUserId(ProductStatus.COMPLETED, userId);
+        Long purchaseCount = orderRepository.findCountByConfirmStatusAndUserId(ConfirmStatus.COMPLETED, userId);
+        Long dealCount = sellCount + purchaseCount;
+
+        return dealCount;
+    }
+
+    private Long userBanCount(Long userId) {
+        Long banCount = userRepository.findBanById(userId);
+
+        return banCount;
     }
 }

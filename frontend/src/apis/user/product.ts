@@ -4,6 +4,7 @@ import type { IAllProduct, IDetailEditProduct, IDetailProduct } from '@/types/pr
 import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
+const MAX_SIZE = 15;
 
 const productAPI = {
   endPoint: {
@@ -17,10 +18,10 @@ const productAPI = {
     getSerchTitleProduct: `api/products/search/`
   },
   headers: {},
-  getAll: (): Promise<IResultType<Array<IAllProduct>>> => {
+  getAll: (page: number, size = MAX_SIZE): Promise<IResultType<Array<IAllProduct>>> => {
     // 전체 조회
     return api
-      .get(productAPI.endPoint.getAll)
+      .get(productAPI.endPoint.getAll, { params: { page, size } })
       .then((res: AxiosResponse) => {
         const { data } = res;
         return { isSuccess: true, data: data.responses, code: res.status };
@@ -155,11 +156,15 @@ const productAPI = {
         return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
-  getCategoryProduct: (productCategory: string): Promise<IResultType<Array<IAllProduct>>> => {
+  getCategoryProduct: (
+    productCategory: string,
+    page: number,
+    size = MAX_SIZE
+  ): Promise<IResultType<Array<IAllProduct>>> => {
     // 카테고리별 조회
     return api
       .get(productAPI.endPoint.getCategoryProduct, {
-        params: { productCategory }
+        params: { productCategory, page, size }
       })
       .then((res: AxiosResponse) => {
         const { data } = res;
@@ -178,12 +183,14 @@ const productAPI = {
   },
   getSearchTitleProduct: (
     productCategory: string,
-    keyword: string
+    keyword: string,
+    page: number,
+    size = MAX_SIZE
   ): Promise<IResultType<Array<IAllProduct>>> => {
     // 제목으로 상품 검색
     return api
       .get(productAPI.endPoint.getSerchTitleProduct, {
-        params: { productCategory, keyword }
+        params: { productCategory, keyword, page, size }
       })
       .then((res: AxiosResponse) => {
         const { data } = res;

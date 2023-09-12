@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.admin.application;
 
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
@@ -180,7 +181,7 @@ public class AdminService {
 
     // 상품 검색
     public ProductViewsAllResponse viewSearchProduct(String keyword) {
-        List<Product> products = productRepository.findByTitleContains(keyword);
+        List<Product> products = productRepository.findByTitleContains(Pageable.unpaged(), keyword);
 
         List<ProductViewAllResponse> responses = createViewList(products);
 
@@ -189,7 +190,7 @@ public class AdminService {
 
     // 상품 전체 조회
     public ProductViewsAllResponse viewAllProduct() {
-        List<Product> products = productRepository.findAllOrderByIdDesc();
+        List<Product> products = productRepository.findAllOrderByIdDesc(Pageable.unpaged());
 
         List<ProductViewAllResponse> responses = createViewList(products);
 

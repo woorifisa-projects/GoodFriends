@@ -16,9 +16,11 @@ import woorifisa.goodfriends.backend.global.error.dto.ErrorResponse;
 import woorifisa.goodfriends.backend.infrastructure.oauth.exception.OAuthException;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.order.exception.NotFoundOrderException;
+import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.product.exception.NotFoundImageFileException;
 import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
+import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.user.exception.InvalidNicknameException;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
@@ -59,7 +61,9 @@ public class ControllerAdvice {
     @ExceptionHandler({ // 클라이언테 에러: 403
             NotFoundProfile.class,
             NotAccessThisProduct.class,
-            AuthorizationException.class
+            AuthorizationException.class,
+            NotAccessProduct.class,
+            AlreadyExitPhoneProfile.class
     })
     public ResponseEntity<ErrorResponse> handleForbidden(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());

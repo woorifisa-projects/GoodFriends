@@ -10,6 +10,7 @@ import woorifisa.goodfriends.backend.profile.dto.response.ProductViewsPurchaseLi
 import woorifisa.goodfriends.backend.profile.dto.response.ProductViewsSellList;
 import woorifisa.goodfriends.backend.profile.application.ProfileService;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileBannerResponse;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
 import woorifisa.goodfriends.backend.user.application.UserService;
 
@@ -63,5 +64,13 @@ public class ProfileController {
         ProductViewsPurchaseList responses = profileService.purchaseProductList(loginUser.getId(), confirmStatus);
 
         return ResponseEntity.ok().body(responses);
+    }
+
+    @GetMapping("/me/banner")
+    public ResponseEntity<ProfileBannerResponse> viewProfileBanner(@AuthenticationPrincipal LoginUser loginUser) {
+
+        ProfileBannerResponse response = profileService.viewProfileBanner(loginUser.getId());
+
+        return ResponseEntity.ok().body(response);
     }
 }

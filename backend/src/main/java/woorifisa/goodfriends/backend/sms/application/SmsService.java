@@ -1,4 +1,4 @@
-package woorifisa.goodfriends.backend.phoneAuth.application;
+package woorifisa.goodfriends.backend.sms.application;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,10 +11,10 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-import woorifisa.goodfriends.backend.phoneAuth.domain.CreateSignature;
-import woorifisa.goodfriends.backend.phoneAuth.dto.MessagesDto;
-import woorifisa.goodfriends.backend.phoneAuth.dto.request.SmsRequest;
-import woorifisa.goodfriends.backend.phoneAuth.dto.response.SmsResponse;
+import woorifisa.goodfriends.backend.sms.domain.CreateSignature;
+import woorifisa.goodfriends.backend.sms.dto.MessagesDto;
+import woorifisa.goodfriends.backend.sms.dto.request.SmsRequest;
+import woorifisa.goodfriends.backend.sms.dto.response.SmsResponse;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -76,7 +76,7 @@ public class SmsService {
 
         HttpEntity<String> body = new HttpEntity<>(jsonBody,headers);
 
-//        System.out.println(jsonBody);
+        System.out.println(jsonBody);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());

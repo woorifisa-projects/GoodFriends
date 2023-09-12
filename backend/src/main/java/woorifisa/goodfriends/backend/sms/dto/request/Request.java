@@ -1,7 +1,4 @@
-package woorifisa.goodfriends.backend.phoneAuth.dto.request;
-
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+package woorifisa.goodfriends.backend.sms.dto.request;
 
 
 public class Request {
