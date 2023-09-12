@@ -37,6 +37,14 @@ public class Profile extends BaseCreateTimeEntity {
 
     protected Profile() {
     }
+
+    public Profile(User user, String mobileNumber, String address, AccountType accountType, String accountNumber) {
+        this.user = user;
+        this.mobileNumber = mobileNumber;
+        this.address = address;
+        this.accountType = accountType;
+        this.accountNumber = accountNumber;
+    }
     public Long getId() {
         return id;
     }
