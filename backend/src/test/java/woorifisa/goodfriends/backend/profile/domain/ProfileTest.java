@@ -8,10 +8,10 @@ import woorifisa.goodfriends.backend.user.domain.User;
 import static woorifisa.goodfriends.backend.common.fixtures.UserFixtures.팬시_이메일;
 import static woorifisa.goodfriends.backend.common.fixtures.UserFixtures.팬시_닉네임;
 import static woorifisa.goodfriends.backend.common.fixtures.UserFixtures.팬시_프로필;
-import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.모바일_번호;
-import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.주소;
-import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.TOSS;
-import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.TOSS_ACCOUNT_NUMBER;
+import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.팬시_모바일_번호;
+import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.팬시_주소;
+import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.팬시_계좌종류;
+import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.팬시_계좌번호;
 
 class ProfileTest {
 
@@ -19,7 +19,7 @@ class ProfileTest {
     @Test
     void 프로필을_생성한다() {
         // given & when & then
-        Assertions.assertDoesNotThrow(() -> new Profile(new User(팬시_이메일, 팬시_닉네임, 팬시_프로필), 모바일_번호, 주소, TOSS, TOSS_ACCOUNT_NUMBER));
+        Assertions.assertDoesNotThrow(() -> new Profile(new User(팬시_이메일, 팬시_닉네임, 팬시_프로필), 팬시_모바일_번호, 팬시_주소, 팬시_계좌종류, 팬시_계좌번호));
     }
 
 }

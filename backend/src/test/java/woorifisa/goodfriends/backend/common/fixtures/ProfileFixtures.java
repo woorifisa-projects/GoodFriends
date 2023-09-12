@@ -13,16 +13,16 @@ import static woorifisa.goodfriends.backend.common.fixtures.UserFixtures.팬시_
 public class ProfileFixtures {
 
     /* 팬시 */
-    public static final String 모바일_번호 = "010-1234-5678";
+    public static final String 팬시_모바일_번호 = "010-1234-5678";
 
-    public static final String 주소 = "서울특별시 강남구";
+    public static final String 팬시_주소 = "서울특별시 강남구";
 
-    public static final AccountType TOSS = AccountType.TOSS;
+    public static final AccountType 팬시_계좌종류 = AccountType.TOSS;
 
-    public static final String TOSS_ACCOUNT_NUMBER = "112233445566778899";
+    public static final String 팬시_계좌번호 = "112233445566778899";
 
     public static Profile 팬시() {
-        return new Profile(new User(팬시_이메일, 팬시_닉네임, 팬시_프로필), 모바일_번호, 주소, TOSS, TOSS_ACCOUNT_NUMBER);
+        return new Profile(new User(팬시_이메일, 팬시_닉네임, 팬시_프로필), 팬시_모바일_번호, 팬시_주소, 팬시_계좌종류, 팬시_계좌번호);
     }
 
 }
