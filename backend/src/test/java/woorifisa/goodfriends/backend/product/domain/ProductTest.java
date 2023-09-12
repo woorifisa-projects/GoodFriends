@@ -26,5 +26,21 @@ class ProductTest {
     }
 
 
+    @DisplayName("상세 설명이 10글자 미만이면 에러를 던진다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"일", "일이", "일이삼", "일이삼사", "일이삼사오", "일이삼사오육", "일이삼사오육칠", "일이삼사오육칠팔", "일이삼사오육칠팔구"})
+    void 상세_설명이_10글자_미만이면_에러를_던진다(final String description) {
+        assertThrows(InvalidDescriptionException.class, () -> {
+            Product product = Product.builder()
+                    .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
+                    .productCategory(ProductCategory.DIGITAL_DEVICE)
+                    .title("아이패드")
+                    .status(ProductStatus.SELL)
+                    .description(description)
+                    .sellPrice(100000)
+                    .build();
 
+            product.validDescription(product.getDescription());
+        });
+    }
 }
