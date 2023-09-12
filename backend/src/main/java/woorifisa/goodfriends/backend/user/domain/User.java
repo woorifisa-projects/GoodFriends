@@ -31,7 +31,7 @@ public class User extends BaseTimeEntity {
 
     private int ban;
 
-    private  boolean activated = true;
+    private  boolean activated;
 
     protected User() {
     }
@@ -56,11 +56,6 @@ public class User extends BaseTimeEntity {
             throw new InvalidUserException(String.format("이름은 1자 이상 %d자 이하여야 합니다.", MAX_NICKNAME_LENGTH));
         }
     }
-
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
-
     public Long getId() {
         return id;
     }
