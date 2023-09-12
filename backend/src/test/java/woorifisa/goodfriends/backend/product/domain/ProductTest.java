@@ -9,6 +9,7 @@ import woorifisa.goodfriends.backend.product.exception.InvalidDescriptionExcepti
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static woorifisa.goodfriends.backend.common.fixtures.ProductFixtures.*;
 
 class ProductTest {
 
@@ -18,10 +19,10 @@ class ProductTest {
         assertDoesNotThrow(() -> Product.builder()
                 .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
                 .productCategory(ProductCategory.DIGITAL_DEVICE)
-                .title("아이패드")
+                .title(제목1)
                 .status(ProductStatus.SELL)
-                .description("아이패드입니다.")
-                .sellPrice(100000)
+                .description(상세_설명1)
+                .sellPrice(판매_가격1)
                 .build());
     }
 
@@ -34,10 +35,10 @@ class ProductTest {
             Product product = Product.builder()
                     .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
                     .productCategory(ProductCategory.DIGITAL_DEVICE)
-                    .title("아이패드")
+                    .title(제목1)
                     .status(ProductStatus.SELL)
                     .description(description)
-                    .sellPrice(100000)
+                    .sellPrice(판매_가격1)
                     .build();
 
             product.validDescription(product.getDescription());
