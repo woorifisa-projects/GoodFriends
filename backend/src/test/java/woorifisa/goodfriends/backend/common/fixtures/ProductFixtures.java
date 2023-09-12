@@ -3,7 +3,13 @@ package woorifisa.goodfriends.backend.common.fixtures;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
+
+import java.util.List;
+
+import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.*;
 
 public class ProductFixtures {
 
@@ -25,6 +31,7 @@ public class ProductFixtures {
 
     public static Product 상품1() {
         return Product.builder()
+                .id(1L)
                 .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
                 .productCategory(ProductCategory.DIGITAL_DEVICE)
                 .title(제목1)
@@ -36,6 +43,7 @@ public class ProductFixtures {
 
     public static Product 상품2() {
         return Product.builder()
+                .id(2L)
                 .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
                 .productCategory(ProductCategory.CLOTHING)
                 .title(제목2)
@@ -47,6 +55,7 @@ public class ProductFixtures {
 
     public static Product 상품3() {
         return Product.builder()
+                .id(3L)
                 .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
                 .productCategory(ProductCategory.PLANTS)
                 .title(제목3)
@@ -54,5 +63,13 @@ public class ProductFixtures {
                 .description(상세_설명3)
                 .sellPrice(판매_가격3)
                 .build();
+    }
+
+    public static ProductViewsAllResponse 전체_조회() {
+        List<ProductViewAllResponse> responses = List.of(new ProductViewAllResponse[]{
+                new ProductViewAllResponse(3L, 상품3().getProductCategory(), 상품3().getTitle(), 상품3().getStatus(), 상품3().getSellPrice(), "image3.png", 주소3),
+                new ProductViewAllResponse(2L, 상품2().getProductCategory(), 상품2().getTitle(), 상품2().getStatus(), 상품2().getSellPrice(), "image2.png", 주소2),
+                new ProductViewAllResponse(1L, 상품1().getProductCategory(), 상품1().getTitle(), 상품1().getStatus(), 상품1().getSellPrice(), "image1.png", 주소1)});
+        return new ProductViewsAllResponse(responses);
     }
 }

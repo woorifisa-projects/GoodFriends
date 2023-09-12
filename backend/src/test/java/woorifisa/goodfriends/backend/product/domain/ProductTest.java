@@ -2,13 +2,13 @@ package woorifisa.goodfriends.backend.product.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import woorifisa.goodfriends.backend.product.exception.InvalidDescriptionException;
 import woorifisa.goodfriends.backend.user.domain.User;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static woorifisa.goodfriends.backend.common.fixtures.ProductFixtures.*;
 
 class ProductTest {
