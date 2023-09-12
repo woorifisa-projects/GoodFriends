@@ -28,4 +28,9 @@ public class AuthToken {
             throw new NotFoundTokenException("회원의 리프레시 토큰이 아닙니다.");
         }
     }
+    public void validateHasSameAccessToken(String accessToken, String otherAccessToken) {
+        if(!accessToken.equals(otherAccessToken)) {
+            throw new NotFoundTokenException("회원의 액세스 토큰이 아닙니다.");
+        }
+    }
 }
