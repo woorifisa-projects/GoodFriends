@@ -150,7 +150,7 @@ public class AdminService {
     }
 
     private Product createProduct(Admin admin, ProductSaveRequest request) {
-        return Product.builder()
+        Product newProduct = Product.builder()
                 .admin(admin)
                 .title(request.getTitle())
                 .status(ProductStatus.SELL)
@@ -158,6 +158,8 @@ public class AdminService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .build();
+        newProduct.validDescription(newProduct.getDescription());
+        return newProduct;
     }
 
     private String saveImage(Long productId, MultipartFile image) throws IOException {
@@ -252,7 +254,7 @@ public class AdminService {
 
         List<String> savedImageUrls = saveImages(id, request.getImageUrls());
 
-        Product updatedProduct = productRepository.save(Product.builder()
+        Product updateProduct = Product.builder()
                 .id(id)
                 .user(selectedProduct.getUser())
                 .admin(selectedProduct.getAdmin())
@@ -262,7 +264,11 @@ public class AdminService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .createdAt(selectedProduct.getCreatedAt())
-                .build());
+                .build();
+
+        updateProduct.validDescription(updateProduct.getDescription());
+
+        Product updatedProduct = productRepository.save(updateProduct);
 
         return new ProductUpdateResponse(updatedProduct, savedImageUrls);
     }
