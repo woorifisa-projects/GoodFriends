@@ -1,8 +1,10 @@
 <template>
   <div class="wrap">
-    <div class="square">
-      <div class="spin"></div>
-      <div class="loading-text">loading...</div>
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
   </div>
 </template>
@@ -10,12 +12,53 @@
 <script setup lang="ts"></script>
 
 <style scoped>
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid var(--color-yellow);
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: var(--color-yellow) transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .wrap {
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(211, 211, 211, 0.37);
+  z-index: 1000;
 }
 .square {
   width: 100%;
@@ -29,44 +72,5 @@
   align-items: center;
   background-color: rgba(211, 211, 211, 0.37);
   z-index: 1000;
-}
-
-.spin {
-  height: 270px;
-  width: 270px;
-  border-radius: 50%;
-  border: dashed 10px var(--color-yellow);
-  animation-name: spin;
-  animation-duration: 6s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-.loading-text {
-  position: absolute;
-  font-size: 32px;
-  font-family: 'LINESeedKR-Bd';
-  animation-name: text-opacity;
-  animation-duration: 2.5s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-@keyframes text-opacity {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 </style>
