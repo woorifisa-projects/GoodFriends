@@ -142,7 +142,6 @@ onMounted(async () => {
 .main {
   width: 100%;
   height: 100%;
-  /* margin-top: 24px; */
   padding: 10px 200px;
 }
 .search {
@@ -223,8 +222,8 @@ onMounted(async () => {
     margin-top: 12px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    padding: 0 48px;
+    justify-content: space-around;
+    /* padding: 0 48px; */
   }
   .search-bar {
     width: fit-content;
