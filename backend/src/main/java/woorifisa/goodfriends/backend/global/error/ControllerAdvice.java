@@ -16,10 +16,7 @@ import woorifisa.goodfriends.backend.global.error.dto.ErrorResponse;
 import woorifisa.goodfriends.backend.infrastructure.oauth.exception.OAuthException;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.order.exception.NotFoundOrderException;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
-import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
-import woorifisa.goodfriends.backend.product.exception.NotFoundImageFileException;
-import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
+import woorifisa.goodfriends.backend.product.exception.*;
 import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.user.exception.InvalidNicknameException;
@@ -42,7 +39,8 @@ public class ControllerAdvice {
 
     @ExceptionHandler({ // 클라이언트 에러: 400
             InvalidNicknameException.class,
-            InvalidUserException.class
+            InvalidUserException.class,
+            InvalidDescriptionException.class
     })
     public ResponseEntity<ErrorResponse> handleInvalidData(final RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());

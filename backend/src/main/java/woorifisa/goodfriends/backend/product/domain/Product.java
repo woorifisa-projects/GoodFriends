@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
+import woorifisa.goodfriends.backend.product.exception.InvalidDescriptionException;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
@@ -42,6 +43,11 @@ public class Product extends BaseTimeEntity {
     @Column(nullable = false)
     private int sellPrice;
 
+    public void validDescription(final String description) {
+        if(description.length() < 10) {
+            throw new InvalidDescriptionException();
+        }
+    }
     protected Product(){
     }
     public Long getId() {
