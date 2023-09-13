@@ -308,7 +308,88 @@ input[type='text'] {
 @media screen and (max-width: 767px) {
   .modal {
     width: 100vw;
-    height: 90vh;
+    height: 96vh;
+    padding: 0;
+  }
+
+  .modal-date {
+    width: 100%;
+  }
+
+  .modal-input > span {
+    font-size: 22px;
+    text-align: right;
+  }
+
+  .modal-input > input{
+    font-size: 17px;
+    padding: 6px;
+  }
+
+  p {
+    padding-left: 15px;
+  }
+
+  .modal > .modal-requirement {
+    width: 95%;
+  }
+
+  .confirm-window > p {
+    font-size: 18px;
+    padding-left: 0px;
+  }
+
+}
+
+@media screen and (max-width: 479px) {
+  .modal {
+    width: 100vw;
+    height: 95vh;
+    padding: 0;
+  }
+
+  .modal-date {
+    width: 100%;
+    margin: 20px 10px;
+  }
+
+  .modal-title {
+    display: none;
+  }
+
+  .modal-text {
+    margin-top: 20px;
+  }
+
+  .modal-input > span {
+    font-size: 16px;
+    text-align: right;
+  }
+
+  .modal-input > input{
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  p {
+    font-size: 16px;
+    padding-left: 30px;
+  }
+
+  .modal > .modal-requirement {
+    width: 86%;
+  }
+
+  .confirm-window {
+    width: 250px;
+  }
+
+  .confirm-window > p {
+    padding-left: 0px;
+  }
+
+  .confirm-btn-wrap > button {
+    font-size: 17px;
   }
 }
 </style>
