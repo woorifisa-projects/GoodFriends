@@ -22,9 +22,6 @@ public class ProfileFixtures {
 
     public static final String 팬시_계좌번호 = "112233445566778899";
 
-    public static Profile 팬시() {
-        return new Profile(new User(팬시_이메일, 팬시_닉네임, 팬시_프로필), 팬시_모바일_번호, 팬시_주소, 팬시_계좌종류, 팬시_계좌번호);
-
     // 주소
     public static final String 주소1 = "망원동";
     public static final String 주소2 = "상암동";
@@ -40,6 +37,9 @@ public class ProfileFixtures {
     public static final String 계좌번호2 = "22222222";
     public static final String 계좌번호3 = "33333333";
 
+    public static Profile 팬시() {
+        return new Profile(new User(팬시_이메일, 팬시_닉네임, 팬시_프로필), 팬시_모바일_번호, 팬시_주소, 팬시_계좌종류, 팬시_계좌번호);
+    }
     public static Profile 프로필1() {
         return Profile.builder()
                 .user(코코())
