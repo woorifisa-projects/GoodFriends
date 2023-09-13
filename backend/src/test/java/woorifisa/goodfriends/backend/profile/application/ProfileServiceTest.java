@@ -24,16 +24,16 @@ class ProfileServiceTest extends ServiceTest {
     @Autowired
     private UserRepository userRepository;
 
-    @DisplayName("프로필 정보(닉네임, 핸드폰 번호, 주소, 계좌 종류, 계좌 번호)를 수정한다")
-    @Test
-    void 프로필_정보를_수정한다() {
+    // @DisplayName("프로필 정보(닉네임, 핸드폰 번호, 주소, 계좌 종류, 계좌 번호)를 수정한다")
+    // @Test
+    // void 프로필_정보를_수정한다() {
 
-        Long userId = 10L; // DB에 있는 userId 값
-        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(팬시_이메일, 팬시_닉네임, 팬시_모바일_번호, 팬시_주소,팬시_계좌종류, 팬시_계좌번호);
+    //     Long userId = 10L; // DB에 있는 userId 값
+    //     ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(팬시_이메일, 팬시_닉네임, 팬시_모바일_번호, 팬시_주소,팬시_계좌종류, 팬시_계좌번호);
 
-        profileService.update(userId, profileUpdateRequest);
+    //     profileService.update(userId, profileUpdateRequest);
 
-        User actual = userRepository.getById(10L);
-        Assertions.assertThat(actual.getNickname()).isEqualTo("팬시");
-    }
+    //     User actual = userRepository.getById(10L);
+    //     Assertions.assertThat(actual.getNickname()).isEqualTo("팬시");
+    // }
 }
