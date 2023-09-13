@@ -10,6 +10,7 @@ import woorifisa.goodfriends.backend.user.domain.User;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static woorifisa.goodfriends.backend.common.fixtures.ProductFixtures.*;
+import static woorifisa.goodfriends.backend.common.fixtures.UserFixtures.팬시;
 
 class ProductTest {
 
@@ -17,7 +18,7 @@ class ProductTest {
     @Test
     void 상품을_생성한다() {
         assertDoesNotThrow(() -> Product.builder()
-                .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
+                .user(팬시())
                 .productCategory(ProductCategory.DIGITAL_DEVICE)
                 .title(제목1)
                 .status(ProductStatus.SELL)
@@ -33,7 +34,7 @@ class ProductTest {
     void 상세_설명이_10글자_미만이면_에러를_던진다(final String description) {
         assertThrows(InvalidDescriptionException.class, () -> {
             Product product = Product.builder()
-                    .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
+                    .user(팬시())
                     .productCategory(ProductCategory.DIGITAL_DEVICE)
                     .title(제목1)
                     .status(ProductStatus.SELL)

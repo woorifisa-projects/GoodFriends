@@ -38,7 +38,8 @@ public class ProductController {
     public ResponseEntity<Void> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                             @RequestPart ProductSaveRequest request,
                                             @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-            ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
+            ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),
+                                                            request.getDescription(), request.getSellPrice(), multipartFiles);
             Long productId = productService.saveProduct(loginUser.getId(), productSaveRequest);
             return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }

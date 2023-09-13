@@ -8,13 +8,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import woorifisa.goodfriends.backend.global.application.S3Service;
+import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductImageRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
-import woorifisa.goodfriends.backend.profile.domain.AccountType;
-import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
+import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,14 @@ public class ProductServiceTest {
     @Mock
     ProfileRepository profileRepository;
 
+    @Mock
+    UserRepository userRepository;
+
+    @Mock
+    OffenderRepository offenderRepository;
+
+    @Mock
+    S3Service s3Service;
 
     @Test
     void saveProduct() {
