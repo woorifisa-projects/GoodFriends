@@ -8,7 +8,7 @@
       <div class="profile_detail_wrap">
         <div class="profile_detail">
           <div class="item">
-            <label>{{ PROFILE.ACCOUNT }}</label>
+            <label :class="error.includes('account') ? 'err' : ''">{{ PROFILE.ACCOUNT }}</label>
             <div class="wrap">
               <select
                 name="bank"
@@ -31,7 +31,7 @@
           </div>
 
           <div class="item">
-            <label>{{ PROFILE.NICKNAME }}</label>
+            <label :class="error.includes('nickName') ? 'err' : ''">{{ PROFILE.NICKNAME }}</label>
             <input
               type="text"
               v-model="userInputInfo.nickName"
@@ -40,12 +40,14 @@
             />
           </div>
           <div class="item">
-            <label>{{ PROFILE.PHONE_NUMBER }}</label>
+            <label :class="error.includes('phone') ? 'phone-err' : ''">{{
+              PROFILE.PHONE_NUMBER
+            }}</label>
             <div class="wrap">
               <input
                 type="text"
                 :value="userInputInfo.mobileNumber"
-                :disabled="isDisabled"
+                :disabled="isDisabled || isPhoneAuth"
                 @change="onChangePhoneNumber"
                 @input="onInputPhoneNumber"
                 :placeholder="PLACEHOLDER.PHONE_INPUT"
@@ -53,13 +55,12 @@
               <PhoneAuthAPI
                 v-show="!isDisabled"
                 @click="checkPhoneAuth"
-                :text="PROFILE.SEND_PHONE_AUTH"
                 :phoneNum="userInputInfo.mobileNumber"
               />
             </div>
           </div>
           <div class="item">
-            <label>{{ PROFILE.ADDRESS }}</label>
+            <label :class="error.includes('address') ? 'err' : ''">{{ PROFILE.ADDRESS }}</label>
             <div class="wrap">
               <input
                 type="text"
@@ -108,17 +109,19 @@ const userInputInfo = ref<IProfileEdit>({
 });
 const accountList = ref(ACCOUNT_LIST);
 const isDisabled = ref(true);
-
+const isPhoneAuth = ref(false);
+const error = ref<Array<string>>([]);
 const searchAddress = (data: string) => {
   userInputInfo.value.address = data;
 };
-const ischeckPhoneAuth = ref(false);
+const isCheckPhoneAuth = ref(false);
 const checkPhoneAuth = (isSuccess: boolean) => {
   if (!isSuccess) {
     userInputInfo.value.mobileNumber = '';
-    ischeckPhoneAuth.value = false;
+    isCheckPhoneAuth.value = false;
   } else {
-    ischeckPhoneAuth.value = true;
+    isPhoneAuth.value = true;
+    isCheckPhoneAuth.value = true;
   }
 };
 
@@ -127,24 +130,26 @@ const onClickEdit = async () => {
     isDisabled.value = false;
     return;
   }
-  // if (!ischeckPhoneAuth.value) {
-  //   alert('휴대폰 인증을 해주세요');
-  //   return;
-  // }
+
   const tmp = checkEditProfile(userInputInfo.value);
   console.log(tmp);
+  if (tmp.length > 0 || !isCheckPhoneAuth.value) {
+    error.value = [...tmp];
+    if (!isCheckPhoneAuth.value) error.value.push('phone');
+    return;
+  }
 
-  // loadingStore.setLoading(true);
-  // const res = await profileAPI.editProfile(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '', {
-  //   ...userInputInfo.value
-  // });
-  // loadingStore.setLoading(false);
-  // if (res.isSuccess) {
-  //   isDisabled.value = true;
-  //   store.setUserNickName(userInputInfo.value.nickName);
-  // } else {
-  //   alert(res.message);
-  // }
+  loadingStore.setLoading(true);
+  const res = await profileAPI.editProfile(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '', {
+    ...userInputInfo.value
+  });
+  loadingStore.setLoading(false);
+  if (res.isSuccess) {
+    isDisabled.value = true;
+    store.setUserNickName(userInputInfo.value.nickName);
+  } else {
+    alert(res.message);
+  }
 };
 
 const onChangePhoneNumber = (event: Event) => {
@@ -158,10 +163,6 @@ const onInputPhoneNumber = (event: Event) => {
 
   if (!number) return;
   target.value = phoneNumberFormat(number);
-};
-const checkUserName = (nickName: string) => {
-  if (nickName.length < 2) return false;
-  return true;
 };
 
 onMounted(async () => {
@@ -240,7 +241,7 @@ onMounted(async () => {
 
 .item label {
   height: 100%;
-  width: 100px;
+  width: fit-content;
   text-align: start;
   display: flex;
   align-items: center;
@@ -248,6 +249,18 @@ onMounted(async () => {
   font-size: 20px;
 }
 
+.err::after {
+  content: '입력하세요!!';
+  font-size: 12px;
+  margin-left: 12px;
+  color: red;
+}
+.phone-err::after {
+  content: '인증하세요!!';
+  font-size: 12px;
+  margin-left: 12px;
+  color: red;
+}
 .item input,
 .item select {
   display: flex;

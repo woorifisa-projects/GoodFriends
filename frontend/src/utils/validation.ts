@@ -62,8 +62,8 @@ export const checkReporDetail = (report: IPostReport) => {
 export const checkEditProfile = (profile: IProfileEdit) => {
   const res = [];
   if (profile.nickName.length < 2) res.push('nickName');
-  if (!checkPhoneNumber(profile.mobileNumber)) res.push('phoneNumber');
-  if (profile.accountType === 'DEFAULT') res.push('accountType');
-  if (profile.accountNumber.length < 7) res.push('accountNumber');
+  if (!checkPhoneNumber(profile.mobileNumber)) res.push('phone');
+  if (profile.accountType === 'DEFAULT') res.push('account');
+  if (profile.accountNumber.length < 7) res.push('account');
   return res;
 };
