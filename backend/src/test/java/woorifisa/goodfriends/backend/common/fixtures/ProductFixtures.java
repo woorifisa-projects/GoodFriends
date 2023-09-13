@@ -1,8 +1,12 @@
 package woorifisa.goodfriends.backend.common.fixtures;
 
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
+import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
 import woorifisa.goodfriends.backend.user.domain.User;
@@ -10,6 +14,7 @@ import woorifisa.goodfriends.backend.user.domain.User;
 import java.util.List;
 
 import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.*;
+import static woorifisa.goodfriends.backend.common.fixtures.UserFixtures.*;
 
 public class ProductFixtures {
 
@@ -32,7 +37,7 @@ public class ProductFixtures {
     public static Product 상품1() {
         return Product.builder()
                 .id(1L)
-                .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
+                .user(코코())
                 .productCategory(ProductCategory.DIGITAL_DEVICE)
                 .title(제목1)
                 .status(ProductStatus.SELL)
@@ -44,7 +49,7 @@ public class ProductFixtures {
     public static Product 상품2() {
         return Product.builder()
                 .id(2L)
-                .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
+                .user(춘식())
                 .productCategory(ProductCategory.CLOTHING)
                 .title(제목2)
                 .status(ProductStatus.SELL)
@@ -56,7 +61,7 @@ public class ProductFixtures {
     public static Product 상품3() {
         return Product.builder()
                 .id(3L)
-                .user(new User("goodfriends@gmail.com", "굿프렌즈", "image.png"))
+                .user(고잉홈())
                 .productCategory(ProductCategory.PLANTS)
                 .title(제목3)
                 .status(ProductStatus.SELL)
@@ -71,5 +76,13 @@ public class ProductFixtures {
                 new ProductViewAllResponse(2L, 상품2().getProductCategory(), 상품2().getTitle(), 상품2().getStatus(), 상품2().getSellPrice(), "image2.png", 주소2),
                 new ProductViewAllResponse(1L, 상품1().getProductCategory(), 상품1().getTitle(), 상품1().getStatus(), 상품1().getSellPrice(), "image1.png", 주소1)});
         return new ProductViewsAllResponse(responses);
+    }
+
+    final String fileName = "image1";
+    final String contentType = "png";
+
+    static MockMultipartFile image1 = new MockMultipartFile("image", "image.png", String.valueOf(MediaType.IMAGE_PNG), "image".getBytes());
+    public static ProductSaveRequest 등록_요청() {
+        return new ProductSaveRequest(상품1().getTitle(), 상품1().getProductCategory(), 상품1().getDescription(), 상품1().getSellPrice(), List.of(image1));
     }
 }

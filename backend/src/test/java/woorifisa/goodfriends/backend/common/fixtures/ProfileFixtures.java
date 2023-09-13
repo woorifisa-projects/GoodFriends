@@ -4,6 +4,7 @@ import woorifisa.goodfriends.backend.profile.domain.AccountType;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 
 import static woorifisa.goodfriends.backend.common.fixtures.ProductFixtures.*;
+import static woorifisa.goodfriends.backend.common.fixtures.UserFixtures.*;
 
 public class ProfileFixtures {
 
@@ -24,7 +25,7 @@ public class ProfileFixtures {
 
     public static Profile 프로필1() {
         return Profile.builder()
-                .user(상품1().getUser())
+                .user(코코())
                 .address(주소1)
                 .mobileNumber(휴대전화1)
                 .accountNumber(계좌번호1)
@@ -34,7 +35,7 @@ public class ProfileFixtures {
 
     public static Profile 프로필2() {
         return Profile.builder()
-                .user(상품2().getUser())
+                .user(춘식())
                 .address(주소2)
                 .mobileNumber(휴대전화2)
                 .accountNumber(계좌번호2)
@@ -44,7 +45,7 @@ public class ProfileFixtures {
 
     public static Profile 프로필3() {
         return Profile.builder()
-                .user(상품3().getUser())
+                .user(고잉홈())
                 .address(주소3)
                 .mobileNumber(휴대전화3)
                 .accountNumber(계좌번호3)
