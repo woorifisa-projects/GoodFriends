@@ -43,6 +43,10 @@ public class UserFixtures {
         return new User(팬시_이메일, 팬시_닉네임, 팬시_프로필);
     }
 
+    public static User 코코() {
+        return new User(코코_이메일, 코코_닉네임, 코코_프로필);
+    }
+
     public static User 춘식() {
         return new User(춘식_이메일, 춘식_닉네임, 춘식_프로필);
     }
