@@ -23,8 +23,6 @@
         {{ CATEGORY[category] }}
       </option>
     </select>
-
-    <!-- <button @click="openCategory">{{ smallCategoryIsOpen ? `닫기` : `` }}</button> -->
   </div>
 </template>
 

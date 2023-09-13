@@ -203,7 +203,12 @@ const submit = async () => {
     }
     if (props.type === 'edit' && res.code !== 403 && res.code !== 404) return;
   }
-  goPageWithReload();
+  if (props.type === 'edit') {
+    router.go(-1);
+  } else {
+    goPageWithReload();
+  }
+  return;
 };
 
 const save = (e: Event) => {
