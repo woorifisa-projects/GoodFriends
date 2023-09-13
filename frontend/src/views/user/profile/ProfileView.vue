@@ -128,12 +128,12 @@ const onClickEdit = async () => {
     return;
   }
   if (userInputInfo.value.accountNumber.length < 7) {
-    alert('계좌번호');
+    alert('계좌번호를 입력해 주세요.');
     return;
   }
   console.log(userInputInfo.value.accountType);
   if (userInputInfo.value.accountType === 'DEFAULT') {
-    alert('은행');
+    alert('은행을 선택해 주세요.');
     return;
   }
   if (!checkPhoneNumber(userInputInfo.value.mobileNumber)) {

@@ -86,7 +86,7 @@ public class ProductService {
     }
 
     private Product createProduct(User user, ProductSaveRequest request) {
-        return Product.builder()
+        Product newProduct = Product.builder()
                 .user(user)
                 .title(request.getTitle())
                 .status(ProductStatus.SELL)
@@ -94,6 +94,8 @@ public class ProductService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .build();
+        newProduct.validDescription(newProduct.getDescription());
+        return newProduct;
     }
 
     private List<String> saveImages(Long productId, List<MultipartFile> images) throws IOException {
@@ -224,7 +226,7 @@ public class ProductService {
 
         List<String> savedImageUrls = saveImages(productId, request.getImageUrls());
 
-        Product updatedProduct = productRepository.save(Product.builder()
+        Product updateProduct = Product.builder()
                 .id(productId)
                 .user(selectedProduct.getUser())
                 .title(request.getTitle())
@@ -233,7 +235,11 @@ public class ProductService {
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
                 .createdAt(selectedProduct.getCreatedAt())
-                .build());
+                .build();
+
+        updateProduct.validDescription(updateProduct.getDescription());
+
+        Product updatedProduct = productRepository.save(updateProduct);
     }
 
     public void deleteById(Long userId, Long productId) throws MalformedURLException {

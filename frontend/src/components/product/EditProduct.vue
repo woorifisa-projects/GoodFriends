@@ -157,7 +157,10 @@ const submit = async () => {
   // 모든 값들이 존재 하는지 체크
   const checkData = checkProductValue(data.value);
   if (!checkData.isSuccess) {
-    alert(checkData.type);
+    if (checkData.type === 'title') alert('제목을 올바르게 입력해주세요');
+    if (checkData.type === 'price') alert('가격을 입력해주세요.');
+    if (checkData.type === 'description') alert('설명을 10자 이상 입력해주세요');
+    if (checkData.type === 'category') alert('상품 카테고리를 선택해주세요.');
     return;
   }
   loadingStore.setLoading(true);
@@ -203,7 +206,12 @@ const submit = async () => {
     }
     if (props.type === 'edit' && res.code !== 403 && res.code !== 404) return;
   }
-  goPageWithReload();
+  if (props.type === 'edit') {
+    router.go(-1);
+  } else {
+    goPageWithReload();
+  }
+  return;
 };
 
 const save = (e: Event) => {

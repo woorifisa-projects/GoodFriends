@@ -72,6 +72,7 @@ import reportAPI from '@/apis/user/report';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
 import { useRoute } from 'vue-router';
 import { REPORT_CATEGORY, REPORT_CATEGORY_LIST } from '@/constants/reportCategory';
+import router from '@/router';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
@@ -88,14 +89,18 @@ const maxLength = ref(300);
 
 const submit = async () => {
   // 신고 카테고리, 신고 내용 값이 들어있는지 체크
-  if (!checkReportCategory(data.value)) {
-    alert('신고카테고리');
+  const checkReportCategoryData = checkReportCategory(data.value);
+  const checkReportDetailData = checkReporDetail(data.value);
+
+  if (!checkReportCategoryData.isSuccess) {
+    alert('신고카테고리를 선택해 주세요.');
     return;
   }
-  if (!checkReporDetail(data.value)) {
-    alert('신고내용');
+  if (!checkReportDetailData.isSuccess) {
+    alert('신고내용을 작성해 주세요.');
     return;
   }
+
   loadingStore.setLoading(true);
   const res = await reportAPI.postReport(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
@@ -108,7 +113,10 @@ const submit = async () => {
   if (res.isSuccess) {
     isDisabled.value = true;
     alert('신고가 접수되었습니다.');
+    router.go(-1);
+    return;
   }
+  alert(res.message);
 };
 </script>
 

@@ -1,18 +1,27 @@
 <template>
-  <div class="square">
-    <div class="spin"></div>
-    <div class="loading-text">loading...</div>
+  <div class="wrap">
+    <div class="square">
+      <div class="spin"></div>
+      <div class="loading-text">loading...</div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts"></script>
 
 <style scoped>
+.wrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .square {
   width: 100%;
   height: 100vh;
 
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   display: flex;
