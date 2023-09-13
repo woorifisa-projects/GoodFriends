@@ -72,6 +72,7 @@ import reportAPI from '@/apis/user/report';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
 import { useRoute } from 'vue-router';
 import { REPORT_CATEGORY, REPORT_CATEGORY_LIST } from '@/constants/reportCategory';
+import router from '@/router';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
@@ -108,7 +109,10 @@ const submit = async () => {
   if (res.isSuccess) {
     isDisabled.value = true;
     alert('신고가 접수되었습니다.');
+    router.go(-1);
+    return;
   }
+  alert(res.message);
 };
 </script>
 
