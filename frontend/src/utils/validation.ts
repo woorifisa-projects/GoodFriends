@@ -1,5 +1,6 @@
 import { CATEGORY } from '@/constants/category';
 import type { IPostProduct } from '@/types/product';
+import type { IProfileEdit } from '@/types/profile';
 import type { IPostReport } from '@/types/report';
 
 export const checkBirthday = (birthday: string) => {
@@ -21,17 +22,24 @@ export const checkPhoneNumber = (phoneNumber: string) => {
 };
 
 export const checkProductValue = (product: IPostProduct) => {
+  const result = { isSuccess: true, type: <Array<string>>[] };
   if (product.title.length < 2) {
     // 제목 글자 수
-    return { isSuccess: false, type: 'title' };
+    // return { isSuccess: false, type: 'title' };
+    result.isSuccess = false;
+    result.type.push('title');
   }
-  if (product.sellPrice < 0 || product.sellPrice > 99999999) {
+  if (product.sellPrice < 1 || product.sellPrice > 99999999) {
     // 가격 범위
-    return { isSuccess: false, type: 'price' };
+    // return { isSuccess: false, type: 'price' };
+    result.isSuccess = false;
+    result.type.push('price');
   }
   if (product.description.length < 10) {
     // 상품 상세설명 글자 수
-    return { isSuccess: false, type: 'description' };
+    // return { isSuccess: false, type: 'description' };
+    result.isSuccess = false;
+    result.type.push('description');
   }
   if (
     product.productCategory === 'ALL' ||
@@ -39,9 +47,11 @@ export const checkProductValue = (product: IPostProduct) => {
     !CATEGORY[product.productCategory]
   ) {
     // 카테고리(ALL 제외)
-    return { isSuccess: false, type: 'category' };
+    // return { isSuccess: false, type: 'category' };
+    result.isSuccess = false;
+    result.type.push('category');
   }
-  return { isSuccess: true };
+  return result;
 };
 
 export const checkReportCategory = (report: IPostReport) => {
@@ -56,4 +66,13 @@ export const checkReporDetail = (report: IPostReport) => {
     return { isSuccess: false, type: 'content' };
   }
   return { isSuccess: true };
+};
+
+export const checkEditProfile = (profile: IProfileEdit) => {
+  const res = [];
+  if (profile.nickName.length < 2) res.push('nickName');
+  if (!checkPhoneNumber(profile.mobileNumber)) res.push('phone');
+  if (profile.accountType === 'DEFAULT') res.push('account');
+  if (profile.accountNumber.length < 7) res.push('account');
+  return res;
 };

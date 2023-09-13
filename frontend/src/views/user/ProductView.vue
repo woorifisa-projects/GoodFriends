@@ -131,10 +131,10 @@ watchEffect(async () => {
   );
   if (res.isSuccess) {
     goPageWithReload('');
-    loadingStore.setLoading(true);
+    loadingStore.setLoading(false);
   } else {
     alert(res.message);
-    loadingStore.setLoading(true);
+    loadingStore.setLoading(false);
   }
 });
 onMounted(async () => {
@@ -302,7 +302,7 @@ onMounted(async () => {
   margin-top: 32px;
   margin-bottom: 42px;
   padding: 32px;
-  font-size: 32px;
+  font-size: 24px;
 }
 .box {
   border: 1px solid rgb(240, 240, 240);

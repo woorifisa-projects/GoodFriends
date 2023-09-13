@@ -3,8 +3,8 @@
     <div class="form">
       <div class="input-detail box">
         <div class="title-price">
-          <div>
-            <label for="">{{ LABEL.TITLE_LABEL }}</label>
+          <div class="title">
+            <label for="title" :class="error.title">{{ LABEL.TITLE_LABEL }}</label>
             <input
               type="text"
               id="title"
@@ -13,8 +13,8 @@
             />
           </div>
 
-          <div>
-            <label for="">{{ LABEL.PRICE_LABEL }}</label>
+          <div class="price">
+            <label for="price" :class="error.price">{{ LABEL.PRICE_LABEL }}</label>
             <input
               onfocus="this.select()"
               type="number"
@@ -26,7 +26,7 @@
         </div>
 
         <div class="explain detail">
-          <label for="explain">{{ LABEL.DESCRIPTION_LABEL }}</label>
+          <label for="explain" :class="error.description">{{ LABEL.DESCRIPTION_LABEL }}</label>
           <textarea name="" id="explain" cols="30" rows="10" v-model="data.description"></textarea>
           <div class="text-length">{{ data.description.length }}/{{ maxLength }}</div>
         </div>
@@ -42,7 +42,7 @@
       </div>
       <div class="select-detail box">
         <div class="category">
-          <span for="category">{{ PRODUCT.CATEGORY }}</span>
+          <span for="category" :class="error.category">{{ PRODUCT.CATEGORY }}</span>
           <select name="" id="" v-model="data.productCategory">
             <option disabled value="ALL">{{ SELECT.CATEGORY_SELECT }}</option>
             <option v-for="(category, index) in categories.slice(1)" :key="index" :value="category">
@@ -87,6 +87,11 @@
         </div>
       </div>
     </div>
+    <ConfirmModal
+      :content="[`정말로 삭제하시겠습니까?`, `삭제후 다시 복구는 불가능합니다.`]"
+      v-model:is-visible="confirm.isVisible"
+      v-model:response="confirm.response"
+    />
   </div>
 </template>
 
@@ -107,6 +112,7 @@ import type { IPostProduct } from '@/types/product';
 import type { IStringToFunction } from '@/types/dynamic';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
 import { LABEL, PLACEHOLDER, SELECT } from '@/constants/strings/defaultInput';
+import ConfirmModal from '@/components/ConfirmModal.vue';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
@@ -124,6 +130,12 @@ const id = route.params.id?.toString() || '0';
 const categories = CATEGORY_LIST;
 const maxLength = ref(200);
 const maxImage = ref(10);
+const error = ref({
+  title: '',
+  price: '',
+  description: '',
+  category: ''
+});
 
 const data = ref<IPostProduct>({
   title: '',
@@ -134,6 +146,12 @@ const data = ref<IPostProduct>({
 
 const inputImage = ref<Array<File>>([]);
 const previewImg = ref<Array<string>>([]);
+
+const confirm = ref({
+  isVisible: false,
+  response: false
+});
+
 const store = useUserInfoStore();
 
 const uploadImage = async (event: Event) => {
@@ -155,12 +173,18 @@ const onClickDeleteBtn = (index: number) => {
 
 const submit = async () => {
   // 모든 값들이 존재 하는지 체크
+  error.value = {
+    title: '',
+    price: '',
+    description: '',
+    category: ''
+  };
   const checkData = checkProductValue(data.value);
   if (!checkData.isSuccess) {
-    if (checkData.type === 'title') alert('제목을 올바르게 입력해주세요');
-    if (checkData.type === 'price') alert('가격을 입력해주세요.');
-    if (checkData.type === 'description') alert('설명을 10자 이상 입력해주세요');
-    if (checkData.type === 'category') alert('상품 카테고리를 선택해주세요.');
+    if (checkData.type.includes('title')) error.value.title = 'err';
+    if (checkData.type.includes('price')) error.value.price = 'err';
+    if (checkData.type.includes('description')) error.value.description = 'err';
+    if (checkData.type.includes('category')) error.value.category = 'err';
     return;
   }
   loadingStore.setLoading(true);
@@ -225,23 +249,24 @@ const save = (e: Event) => {
 
 const remove = async () => {
   if (props.type === 'add') return;
+  confirm.value.isVisible = true;
+};
 
+watchEffect(async () => {
+  if (!confirm.value.response) return;
   loadingStore.setLoading(true);
   const res = await productAPI.deleteProduct(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
     id
   );
-  loadingStore.setLoading(false);
   if (res.isSuccess) {
     goPageWithReload('');
-    return;
+    loadingStore.setLoading(true);
+  } else {
+    alert(res.message);
+    loadingStore.setLoading(true);
   }
-  alert(res.message);
-  if (res.code === 403) {
-    goPageWithReload('');
-    return;
-  }
-};
+});
 
 watchEffect(() => {
   data.value.description = data.value.description.slice(0, maxLength.value);
@@ -540,7 +565,24 @@ button:hover {
   box-shadow: 0px 0px 5px rgb(240, 240, 240);
   border: 1px solid rgb(240, 240, 240);
 }
-
+.err::after {
+  content: '필수 입력이에요';
+  margin-left: 10px;
+  color: red;
+  font-size: 16px;
+}
+.title .err::after {
+  content: '2글자 이상 작성해주세요';
+}
+.price .err::after {
+  /* content: '1원 이상으로 입력해주세요'; */
+}
+.explain .err::after {
+  content: '10글자 이상 입력해주세요';
+}
+.category .err::after {
+  content: '선택해주세요';
+}
 input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;

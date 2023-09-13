@@ -23,6 +23,7 @@ const store = useLoadingStore();
   position: relative;
   padding-bottom: 70px;
   font-family: 'LINESeedKR-Rg';
+  max-width: 100vw;
 }
 
 .main {

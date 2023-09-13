@@ -8,28 +8,30 @@
       <div class="profile_detail_wrap">
         <div class="profile_detail">
           <div class="item">
-            <label>{{ PROFILE.ACCOUNT }}</label>
-            <select
-              name="bank"
-              id="bank"
-              v-model="userInputInfo.accountType"
-              :disabled="isDisabled"
-            >
-              <option value="DEFAULT" disabled>{{ SELECT.ACCOUNT_SELECT }}</option>
-              <option :value="account" v-for="(account, index) in accountList" :key="index">
-                {{ ACCOUNT[account] }}
-              </option>
-            </select>
-            <input
-              v-model="userInputInfo.accountNumber"
-              type="text"
-              :placeholder="PLACEHOLDER.ACCOUNT_INPUT"
-              :disabled="isDisabled"
-            />
+            <label :class="error.includes('account') ? 'err' : ''">{{ PROFILE.ACCOUNT }}</label>
+            <div class="wrap">
+              <select
+                name="bank"
+                id="bank"
+                v-model="userInputInfo.accountType"
+                :disabled="isDisabled"
+              >
+                <option value="DEFAULT" disabled>{{ SELECT.ACCOUNT_SELECT }}</option>
+                <option :value="account" v-for="(account, index) in accountList" :key="index">
+                  {{ ACCOUNT[account] }}
+                </option>
+              </select>
+              <input
+                v-model="userInputInfo.accountNumber"
+                type="text"
+                :placeholder="PLACEHOLDER.ACCOUNT_INPUT"
+                :disabled="isDisabled"
+              />
+            </div>
           </div>
 
           <div class="item">
-            <label>{{ PROFILE.NICKNAME }}</label>
+            <label :class="error.includes('nickName') ? 'err' : ''">{{ PROFILE.NICKNAME }}</label>
             <input
               type="text"
               v-model="userInputInfo.nickName"
@@ -38,31 +40,36 @@
             />
           </div>
           <div class="item">
-            <label>{{ PROFILE.PHONE_NUMBER }}</label>
-            <input
-              type="text"
-              :value="userInputInfo.mobileNumber"
-              :disabled="isDisabled"
-              @change="onChangePhoneNumber"
-              @input="onInputPhoneNumber"
-              :placeholder="PLACEHOLDER.PHONE_INPUT"
-            />
-            <PhoneAuthAPI
-              v-show="!isDisabled"
-              @click="checkPhoneAuth"
-              :text="PROFILE.SEND_PHONE_AUTH"
-              :phoneNum="userInputInfo.mobileNumber"
-            />
+            <label :class="error.includes('phone') ? 'phone-err' : ''">{{
+              PROFILE.PHONE_NUMBER
+            }}</label>
+            <div class="wrap">
+              <input
+                type="text"
+                :value="userInputInfo.mobileNumber"
+                :disabled="isDisabled || isPhoneAuth"
+                @change="onChangePhoneNumber"
+                @input="onInputPhoneNumber"
+                :placeholder="PLACEHOLDER.PHONE_INPUT"
+              />
+              <PhoneAuthAPI
+                v-show="!isDisabled"
+                @click="checkPhoneAuth"
+                :phoneNum="userInputInfo.mobileNumber"
+              />
+            </div>
           </div>
           <div class="item">
-            <label>{{ PROFILE.ADDRESS }}</label>
-            <input
-              type="text"
-              v-model="userInputInfo.address"
-              :placeholder="PLACEHOLDER.ADDRESS_INPUT"
-              disabled
-            />
-            <AddressAPI v-show="!isDisabled" @click="searchAddress" :text="PROFILE.GET_ADDRESS" />
+            <label :class="error.includes('address') ? 'err' : ''">{{ PROFILE.ADDRESS }}</label>
+            <div class="wrap">
+              <input
+                type="text"
+                v-model="userInputInfo.address"
+                :placeholder="PLACEHOLDER.ADDRESS_INPUT"
+                disabled
+              />
+              <AddressAPI v-show="!isDisabled" @click="searchAddress" :text="PROFILE.GET_ADDRESS" />
+            </div>
           </div>
         </div>
       </div>
@@ -74,7 +81,7 @@
 import { ALERT, PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { onMounted, ref } from 'vue';
-import { checkPhoneNumber } from '@/utils/validation';
+import { checkEditProfile, checkPhoneNumber } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
 import PhoneAuthAPI from '@/components/PhoneAuthAPI.vue';
 import AddressAPI from '@/components/AddressAPI.vue';
@@ -102,46 +109,33 @@ const userInputInfo = ref<IProfileEdit>({
 });
 const accountList = ref(ACCOUNT_LIST);
 const isDisabled = ref(true);
-
+const isPhoneAuth = ref(false);
+const error = ref<Array<string>>([]);
 const searchAddress = (data: string) => {
   userInputInfo.value.address = data;
 };
-const ischeckPhoneAuth = ref(false);
+const isCheckPhoneAuth = ref(false);
 const checkPhoneAuth = (isSuccess: boolean) => {
   if (!isSuccess) {
     userInputInfo.value.mobileNumber = '';
-    ischeckPhoneAuth.value = false;
+    isCheckPhoneAuth.value = false;
   } else {
-    ischeckPhoneAuth.value = true;
+    isPhoneAuth.value = true;
+    isCheckPhoneAuth.value = true;
   }
 };
-const checkPhone = (data: string) => {
-  userInputInfo.value.mobileNumber = data;
-};
+
 const onClickEdit = async () => {
   if (isDisabled.value) {
     isDisabled.value = false;
     return;
   }
-  if (!ischeckPhoneAuth.value) {
-    alert('휴대폰 인증을 해주세요');
-    return;
-  }
-  if (userInputInfo.value.accountNumber.length < 7) {
-    alert('계좌번호를 입력해 주세요.');
-    return;
-  }
-  console.log(userInputInfo.value.accountType);
-  if (userInputInfo.value.accountType === 'DEFAULT') {
-    alert('은행을 선택해 주세요.');
-    return;
-  }
-  if (!checkPhoneNumber(userInputInfo.value.mobileNumber)) {
-    alert(ALERT.PHONE);
-    return;
-  }
-  if (!checkUserName(userInputInfo.value.nickName)) {
-    alert(ALERT.NAME);
+
+  const tmp = checkEditProfile(userInputInfo.value);
+  console.log(tmp);
+  if (tmp.length > 0 || !isCheckPhoneAuth.value) {
+    error.value = [...tmp];
+    if (!isCheckPhoneAuth.value) error.value.push('phone');
     return;
   }
 
@@ -169,10 +163,6 @@ const onInputPhoneNumber = (event: Event) => {
 
   if (!number) return;
   target.value = phoneNumberFormat(number);
-};
-const checkUserName = (nickName: string) => {
-  if (nickName.length < 2) return false;
-  return true;
 };
 
 onMounted(async () => {
@@ -224,8 +214,9 @@ onMounted(async () => {
 }
 
 .profile_detail_wrap {
-  padding: 0 36px;
+  padding: 0 48px;
   height: 100%;
+  min-height: fit-content;
 }
 
 .profile_detail {
@@ -237,68 +228,83 @@ onMounted(async () => {
 }
 
 .item {
-  flex: 1;
-
-  width: fit-content;
-  border-radius: 8px;
+  width: 100%;
+  height: fit-content;
   display: flex;
+  flex-direction: column;
   overflow: hidden;
-  align-items: center;
-  gap: 16px;
+}
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.item > label {
+.item label {
   height: 100%;
-  width: 100px;
-  text-align: center;
+  width: fit-content;
+  text-align: start;
   display: flex;
-  justify-content: center;
   align-items: center;
   font-family: 'LINESeedKR-Bd';
-  margin-right: 24px;
   font-size: 20px;
 }
 
-.item > input,
-.item > select {
+.err::after {
+  content: '입력하세요!!';
+  font-size: 12px;
+  margin-left: 12px;
+  color: red;
+}
+.phone-err::after {
+  content: '인증하세요!!';
+  font-size: 12px;
+  margin-left: 12px;
+  color: red;
+}
+.item input,
+.item select {
   display: flex;
   align-items: center;
   border: none;
   height: fit-content;
   font-size: 20px;
 }
-.item > input {
+.item input {
   max-width: fit-content;
   min-width: 100px;
   text-decoration: underline;
   text-underline-offset: 3px;
   padding: 12px;
 }
-.item > select {
+.item select {
   width: 85px;
 
   padding: 12px;
   width: fit-content;
   text-align: left;
-  border-radius: 6px;
+  border-right: 1px solid #888;
+  margin-right: 12px;
 }
 
-.item > input:disabled,
-.item > select:disabled {
+.item input:disabled,
+.item select:disabled {
   background-color: white;
   color: black;
   border: none;
   text-decoration: none;
 }
-.item > select:disabled {
+.item select:disabled {
   width: 85px;
-  border-radius: 6px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  border-right: 1px solid #888;
 }
 
 @media screen and (max-width: 1023px) {
+  .item > div {
+    /* flex-direction: column; */
+  }
 }
 
 @media screen and (max-width: 767px) {

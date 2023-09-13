@@ -40,13 +40,13 @@ const onClickBannerBtn = (flag: string) => {
 
 setInterval(() => {
   onClickBannerBtn('next');
-}, 3000);
+}, 5000);
 </script>
 
 <style scoped>
 .banner {
   box-sizing: border-box;
-  height: 500px;
+  max-height: 502px;
   position: relative;
   display: flex;
   align-items: center;
@@ -71,8 +71,8 @@ setInterval(() => {
   background-color: white;
 }
 .banner-img > img {
-  height: 100%;
-  object-fit: cover;
+  width: 100%;
+  object-fit: contain;
 }
 .banner-img > .none {
   display: none;
