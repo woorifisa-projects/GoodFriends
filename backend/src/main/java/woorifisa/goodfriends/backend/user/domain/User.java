@@ -31,7 +31,7 @@ public class User extends BaseTimeEntity {
 
     private int ban;
 
-    private  boolean activated;
+    private  boolean activated = true;
 
     protected User() {
     }
