@@ -33,7 +33,7 @@ public class OrderController {
     @GetMapping("/{productId}")
     public ResponseEntity<OrderViewAllResponse> viewAllOrder(@AuthenticationPrincipal LoginUser loginUser,
                                                                    @PathVariable Long productId) {
-        OrderViewAllResponse responses = orderService.viewAllOrder(productId);
+        OrderViewAllResponse responses = orderService.viewAllOrder(loginUser.getId(),productId);
 
         return ResponseEntity.ok().body(responses);
     }
