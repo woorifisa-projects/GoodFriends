@@ -62,18 +62,17 @@ const sendPhone = async () => {
     }
   }, 1000);
   // 인증번호 전송, 인증번호 전송 클릭하면 입력한 번호로 인증번호가 전송되는 API
-  // await profileAPI.sendPhoneAuth(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN || ''), {
-  //   recipientPhoneNumber: formatAfter?.toString() || ''
-  // });
+  await profileAPI.sendPhoneAuth(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN || ''), {
+    recipientPhoneNumber: formatAfter?.toString() || ''
+  });
 };
 
 const checkPhone = async () => {
   // 인증번호 확인
-  // const checkPhoneAuth = await profileAPI.checkPhoneAuth(
-  //   localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN || ''),
-  //   input_phoneAuthNum.value
-  // );
-  const checkPhoneAuth = { message: '인증완료' };
+  const checkPhoneAuth = await profileAPI.checkPhoneAuth(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN || ''),
+    input_phoneAuthNum.value
+  );
   if (checkPhoneAuth.message === '인증완료') {
     alert('인증 성공하였습니다.');
     clearInterval(timer.value);
