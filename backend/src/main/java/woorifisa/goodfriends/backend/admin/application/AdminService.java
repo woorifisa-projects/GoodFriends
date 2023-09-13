@@ -120,7 +120,7 @@ public class AdminService {
                 .nickname(request.getNickname())
                 .profileImageUrl(user.getProfileImageUrl())
                 .ban(request.getBanCount())
-                .activated(request.isActivated())
+                .activated(true)
                 .build());
         profileRepository.save(Profile.builder()
                 .id(profile.getId())

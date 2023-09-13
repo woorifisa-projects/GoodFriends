@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 public class User extends BaseTimeEntity {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
+
+    private static final int MAX_NICKNAME_LENGTH = 20;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -29,12 +31,14 @@ public class User extends BaseTimeEntity {
 
     private int ban;
 
-    private  boolean activated = true;
+    private  boolean activated;
 
     protected User() {
     }
 
     public User(String email, String nickname, String profileImageUrl) {
+        validateEmail(email);
+        validateNickname(nickname);
         this.email = email;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
@@ -47,10 +51,11 @@ public class User extends BaseTimeEntity {
         }
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
+    private void validateNickname(final String nickname) {
+        if(nickname.isEmpty() || nickname.length() > MAX_NICKNAME_LENGTH) {
+            throw new InvalidUserException(String.format("이름은 1자 이상 %d자 이하여야 합니다.", MAX_NICKNAME_LENGTH));
+        }
     }
-
     public Long getId() {
         return id;
     }
