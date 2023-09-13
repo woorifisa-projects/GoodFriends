@@ -46,7 +46,7 @@ setInterval(() => {
 <style scoped>
 .banner {
   box-sizing: border-box;
-  height: 500px;
+  height: 502px;
   position: relative;
   display: flex;
   align-items: center;

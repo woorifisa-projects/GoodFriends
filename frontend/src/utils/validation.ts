@@ -1,5 +1,6 @@
 import { CATEGORY } from '@/constants/category';
 import type { IPostProduct } from '@/types/product';
+import type { IProfileEdit } from '@/types/profile';
 import type { IPostReport } from '@/types/report';
 
 export const checkBirthday = (birthday: string) => {
@@ -56,4 +57,13 @@ export const checkReporDetail = (report: IPostReport) => {
     return { isSuccess: false, type: 'content' };
   }
   return { isSuccess: true };
+};
+
+export const checkEditProfile = (profile: IProfileEdit) => {
+  const res = [];
+  if (profile.nickName.length < 2) res.push('nickName');
+  if (!checkPhoneNumber(profile.mobileNumber)) res.push('phoneNumber');
+  if (profile.accountType === 'DEFAULT') res.push('accountType');
+  if (profile.accountNumber.length < 7) res.push('accountNumber');
+  return res;
 };

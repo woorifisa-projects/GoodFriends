@@ -1,14 +1,19 @@
 <template>
   <div class="total">
     <div v-show="!countdownVisible">
-      <input class="phoneAuth-btn" type="button" @click="sendPhone" :value="props.text" />
+      <input class="phone-btn phoneAuth-btn" type="button" @click="sendPhone" :value="props.text" />
     </div>
     <div class="countdown-box" v-show="countdownVisible">
       <p>재시도 : {{ countdown }}</p>
     </div>
     <div class="check_total" v-show="isButtonVisible">
       <input class="phoneAuthNum" v-model="input_phoneAuthNum" />
-      <input class="check_phoneAuthNum" type="button" @click="checkPhone" value="인증확인" />
+      <input
+        class="phone-btn check_phoneAuthNum"
+        type="button"
+        @click="checkPhone"
+        value="인증확인"
+      />
     </div>
   </div>
 </template>
@@ -38,7 +43,7 @@ const input_phoneAuthNum = ref();
 const sendPhone = async () => {
   const formatBefore = props.phoneNum;
   const formatAfter = formatBefore?.replace(/-/g, '');
-  if (formatAfter === undefined|| formatAfter === '') {
+  if (formatAfter === undefined || formatAfter === '') {
     alert('휴대폰 번호를 입력하세요.');
     return;
   }
@@ -53,6 +58,7 @@ const sendPhone = async () => {
       countdown.value = 60;
     }
   }, 1000);
+  // 인증번호 전송, 인증번호 전송 클릭하면 입력한 번호로 인증번호가 전송되는 API
   const sendPhoneAuth = await profileAPI.sendPhoneAuth(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN || ''),
     {
@@ -62,6 +68,7 @@ const sendPhone = async () => {
 };
 
 const checkPhone = async () => {
+  // 인증번호 확인
   const checkPhoneAuth = await profileAPI.checkPhoneAuth(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN || ''),
     input_phoneAuthNum.value
@@ -79,19 +86,9 @@ const checkPhone = async () => {
 <style scoped>
 .total {
   display: flex;
-  width: 70%;
-  height: 40%;
+  justify-content: left;
+  align-items: center;
   gap: 30px;
-}
-.address-btn {
-  width: 100%;
-  padding: 12px 24px;
-  border: none;
-  background-color: white;
-  border: 1px solid #888;
-  border-radius: 6px;
-
-  cursor: pointer;
 }
 .check_total {
   width: 100%;
@@ -100,13 +97,14 @@ const checkPhone = async () => {
   gap: 10px;
 }
 .phoneAuthNum {
-  width: 50px;
-  height: 40px;
+  width: 80px;
+  font-size: 16px;
+  text-align: center;
 }
 
 .check_phoneAuthNum {
   width: 100px;
-  height: 40px;
+  min-height: 40px;
 }
 
 .phoneAuth-btn {
@@ -118,9 +116,20 @@ const checkPhone = async () => {
   height: 40px;
   font-family: 'LINESeedKR-Bd';
   text-align: center;
-  background-color: #888;
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.phone-btn {
+  width: fit-content;
+  padding: 12px 24px;
+  border: none;
+  background-color: white;
+  border: 1px solid #888;
+  border-radius: 6px;
+
+  cursor: pointer;
 }
 </style>
