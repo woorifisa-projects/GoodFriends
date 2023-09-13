@@ -17,7 +17,7 @@
         <div v-if="isWriter" class="wrap-btn">
           <button @click="onClickEditBtn">{{ PRODUCT.EDIT }}</button>
           <button @click="onClickDelete">{{ PRODUCT.DELETE }}</button>
-          <button class="deco-btn" @click="router.push(`${id}/order`)">
+          <button class="deco-btn" @click="onClickOrderView">
             {{ PRODUCT.VIEW_ORDER }}
           </button>
         </div>
@@ -112,6 +112,19 @@ const onClickEditBtn = () => {
 // TODO: 확인 후 삭제하도록 수정
 const onClickDelete = async () => {
   confirm.value.isVisible = true;
+};
+
+const onClickOrderView = () => {
+  router.push({
+    name: 'view order', // Vue Router에서 설정한 라우트 이름
+    params: {
+      id: id
+    },
+    state: { 
+      title: data.value.title,
+      imageUrl: data.value.imageUrls[0] || image
+     }
+  });
 };
 
 const onClickReport = () => {
