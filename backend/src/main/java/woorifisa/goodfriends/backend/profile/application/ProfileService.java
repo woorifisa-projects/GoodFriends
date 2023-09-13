@@ -82,11 +82,11 @@ public class ProfileService {
                 .orElse(null);
 
         Boolean checkPhone = profileRepository.existsByMobileNumber(request.getMobileNumber());
-        if(checkPhone){
-            throw new AlreadyExitPhoneProfile();
-        }
 
         if (profile == null) { // 프로필을 등록하지 않은 경우 새로 생성해서 값을 넣어준다.
+            if(checkPhone){
+                throw new AlreadyExitPhoneProfile();
+            }
             profileRepository.save(profile.builder()
                     .user(user)
                     .mobileNumber(request.getMobileNumber())
