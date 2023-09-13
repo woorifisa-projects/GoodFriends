@@ -160,10 +160,11 @@ onMounted(() => {
 }
 .list-item li {
   transition: transform 0.3s ease;
+  border-bottom: 2px solid transparent;
 }
 .list-item li:hover {
-  border-bottom: 1px solid var(--color-yellow);
-  transform: scale(1.01);
+  border-bottom: 2px solid var(--color-yellow);
+  transform: scaleX(1.01);
 }
 
 .main {
@@ -252,6 +253,7 @@ a {
   display: block;
   width: 100%;
   height: 100%;
+  border-bottom: 1px solid transparent;
 }
 
 [aria-current] {
