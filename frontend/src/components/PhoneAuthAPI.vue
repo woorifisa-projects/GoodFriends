@@ -43,7 +43,7 @@ const isAuth = ref(false);
 let countdown = ref(120);
 
 const input_phoneAuthNum = ref();
-const timer = ref(0);
+const timer = ref();
 const sendPhone = async () => {
   const formatBefore = props.phoneNum;
   const formatAfter = formatBefore?.replace(/-/g, '');
