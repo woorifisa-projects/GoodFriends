@@ -7,10 +7,13 @@ import java.util.List;
 @Getter
 public class OrderViewAllResponse {
 
-    List<OrderViewOneResponse> responses;
+    private List<OrderViewOneResponse> responses;
 
-    public OrderViewAllResponse(List<OrderViewOneResponse> responses) {
+    private boolean dealStatus;
+
+    public OrderViewAllResponse(List<OrderViewOneResponse> responses, boolean dealStatus) {
         this.responses = responses;
+        this.dealStatus = dealStatus;
     }
 
 }

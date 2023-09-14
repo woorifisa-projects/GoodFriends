@@ -7,6 +7,12 @@ export interface IOrderResponse {
   possibleTime: string;
   requirements: string;
 }
+
+export interface IOrder {
+  responses: Array<IOrderResponse>;
+  dealStatus: boolean;
+}
+
 export interface IPostOrder {
   productId: number;
   possibleDateStart: string;
