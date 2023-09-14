@@ -70,7 +70,7 @@
         </div>
       </div>
       <div class="main second-main box">
-        <slot />
+        <RouterView class="main second-main box" />
       </div>
     </div>
   </div>
@@ -85,6 +85,7 @@ import { useUserInfoStore } from '@/stores/userInfo';
 import profileAPI from '@/apis/user/profile';
 import { useLoadingStore } from '@/stores/loading';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { RouterView } from 'vue-router';
 
 const route = useRoute();
 const store = useUserInfoStore();
@@ -148,6 +149,7 @@ onMounted(async () => {
   if (res.isSuccess && res.data) {
     userInfo.value = { ...res.data };
   }
+  console.log(res);
 });
 </script>
 

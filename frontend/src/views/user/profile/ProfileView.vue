@@ -1,85 +1,82 @@
 <template>
-  <DefaultMyPage>
-    <div class="profile_main">
-      <div v-show="Number(router.params.id) === store.id" class="btn_wrap">
-        <button>{{ PROFILE.WITHDRAWAL }}</button>
-        <button @click="onClickEdit">{{ PROFILE.EDIT }}</button>
-      </div>
-      <div class="profile_detail_wrap">
-        <div class="profile_detail">
-          <div class="item">
-            <label :class="error.includes('account') ? 'err' : ''">{{ PROFILE.ACCOUNT }}</label>
-            <div class="wrap">
-              <select
-                name="bank"
-                id="bank"
-                v-model="userInputInfo.accountType"
-                :disabled="isDisabled"
-              >
-                <option value="DEFAULT" disabled>{{ SELECT.ACCOUNT_SELECT }}</option>
-                <option :value="account" v-for="(account, index) in accountList" :key="index">
-                  {{ ACCOUNT[account] }}
-                </option>
-              </select>
-              <input
-                v-model="userInputInfo.accountNumber"
-                type="text"
-                :placeholder="PLACEHOLDER.ACCOUNT_INPUT"
-                :disabled="isDisabled"
-              />
-            </div>
-          </div>
-
-          <div class="item">
-            <label :class="error.includes('nickName') ? 'err' : ''">{{ PROFILE.NICKNAME }}</label>
+  <div class="profile_main">
+    <div v-show="Number(router.params.id) === store.id" class="btn_wrap">
+      <button>{{ PROFILE.WITHDRAWAL }}</button>
+      <button @click="onClickEdit">{{ PROFILE.EDIT }}</button>
+    </div>
+    <div class="profile_detail_wrap">
+      <div class="profile_detail">
+        <div class="item">
+          <label :class="error.includes('account') ? 'err' : ''">{{ PROFILE.ACCOUNT }}</label>
+          <div class="wrap">
+            <select
+              name="bank"
+              id="bank"
+              v-model="userInputInfo.accountType"
+              :disabled="isDisabled"
+            >
+              <option value="DEFAULT" disabled>{{ SELECT.ACCOUNT_SELECT }}</option>
+              <option :value="account" v-for="(account, index) in accountList" :key="index">
+                {{ ACCOUNT[account] }}
+              </option>
+            </select>
             <input
+              v-model="userInputInfo.accountNumber"
               type="text"
-              v-model="userInputInfo.nickName"
-              :placeholder="PLACEHOLDER.NICKNAME_INPUT"
+              :placeholder="PLACEHOLDER.ACCOUNT_INPUT"
               :disabled="isDisabled"
             />
           </div>
-          <div class="item">
-            <label :class="error.includes('phone') ? 'phone-err' : ''">{{
-              PROFILE.PHONE_NUMBER
-            }}</label>
-            <div class="wrap">
-              <input
-                type="text"
-                :value="userInputInfo.mobileNumber"
-                :disabled="isDisabled || isPhoneAuth"
-                @change="onChangePhoneNumber"
-                @input="onInputPhoneNumber"
-                :placeholder="PLACEHOLDER.PHONE_INPUT"
-              />
-              <PhoneAuthAPI
-                v-show="!isDisabled"
-                @click="checkPhoneAuth"
-                :phoneNum="userInputInfo.mobileNumber"
-              />
-            </div>
+        </div>
+
+        <div class="item">
+          <label :class="error.includes('nickName') ? 'err' : ''">{{ PROFILE.NICKNAME }}</label>
+          <input
+            type="text"
+            v-model="userInputInfo.nickName"
+            :placeholder="PLACEHOLDER.NICKNAME_INPUT"
+            :disabled="isDisabled"
+          />
+        </div>
+        <div class="item">
+          <label :class="error.includes('phone') ? 'phone-err' : ''">{{
+            PROFILE.PHONE_NUMBER
+          }}</label>
+          <div class="wrap">
+            <input
+              type="text"
+              :value="userInputInfo.mobileNumber"
+              :disabled="isDisabled || isPhoneAuth"
+              @change="onChangePhoneNumber"
+              @input="onInputPhoneNumber"
+              :placeholder="PLACEHOLDER.PHONE_INPUT"
+            />
+            <PhoneAuthAPI
+              v-show="!isDisabled"
+              @click="checkPhoneAuth"
+              :phoneNum="userInputInfo.mobileNumber"
+            />
           </div>
-          <div class="item">
-            <label :class="error.includes('address') ? 'err' : ''">{{ PROFILE.ADDRESS }}</label>
-            <div class="wrap">
-              <input
-                type="text"
-                v-model="userInputInfo.address"
-                :placeholder="PLACEHOLDER.ADDRESS_INPUT"
-                disabled
-              />
-              <AddressAPI v-show="!isDisabled" @click="searchAddress" :text="PROFILE.GET_ADDRESS" />
-            </div>
+        </div>
+        <div class="item">
+          <label :class="error.includes('address') ? 'err' : ''">{{ PROFILE.ADDRESS }}</label>
+          <div class="wrap">
+            <input
+              type="text"
+              v-model="userInputInfo.address"
+              :placeholder="PLACEHOLDER.ADDRESS_INPUT"
+              disabled
+            />
+            <AddressAPI v-show="!isDisabled" @click="searchAddress" :text="PROFILE.GET_ADDRESS" />
           </div>
         </div>
       </div>
     </div>
-  </DefaultMyPage>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { PROFILE } from '@/constants/strings/profile';
-import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { onMounted, ref } from 'vue';
 import { checkEditProfile } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
