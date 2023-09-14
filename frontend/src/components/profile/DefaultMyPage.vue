@@ -18,7 +18,6 @@
         </div>
       </div>
       <div class="main first-main">
-        <!-- 추후 추가 내용 -->
         <div class="profile-banner">
           <div class="profile-banner-item">
             <div class="banner-img">
@@ -167,7 +166,6 @@ onMounted(async () => {
 
 .wrap > div {
   margin: 20px;
-  /* border: 1px solid black; */
 }
 
 .side {
@@ -182,7 +180,6 @@ onMounted(async () => {
   font-size: 16px;
   text-align: center;
   margin-top: 12px;
-  /* border-bottom: 1px solid rgb(240, 240, 240); */
 
   display: flex;
   position: relative;
@@ -295,8 +292,6 @@ a {
   border-bottom: 2px solid var(--color-yellow);
 }
 .first-main {
-  /* TODO: 이후 거래 횟수 등 데이터 추가할 시 제거 */
-  /* background: linear-gradient(to bottom, lightyellow, white); */
   border-radius: 16px;
 }
 
