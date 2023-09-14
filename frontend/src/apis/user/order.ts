@@ -1,6 +1,6 @@
 import { apiInstance, headers } from '..';
 import type { IResultType, INoContent } from '@/types/api';
-import type { IOrder, IOrderResponse, IPostOrder, IPurchaser } from '@/types/order';
+import type { IOrder, IPostOrder, IPurchaser } from '@/types/order';
 import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
