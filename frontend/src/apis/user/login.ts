@@ -31,7 +31,7 @@ const loginAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   getAccessToken: (code: string): Promise<IResultType<string>> => {
@@ -52,7 +52,7 @@ const loginAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   logout: (id: number, token: string): Promise<INoContent> => {
@@ -74,7 +74,7 @@ const loginAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   getAccessTokenWithRefresh: (): Promise<IResultType<IGetAccessToken>> => {
@@ -92,7 +92,7 @@ const loginAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   }
 };

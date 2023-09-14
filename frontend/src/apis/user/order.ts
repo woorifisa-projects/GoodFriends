@@ -21,7 +21,6 @@ const orderAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log(res);
         return { isSuccess: true, data: res.data.responses, code: res.status };
       })
       .catch((error) => {
@@ -32,7 +31,7 @@ const orderAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   postOrder: (token: string, body: IPostOrder): Promise<INoContent> => {
@@ -54,7 +53,7 @@ const orderAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   dealOrder: (token: string, productId: string): Promise<IResultType<IPurchaser>> => {
@@ -66,7 +65,6 @@ const orderAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log(res);
         return { isSuccess: true, data: res.data, code: res.status };
       })
       .catch((error) => {
@@ -77,7 +75,7 @@ const orderAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   }
 };

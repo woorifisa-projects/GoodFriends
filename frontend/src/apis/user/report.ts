@@ -21,7 +21,6 @@ const reportAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log(res);
         return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error) => {
@@ -32,7 +31,7 @@ const reportAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   }
 };
