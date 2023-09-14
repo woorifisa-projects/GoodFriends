@@ -8,6 +8,14 @@
           </div>
           <div class="detail">
             <div>{{ title(item.title) }}</div>
+            <button
+              class="btn_complete"
+              v-if="props.type[item.status] == '예약중'"
+              @click="onClickComplete"
+            >
+              거래완료
+            </button>
+            <div class="empty-div" v-else></div>
             <div>{{ item.sellPrice.toLocaleString() }}원</div>
             <div class="status">{{ props.type[item.status] }}</div>
           </div>
@@ -50,6 +58,9 @@ const title = computed(() => {
   return (title: string) =>
     title.length > maxTitle.value ? title.substring(0, maxTitle.value) + '...' : title;
 });
+const onClickComplete = () => {
+  router.push('/admin/log');
+};
 
 onMounted(() => {
   window.addEventListener('resize', () => {
@@ -61,6 +72,9 @@ onMounted(() => {
     }
   });
 });
+
+const item = props.type; // item을 정의하고 값을 할당
+console.log(item);
 </script>
 
 <style scoped>
@@ -163,5 +177,14 @@ onMounted(() => {
 }
 
 @media screen and (max-width: 767px) {
+}
+
+.btn_complete {
+  font-size: medium;
+  border: 1px solid rgb(145, 145, 145);
+  border-radius: 10px;
+}
+.btn_complete:hover {
+  background-color: var(--color-yellow);
 }
 </style>
