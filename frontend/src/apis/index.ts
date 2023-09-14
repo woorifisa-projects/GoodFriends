@@ -12,7 +12,7 @@ export const apiInstance = () => {
     headers: { ...headers },
     withCredentials: true
   });
-  instance.defaults.timeout = 10;
+  instance.defaults.timeout = import.meta.env.VITE_APP_TIMEOUT_TIME;
 
   instance.interceptors.response.use(
     (res: AxiosResponse) => {
