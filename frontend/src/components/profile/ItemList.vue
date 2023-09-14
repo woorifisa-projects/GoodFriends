@@ -2,8 +2,8 @@
   <div class="wrap">
     <ul>
       <li v-if="props.items.length">
-        <div class="item" v-for="item in props.items" :key="item.productId" @click="onClick(item)">
-          <div class="img">
+        <div class="item" v-for="item in props.items" :key="item.productId">
+          <div class="img" @click="onClick(item)">
             <img :src="item.imageUrl || tmpImage" alt="" />
           </div>
           <div class="detail">
@@ -11,7 +11,7 @@
             <button
               class="btn_complete"
               v-if="props.type[item.status] == '예약중'"
-              @click="onClickComplete"
+              @click="onClickComplete(item)"
             >
               거래완료
             </button>
@@ -34,6 +34,8 @@ import { tmpImage } from '@/utils/image';
 import { computed, ref, type PropType, onMounted } from 'vue';
 import EmptyProductVue from '../EmptyProduct.vue';
 import { PRODUCT } from '@/constants/strings/product';
+import orderAPI from '@/apis/user/order';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
 
 const props = defineProps({
   items: {
@@ -58,8 +60,19 @@ const title = computed(() => {
   return (title: string) =>
     title.length > maxTitle.value ? title.substring(0, maxTitle.value) + '...' : title;
 });
-const onClickComplete = () => {
-  router.push('/admin/log');
+
+const onClickComplete = async (item: ISellAndPurchaseList) => {
+  const patchConfirmApi = await orderAPI.patchConfirm(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    item.productId.toString()
+  );
+  if (patchConfirmApi.isSuccess) {
+    alert('거래완료되었습니다.');
+    location.reload();
+  } else {
+    alert(patchConfirmApi.message);
+    return;
+  }
 };
 
 onMounted(() => {

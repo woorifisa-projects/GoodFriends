@@ -22,7 +22,7 @@ import { CONFIRM_STATUS, PRODUCT } from '@/constants/strings/product';
 import { useLoadingStore } from '@/stores/loading';
 
 const purchaseList = ref<Array<ISellAndPurchaseList>>([]);
-const productStatus = ['ALL', 'ORDERING', 'COMPLETED'];
+const productStatus = ['ALL', 'ORDERING', 'RESERVATION', 'COMPLETED'];
 const checkedStatus = ref('ALL');
 
 const getList = async (status: string, important = false) => {

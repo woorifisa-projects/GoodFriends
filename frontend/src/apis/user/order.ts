@@ -9,7 +9,8 @@ const orderAPI = {
   endPoint: {
     getOrder: `api/orders/`,
     postOrder: `api/orders/`,
-    dealOrder: `api/orders/deal/`
+    patchDealOrder: `api/orders/deal/`,
+    patchConfirm: `api/orders/deal/complete/`
   },
   headers: {},
   getOrder: (token: string, productId: string): Promise<IResultType<IOrder>> => {
@@ -56,9 +57,9 @@ const orderAPI = {
         return { isSuccess: false, message: error.message, code: 500 };
       });
   },
-  dealOrder: (token: string, orderId: string): Promise<IResultType<IPurchaser>> => {
+  patchDealOrder: (token: string, orderId: string): Promise<IResultType<IPurchaser>> => {
     return api
-      .post(orderAPI.endPoint.dealOrder + orderId, '', {
+      .patch(orderAPI.endPoint.patchDealOrder + orderId, '', {
         headers: {
           ...headers,
           Authorization: `Bearer ${token}`
@@ -66,6 +67,28 @@ const orderAPI = {
       })
       .then((res: AxiosResponse) => {
         return { isSuccess: true, data: res.data, code: res.status };
+      })
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: 500 };
+      });
+  },
+  patchConfirm: (token: string, productId: string): Promise<INoContent> => {
+    return api
+      .patch(orderAPI.endPoint.patchConfirm + productId ,'',{
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res: AxiosResponse) => {
+        return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error) => {
         if (error.response) {

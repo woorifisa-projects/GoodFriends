@@ -97,7 +97,7 @@ const onClickItem = (event: Event, id: number) => {
 
 const onClickDeal = async () => {
   if (dealStatus.value === true) {
-    const res = await orderAPI.dealOrder(
+    const res = await orderAPI.patchDealOrder(
       localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
       clickOrderId.value.toString()
     );
@@ -114,7 +114,7 @@ const onClickDeal = async () => {
 watchEffect(async () => {
   if (!response.value) return;
   // TODO: api
-  const res = await orderAPI.dealOrder(
+  const res = await orderAPI.patchDealOrder(
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
     clickOrderId.value.toString()
   );

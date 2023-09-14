@@ -58,7 +58,7 @@ const allUserAPI = {
    },
    postUser: (id:number, body: IeditUser) : Promise<INoContent> => {
     return api
-    .put(allUserAPI.endPoint.postUser+id, body)
+    .patch(allUserAPI.endPoint.postUser+id, body)
 
     .then((res: AxiosResponse) => {
       return {isSuccess: true, message: '업데이트 완료', code: res.status};
