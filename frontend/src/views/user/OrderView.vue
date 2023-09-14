@@ -6,6 +6,7 @@
       </div>
       <div class="title">{{ product.title }}</div>
     </div>
+    <div v-if="dealStatus" class="deal-status"> 이미 주문서를 선택한 제품입니다.</div>
     <div class="order-list">
       <ul>
         <div class="order-list-header">
@@ -33,13 +34,15 @@
               {{ order.requirements }}
             </div>
             <div class="btn">
-              <button @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
+              <button v-if="dealStatus"  @click="onClickDeal">{{ PRODUCT.CONFIRM }}</button>
+              <button v-else  @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
             </div>
           </div>
         </li>
       </ul>
     </div>
-    <ConfirmModal v-model:is-visible="isVisible" v-model:response="response" :content="contents" />
+    <ConfirmModal v-if="dealStatus" v-model:is-visible="isVisible" v-model:response="response" v-model:visibleButton="showOnlyYes" :content="dealCompleteContents" />
+    <ConfirmModal v-else v-model:is-visible="isVisible" v-model:response="response" :content="contents" />
     <!-- :content="['정말 거래하시겠습니까?', '이후 취소는 불가능합니다.']" -->
   </div>
 </template>
@@ -48,7 +51,7 @@
 import { onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import image from '@/assets/tmp/images/image.png';
-import { PRODUCT } from '@/constants/strings/product';
+import { ORDER_MODAL, PRODUCT } from '@/constants/strings/product';
 import type { IOrderResponse } from '@/types/order';
 import ConfirmModal from '@/components/ConfirmModal.vue';
 import orderAPI from '@/apis/user/order';
@@ -59,18 +62,22 @@ const route = useRoute();
 
 const isVisible = ref(false);
 const response = ref(false);
+const showOnlyYes = ref(true);
 const id = route.params.id.toString();
 const clickOrderId = ref(0);
 
 const { title, imageUrl } = history.state;
 
 const orderList = ref<Array<IOrderResponse>>();
+const dealStatus = ref(false);
+
 const product = ref({
   image: imageUrl,
   title: title
 });
 
-const contents = ref(['정말 거래하시겠습니까?', '이후 취소는 불가능합니다.']);
+const dealCompleteContents = ref(['','']);
+const contents = ref(ORDER_MODAL.CONFIRM);
 
 const onClickItem = (event: Event, id: number) => {
   const target = event.target as HTMLDivElement;
@@ -78,7 +85,20 @@ const onClickItem = (event: Event, id: number) => {
   clickOrderId.value = id;
 };
 
-const onClickDeal = () => {
+const onClickDeal = async() => {
+  if(dealStatus.value === true) {
+    const res = await orderAPI.dealOrder(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    clickOrderId.value.toString()
+    );
+    if (res.isSuccess) {
+      isVisible.value = true;
+      response.value = true;
+      showOnlyYes.value = false;
+      dealCompleteContents.value = [`이름: ${res.data?.nickName}`, `이메일: ${res.data?.email}`];
+    }
+  }
+
   isVisible.value = true;
 };
 watchEffect(async () => {
@@ -101,7 +121,8 @@ onMounted(async () => {
     router.go(-1);
   }
   if (res.data) {
-    orderList.value = res.data;
+    orderList.value = res.data.responses;
+    dealStatus.value = res.data.dealStatus;
   }
 });
 </script>
@@ -140,6 +161,13 @@ onMounted(async () => {
   font-family: 'LINESeedKR-Bd';
   font-size: 32px;
 }
+
+.deal-status {
+  font-size: 25px;
+  text-align: center;
+  background-color:  #fbd668;
+}
+
 .order-list {
   margin-top: 24px;
 }
