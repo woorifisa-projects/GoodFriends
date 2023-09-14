@@ -53,6 +53,11 @@ public class ReportService {
             throw new NotFoundProfile();
         }
 
+        // 중복 신고불가
+        if(duplicateReport(productId, loginUser.getId())) {
+            throw new AlreadyReportedException();
+        }
+
         // 신고 등록하면 신고 테이블 (신고한 유저, 신고 카테고리, 신고 내용) 생성
         User foundUser = userRepository.getById(loginUser.getId());
         Product foundProduct = productRepository.getByProductIdAndUserId(productId);
@@ -86,6 +91,10 @@ public class ReportService {
         return profile != null;
     }
 
+    public boolean duplicateReport(Long productId, Long userId) {
+        Report report = reportRepository.findByProductIdAndUserId(productId, userId);
+        return report != null;
+    }
     @Transactional
     public Report createReport(User user, Product product , ReportSaveRequest request) {
         Report newReport = Report.builder()

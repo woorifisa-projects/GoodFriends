@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
-    Report findByUserIdAndProductId(Long userId, Long productId);
+    Report findByProductIdAndUserId(Long productId, Long userId);
 
     @Query("SELECT r "
             + "FROM Report r "
