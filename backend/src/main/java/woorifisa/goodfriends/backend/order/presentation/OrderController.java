@@ -1,5 +1,7 @@
 package woorifisa.goodfriends.backend.order.presentation;
 
+import org.hibernate.annotations.Fetch;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
@@ -38,10 +40,20 @@ public class OrderController {
         return ResponseEntity.ok().body(responses);
     }
 
-    @PostMapping("/deal/{orderId}")
+    @PatchMapping("/deal/{orderId}")
     public ResponseEntity<UserDealResponse> dealOrder(@AuthenticationPrincipal LoginUser loginUser,
                                                       @PathVariable Long orderId) {
         UserDealResponse response = orderService.dealOrder(orderId);
         return ResponseEntity.ok().body(response);
     }
+
+    @PatchMapping("/deal/complete/{productId}")
+    public ResponseEntity<Void> confirmDeal(@AuthenticationPrincipal LoginUser loginUser,
+                                            @PathVariable Long productId){
+        orderService.confirmDeal(productId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+
 }
