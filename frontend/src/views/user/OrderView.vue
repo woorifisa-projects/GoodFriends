@@ -6,7 +6,7 @@
       </div>
       <div class="title">{{ product.title }}</div>
     </div>
-    <div v-if="dealStatus" class="deal-status"> 이미 주문서를 선택한 제품입니다.</div>
+    <div v-if="dealStatus" class="deal-status">이미 주문서를 선택한 제품입니다.</div>
     <div class="order-list">
       <ul>
         <div class="order-list-header">
@@ -34,15 +34,26 @@
               {{ order.requirements }}
             </div>
             <div class="btn">
-              <button v-if="dealStatus"  @click="onClickDeal">{{ PRODUCT.CONFIRM }}</button>
-              <button v-else  @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
+              <button v-if="dealStatus" @click="onClickDeal">{{ PRODUCT.CONFIRM }}</button>
+              <button v-else @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
             </div>
           </div>
         </li>
       </ul>
     </div>
-    <ConfirmModal v-if="dealStatus" v-model:is-visible="isVisible" v-model:response="response" v-model:visibleButton="showOnlyYes" :content="dealCompleteContents" />
-    <ConfirmModal v-else v-model:is-visible="isVisible" v-model:response="response" :content="contents" />
+    <ConfirmModal
+      v-if="dealStatus"
+      v-model:is-visible="isVisible"
+      v-model:response="response"
+      v-model:visibleButton="showOnlyYes"
+      :content="dealCompleteContents"
+    />
+    <ConfirmModal
+      v-else
+      v-model:is-visible="isVisible"
+      v-model:response="response"
+      :content="contents"
+    />
     <!-- :content="['정말 거래하시겠습니까?', '이후 취소는 불가능합니다.']" -->
   </div>
 </template>
@@ -50,7 +61,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import image from '@/assets/tmp/images/image.png';
 import { ORDER_MODAL, PRODUCT } from '@/constants/strings/product';
 import type { IOrderResponse } from '@/types/order';
 import ConfirmModal from '@/components/ConfirmModal.vue';
@@ -76,7 +86,7 @@ const product = ref({
   title: title
 });
 
-const dealCompleteContents = ref(['','']);
+const dealCompleteContents = ref(['', '']);
 const contents = ref(ORDER_MODAL.CONFIRM);
 
 const onClickItem = (event: Event, id: number) => {
@@ -85,11 +95,11 @@ const onClickItem = (event: Event, id: number) => {
   clickOrderId.value = id;
 };
 
-const onClickDeal = async() => {
-  if(dealStatus.value === true) {
+const onClickDeal = async () => {
+  if (dealStatus.value === true) {
     const res = await orderAPI.dealOrder(
-    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
-    clickOrderId.value.toString()
+      localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+      clickOrderId.value.toString()
     );
     if (res.isSuccess) {
       isVisible.value = true;
@@ -165,7 +175,7 @@ onMounted(async () => {
 .deal-status {
   font-size: 25px;
   text-align: center;
-  background-color:  #fbd668;
+  background-color: #fbd668;
 }
 
 .order-list {

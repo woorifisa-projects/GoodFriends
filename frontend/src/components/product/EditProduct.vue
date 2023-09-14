@@ -575,9 +575,7 @@ button:hover {
 .title .err::after {
   content: '2글자 이상 작성해주세요';
 }
-.price .err::after {
-  /* content: '1원 이상으로 입력해주세요'; */
-}
+
 .explain .err::after {
   content: '10글자 이상 입력해주세요';
 }
