@@ -5,11 +5,17 @@ import org.springframework.transaction.annotation.Transactional;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.offender.domain.Offender;
 import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
+import woorifisa.goodfriends.backend.order.domain.Order;
+import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
+import woorifisa.goodfriends.backend.profile.domain.Profile;
+import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.report.domain.Report;
 import woorifisa.goodfriends.backend.report.domain.ReportRepository;
 import woorifisa.goodfriends.backend.report.dto.request.ReportSaveRequest;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
+import woorifisa.goodfriends.backend.report.exception.AlreadyReportedException;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
@@ -27,16 +33,30 @@ public class ReportService {
 
     private final OffenderRepository offenderRepository;
 
+    private final ProfileRepository profileRepository;
+
     public ReportService(UserRepository userRepository, ProductRepository productRepository,
-                         ReportRepository reportRepository, OffenderRepository offenderRepository) {
+                         ReportRepository reportRepository, OffenderRepository offenderRepository,
+                         ProfileRepository profileRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.reportRepository = reportRepository;
         this.offenderRepository = offenderRepository;
+        this.profileRepository = profileRepository;
     }
 
     @Transactional
     public Long saveReport(LoginUser loginUser, Long productId, ReportSaveRequest request) {
+
+        // 프로필 미등록자 신고 불가
+        if(!existProfile(loginUser.getId())) {
+            throw new NotFoundProfile();
+        }
+
+        // 중복 신고불가
+        if(duplicateReport(productId, loginUser.getId())) {
+            throw new AlreadyReportedException();
+        }
 
         // 신고 등록하면 신고 테이블 (신고한 유저, 신고 카테고리, 신고 내용) 생성
         User foundUser = userRepository.getById(loginUser.getId());
@@ -64,6 +84,16 @@ public class ReportService {
         // 신고당한 유저의 신고 당한 횟수 업데이트
         userRepository.save(foundProduct.getUser());
         return newReport.getId();
+    }
+
+    public boolean existProfile(Long userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        return profile != null;
+    }
+
+    public boolean duplicateReport(Long productId, Long userId) {
+        Report report = reportRepository.findByProductIdAndUserId(productId, userId);
+        return report != null;
     }
     @Transactional
     public Report createReport(User user, Product product , ReportSaveRequest request) {

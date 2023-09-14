@@ -50,7 +50,6 @@ setInterval(() => {
   position: relative;
   display: flex;
   align-items: center;
-  border: 1px solid rgba(109, 109, 109, 0.155);
   max-width: 100vw;
   overflow: hidden;
 }
