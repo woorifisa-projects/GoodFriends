@@ -19,6 +19,32 @@
       </div>
       <div class="main first-main">
         <!-- 추후 추가 내용 -->
+        <div class="profile-banner">
+          <div class="profile-banner-item">
+            <div class="banner-img">
+              <img src="@/assets/images/verifiedBadge.png" alt="" />
+            </div>
+            <span>
+              {{ userInfo.verifiedBadge ? PROFILE_BANNER.TRUE : PROFILE_BANNER.FALSE }}
+            </span>
+          </div>
+          <div class="profile-banner-item">
+            <div class="banner-img">
+              <img src="@/assets/images/dealCount.png" alt="" />
+            </div>
+            <span>
+              {{ PROFILE_BANNER.DEAL + userInfo.dealCount }}
+            </span>
+          </div>
+          <div class="profile-banner-item">
+            <div class="banner-img">
+              <img src="@/assets/images/banCount.png" alt="" />
+            </div>
+            <span>
+              {{ PROFILE_BANNER.BAN + userInfo.banCount }}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="wrap">
@@ -52,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { PROFILE_SIDEBAR } from '@/constants/strings/profile';
+import { PROFILE_BANNER, PROFILE_SIDEBAR } from '@/constants/strings/profile';
 import { onMounted, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { uploadFile } from '@/utils/file';
@@ -80,6 +106,11 @@ const navList = ref([
     path: `/profile/${id.value}/sell`
   }
 ]);
+const userInfo = ref({
+  verifiedBadge: false,
+  dealCount: 0,
+  banCount: 0
+});
 
 const onClickProfileImageUpload = async (event: Event) => {
   // TODO: 이미지 유효성 검사
@@ -112,8 +143,12 @@ watchEffect(() => {
   user.value = store.getInfo();
 });
 
-onMounted(() => {
+onMounted(async () => {
   user.value = store.getInfo();
+  const res = await profileAPI.getBanner(localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '');
+  if (res.isSuccess && res.data) {
+    userInfo.value = { ...res.data };
+  }
 });
 </script>
 
@@ -261,14 +296,60 @@ a {
 }
 .first-main {
   /* TODO: 이후 거래 횟수 등 데이터 추가할 시 제거 */
-  background: linear-gradient(to bottom, lightyellow, white);
+  /* background: linear-gradient(to bottom, lightyellow, white); */
   border-radius: 16px;
 }
 
 .box {
   border-radius: 8px;
-  /* box-shadow: 1px 1px 10px rgba(186, 186, 186, 0.225); */
   box-shadow: 0px 0px 1.5px rgba(0, 0, 0, 0.446);
+}
+
+.profile-banner {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-banner-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.profile-banner-item > span {
+  font-family: 'LINESeedKR-Bd';
+  font-size: 20px;
+}
+.banner-img {
+  width: 130px;
+}
+.profile-banner-item:hover img {
+  animation: rotate 3s ease infinite;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+  25% {
+    transform: rotate3d(0, 0, 1, 30deg);
+  }
+  75% {
+    transform: rotate3d(0, 0, 1, -30deg);
+  }
+  100% {
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+.banner-img > img {
+  pointer-events: none;
+  width: 100%;
+  object-fit: cover;
+  transition: transform 1s ease;
 }
 @media screen and (max-width: 1023px) {
 }
@@ -302,6 +383,12 @@ a {
   }
   .list span {
     display: none;
+  }
+  .banner-img {
+    width: 100px;
+  }
+  .profile-banner-item > span {
+    font-size: 16px;
   }
 }
 </style>

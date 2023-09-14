@@ -24,3 +24,10 @@ export const ALERT = {
   BIRTHDAY: '생년월일을 정확히 입력해주세요',
   NAME: '이름은 최소 2글자 이상, 중복되면 안됩니다'
 };
+
+export const PROFILE_BANNER = {
+  BAN: '신고 당한 횟수: ',
+  DEAL: '거래 횟수: ',
+  TRUE: '인증 완료',
+  FALSE: '인증 필요'
+};
