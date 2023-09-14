@@ -20,7 +20,11 @@ const profileAPI = {
   getProfile: (token: string | null): Promise<IResultType<IProfile>> => {
     return api
       .get(profileAPI.endPoint.getProfile, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+          ...headers,
+          'Cache-Control': 'max-age=31536000',
+          Authorization: `Bearer ${token}`
+        }
       })
       .then((res: AxiosResponse) => {
         const { data } = res;
@@ -34,7 +38,7 @@ const profileAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   editProfile: (token: string | null, body: IProfileEdit): Promise<INoContent> => {
@@ -53,7 +57,7 @@ const profileAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   editProfileImg: (token: string | null, formData: FormData): Promise<INoContent> => {
@@ -76,7 +80,7 @@ const profileAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   getSellList: (
@@ -103,7 +107,7 @@ const profileAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   getPurchaseList: (
@@ -130,7 +134,7 @@ const profileAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   sendPhoneAuth: (token: string | null, body: IPhoneAUth): Promise<INoContent> => {
@@ -151,7 +155,7 @@ const profileAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   checkPhoneAuth: (token: string | null, num: number): Promise<IResultType<IProfile>> => {
@@ -172,7 +176,7 @@ const profileAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   }
 };

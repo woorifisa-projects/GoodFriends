@@ -138,7 +138,6 @@ const onChangeDate = (event: Event, index: number) => {
 
 const onChangeTime = (event: Event, index: number) => {
   const time = (event.target as HTMLInputElement).value.replace(/\D/g, '');
-  console.log(time);
   if (time.length === 0) return '';
 
   const hours = time.slice(0, 2);
@@ -321,7 +320,7 @@ input[type='text'] {
     text-align: right;
   }
 
-  .modal-input > input{
+  .modal-input > input {
     font-size: 17px;
     padding: 6px;
   }
@@ -338,7 +337,6 @@ input[type='text'] {
     font-size: 18px;
     padding-left: 0px;
   }
-
 }
 
 @media screen and (max-width: 479px) {
@@ -366,7 +364,7 @@ input[type='text'] {
     text-align: right;
   }
 
-  .modal-input > input{
+  .modal-input > input {
     font-size: 13px;
     padding: 6px;
   }

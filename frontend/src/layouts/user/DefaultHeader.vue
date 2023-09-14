@@ -5,7 +5,7 @@
     </div>
     <div class="wrap">
       <div>
-        <button @click="goPage(HEADER.SELL.path)">{{ HEADER.SELL.title }}</button>
+        <button id="profile" @click="goPage(HEADER.SELL.path)">{{ HEADER.SELL.title }}</button>
       </div>
       <div id="login">
         <div v-if="!isLogin">
@@ -37,6 +37,7 @@
 import loginAPI from '@/apis/user/login';
 import profileAPI from '@/apis/user/profile';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
+import { API_ERROR } from '@/constants/strings/error';
 import HEADER from '@/constants/strings/header';
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfo';
@@ -77,13 +78,17 @@ const onClickLogoutBtn = async () => {
   if (res.isSuccess) {
     localStorage.removeItem(LOCAL_STORAGE.ACCESS_TOKEN);
     goPageWithReload();
-  } else {
-    alert('로그아웃 오류');
+    return;
   }
+  if (res.message === API_ERROR.TIMEOUT) {
+    alert('조금 뒤에 다시 시도해주세요');
+    return;
+  }
+  goErrorWithReload('logout');
+  return;
 };
 
 const onClickProfileBtn = (event: MouseEvent) => {
-  console.log('!');
   if (isPopoverOpen.value) {
     isPopoverOpen.value = false;
     closePopover(event);
@@ -197,7 +202,8 @@ onMounted(async () => {
 }
 .title img {
   width: 100%;
-  /* object-fit: cover; */
+  height: 30px;
+  object-fit: cover;
 }
 .wrap {
   display: flex;
@@ -236,7 +242,8 @@ onMounted(async () => {
   z-index: 2;
 }
 .profile > img {
-  width: 120%;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   pointer-events: none;
 }
@@ -290,7 +297,9 @@ onMounted(async () => {
 }
 
 .img > img {
+  width: 150px;
   height: 100%;
+  object-fit: cover;
 }
 .content {
   display: flex;

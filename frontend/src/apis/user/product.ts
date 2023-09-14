@@ -34,7 +34,7 @@ const productAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   postProduct: (token: string, formData: FormData): Promise<INoContent> => {
@@ -58,7 +58,7 @@ const productAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   getProduct: (token: string, productId: string): Promise<IResultType<IDetailProduct>> => {
@@ -81,7 +81,7 @@ const productAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   getEditProduct: (token: string, productId: string): Promise<IResultType<IDetailEditProduct>> => {
@@ -93,7 +93,6 @@ const productAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log(res);
         return { isSuccess: true, data: res.data, code: res.status };
       })
       .catch((error) => {
@@ -104,7 +103,7 @@ const productAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   editProduct: (token: string, productId: string, formData: FormData): Promise<INoContent> => {
@@ -118,7 +117,6 @@ const productAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log(res);
         return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error) => {
@@ -129,7 +127,7 @@ const productAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   deleteProduct: (token: string, productId: string): Promise<INoContent> => {
@@ -142,7 +140,6 @@ const productAPI = {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log(res);
         return { isSuccess: true, message: '', code: res.status };
       })
       .catch((error) => {
@@ -153,7 +150,7 @@ const productAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   getCategoryProduct: (
@@ -178,7 +175,7 @@ const productAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   },
   getSearchTitleProduct: (
@@ -204,7 +201,7 @@ const productAPI = {
             code: error.response.status
           };
         }
-        return { isSuccess: false, message: error.message, code: error.response.status };
+        return { isSuccess: false, message: error.message, code: 500 };
       });
   }
 };

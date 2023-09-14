@@ -31,15 +31,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import router from '@/router';
 import ProductCardVue from '@/components/ProductCard.vue';
 import CommonBannerVue from '@/components/CommonBanner.vue';
 import CategoryList from '@/components/CategoryList.vue';
 import productAPI from '@/apis/user/product';
-import type { IAllProduct } from '@/types/product';
 import EmptyProduct from '@/components/EmptyProduct.vue';
 import { PLACEHOLDER } from '@/constants/strings/defaultInput';
+import type { IAllProduct } from '@/types/product';
 import type { IStringToFunction } from '@/types/dynamic';
 
 const selectedCategory = ref('ALL');
@@ -67,6 +67,7 @@ const onClickProductCard = (id: number) => {
 };
 
 const handleNotificationListScroll = async () => {
+  if (isEnd.value) return;
   const scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
   if (Math.abs(preScroll.value - scrollLocation) < 10) {
     preScroll.value = scrollLocation;
@@ -77,16 +78,18 @@ const handleNotificationListScroll = async () => {
   const fullHeight = document.body.scrollHeight; //  margin 값은 포함 x
   if (scrollLocation + windowHeight + CARD_SIZE > fullHeight) {
     pageNumber.value += 1;
+    isEnd.value = true;
     const res = await getProduct[currentSearch.value](pageNumber.value);
     if (!res.isSuccess) {
+      window.removeEventListener('scroll', handleNotificationListScroll);
       return;
     }
     if (!res.data || res.data.length === 0) {
-      isEnd.value = true;
       window.removeEventListener('scroll', handleNotificationListScroll);
       return;
     }
     products.value = [...products.value, ...res.data];
+    isEnd.value = false;
   }
 };
 // 상품 검색
@@ -108,7 +111,6 @@ const changeCategory = async (category: string) => {
   currentSearch.value = 'CATEGORY';
   window.addEventListener('scroll', handleNotificationListScroll);
 
-  console.log(selectedCategory.value);
   if (selectedCategory.value === 'ALL') {
     currentSearch.value = 'ALL';
   }
@@ -125,10 +127,12 @@ onMounted(async () => {
   const res = await getProduct['ALL'](pageNumber.value);
   if (res.isSuccess && res.data) {
     products.value = res.data;
-  } else {
-    console.error(res.message);
+    window.addEventListener('scroll', handleNotificationListScroll);
   }
-  window.addEventListener('scroll', handleNotificationListScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleNotificationListScroll);
 });
 </script>
 
