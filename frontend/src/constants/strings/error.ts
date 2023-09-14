@@ -9,3 +9,7 @@ export const ERROR_MSG = {
   GO_HOME: '메인화면으로 이동',
   NEED_LOGIN: '로그인 후 이용해주세요'
 };
+
+export const API_ERROR = {
+  TIMEOUT: '시간 초과'
+};

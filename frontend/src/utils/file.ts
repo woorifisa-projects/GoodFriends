@@ -30,7 +30,6 @@ export const uploadFile = async (
         return [previewFile, savedFiles];
       } catch (err) {
         // TODO: error 처리
-        console.log('err', err);
       }
     })
   );

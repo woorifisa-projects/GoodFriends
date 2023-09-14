@@ -32,7 +32,7 @@ const router = createRouter({
       meta: { type: 'user' },
       component: DefaultLayout,
       children: [
-        { path: '/', name: 'home', component: HomeView, meta: { every: true } },
+        { path: '/', name: 'home', meta: { every: true }, component: HomeView },
         { path: 'profile/:id', name: 'profile', component: ProfileView },
         { path: 'profile/:id/purchase', name: 'purchase', component: PurchaseView },
         { path: 'profile/:id/sell', name: 'sell', component: SellView },
@@ -45,7 +45,7 @@ const router = createRouter({
         { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
-        { path: 'err/:type', name: 'login err', component: ErrorView },
+        { path: 'err/:type', name: 'login err', meta: { every: true }, component: ErrorView },
         {
           path: '/google-callback',
           name: 'receive code',
@@ -55,6 +55,7 @@ const router = createRouter({
         {
           path: '/404',
           name: 'notFound',
+          meta: { every: true },
           component: NotFoundView
         },
         {

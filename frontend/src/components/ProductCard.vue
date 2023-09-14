@@ -50,7 +50,7 @@ const emits = defineEmits(['click']);
   transform: scale(1.02);
 }
 .card > .img {
-  padding: 24px;
+  padding: 10px;
   width: 300px;
   height: 300px;
   overflow: hidden;
@@ -63,7 +63,8 @@ const emits = defineEmits(['click']);
 }
 .card > .img > img {
   width: 100%;
-  object-fit: cover;
+  height: 280px;
+  object-fit: contain;
 }
 .detail {
   display: flex;
