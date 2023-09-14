@@ -53,7 +53,6 @@ const submit = async () => {
   if (res.isSuccess && res.data) {
     const store = useAdminStore();
     store.setAdmin(res.data.root, res.data.password, res.data.token);
-    console.log(store.accessToken);
     router.push('admin/log');
   } else {
     alert('로그인/비밀번호를 확인해주세요');

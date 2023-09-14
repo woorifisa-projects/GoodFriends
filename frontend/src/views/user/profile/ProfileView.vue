@@ -132,7 +132,6 @@ const onClickEdit = async () => {
   }
 
   const tmp = checkEditProfile(userInputInfo.value);
-  console.log(tmp);
   if (tmp.length > 0 || !isCheckPhoneAuth.value) {
     error.value = [...tmp];
     if (!isCheckPhoneAuth.value) error.value.push('phone');
@@ -172,7 +171,6 @@ onMounted(async () => {
     goPageWithReload();
     return;
   }
-  console.log(res.data);
   userInputInfo.value = { ...res.data };
   if (!res.data.accountNumber) userInputInfo.value.accountType = 'DEFAULT';
 });

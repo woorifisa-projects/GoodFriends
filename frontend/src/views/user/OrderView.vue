@@ -62,7 +62,7 @@ const response = ref(false);
 const id = route.params.id.toString();
 const clickOrderId = ref(0);
 
-const {title, imageUrl} = history.state;
+const { title, imageUrl } = history.state;
 
 const orderList = ref<Array<IOrderResponse>>();
 const product = ref({
@@ -82,7 +82,6 @@ const onClickDeal = () => {
   isVisible.value = true;
 };
 watchEffect(async () => {
-  console.log(response.value);
   if (!response.value) return;
   // TODO: api
   const res = await orderAPI.dealOrder(
@@ -90,7 +89,6 @@ watchEffect(async () => {
     clickOrderId.value.toString()
   );
   if (res.isSuccess) {
-    console.log(res.data);
     isVisible.value = true;
     contents.value = [`이름: ${res.data?.nickName}`, `이메일: ${res.data?.email}`];
   }
@@ -105,7 +103,6 @@ onMounted(async () => {
   if (res.data) {
     orderList.value = res.data;
   }
-  console.log(res);
 });
 </script>
 

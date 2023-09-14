@@ -108,11 +108,12 @@ import { checkProductValue } from '@/utils/validation';
 import { goPageWithReload } from '@/utils/goPage';
 import { useLoadingStore } from '@/stores/loading';
 import router from '@/router';
-import type { IPostProduct } from '@/types/product';
-import type { IStringToFunction } from '@/types/dynamic';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
 import { LABEL, PLACEHOLDER, SELECT } from '@/constants/strings/defaultInput';
 import ConfirmModal from '@/components/ConfirmModal.vue';
+import { API_ERROR } from '@/constants/strings/error';
+import type { IPostProduct } from '@/types/product';
+import type { IStringToFunction } from '@/types/dynamic';
 
 const route = useRoute();
 const loadingStore = useLoadingStore();
@@ -156,7 +157,6 @@ const store = useUserInfoStore();
 
 const uploadImage = async (event: Event) => {
   const fileList: FileList | null = (event.target as HTMLInputElement).files;
-  console.log(fileList);
   if (!fileList) return;
   await uploadFile('img', fileList, previewImg.value, 0, inputImage.value);
   if (inputImage.value.length > maxImage.value) {
@@ -223,6 +223,7 @@ const submit = async () => {
   const res = await submit[props.type]();
   loadingStore.setLoading(false);
   if (!res.isSuccess) {
+    if (res.message === API_ERROR.TIMEOUT) return;
     alert(res.message);
     if (props.type === 'add' && res.code === 403) {
       router.push('/profile/' + store.id);
@@ -259,13 +260,13 @@ watchEffect(async () => {
     localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
     id
   );
+  loadingStore.setLoading(false);
   if (res.isSuccess) {
     goPageWithReload('');
-    loadingStore.setLoading(true);
   } else {
     alert(res.message);
-    loadingStore.setLoading(true);
   }
+  return;
 });
 
 watchEffect(() => {
@@ -282,10 +283,9 @@ onMounted(async () => {
     id
   );
 
-  loadingStore.setLoading(false);
-
   if (res.data === undefined || !res.isSuccess) {
     alert(res.message);
+    loadingStore.setLoading(false);
     router.go(-1);
     return;
   }
@@ -298,6 +298,7 @@ onMounted(async () => {
 
   if (images === null) {
     alert('이미지를 불러오는 중 오류가 발생했습니다');
+    loadingStore.setLoading(false);
     goPageWithReload('product/' + id);
     return;
   }

@@ -114,7 +114,6 @@ watchEffect(() => {
 
 onMounted(() => {
   user.value = store.getInfo();
-  console.log(user.value);
 });
 </script>
 

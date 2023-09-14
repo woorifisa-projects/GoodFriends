@@ -41,7 +41,6 @@ const getList = async (status: string, important = false) => {
 };
 
 const onClickFilter = async (status: string) => {
-  console.log(status);
   if (checkedStatus.value === status) return;
   await getList(status);
 };
