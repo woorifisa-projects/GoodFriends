@@ -45,4 +45,10 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
             "WHERE o.confirmStatus = :confirmStatus " +
             "AND o.user.id = :userId")
     Long findCountByConfirmStatusAndUserId(ConfirmStatus confirmStatus, Long userId);
+
+    @Query("SELECT o " +
+            "FROM Order o " +
+            "WHERE o.product.id = :productId " +
+            "AND o.confirmStatus = :confirmStatus")
+    Order findByProductIdAndConfirmStatus(Long productId, ConfirmStatus confirmStatus);
 }

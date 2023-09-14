@@ -121,23 +121,39 @@ public class OrderService {
             throw new NotOwnProductException();
         }
 
+        Product product = productRepository.getById(productId);
+
+        if(product.getStatus() != ProductStatus.SELL) {
+            Order order = orderRepository.findByProductIdAndConfirmStatus(productId, ConfirmStatus.COMPLETED);
+            OrderViewOneResponse response = new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
+                                                    order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+            List<OrderViewOneResponse> responses = List.of(response);
+
+            return new OrderViewAllResponse(responses, true);
+        }
+
         List<OrderViewOneResponse> responses = orderRepository.findOrdersAndUserByProductId(productId).stream()
                 .map(order -> {
-                    OrderViewOneResponse response =  new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(), order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+                    OrderViewOneResponse response =  new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
+                                                        order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
                     return response;
                 })
                 .collect(Collectors.toList());
 
-        return new OrderViewAllResponse(responses);
+        return new OrderViewAllResponse(responses, false);
     }
 
     @Transactional
     public UserDealResponse dealOrder(Long orderId) {
 
-        orderRepository.updateConfirmStatus(orderId, ConfirmStatus.COMPLETED);
-
         Order order = orderRepository.getById(orderId);
-        productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
+        Product product = productRepository.getById(order.getProduct().getId());
+
+        if(product.getStatus() == ProductStatus.SELL) {
+            orderRepository.updateConfirmStatus(orderId, ConfirmStatus.COMPLETED);
+            productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
+        }
+
         User user = userRepository.getById(order.getUser().getId());
 
         UserDealResponse response = new UserDealResponse(user.getNickname(), user.getProfileImageUrl(), user.getEmail());
