@@ -78,10 +78,10 @@
 </template>
 
 <script setup lang="ts">
-import { ALERT, PROFILE } from '@/constants/strings/profile';
+import { PROFILE } from '@/constants/strings/profile';
 import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import { onMounted, ref } from 'vue';
-import { checkEditProfile, checkPhoneNumber } from '@/utils/validation';
+import { checkEditProfile } from '@/utils/validation';
 import { phoneNumberFormat } from '@/utils/format';
 import PhoneAuthAPI from '@/components/PhoneAuthAPI.vue';
 import AddressAPI from '@/components/AddressAPI.vue';
@@ -300,9 +300,6 @@ onMounted(async () => {
 }
 
 @media screen and (max-width: 1023px) {
-  .item > div {
-    /* flex-direction: column; */
-  }
 }
 
 @media screen and (max-width: 767px) {
