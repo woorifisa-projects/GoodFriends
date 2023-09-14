@@ -158,6 +158,7 @@ onMounted(async () => {
   gap: 32px;
 
   margin-bottom: 36px;
+  overflow: hidden;
 }
 
 .wrap {
