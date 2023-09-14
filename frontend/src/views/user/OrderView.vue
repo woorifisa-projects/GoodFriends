@@ -62,10 +62,12 @@ const response = ref(false);
 const id = route.params.id.toString();
 const clickOrderId = ref(0);
 
+const {title, imageUrl} = history.state;
+
 const orderList = ref<Array<IOrderResponse>>();
 const product = ref({
-  image,
-  title: 'title'
+  image: imageUrl,
+  title: title
 });
 
 const contents = ref(['정말 거래하시겠습니까?', '이후 취소는 불가능합니다.']);
