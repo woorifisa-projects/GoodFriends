@@ -6,9 +6,12 @@
           <p v-for="(text, index) in props.content" :key="index">{{ text }}</p>
         </div>
       </div>
-      <div class="modal-buttons" @click="updateResponse">
+      <div v-show="props.visibleButton" class="modal-buttons" @click="updateResponse">
         <button class="no-btn" value="no">no</button>
         <button class="yes-btn" value="yes">yes</button>
+      </div>
+      <div v-show="!props.visibleButton" class="modal-confirm-button " @click="confirmResponse">
+        <button class="confirm-btn" value="confirm">확인</button>
       </div>
     </div>
   </CommonModalVue>
@@ -29,6 +32,10 @@ const props = defineProps({
   content: {
     type: Array<string>,
     default: ['정말 등록하시겠습니까?', '변경내용은 저장되지 않습니다.']
+  },
+  visibleButton: {
+    type: Boolean,
+    default: true
   }
 });
 
@@ -45,6 +52,15 @@ const updateResponse = (event: Event) => {
   }
   emits('update:isVisible', false);
 };
+
+const confirmResponse = (event: Event) => {
+  const target = event.target as HTMLButtonElement;
+  if(target.value === undefined) return;
+  if(target.value === 'confirm') {
+    emits('update:isVisible', true);
+  }
+  emits('update:isVisible', false);
+}
 </script>
 
 <style scoped>
@@ -85,6 +101,26 @@ const updateResponse = (event: Event) => {
 .yes-btn {
   background-color: var(--color-yellow);
 }
+
+.modal-confirm-button {
+  display: flex;
+  justify-content: space-around;
+}
+.confirm-btn:hover {
+  transform: scale(1.03);
+}
+.confirm-btn {
+  font-family: 'LINESeedKR-Bd';
+  font-size: 18px;
+  width: 100px;
+  border: 1px solid rgb(240, 240, 240);
+  border-radius: 12px;
+  padding: 12px 18px;
+
+  transition: transform 0.3s ease;
+  background-color: var(--color-yellow);
+}
+
 @media screen and (max-width: 1200px) {
   /* .modal {
     width: 90vw;

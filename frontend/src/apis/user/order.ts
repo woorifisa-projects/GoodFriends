@@ -1,6 +1,6 @@
 import { apiInstance, headers } from '..';
 import type { IResultType, INoContent } from '@/types/api';
-import type { IOrderResponse, IPostOrder, IPurchaser } from '@/types/order';
+import type { IOrder, IOrderResponse, IPostOrder, IPurchaser } from '@/types/order';
 import { type AxiosResponse } from 'axios';
 
 const api = apiInstance();
@@ -12,7 +12,7 @@ const orderAPI = {
     dealOrder: `api/orders/deal/`
   },
   headers: {},
-  getOrder: (token: string, productId: string): Promise<IResultType<Array<IOrderResponse>>> => {
+  getOrder: (token: string, productId: string): Promise<IResultType<IOrder>> => {
     return api
       .get(orderAPI.endPoint.getOrder + productId, {
         headers: {
@@ -22,7 +22,7 @@ const orderAPI = {
       })
       .then((res: AxiosResponse) => {
         console.log(res);
-        return { isSuccess: true, data: res.data.responses, code: res.status };
+        return { isSuccess: true, data: res.data, code: res.status };
       })
       .catch((error) => {
         if (error.response) {
@@ -57,9 +57,9 @@ const orderAPI = {
         return { isSuccess: false, message: error.message, code: error.response.status };
       });
   },
-  dealOrder: (token: string, productId: string): Promise<IResultType<IPurchaser>> => {
+  dealOrder: (token: string, orderId: string): Promise<IResultType<IPurchaser>> => {
     return api
-      .post(orderAPI.endPoint.dealOrder + productId, '', {
+      .post(orderAPI.endPoint.dealOrder + orderId, '', {
         headers: {
           ...headers,
           Authorization: `Bearer ${token}`

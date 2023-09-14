@@ -14,6 +14,7 @@ export const PRODUCT = {
   ORDER: '주문하기',
   VIEW_ORDER: '주문서 보기',
   DEAL: '거래하기',
+  CONFIRM: '구매자 정보 보기',
   NOTHING: '찾으시는 상품이 없어요 ㅠ.ㅠ',
   SELL_PRODUCT: '해당 조건에 맞는 판매 상품이 없어요',
   PURCHASE_PRODUCT: '해당 조건에 맞는 구매 상품이 없어요'
