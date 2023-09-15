@@ -50,6 +50,7 @@ const router = createRouter({
           name: 'board report',
           component: BoardReportView
         },
+        { path: 'product/:id', name: 'view product', component: ProductView },
         { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
