@@ -24,6 +24,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
 import static woorifisa.goodfriends.backend.common.fixtures.ProductFixtures.*;
 import static woorifisa.goodfriends.backend.common.fixtures.ProfileFixtures.*;
+import static woorifisa.goodfriends.backend.common.fixtures.UserFixtures.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
@@ -84,6 +85,10 @@ public class ProductServiceTest {
         given(productImageRepository.findOneImageUrlByProductId(상품1().getId())).willReturn("image1.png");
         given(productImageRepository.findOneImageUrlByProductId(상품2().getId())).willReturn("image2.png");
         given(productImageRepository.findOneImageUrlByProductId(상품3().getId())).willReturn("image3.png");
+
+        given(userRepository.getById(상품1().getUser().getId())).willReturn(코코());
+        given(userRepository.getById(상품2().getUser().getId())).willReturn(춘식());
+        given(userRepository.getById(상품3().getUser().getId())).willReturn(고잉홈());
 
         given(profileRepository.getByUserId(상품1().getUser().getId())).willReturn(프로필1());
         given(profileRepository.getByUserId(상품2().getUser().getId())).willReturn(프로필2());
