@@ -1,18 +1,15 @@
 <template>
-  <DefaultMyPage>
-    <FilterListVue
-      :product-status="productStatus"
-      @click="onClickFilter"
-      :checkedStatus="checkedStatus"
-      :type="PRODUCT_STATUS"
-    />
-    <ItemList :items="sellList" :type="PRODUCT_STATUS" :message="PRODUCT.SELL_PRODUCT" />
-  </DefaultMyPage>
+  <FilterListVue
+    :product-status="productStatus"
+    @click="onClickFilter"
+    :checkedStatus="checkedStatus"
+    :type="PRODUCT_STATUS"
+  />
+  <ItemList :items="sellList" :type="PRODUCT_STATUS" :message="PRODUCT.SELL_PRODUCT" />
 </template>
 
 <script setup lang="ts">
 import profileAPI from '@/apis/user/profile';
-import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import FilterListVue from '@/components/profile/FilterList.vue';
 import ItemList from '@/components/profile/ItemList.vue';
 import { LOCAL_STORAGE } from '@/constants/localStorage';

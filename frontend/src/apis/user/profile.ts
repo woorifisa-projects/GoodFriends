@@ -1,7 +1,13 @@
 import { apiInstance, headers } from '..';
 import type { IResultType, INoContent } from '@/types/api';
 
-import type { IPhoneAUth, IProfile, IProfileEdit, ISellAndPurchaseList } from '@/types/profile';
+import type {
+  IPhoneAUth,
+  IProfile,
+  IProfileBanner,
+  IProfileEdit,
+  ISellAndPurchaseList
+} from '@/types/profile';
 
 import { type AxiosResponse } from 'axios';
 
@@ -14,7 +20,8 @@ const profileAPI = {
     sendPhoneAuth: 'api/sms/user',
     checkPhoneAuth: 'api/sms/user/check/',
     getSellList: `api/profile/me/sell-list`,
-    getPurchaseList: `api/profile/me/purchase-list`
+    getPurchaseList: `api/profile/me/purchase-list`,
+    getBanner: `api/profile/me/banner`
   },
 
   getProfile: (token: string | null): Promise<IResultType<IProfile>> => {
@@ -165,6 +172,32 @@ const profileAPI = {
         return {
           isSuccess: true,
           message: res.data,
+          code: res.status
+        };
+      })
+      .catch((error) => {
+        if (error.response) {
+          return {
+            isSuccess: false,
+            message: error.response.data.message,
+            code: error.response.status
+          };
+        }
+        return { isSuccess: false, message: error.message, code: 500 };
+      });
+  },
+  getBanner: (token: string): Promise<IResultType<IProfileBanner>> => {
+    return api
+      .get(profileAPI.endPoint.getBanner, {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((res: AxiosResponse) => {
+        return {
+          isSuccess: true,
+          data: res.data,
           code: res.status
         };
       })

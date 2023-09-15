@@ -19,6 +19,8 @@ import { goPageWithReload } from '@/utils/goPage';
 import { useAdminStore } from '@/stores/admin';
 import { LOCAL_STORAGE } from '@/constants/localStorage';
 import { ERROR_MSG } from '@/constants/strings/error';
+import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
+import DefaultMyPageVue from '@/components/profile/DefaultMyPage.vue';
 
 const router = createRouter({
   scrollBehavior() {
@@ -33,10 +35,16 @@ const router = createRouter({
       component: DefaultLayout,
       children: [
         { path: '/', name: 'home', meta: { every: true }, component: HomeView },
-        { path: 'profile/:id', name: 'profile', component: ProfileView },
-        { path: 'profile/:id/purchase', name: 'purchase', component: PurchaseView },
-        { path: 'profile/:id/sell', name: 'sell', component: SellView },
-        { path: 'product/:id', name: 'product', component: ProductView },
+        {
+          path: 'profile/:id',
+          name: 'default profile',
+          component: DefaultMyPageVue,
+          children: [
+            { path: 'purchase', name: 'purchase', component: PurchaseView },
+            { path: 'sell', name: 'sell', component: SellView },
+            { path: '', name: 'profile', component: ProfileView }
+          ]
+        },
         {
           path: 'report/:productId',
           name: 'board report',

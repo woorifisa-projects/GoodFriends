@@ -15,12 +15,12 @@ export interface IProfileEdit {
   accountNumber: string;
 }
 
-export interface IPhoneAUth{
+export interface IPhoneAUth {
   recipientPhoneNumber: string;
 }
 
-export interface IResultPhoneAuth{
-  result : string;
+export interface IResultPhoneAuth {
+  result: string;
 }
 
 export interface IProfilePinia {
@@ -35,6 +35,12 @@ export interface IProfile extends IProfileEdit {
   id: number;
   imageUrl: string;
   email: string;
+}
+
+export interface IProfileBanner {
+  verifiedBadge: boolean;
+  dealCount: number;
+  banCount: number;
 }
 
 export interface ISellAndPurchaseList {

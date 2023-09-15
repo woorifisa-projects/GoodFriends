@@ -1,17 +1,14 @@
 <template>
-  <DefaultMyPage>
-    <FilterListVue
-      :product-status="productStatus"
-      @click="onClickFilter"
-      :checkedStatus="checkedStatus"
-      :type="CONFIRM_STATUS"
-    />
-    <ItemList :items="purchaseList" :type="CONFIRM_STATUS" :message="PRODUCT.PURCHASE_PRODUCT" />
-  </DefaultMyPage>
+  <FilterListVue
+    :product-status="productStatus"
+    @click="onClickFilter"
+    :checkedStatus="checkedStatus"
+    :type="CONFIRM_STATUS"
+  />
+  <ItemList :items="purchaseList" :type="CONFIRM_STATUS" :message="PRODUCT.PURCHASE_PRODUCT" />
 </template>
 
 <script setup lang="ts">
-import DefaultMyPage from '@/components/profile/DefaultMyPage.vue';
 import ItemList from '@/components/profile/ItemList.vue';
 import FilterListVue from '@/components/profile/FilterList.vue';
 import type { ISellAndPurchaseList } from '@/types/profile';
