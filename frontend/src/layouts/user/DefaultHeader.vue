@@ -169,7 +169,7 @@ onMounted(async () => {
 .header {
   width: 100%;
   height: 80px;
-  padding: 0 250px;
+  padding: 0 200px;
 
   position: sticky;
   top: 0;
@@ -214,7 +214,7 @@ onMounted(async () => {
 
 .wrap > div > button {
   background-color: transparent;
-  font-size: 20px;
+  font-size: 16px;
   font-family: 'LINESeedKR-Bd';
   color: var(--color-yellow);
   transition: color 0.3s ease;
@@ -329,7 +329,7 @@ onMounted(async () => {
 }
 @media screen and (max-width: 1023px) {
   .header {
-    padding: 0;
+    padding: 0 24px;
   }
   .popover {
     right: 10px;
