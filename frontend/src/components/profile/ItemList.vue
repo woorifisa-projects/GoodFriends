@@ -2,12 +2,20 @@
   <div class="wrap">
     <ul>
       <li v-if="props.items.length">
-        <div class="item" v-for="item in props.items" :key="item.productId" @click="onClick(item)">
-          <div class="img">
+        <div class="item" v-for="item in props.items" :key="item.productId">
+          <div class="img" @click="onClick(item)">
             <img :src="item.imageUrl || tmpImage" alt="" />
           </div>
           <div class="detail">
             <div>{{ title(item.title) }}</div>
+            <button
+              class="btn_complete"
+              v-if="props.type[item.status] == '예약중'"
+              @click="onClickComplete(item)"
+            >
+              거래완료
+            </button>
+            <div class="empty-div" v-else></div>
             <div>{{ item.sellPrice.toLocaleString() }}원</div>
             <div class="status">{{ props.type[item.status] }}</div>
           </div>
@@ -26,6 +34,8 @@ import { tmpImage } from '@/utils/image';
 import { computed, ref, type PropType, onMounted } from 'vue';
 import EmptyProductVue from '../EmptyProduct.vue';
 import { PRODUCT } from '@/constants/strings/product';
+import orderAPI from '@/apis/user/order';
+import { LOCAL_STORAGE } from '@/constants/localStorage';
 
 const props = defineProps({
   items: {
@@ -51,6 +61,20 @@ const title = computed(() => {
     title.length > maxTitle.value ? title.substring(0, maxTitle.value) + '...' : title;
 });
 
+const onClickComplete = async (item: ISellAndPurchaseList) => {
+  const patchConfirmApi = await orderAPI.patchConfirm(
+    localStorage.getItem(LOCAL_STORAGE.ACCESS_TOKEN) || '',
+    item.productId.toString()
+  );
+  if (patchConfirmApi.isSuccess) {
+    alert('거래완료되었습니다.');
+    location.reload();
+  } else {
+    alert(patchConfirmApi.message);
+    return;
+  }
+};
+
 onMounted(() => {
   window.addEventListener('resize', () => {
     const { innerWidth } = window;
@@ -61,6 +85,9 @@ onMounted(() => {
     }
   });
 });
+
+const item = props.type; // item을 정의하고 값을 할당
+console.log(item);
 </script>
 
 <style scoped>
@@ -163,5 +190,14 @@ onMounted(() => {
 }
 
 @media screen and (max-width: 767px) {
+}
+
+.btn_complete {
+  font-size: medium;
+  border: 1px solid rgb(145, 145, 145);
+  border-radius: 10px;
+}
+.btn_complete:hover {
+  background-color: var(--color-yellow);
 }
 </style>

@@ -150,7 +150,7 @@ public class OrderService {
         Product product = productRepository.getById(order.getProduct().getId());
 
         if(product.getStatus() == ProductStatus.SELL) {
-            orderRepository.updateConfirmStatus(orderId, ConfirmStatus.COMPLETED);
+            orderRepository.updateConfirmStatus(orderId, ConfirmStatus.RESERVATION);
             productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
         }
 
@@ -159,6 +159,13 @@ public class OrderService {
         UserDealResponse response = new UserDealResponse(user.getNickname(), user.getProfileImageUrl(), user.getEmail());
 
         return response;
+    }
+
+    @Transactional
+    public void confirmDeal(Long productId){
+        productRepository.updateProductStatus(productId,ProductStatus.COMPLETED);
+        Order order = orderRepository.findByProductIdAndConfirmStatus(productId,ConfirmStatus.RESERVATION);
+        orderRepository.updateConfirmStatus(order.getId(),ConfirmStatus.COMPLETED);
     }
 
 }
