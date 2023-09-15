@@ -214,7 +214,7 @@ onMounted(async () => {
 
 .wrap > div > button {
   background-color: transparent;
-  font-size: 20px;
+  font-size: 16px;
   font-family: 'LINESeedKR-Bd';
   color: var(--color-yellow);
   transition: color 0.3s ease;
