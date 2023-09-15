@@ -5,7 +5,7 @@
       <p class="banner-description">편하게 거래할 수 있는 서비스<br />지금 시작해 보세요</p>
       <div class="banner-image">
         <div class="fleamarket-banner-image">
-          <img alt="메인_배너_이미지" src="src/assets/images/main_banner.png" />
+          <img alt="메인_배너_이미지" src="@/assets/images/banner.png" />
         </div>
       </div>
     </div>
