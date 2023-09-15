@@ -72,9 +72,9 @@ public class ProductFixtures {
 
     public static ProductViewsAllResponse 전체_조회() {
         List<ProductViewAllResponse> responses = List.of(new ProductViewAllResponse[]{
-                new ProductViewAllResponse(3L, 상품3().getProductCategory(), 상품3().getTitle(), 상품3().getStatus(), 상품3().getSellPrice(), "image3.png", 주소3),
-                new ProductViewAllResponse(2L, 상품2().getProductCategory(), 상품2().getTitle(), 상품2().getStatus(), 상품2().getSellPrice(), "image2.png", 주소2),
-                new ProductViewAllResponse(1L, 상품1().getProductCategory(), 상품1().getTitle(), 상품1().getStatus(), 상품1().getSellPrice(), "image1.png", 주소1)});
+                new ProductViewAllResponse(3L, 상품3().getProductCategory(), 상품3().getTitle(), 상품3().getStatus(), 상품3().getSellPrice(), "image3.png", 주소3, true),
+                new ProductViewAllResponse(2L, 상품2().getProductCategory(), 상품2().getTitle(), 상품2().getStatus(), 상품2().getSellPrice(), "image2.png", 주소2, true),
+                new ProductViewAllResponse(1L, 상품1().getProductCategory(), 상품1().getTitle(), 상품1().getStatus(), 상품1().getSellPrice(), "image1.png", 주소1, true)});
         return new ProductViewsAllResponse(responses);
     }
 

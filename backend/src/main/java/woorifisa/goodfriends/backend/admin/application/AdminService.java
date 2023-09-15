@@ -200,23 +200,26 @@ public class AdminService {
     }
 
     private List<ProductViewAllResponse> createViewList(List<Product> products) {
-        return products.stream()
+        List<ProductViewAllResponse> viewList = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
                         ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
-                                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null);
+                                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null, true);
 
                         return productViewAllResponse;
                     }
 
+                    User user = userRepository.getById(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
                     ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
-                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress());
+                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress(), user.isActivated());
                     return productViewAllResponse;
                 })
                 .collect(Collectors.toList());
+
+        return viewList;
     }
 
     // 상품 상세 조회

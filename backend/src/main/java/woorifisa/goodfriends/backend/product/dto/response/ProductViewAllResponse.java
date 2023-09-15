@@ -23,7 +23,9 @@ public class ProductViewAllResponse {
 
     private final String address;
 
-    public ProductViewAllResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String imageUrl, String address) {
+    private final boolean activated;
+
+    public ProductViewAllResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String imageUrl, String address, boolean activated) {
         this.id = id;
         this.productCategory = productCategory;
         this.title = title;
@@ -31,6 +33,7 @@ public class ProductViewAllResponse {
         this.sellPrice = sellPrice;
         this.imageUrl = imageUrl;
         this.address = address;
+        this.activated = activated;
     }
 
 }
