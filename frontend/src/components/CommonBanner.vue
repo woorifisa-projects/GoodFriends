@@ -18,7 +18,7 @@
 .fleamarket-cover {
   background-color: #fff8e5;
   height: 300px;
-  padding: 0 16px 0 16px;
+  padding: 0 200px 0 200px;
 }
 .banner-content {
   position: relative;
