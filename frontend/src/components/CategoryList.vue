@@ -150,7 +150,7 @@ const viewCategory = computed(() => {
     border: 1px solid rgb(240, 240, 240);
     border-radius: 12px;
     padding: 10px;
-    font-size: 20px;
+    font-size: 16px;
     font-family: 'LINESeedKR-Rg';
     color: #888;
   }

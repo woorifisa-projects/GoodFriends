@@ -81,7 +81,7 @@
 }
 @media (max-width: 768px) {
   .fleamarket-cover {
-    height: 294px;
+    height: 300px;
     padding: 0 0 0 24px;
   }
 }

@@ -329,7 +329,7 @@ onMounted(async () => {
 }
 @media screen and (max-width: 1023px) {
   .header {
-    padding: 0;
+    padding: 0 24px;
   }
   .popover {
     right: 10px;
