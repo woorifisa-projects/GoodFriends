@@ -1,79 +1,103 @@
 <template>
-  <div class="banner">
-    <button @click="onClickBannerBtn('prev')">
-      <span class="material-icons-outlined"> arrow_back_ios </span>
-    </button>
-    <div class="banner-img">
-      <img
-        :class="index === viewBanner ? `view` : `none`"
-        v-for="(img, index) in bannerList"
-        :src="img"
-        alt="banner-image"
-        :key="index"
-      />
+  <section class="fleamarket">
+    <div class="banner-content">
+      <h1 class="banner-title">친구처럼<br />안심한 중고거래</h1>
+      <p class="banner-description">편하게 거래할 수 있는 서비스<br />지금 시작해 보세요</p>
+      <div class="banner-image">
+        <div class="fleamarket-banner-image">
+          <img alt="" src="" />
+        </div>
+      </div>
     </div>
-    <button @click="onClickBannerBtn('next')">
-      <span class="material-icons-outlined"> arrow_forward_ios </span>
-    </button>
-  </div>
+  </section>
 </template>
 
-<script setup lang="ts">
-import { getBannerList } from '@/utils/image';
-import { ref } from 'vue';
-
-const bannerList = ref<Array<string>>([]);
-
-const viewBanner = ref(0);
-bannerList.value = getBannerList();
-
-const onClickBannerBtn = (flag: string) => {
-  if (flag === 'next') {
-    viewBanner.value = (viewBanner.value + 1) % bannerList.value.length;
-  } else if (flag === 'prev') {
-    viewBanner.value -= 1;
-    if (viewBanner.value < 0) {
-      viewBanner.value = bannerList.value.length - 1;
-    }
-  }
-};
-
-setInterval(() => {
-  onClickBannerBtn('next');
-}, 5000);
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
-.banner {
-  box-sizing: border-box;
-  max-height: 502px;
+.fleamarket {
+  background-color: #fff8e5;
+  height: 500px;
+  padding: 0 16px 0 16px;
+}
+.banner-content {
   position: relative;
-  display: flex;
-  align-items: center;
-  max-width: 100vw;
-  overflow: hidden;
+  height: 100%;
+  box-sizing: border-box;
 }
-.banner > button {
+.banner-title {
+  font-family: 'LINESeedKR-Bd';
+  line-height: 1.5;
+  font-size: 34px;
+  letter-spacing: -0.32px;
+}
+.banner-description {
+  font-family: 'LINESeedKR-Rg';
+  line-height: 1.32;
+  font-size: 18px;
+  letter-spacing: -0.18px;
+  margin-top: 16px;
+  display: block;
+}
+.banner-image {
   position: absolute;
-  background-color: transparent;
+  bottom: 0;
+  display: flex;
 }
-.banner > button:first-child {
+.fleamarket-banner-image {
+  box-sizing: border-box;
+  overflow: hidden;
+  width: initial;
+  height: initial;
+  background: none;
+  opacity: 1;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
   left: 0;
-}
-.banner > button:last-child {
+  bottom: 0;
   right: 0;
 }
-.banner-img {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  background-color: white;
+.fleamarket-banner-image span img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  margin: auto;
+  width: 0;
+  height: 0;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
 }
-.banner-img > img {
-  width: 100%;
-  object-fit: contain;
+@media (min-width: 768px) {
+  .fleamarket {
+    height: 315px;
+    padding: 0 16px 0 16px;
+  }
 }
-.banner-img > .none {
-  display: none;
+@media (min-width: 768px) {
+  .banner-content {
+    padding-top: 50px;
+    max-width: 768px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .banner-image {
+    right: 0;
+    height: 315px;
+    width: 416px;
+  }
 }
 </style>
