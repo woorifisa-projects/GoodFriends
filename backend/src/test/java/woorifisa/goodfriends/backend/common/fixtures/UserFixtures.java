@@ -9,6 +9,7 @@ public class UserFixtures {
     public static final String 관리자_이메일 = "goodfriends.admin@gmail.com";
     public static final String 관리자_닉네임 = "관리자";
     public static final String 관리자_프로필 = "/admin.png";
+
     public static final UserResponse 관리자_응답 = new UserResponse(1L, 관리자_이메일, 관리자_닉네임, 관리자_프로필);
 
     /* 팬시 */
@@ -40,18 +41,42 @@ public class UserFixtures {
     }
 
     public static User 팬시() {
-        return new User(팬시_이메일, 팬시_닉네임, 팬시_프로필);
+        return User.builder()
+                .id(1L)
+                .email(팬시_이메일)
+                .nickname(팬시_닉네임)
+                .profileImageUrl(팬시_프로필)
+                .activated(true)
+                .build();
     }
 
     public static User 코코() {
-        return new User(코코_이메일, 코코_닉네임, 코코_프로필);
+        return User.builder()
+                .id(1L)
+                .email(코코_이메일)
+                .nickname(코코_닉네임)
+                .profileImageUrl(코코_프로필)
+                .activated(true)
+                .build();
     }
 
     public static User 춘식() {
-        return new User(춘식_이메일, 춘식_닉네임, 춘식_프로필);
+        return User.builder()
+                .id(1L)
+                .email(춘식_이메일)
+                .nickname(춘식_닉네임)
+                .profileImageUrl(춘식_프로필)
+                .activated(true)
+                .build();
     }
 
     public static User 고잉홈() {
-        return new User(고잉홈_이메일, 고잉홈_닉네임, 고잉홈_프로필);
+        return User.builder()
+                .id(1L)
+                .email(고잉홈_이메일)
+                .nickname(고잉홈_닉네임)
+                .profileImageUrl(고잉홈_프로필)
+                .activated(true)
+                .build();
     }
 }
