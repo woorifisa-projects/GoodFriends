@@ -45,6 +45,12 @@ const router = createRouter({
         { path: 'product/:id/order', name: 'view order', component: OrderView },
         { path: 'product/add', name: 'add product', component: AddProduct },
         { path: 'product/edit/:id', name: 'edit product', component: EditProduct },
+        {
+          path: 'about',
+          name: 'about product',
+          meta: { every: true },
+          component: () => import('@/views/user/AboutView.vue')
+        },
         { path: 'err/:type', name: 'login err', meta: { every: true }, component: ErrorView },
         {
           path: '/google-callback',
