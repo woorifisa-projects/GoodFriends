@@ -1,5 +1,5 @@
 <template>
-  <section class="fleamarket">
+  <section class="fleamarket-cover">
     <div class="banner-content">
       <h1 class="banner-title">친구처럼<br />안심한 중고거래</h1>
       <p class="banner-description">편하게 거래할 수 있는 서비스<br />지금 시작해 보세요</p>
@@ -15,9 +15,9 @@
 <script setup lang="ts"></script>
 
 <style scoped>
-.fleamarket {
+.fleamarket-cover {
   background-color: #fff8e5;
-  height: 500px;
+  height: 300px;
   padding: 0 16px 0 16px;
 }
 .banner-content {
@@ -79,10 +79,10 @@
   -o-object-fit: cover;
   object-fit: cover;
 }
-@media (min-width: 768px) {
-  .fleamarket {
-    height: 315px;
-    padding: 0 16px 0 16px;
+@media (max-width: 768px) {
+  .fleamarket-cover {
+    height: 294px;
+    padding: 0 0 0 24px;
   }
 }
 @media (min-width: 768px) {
