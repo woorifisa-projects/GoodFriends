@@ -16,18 +16,22 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "axios": "^1.4.0",
     "cypress": "^12.17.3",
     "material-icons": "^1.13.10",
     "pinia": "^2.1.4",
+    "three": "^0.156.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.3.2",
     "@tsconfig/node18": "^18.2.0",
+    "@types/aos": "^3.0.4",
     "@types/jsdom": "^21.1.1",
     "@types/node": "^18.17.0",
+    "@types/three": "^0.156.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^11.0.3",
