@@ -5,7 +5,7 @@
       <p class="banner-description">편하게 거래할 수 있는 서비스<br />지금 시작해 보세요</p>
       <div class="banner-image">
         <div class="fleamarket-banner-image">
-          <img alt="메인_배너_이미지" src="@/assets/images/banner.png" />
+          <img alt="메인_배너_이미지" src="@/assets/images/banner2.png" />
         </div>
       </div>
     </div>
@@ -16,9 +16,9 @@
 
 <style scoped>
 .fleamarket-cover {
-  background-color: #fff8e5;
-  height: 300px;
-  padding: 0 200px 0 200px;
+  background-color: #ffef9d;
+  height: 322px;
+  padding: 0 160px 0 160px;
 }
 .banner-content {
   position: relative;
@@ -81,7 +81,7 @@
 }
 @media (max-width: 768px) {
   .fleamarket-cover {
-    height: 300px;
+    height: 322px;
     padding: 0 0 0 24px;
   }
 }
@@ -96,8 +96,8 @@
 @media (min-width: 768px) {
   .banner-image {
     right: 0;
-    height: 300px;
-    width: 315px;
+    width: 357px;
+    height: 322px;
   }
 }
 </style>
