@@ -12,7 +12,13 @@
       <p class="title">{{ product.title }}</p>
       <div class="line"></div>
       <p class="address">{{ product.address }}</p>
-      <p class="price">{{ product.sellPrice.toLocaleString() }}원</p>
+      <div class="in_detail">
+        <span class="product_status"> {{ PRODUCT_STATUS[product.status] }} </span>
+        <span>
+          <p class="price">{{ product.sellPrice.toLocaleString() }}원</p>
+        </span>
+      </div>
+      <!-- <p class="price">{{ product.sellPrice.toLocaleString() }}원</p> -->
     </div>
   </div>
 </template>
@@ -20,6 +26,7 @@
 <script setup lang="ts">
 import type { IAllProduct, IAllProductAdmin } from '@/types/product';
 import image from '@/assets/tmp/images/image.png';
+import { PRODUCT_STATUS } from '@/constants/strings/product';
 
 const props = defineProps({
   products: {
@@ -31,6 +38,20 @@ const emits = defineEmits(['click']);
 </script>
 
 <style scoped>
+.in_detail {
+  display: flex;
+  flex-direction: row;
+  padding-right: 15px;
+  padding-left: 15px;
+  justify-content: space-between;
+  /*   */
+}
+.product_status {
+  width: 70px;
+  border: 1px solid lightgray;
+  border-radius: 12px;
+  border-color: black;
+}
 .card {
   box-sizing: content-box;
   background-color: white;
