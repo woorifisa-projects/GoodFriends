@@ -3,7 +3,7 @@ import type { IStringToString } from '@/types/dynamic';
 export const PRODUCT = {
   PRICE: '가격',
   DESCRIPTION: '자세한 설명',
-  TEMPORARY: '임시 저장',
+  TEMPORARY: '취소하기',
   DELETE: '삭제하기',
   EDIT: '수정하기',
   SUBMIT: '등록하기',

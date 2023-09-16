@@ -244,8 +244,7 @@ const save = (e: Event) => {
     return;
   }
 
-  // TODO: add 관련 API 호출
-  console.log('임시저장 버튼 클릭', e);
+  router.go(-1);
 };
 
 const remove = async () => {
