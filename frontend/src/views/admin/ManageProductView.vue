@@ -87,10 +87,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.main-page {
-  width: 100%;
-  height: 100%;
-}
 
 .main {
   width: 100%;

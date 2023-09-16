@@ -69,13 +69,6 @@ const tableHeader = {
   width: 100%;
   height: 100%;
 }
-.page-title {
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .table {
   width: 100%;
   display: flex;

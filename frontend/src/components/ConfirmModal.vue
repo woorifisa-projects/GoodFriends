@@ -72,11 +72,6 @@ const confirmResponse = (event: Event) => {
   flex-direction: column;
   gap: 12px;
 }
-.modal-title {
-  font-family: 'LINESeedKR-Bd';
-  border-bottom: 1px solid black;
-  font-size: 32px;
-}
 .modal-contents {
   font-size: 24px;
   padding: 0 24px;

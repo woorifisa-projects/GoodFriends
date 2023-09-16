@@ -60,17 +60,4 @@
   background-color: rgba(211, 211, 211, 0.37);
   z-index: 1000;
 }
-.square {
-  width: 100%;
-  height: 100vh;
-
-  position: sticky;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(211, 211, 211, 0.37);
-  z-index: 1000;
-}
 </style>

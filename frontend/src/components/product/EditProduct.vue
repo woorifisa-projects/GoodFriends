@@ -246,8 +246,7 @@ const save = (e: Event) => {
     return;
   }
 
-  // TODO: add 관련 API 호출
-  console.log('임시저장 버튼 클릭', e);
+  router.go(-1);
 };
 
 const remove = async () => {
@@ -421,8 +420,6 @@ onMounted(async () => {
 
   box-sizing: border-box;
 
-  /* background-color: white; */
-
   padding: 30px 20px;
 }
 .select-detail > div {
@@ -479,9 +476,7 @@ onMounted(async () => {
 .image label:hover {
   transform: scale(1.03);
 }
-.disabled {
-  background-color: red;
-}
+
 .image-length {
   text-align: end;
 }

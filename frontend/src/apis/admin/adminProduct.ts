@@ -6,6 +6,7 @@ import type { IAllProduct, IDetailEditProduct } from '@/types/product';
 const api = apiInstance();
 
 const adminProductAPI = {
+
   endPoint: {
     postProduct: `api/admin/products/`,
     getSearchTitleProduct: `api/admin/products/search/`,

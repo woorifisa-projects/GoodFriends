@@ -89,12 +89,6 @@ const clickSuccess = () => {};
 </script>
 
 <style scoped>
-.activity-yes {
-  background-color: #6db1ff;
-}
-.activity-no {
-  background-color: #6db1ff;
-}
 .declarationInfo-Page {
   display: flex;
   justify-content: center;
@@ -183,12 +177,6 @@ const clickSuccess = () => {};
 .decInfo-in-2 {
   padding-left: 5px;
 }
-.detail-buttons {
-  width: 147px;
-  display: flex;
-  justify-content: center;
-  gap: 3px;
-}
 .total-DeclarationInfo2 {
   width: 100%;
   display: flex;
@@ -223,11 +211,6 @@ const clickSuccess = () => {};
 .ta-damage-des-value {
   width: 100%;
   height: 100px;
-}
-.detail-button {
-  width: 60px;
-  border: 1px solid rgb(173, 173, 173);
-  border-radius: 16px;
 }
 .work-buttons {
   width: 100%;

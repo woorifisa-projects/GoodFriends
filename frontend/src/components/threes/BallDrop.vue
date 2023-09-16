@@ -50,7 +50,6 @@ function init() {
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, 900);
-  console.log(window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.xr.enabled = true;
 
