@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="title" @click="goPage(HEADER.LOGO.path)">
-      <img src="@/assets/images/logo.png" alt="" />
+      <img src="@/assets/images/logo.png" alt="로고" />
     </div>
     <div class="wrap">
       <div>
@@ -15,7 +15,7 @@
         </div>
         <div v-else>
           <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">
-            <img :src="user.imageUrl" alt="" />
+            <img :src="user.imageUrl" alt="프로필 이미지" />
           </button>
           <div v-if="isPopoverOpen" class="popover" ref="popover">
             <div class="img">

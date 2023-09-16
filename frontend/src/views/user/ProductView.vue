@@ -5,7 +5,7 @@
         <button @click="onClickBannerBtn('prev')" :disabled="viewImage === 0">
           <span class="material-icons-outlined"> arrow_back_ios </span>
         </button>
-        <img :src="data.imageUrls[viewImage] || image" alt="" />
+        <img :src="data.imageUrls[viewImage] || image" alt="상품 이미지" />
         <button
           @click="onClickBannerBtn('next')"
           :disabled="viewImage === data.imageUrls.length - 1"
@@ -36,7 +36,7 @@
     </div>
     <div class="product-user">
       <div class="img">
-        <img :src="data.profileImageUrl" alt="" />
+        <img :src="data.profileImageUrl" alt="프로필 이미지" />
       </div>
       <div>{{ data.nickName }}</div>
     </div>
@@ -120,10 +120,10 @@ const onClickOrderView = () => {
     params: {
       id: id
     },
-    state: { 
+    state: {
       title: data.value.title,
       imageUrl: data.value.imageUrls[0] || image
-     }
+    }
   });
 };
 

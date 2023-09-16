@@ -68,10 +68,10 @@
           <div class="image-wrap">
             <div class="image-card" v-for="(img, index) in previewImg" :key="index">
               <div class="upload-img">
-                <img :src="img" alt="" />
+                <img :src="img" alt="상품 이미지" />
               </div>
               <div class="delete-btn" @click="onClickDeleteBtn(index)">
-                <img src="@/assets/images/delete.png" alt="" />
+                <img src="@/assets/images/delete.png" alt="삭제하기 버튼" />
               </div>
             </div>
           </div>

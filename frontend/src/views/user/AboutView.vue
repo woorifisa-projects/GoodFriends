@@ -3,12 +3,12 @@
     <div class="section main-section">
       <BallDrop />
       <div class="arrow-img" @click="goPage">
-        <img src="@/assets/images/arrow.png" alt="" />
+        <img src="@/assets/images/arrow.png" alt="아래로 이동" />
       </div>
     </div>
     <div class="section section-1">
       <div class="img">
-        <img src="@/assets/images/security-icon.png" alt="" />
+        <img src="@/assets/images/security-icon.png" alt="안전 아이콘" />
       </div>
       <div class="text" data-aos="fade-left" ref="refs">
         <p>#인증, #중복가입방지</p>
@@ -32,12 +32,12 @@
         </div>
       </div>
       <div class="img">
-        <img src="@/assets/images/glass-icon.png" alt="" />
+        <img src="@/assets/images/glass-icon.png" alt="돋보기 아이콘" />
       </div>
     </div>
     <div class="section section-3">
       <div class="img">
-        <img src="@/assets/images/handshake-icon.png" alt="" />
+        <img src="@/assets/images/handshake-icon.png" alt="악수 아이콘" />
       </div>
       <div class="text" data-aos="fade-right">
         <p>#상품주문, #주문내역, #판매내역</p>
@@ -60,7 +60,7 @@
         </div>
       </div>
       <div class="img">
-        <img src="@/assets/images/alarm-icon.png" alt="" />
+        <img src="@/assets/images/alarm-icon.png" alt="경보 아이콘" />
       </div>
     </div>
   </div>
