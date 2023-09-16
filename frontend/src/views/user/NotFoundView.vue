@@ -8,7 +8,7 @@
       </p>
       <p>{{ ERROR_MSG.NOT_FOUND_ERR_DETAIL }}</p>
     </div>
-    <button @click="goHome">{{ ERROR_MSG.GO_HOME }}</button>
+    <button name="메인화면으로 이동하기 버튼" @click="goHome">{{ ERROR_MSG.GO_HOME }}</button>
   </div>
 </template>
 

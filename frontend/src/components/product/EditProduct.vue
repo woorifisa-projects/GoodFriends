@@ -31,11 +31,13 @@
           <div class="text-length">{{ data.description.length }}/{{ maxLength }}</div>
         </div>
         <div class="buttons input-buttons">
-          <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">
+          <button name="삭제 버튼" class="remove-btn" v-if="props.type === 'edit'" @click="remove">
             {{ PRODUCT.DELETE }}
           </button>
-          <button v-else @click="save">{{ PRODUCT.TEMPORARY }}</button>
-          <button class="submit-btn" @click="submit">
+          <button name="임시저장 혹은 취소버튼" v-else @click="save">
+            {{ PRODUCT.TEMPORARY }}
+          </button>
+          <button name="제출버튼" class="submit-btn" @click="submit">
             {{ props.type === 'edit' ? PRODUCT.EDIT : PRODUCT.SUBMIT }}
           </button>
         </div>
@@ -68,20 +70,20 @@
           <div class="image-wrap">
             <div class="image-card" v-for="(img, index) in previewImg" :key="index">
               <div class="upload-img">
-                <img :src="img" alt="" />
+                <img :src="img" alt="상품 이미지" />
               </div>
               <div class="delete-btn" @click="onClickDeleteBtn(index)">
-                <img src="@/assets/images/delete.png" alt="" />
+                <img src="@/assets/images/delete.png" alt="삭제하기 버튼" />
               </div>
             </div>
           </div>
         </div>
         <div class="buttons select-buttons">
-          <button class="remove-btn" v-if="props.type === 'edit'" @click="remove">
+          <button name="삭제버튼" class="remove-btn" v-if="props.type === 'edit'" @click="remove">
             {{ PRODUCT.DELETE }}
           </button>
-          <button v-else @click="save">{{ PRODUCT.TEMPORARY }}</button>
-          <button class="submit-btn" @click="submit">
+          <button name="취소버튼" v-else @click="save">{{ PRODUCT.TEMPORARY }}</button>
+          <button name="제출 및 수정 버튼" class="submit-btn" @click="submit">
             {{ props.type === 'edit' ? PRODUCT.EDIT : PRODUCT.SUBMIT }}
           </button>
         </div>

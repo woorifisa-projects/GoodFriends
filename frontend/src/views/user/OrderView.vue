@@ -2,7 +2,7 @@
   <div class="order-page">
     <div class="product-info">
       <div class="img">
-        <img :src="product.image" alt="" />
+        <img :src="product.image" alt="상품 이미지" />
       </div>
       <div class="title">{{ product.title }}</div>
     </div>
@@ -26,7 +26,7 @@
           <div class="info-detail">
             <div class="user">
               <div class="img">
-                <img :src="order.profileImageUrl" alt="상품 이미지" />
+                <img :src="order.profileImageUrl" alt="프로필 이미지" />
               </div>
               <div>{{ order.nickName }}</div>
             </div>
@@ -34,8 +34,10 @@
               {{ order.requirements }}
             </div>
             <div class="btn">
-              <button v-if="dealStatus" @click="onClickDeal">{{ PRODUCT.CONFIRM }}</button>
-              <button v-else @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
+              <button name="버튼" v-if="dealStatus" @click="onClickDeal">
+                {{ PRODUCT.CONFIRM }}
+              </button>
+              <button name="거래하기 버튼" v-else @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
             </div>
           </div>
         </li>

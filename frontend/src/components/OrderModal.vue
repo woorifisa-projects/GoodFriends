@@ -3,7 +3,7 @@
     <div class="modal" :class="isClickSubmit ? `modal-hidden` : `view`">
       <div class="modal-title">{{ ORDER_MODAL.TITLE }}</div>
       <div class="close-btn">
-        <button @click="emits('update:isVisible', false)">
+        <button name="닫기 버튼" @click="emits('update:isVisible', false)">
           <span class="material-icons-outlined"> cancel </span>
         </button>
       </div>
@@ -41,14 +41,14 @@
         <textarea v-model="requirement" name="" id="" cols="30" rows="10"></textarea>
         <div class="max-length">{{ requirement.length }} / {{ maxLength }}</div>
       </div>
-      <button @click="checkInput">{{ ORDER_MODAL.SUBMIT }}</button>
+      <button name="제출버튼" @click="checkInput">{{ ORDER_MODAL.SUBMIT }}</button>
     </div>
     <div class="confirm-window" :class="isClickSubmit ? `view` : `hidden`">
       <p v-for="(message, index) in ORDER_MODAL.CONFIRM" :key="index">{{ message }}</p>
 
       <div class="confirm-btn-wrap">
-        <button @click="isClickSubmit = false">아니요</button>
-        <button @click="onClickSubmit">네</button>
+        <button name="취소버튼" @click="isClickSubmit = false">아니요</button>
+        <button name="확인버튼" @click="onClickSubmit">네</button>
       </div>
     </div>
   </CommonModalVue>
