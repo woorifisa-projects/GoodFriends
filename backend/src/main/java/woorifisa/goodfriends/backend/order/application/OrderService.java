@@ -124,7 +124,12 @@ public class OrderService {
         Product product = productRepository.getById(productId);
 
         if(product.getStatus() != ProductStatus.SELL) {
-            Order order = orderRepository.findByProductIdAndConfirmStatus(productId, ConfirmStatus.COMPLETED);
+            Order order = orderRepository.findByProductIdAndConfirmStatus(productId, ConfirmStatus.RESERVATION);
+
+            if(order == null) {
+                order = orderRepository.findByProductIdAndConfirmStatus(productId, ConfirmStatus.COMPLETED);
+            }
+
             OrderViewOneResponse response = new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
                                                     order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
             List<OrderViewOneResponse> responses = List.of(response);
