@@ -2,11 +2,12 @@
   <div class="product-page">
     <div class="product-info">
       <div class="imgs box">
-        <button @click="onClickBannerBtn('prev')" :disabled="viewImage === 0">
+        <button name="이전 버튼" @click="onClickBannerBtn('prev')" :disabled="viewImage === 0">
           <span class="material-icons-outlined"> arrow_back_ios </span>
         </button>
         <img :src="data.imageUrls[viewImage] || image" alt="상품 이미지" />
         <button
+          name="다음 버튼"
           @click="onClickBannerBtn('next')"
           :disabled="viewImage === data.imageUrls.length - 1"
         >
@@ -15,15 +16,17 @@
       </div>
       <div class="info box">
         <div v-if="isWriter" class="wrap-btn">
-          <button @click="onClickEditBtn">{{ PRODUCT.EDIT }}</button>
-          <button @click="onClickDelete">{{ PRODUCT.DELETE }}</button>
-          <button class="deco-btn" @click="onClickOrderView">
+          <button name="수정하기 버튼" @click="onClickEditBtn">{{ PRODUCT.EDIT }}</button>
+          <button name="삭제하기 버튼" @click="onClickDelete">{{ PRODUCT.DELETE }}</button>
+          <button name="주문서 확인하기 버튼" class="deco-btn" @click="onClickOrderView">
             {{ PRODUCT.VIEW_ORDER }}
           </button>
         </div>
         <div v-else class="wrap-btn">
-          <button @click="onClickReport">{{ PRODUCT.REPORT }}</button>
-          <button class="deco-btn" @click="onClickOrder">{{ PRODUCT.ORDER }}</button>
+          <button name="신고하기 버튼" @click="onClickReport">{{ PRODUCT.REPORT }}</button>
+          <button name="주문하기 버튼" class="deco-btn" @click="onClickOrder">
+            {{ PRODUCT.ORDER }}
+          </button>
         </div>
         <div class="detail-info">
           <div class="name">{{ data.title }}</div>

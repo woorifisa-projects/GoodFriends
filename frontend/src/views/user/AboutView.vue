@@ -18,7 +18,7 @@
           <span>프로필 정보에 본인의 계좌와 핸드폰 번호를 인증 해야만 거래를 할 수 있어요</span>
         </div>
         <div class="btn-wrap">
-          <button @click="$router.push('/')">거래하러 가기</button>
+          <button name="거래하러가기 버튼" @click="$router.push('/')">거래하러 가기</button>
         </div>
       </div>
     </div>

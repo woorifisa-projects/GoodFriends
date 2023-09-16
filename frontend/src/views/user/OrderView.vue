@@ -34,8 +34,10 @@
               {{ order.requirements }}
             </div>
             <div class="btn">
-              <button v-if="dealStatus" @click="onClickDeal">{{ PRODUCT.CONFIRM }}</button>
-              <button v-else @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
+              <button name="버튼" v-if="dealStatus" @click="onClickDeal">
+                {{ PRODUCT.CONFIRM }}
+              </button>
+              <button name="거래하기 버튼" v-else @click="onClickDeal">{{ PRODUCT.DEAL }}</button>
             </div>
           </div>
         </li>

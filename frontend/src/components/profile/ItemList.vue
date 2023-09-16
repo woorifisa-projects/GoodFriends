@@ -9,6 +9,7 @@
           <div class="detail">
             <div>{{ title(item.title) }}</div>
             <button
+              name="거래완료 버튼"
               class="btn_complete"
               v-if="props.type[item.status] == '예약중'"
               @click="onClickComplete(item)"

@@ -1,11 +1,12 @@
 <template>
   <div class="category">
-    <button @click="onClickPrevCategory">
+    <button name="이전 버튼" @click="onClickPrevCategory">
       <span class="material-icons-outlined"> arrow_back_ios </span>
     </button>
     <ul>
       <li v-for="(category, index) in viewCategory" :key="index">
         <button
+          :name="CATEGORY[category] + `버튼`"
           :class="category === props.selectedCategory ? `selected` : ``"
           @click="onClickCategory(category)"
         >
@@ -13,7 +14,7 @@
         </button>
       </li>
     </ul>
-    <button @click="onClickNextCategory">
+    <button name="다음 버튼" @click="onClickNextCategory">
       <span class="material-icons-outlined"> arrow_forward_ios </span>
     </button>
   </div>
