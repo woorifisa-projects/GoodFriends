@@ -149,7 +149,6 @@ onMounted(async () => {
   if (res.isSuccess && res.data) {
     userInfo.value = { ...res.data };
   }
-  console.log(res);
 });
 </script>
 

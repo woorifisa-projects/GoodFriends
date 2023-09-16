@@ -101,7 +101,6 @@ const adminProductAPI = {
           }
         })
         .then((res: AxiosResponse) => {
-          console.log(res);
           return { isSuccess: true, data: res.data, code: res.status };
         })
         .catch((error) => {
@@ -126,7 +125,6 @@ const adminProductAPI = {
           }
         })
         .then((res: AxiosResponse) => {
-          console.log(res);
           return { isSuccess: true, message: '수정되었습니다.', code: res.status };
         })
         .catch((error) => {
@@ -150,7 +148,6 @@ const adminProductAPI = {
           }
         })
         .then((res: AxiosResponse) => {
-          console.log(res);
           return { isSuccess: true, message: '', code: res.status };
         })
         .catch((error) => {

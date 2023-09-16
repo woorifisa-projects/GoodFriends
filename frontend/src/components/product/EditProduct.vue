@@ -418,8 +418,6 @@ onMounted(async () => {
 
   box-sizing: border-box;
 
-  /* background-color: white; */
-
   padding: 30px 20px;
 }
 .select-detail > div {
@@ -476,9 +474,7 @@ onMounted(async () => {
 .image label:hover {
   transform: scale(1.03);
 }
-.disabled {
-  background-color: red;
-}
+
 .image-length {
   text-align: end;
 }

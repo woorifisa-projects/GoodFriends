@@ -87,7 +87,6 @@ onMounted(() => {
 });
 
 const item = props.type; // item을 정의하고 값을 할당
-console.log(item);
 </script>
 
 <style scoped>
@@ -165,6 +164,16 @@ console.log(item);
 
   font-size: 18px;
 }
+
+.btn_complete {
+  font-size: medium;
+  border: 1px solid rgb(145, 145, 145);
+  border-radius: 10px;
+}
+.btn_complete:hover {
+  background-color: var(--color-yellow);
+}
+
 @media screen and (max-width: 1023px) {
   .detail {
     height: 60px;
@@ -192,12 +201,4 @@ console.log(item);
 @media screen and (max-width: 767px) {
 }
 
-.btn_complete {
-  font-size: medium;
-  border: 1px solid rgb(145, 145, 145);
-  border-radius: 10px;
-}
-.btn_complete:hover {
-  background-color: var(--color-yellow);
-}
 </style>

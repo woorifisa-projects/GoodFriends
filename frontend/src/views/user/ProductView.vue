@@ -265,16 +265,6 @@ onMounted(async () => {
   text-align: end;
   padding-right: 42px;
 }
-.select > select {
-  font-size: 18px;
-  padding: 6px 12px;
-  font-family: 'LINESeedKR-Rg';
-  border-radius: 10px;
-}
-.select > select > option {
-  font-family: 'LINESeedKR-Rg';
-}
-
 .price {
   text-align: end;
   padding-right: 42px;

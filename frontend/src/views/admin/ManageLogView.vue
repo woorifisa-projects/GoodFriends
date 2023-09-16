@@ -34,7 +34,6 @@ if (logApi.isSuccess === true && logApi.data) {
 } else if (logApi.isSuccess === false) {
   alert('페이지 오류입니다.');
 }
-//데이터 확인 콘솔 console.log(data);
 
 const tableDataKey = ['email', 'nickname', 'ban', 'last_modified_at'];
 const tableHeader = {
@@ -51,15 +50,6 @@ const tableHeader = {
   justify-content: center;
   width: 100%;
   height: 100%;
-}
-.page-title {
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.page-title-in {
 }
 .table {
   width: 100%;

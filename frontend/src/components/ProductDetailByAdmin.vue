@@ -358,14 +358,6 @@ onMounted(async () => {
 
   cursor: pointer;
 }
-.page-title {
-  font-size: 20px;
-  width: 600px;
-  height: 80px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .product-title-total {
   display: flex;
   height: 100%;
@@ -374,13 +366,6 @@ onMounted(async () => {
   width: 100px;
 }
 
-.product-sellinfo-toal {
-  width: 600px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .product-Info {
   width: 100px;
   text-align: center;

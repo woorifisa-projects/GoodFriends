@@ -191,20 +191,6 @@ const submit = async () => {
 .category-radio {
   margin-right: 8px; /* 라디오 버튼 간의 간격 조절 */
 }
-.category-content {
-  /* 현재 사용안함 -> category-item으로 대체 */
-  background-color: rgb(249, 250, 251);
-  border-radius: 6px;
-  width: 100%;
-  padding: 16px 24px;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
-  color: rgb(78, 89, 104);
-  margin: 0;
-  margin-bottom: 12px;
-  /* border: 0.1px solid rgb(173, 173, 173); */
-}
 /* 선택된 라디오 버튼 스타일 */
 .category-item input[type='radio']:checked {
   border-color: #198bf3; /* 선택된 상태의 테두리 색상 */

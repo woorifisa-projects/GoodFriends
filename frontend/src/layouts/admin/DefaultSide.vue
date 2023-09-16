@@ -105,13 +105,6 @@ const onClickManegeDeclaration = () => {
   padding-left: 5px;
   padding-right: 5px;
 }
-.material-symbols-outlined {
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48;
-}
 .total-body {
   display: flex;
   height: calc(100vh - 30px);

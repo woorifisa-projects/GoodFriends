@@ -242,11 +242,6 @@ const closeModal = () => {
   width: 100%;
   height: 100%;
 }
-.editImg {
-  padding: 4px;
-  width: 119px;
-  border: 1px solid rgb(173, 173, 173);
-}
 .userInfo1-1 {
   padding-top: 10px;
   display: flex;
@@ -275,9 +270,6 @@ const closeModal = () => {
 }
 .input-bancount {
   width: 20px;
-}
-.mail-auth-check {
-  width: 60px;
 }
 .bank-check {
 }
@@ -337,17 +329,5 @@ const closeModal = () => {
 .modal-button {
   width: 50px;
   border: 1px solid rgb(173, 173, 173);
-}
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
 }
 </style>

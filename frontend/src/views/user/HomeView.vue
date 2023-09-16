@@ -243,30 +243,6 @@ onUnmounted(() => {
   .card-list {
     grid-template-columns: 1fr 1fr;
   }
-  .category {
-    display: none;
-  }
-  .small-category {
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    width: auto;
-  }
-  .small-category > ul {
-    width: fit-content;
-    flex-wrap: wrap;
-  }
-  .small-category > div {
-    width: 100%;
-    background-color: rgb(232, 249, 255);
-    border: 1px solid rgba(135, 135, 135, 0.32);
-    border-radius: 12px;
-    padding: 12px 24px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    justify-content: right;
-  }
 }
 
 @media screen and (max-width: 767px) {
@@ -275,9 +251,6 @@ onUnmounted(() => {
   }
   .search {
     padding: 0 12px;
-  }
-  .small-category select {
-    font-size: 16px;
   }
 }
 </style>

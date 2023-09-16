@@ -55,26 +55,5 @@ const productTitle = ref('상품명');
   justify-content: center;
   align-items: center;
 }
-.product-title-total {
-  display: flex;
-  height: 100%;
-}
-.product-Info-total {
-  width: 100px;
-}
 
-.product-images {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.product-butns {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-}
 </style>
