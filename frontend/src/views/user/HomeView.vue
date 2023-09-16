@@ -23,7 +23,7 @@
       <EmptyProduct v-else />
     </div>
     <div class="add-button">
-      <button @click="onClickAddProduct">
+      <button name="상품 추가하기 버튼" @click="onClickAddProduct">
         <span class="material-icons-outlined"> add </span>
       </button>
     </div>

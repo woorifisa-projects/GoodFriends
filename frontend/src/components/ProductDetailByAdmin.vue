@@ -8,10 +8,10 @@
               <div class="image-wrap">
                 <div class="image-card" v-for="(img, index) in previewImg" :key="index">
                   <div class="upload-img">
-                    <img :src="img" alt="" />
+                    <img :src="img" alt="상품 이미지" />
                   </div>
                   <div class="delete-btn" @click="onClickDeleteBtn(index)">
-                    <img src="@/assets/images/delete.png" alt="" />
+                    <img src="@/assets/images/delete.png" alt="삭제 버튼" />
                   </div>
                 </div>
               </div>
@@ -105,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { ADMIN_PRODUCT } from '@/constants/strings/admin';
 import { uploadFile, urlToFile } from '@/utils/file';
@@ -187,7 +187,7 @@ const createFormData = () => {
   );
   loadingStore.setLoading(false);
   return formData;
-}
+};
 
 const clickEdit = async () => {
   if (props.type === 'add') {
@@ -195,7 +195,7 @@ const clickEdit = async () => {
   }
 
   const formData = createFormData();
-  if(formData === undefined) {
+  if (formData === undefined) {
     return;
   }
 
@@ -203,14 +203,13 @@ const clickEdit = async () => {
   const res = await adminProductAPI.editProduct(store.accessToken, id, formData);
   loadingStore.setLoading(false);
 
-  if(res.isSuccess) {
+  if (res.isSuccess) {
     alert(res.message);
-  }
-  else {
+  } else {
     alert(res.message);
     return;
   }
-    router.go(-1);
+  router.go(-1);
 };
 
 const clickDelete = async () => {
@@ -235,7 +234,7 @@ const clickAdd = async () => {
   }
 
   const formData = createFormData();
-  if(formData === undefined) {
+  if (formData === undefined) {
     return;
   }
 
@@ -243,21 +242,20 @@ const clickAdd = async () => {
   const res = await adminProductAPI.postProduct(store.accessToken, formData);
   loadingStore.setLoading(false);
 
-  if(res.isSuccess) {
+  if (res.isSuccess) {
     alert(res.message);
-  }
-  else {
+  } else {
     alert(res.message);
     return;
   }
-    router.go(-1);
+  router.go(-1);
 };
 
 const clickCancle = () => {
   // TODO: 이전 페이지 이동
   router.go(-1);
 };
-  
+
 onMounted(async () => {
   if (props.type === 'add') {
     return;
@@ -298,7 +296,7 @@ onMounted(async () => {
     sellPrice: resData.sellPrice
   };
   loadingStore.setLoading(false);
-})
+});
 </script>
 
 <style scoped>

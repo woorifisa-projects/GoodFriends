@@ -50,7 +50,7 @@
                     <div class="text-length">{{ data.content.length }} / {{ maxLength }}</div>
                   </div>
                 </div>
-                <button class="submit-btn" @click="submit">
+                <button name="제출하기 버튼" class="submit-btn" @click="submit">
                   {{ REPORT.BUTTON }}
                 </button>
               </div>

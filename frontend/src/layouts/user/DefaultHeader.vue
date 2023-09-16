@@ -1,21 +1,28 @@
 <template>
   <div class="header">
     <div class="title" @click="goPage(HEADER.LOGO.path)">
-      <img src="@/assets/images/logo.png" alt="" />
+      <img src="@/assets/images/logo.png" alt="로고" />
     </div>
     <div class="wrap">
       <div>
-        <button id="profile" @click="goPage(HEADER.SELL.path)">{{ HEADER.SELL.title }}</button>
+        <button name="판매하기 버튼" id="profile" @click="goPage(HEADER.SELL.path)">
+          {{ HEADER.SELL.title }}
+        </button>
       </div>
       <div id="login">
         <div v-if="!isLogin">
-          <button @click="onClickLoginBtn">
+          <button name="로그인 버튼" @click="onClickLoginBtn">
             <span class="material-icons-outlined"> login </span>
           </button>
         </div>
         <div v-else>
-          <button class="profile" ref="popoverBtn" @click="onClickProfileBtn">
-            <img :src="user.imageUrl" alt="" />
+          <button
+            name="프로필 이미지 버튼"
+            class="profile"
+            ref="popoverBtn"
+            @click="onClickProfileBtn"
+          >
+            <img :src="user.imageUrl" alt="프로필 이미지" />
           </button>
           <div v-if="isPopoverOpen" class="popover" ref="popover">
             <div class="img">

@@ -7,11 +7,11 @@
         </div>
       </div>
       <div v-show="props.visibleButton" class="modal-buttons" @click="updateResponse">
-        <button class="no-btn" value="no">no</button>
-        <button class="yes-btn" value="yes">yes</button>
+        <button name="취소" class="no-btn" value="no">no</button>
+        <button name="확인" class="yes-btn" value="yes">yes</button>
       </div>
-      <div v-show="!props.visibleButton" class="modal-confirm-button " @click="confirmResponse">
-        <button class="confirm-btn" value="confirm">확인</button>
+      <div v-show="!props.visibleButton" class="modal-confirm-button" @click="confirmResponse">
+        <button name="확인" class="confirm-btn" value="confirm">확인</button>
       </div>
     </div>
   </CommonModalVue>
@@ -55,12 +55,12 @@ const updateResponse = (event: Event) => {
 
 const confirmResponse = (event: Event) => {
   const target = event.target as HTMLButtonElement;
-  if(target.value === undefined) return;
-  if(target.value === 'confirm') {
+  if (target.value === undefined) return;
+  if (target.value === 'confirm') {
     emits('update:isVisible', true);
   }
   emits('update:isVisible', false);
-}
+};
 </script>
 
 <style scoped>

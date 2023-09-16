@@ -1,8 +1,8 @@
 <template>
   <div class="profile_main">
     <div v-show="Number(router.params.id) === store.id" class="btn_wrap">
-      <button>{{ PROFILE.WITHDRAWAL }}</button>
-      <button @click="onClickEdit">{{ PROFILE.EDIT }}</button>
+      <button name="탈퇴버튼">{{ PROFILE.WITHDRAWAL }}</button>
+      <button name="수정하기 버튼" @click="onClickEdit">{{ PROFILE.EDIT }}</button>
     </div>
     <div class="profile_detail_wrap">
       <div class="profile_detail">

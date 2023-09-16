@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { ADMIN, ADMIN_SIDEBAR } from '@/constants/strings/admin';
+import { ADMIN_SIDEBAR } from '@/constants/strings/admin';
 import router from '@/router';
 import LoadingIcon from '@/components/LoadingIcon.vue';
 import { useLoadingStore } from '@/stores/loading';
