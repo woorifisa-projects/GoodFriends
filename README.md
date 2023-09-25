@@ -48,7 +48,7 @@
 
 ### 🧷 기능 2: `상품` - 원하는 중고 상품을 판매 및 구매할 수 있어요.
 
-<img  width="1200" alt="product_register" src="https://github.com/devFancy/GoodFriends/assets/83820185/786f8ab7-d1e4-4223-a128-bd9639721087">
+![판매하기](https://github.com/devFancy/GoodFriends/assets/83820185/15e953e3-5fe5-49a7-86a0-5f38ac938d4e)
 
 - **프로필 정보를 입력**해야만 상품을 구매 또는 판매할 수 있도록 설정했어요.
 - 본인이 판매/구매하고 싶은 상품을 **안심 거래 프로세스**를 통해 등록하거나 주문할 수 있어요.
@@ -58,7 +58,7 @@
 
 ### 🧷 기능 3: `신고` - 부적절한 게시글을 신고하여 추가 피해를 방지할 수 있어요.
 
-<img width="1200" alt="board_declaration" src="https://github.com/devFancy/GoodFriends/assets/83820185/58258d9f-f5fc-4222-a1a7-ab8eb4cb1f5b">
+![신고하기](https://github.com/devFancy/GoodFriends/assets/83820185/cc6c7e71-1434-4a7f-b889-3b5998d4e6d3)
 
 - 상품 상세페이지에서 `신고하기`버튼을 통해 부적절한 게시글을 신고할 수 있어요.
 - 신고 페이지에는 신고 카테고리와 신고 내용을 작성하여 `제출하기`버튼을 통해 신고 처리를 할 수 있어요.
