@@ -85,11 +85,11 @@
 
 ## ☁️ Infrastructure
 
-![‎infra](https://github.com/devFancy/GoodFriends/assets/83820185/f70f57ec-1e9d-4174-9b10-60740e7b00f5)
+![infra](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/a8bff66b-b49c-4fa6-a30c-52d3f5c98cb3)
 
 ## ⛓ CI/CD pipeline
 
-![‎ci/cd](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/ae7c6920-2b66-4ae7-9ce9-84bb56708ab8)
+![ci/cd](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/7aab9d68-8970-45a0-b451-f3ed0543e59d)
 
 
 ## 🙌🏻 팀원
