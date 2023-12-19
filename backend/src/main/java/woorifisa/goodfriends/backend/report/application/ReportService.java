@@ -35,9 +35,11 @@ public class ReportService {
 
     private final ProfileRepository profileRepository;
 
-    public ReportService(UserRepository userRepository, ProductRepository productRepository,
-                         ReportRepository reportRepository, OffenderRepository offenderRepository,
-                         ProfileRepository profileRepository) {
+    public ReportService(final UserRepository userRepository,
+                         final ProductRepository productRepository,
+                         final ReportRepository reportRepository,
+                         final OffenderRepository offenderRepository,
+                         final ProfileRepository profileRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.reportRepository = reportRepository;
@@ -46,7 +48,7 @@ public class ReportService {
     }
 
     @Transactional
-    public Long saveReport(LoginUser loginUser, Long productId, ReportSaveRequest request) {
+    public Long saveReport(final LoginUser loginUser, final Long productId, final ReportSaveRequest request) {
 
         // 프로필 미등록자 신고 불가
         if(!existProfile(loginUser.getId())) {
@@ -86,17 +88,17 @@ public class ReportService {
         return newReport.getId();
     }
 
-    public boolean existProfile(Long userId) {
+    public boolean existProfile(final Long userId) {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
 
-    public boolean duplicateReport(Long productId, Long userId) {
+    public boolean duplicateReport(final Long productId, final Long userId) {
         Report report = reportRepository.findByProductIdAndUserId(productId, userId);
         return report != null;
     }
     @Transactional
-    public Report createReport(User user, Product product , ReportSaveRequest request) {
+    public Report createReport(final User user, final Product product , final ReportSaveRequest request) {
         Report newReport = Report.builder()
                 .reportCategory(request.getReportCategory())
                 .content(request.getContent())
@@ -108,7 +110,7 @@ public class ReportService {
     }
 
     @Transactional
-    public Offender createOffender(User offenderUser) {
+    public Offender createOffender(final User offenderUser) {
         Optional<Offender> existingOffender = offenderRepository.findByUserId(offenderUser.getId());
 
         if(existingOffender.isPresent()) {

@@ -7,7 +7,7 @@ import java.util.List;
 public class ReportsResponse {
     private final List<ReportResponse> declarations;
 
-    public ReportsResponse(List<ReportResponse> declarations) {
+    public ReportsResponse(final List<ReportResponse> declarations) {
         this.declarations = declarations;
     }
 }

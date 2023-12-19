@@ -17,14 +17,14 @@ public class BoardReportController {
 
     private final ReportService reportService;
 
-    public BoardReportController(ReportService reportService) {
+    public BoardReportController(final ReportService reportService) {
         this.reportService = reportService;
     }
 
     @PostMapping
     public ResponseEntity<Void> saveReport(@AuthenticationPrincipal LoginUser loginUser,
-                                           @RequestParam Long productId,
-                                           @Valid @RequestBody ReportSaveRequest request) {
+                                           @RequestParam final Long productId,
+                                           @Valid @RequestBody final ReportSaveRequest request) {
         Long boardReportId = reportService.saveReport(loginUser, productId, request);
         return ResponseEntity.created(URI.create("/report/" + productId + "/" + boardReportId)).build();
     }

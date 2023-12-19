@@ -17,9 +17,9 @@ public class ReportResponse {
     private LocalDateTime createAt; // 신고날짜
     private ReportStatus reportStatus; // 처리상태
 
-    public ReportResponse(String email, String nickname,
-                               String title, ReportCategory reportCategory,
-                               LocalDateTime createAt, ReportStatus reportStatus) {
+    public ReportResponse(final String email, final String nickname,
+                               final String title, final ReportCategory reportCategory,
+                               final LocalDateTime createAt, final ReportStatus reportStatus) {
         this.email = email;
         this.nickname = nickname;
         this.title = title;
@@ -28,7 +28,7 @@ public class ReportResponse {
         this.reportStatus = reportStatus;
     }
 
-    public ReportResponse(Report report) {
+    public ReportResponse(final Report report) {
         this.id =  report.getId();
         this.email = report.getUser().getEmail();
         this.nickname = report.getUser().getNickname();
