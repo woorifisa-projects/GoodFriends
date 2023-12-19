@@ -5,23 +5,17 @@ import org.springframework.transaction.annotation.Transactional;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.offender.domain.Offender;
 import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
-import woorifisa.goodfriends.backend.order.domain.Order;
-import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.report.domain.Report;
 import woorifisa.goodfriends.backend.report.domain.ReportRepository;
-import woorifisa.goodfriends.backend.report.dto.request.ReportSaveRequest;
+import woorifisa.goodfriends.backend.report.dto.request.BoardReportCreateServiceRequest;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.report.exception.AlreadyReportedException;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
-
-import java.util.Optional;
-
-import static woorifisa.goodfriends.backend.report.domain.ReportStatus.PROCESSING;
 
 @Transactional(readOnly = true)
 @Service
@@ -48,7 +42,7 @@ public class ReportService {
     }
 
     @Transactional
-    public Long saveReport(final LoginUser loginUser, final Long productId, final ReportSaveRequest request) {
+    public Long saveReport(final LoginUser loginUser, final Long productId, final BoardReportCreateServiceRequest request) {
 
         // 프로필 미등록자 신고 불가
         if(!existProfile(loginUser.getId())) {
@@ -98,26 +92,19 @@ public class ReportService {
         return report != null;
     }
     @Transactional
-    public Report createReport(final User user, final Product product , final ReportSaveRequest request) {
-        Report newReport = Report.builder()
-                .reportCategory(request.getReportCategory())
-                .content(request.getContent())
-                .reportStatus(PROCESSING)
-                .user(user)
-                .product(product)
-                .build();
+    public Report createReport(final User user, final Product product , final BoardReportCreateServiceRequest request) {
+        Report newReport = request.toEntity(user, product);
         return newReport;
     }
 
     @Transactional
     public Offender createOffender(final User offenderUser) {
-        Optional<Offender> existingOffender = offenderRepository.findByUserId(offenderUser.getId());
+        Offender existingOffender = offenderRepository.findByUserId(offenderUser.getId());
 
-        if(existingOffender.isPresent()) {
-            return existingOffender.get(); // 이미 Offender로 등록된 경우 해당 Offender로 반환
+        if(existingOffender != null) {
+            return existingOffender;
         }
 
-        // Offender로 등록되지 않은 경우 새로운 Offender를 생성하여 저장
         Offender newOffender =  Offender.builder()
                 .user(offenderUser)
                 .build();
