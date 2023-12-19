@@ -75,8 +75,8 @@ public class ProductService {
 
         return newProduct.getId();
     }
-    public boolean existOffender(Long userId) {
-        Offender offender = offenderRepository.findByUserId(userId).orElse(null);
+    public boolean existOffender(final Long userId) {
+        Offender offender = offenderRepository.findByUserId(userId);
         return offender != null;
     }
 
@@ -239,7 +239,6 @@ public class ProductService {
                 .status(selectedProduct.getStatus())
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
-                .createdAt(selectedProduct.getCreatedAt())
                 .build();
 
         updateProduct.validDescription(updateProduct.getDescription());

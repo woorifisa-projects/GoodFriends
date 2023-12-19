@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.profile.domain;
 
+import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -8,7 +9,6 @@ import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
 
-@SuperBuilder
 @Table(name = "profiles")
 @Entity
 public class Profile extends BaseCreateTimeEntity {
@@ -38,6 +38,7 @@ public class Profile extends BaseCreateTimeEntity {
     protected Profile() {
     }
 
+    @Builder
     public Profile(User user, String mobileNumber, String address, AccountType accountType, String accountNumber) {
         this.user = user;
         this.mobileNumber = mobileNumber;

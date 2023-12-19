@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.report.domain;
 
+import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,7 +22,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.EnumType;
 import javax.persistence.Embedded;
 
-@SuperBuilder
 @Table(name = "reports")
 @Entity
 public class Report extends BaseCreateTimeEntity {
@@ -53,6 +53,16 @@ public class Report extends BaseCreateTimeEntity {
     private ReportStatus reportStatus;
 
     protected Report() {
+    }
+    @Builder
+    public Report(final Product product, final User user,
+                  final ReportCategory reportCategory, final Content content,
+                  final ReportStatus reportStatus) {
+        this.product = product;
+        this.user = user;
+        this.reportCategory = reportCategory;
+        this.content = content;
+        this.reportStatus = reportStatus;
     }
 
     public Long getId() {
