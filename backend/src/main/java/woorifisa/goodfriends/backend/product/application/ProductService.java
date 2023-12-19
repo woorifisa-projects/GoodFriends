@@ -233,7 +233,6 @@ public class ProductService {
         List<String> savedImageUrls = saveImages(productId, request.getImageUrls());
 
         Product updateProduct = Product.builder()
-                .id(productId)
                 .user(selectedProduct.getUser())
                 .title(request.getTitle())
                 .productCategory(request.getProductCategory())
