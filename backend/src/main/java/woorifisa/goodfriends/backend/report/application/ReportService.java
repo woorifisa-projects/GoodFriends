@@ -99,7 +99,7 @@ public class ReportService {
 
     @Transactional
     public Offender createOffender(final User offenderUser) {
-        Offender existingOffender = offenderRepository.findByUserId(offenderUser.getId());
+        Offender existingOffender = findOffender(offenderUser);
 
         if(existingOffender != null) {
             return existingOffender;
@@ -109,5 +109,9 @@ public class ReportService {
                 .user(offenderUser)
                 .build();
         return newOffender;
+    }
+
+    private Offender findOffender(final User offenderUser) {
+        return offenderRepository.findByUserId(offenderUser.getId());
     }
 }
