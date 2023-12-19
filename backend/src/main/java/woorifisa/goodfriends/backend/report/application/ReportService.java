@@ -21,6 +21,8 @@ import woorifisa.goodfriends.backend.user.domain.UserRepository;
 @Service
 public class ReportService {
 
+    private static final int MAX_REPORT_BAN_COUNT = 3;
+    private static final int REPORT_INCREMENT_COUNT = 1;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final ReportRepository reportRepository;
@@ -62,12 +64,12 @@ public class ReportService {
         reportRepository.save(newReport);
 
         // 신고 당한 유저는 횟수 + 1 증가
-        int updatedBan = foundProduct.getUser().getBan() + 1;
+        int updatedBan = foundProduct.getUser().getBan() + REPORT_INCREMENT_COUNT;
         foundProduct.getUser().updateBan(updatedBan);
 
 
         // 신고 당한 유저의 ban 횟수가 3번 이상이면 비활성화 상태로 변경
-        if(updatedBan >= 3) {
+        if(updatedBan >= MAX_REPORT_BAN_COUNT) {
             boolean notActivated = false;
             foundProduct.getUser().updateActivated(notActivated);
 
