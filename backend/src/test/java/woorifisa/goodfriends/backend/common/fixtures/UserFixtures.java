@@ -42,41 +42,33 @@ public class UserFixtures {
 
     public static User 팬시() {
         return User.builder()
-                .id(1L)
                 .email(팬시_이메일)
                 .nickname(팬시_닉네임)
                 .profileImageUrl(팬시_프로필)
-                .activated(true)
                 .build();
     }
 
     public static User 코코() {
         return User.builder()
-                .id(1L)
                 .email(코코_이메일)
                 .nickname(코코_닉네임)
                 .profileImageUrl(코코_프로필)
-                .activated(true)
                 .build();
     }
 
     public static User 춘식() {
         return User.builder()
-                .id(1L)
                 .email(춘식_이메일)
                 .nickname(춘식_닉네임)
                 .profileImageUrl(춘식_프로필)
-                .activated(true)
                 .build();
     }
 
     public static User 고잉홈() {
         return User.builder()
-                .id(1L)
                 .email(고잉홈_이메일)
                 .nickname(고잉홈_닉네임)
                 .profileImageUrl(고잉홈_프로필)
-                .activated(true)
                 .build();
     }
 }

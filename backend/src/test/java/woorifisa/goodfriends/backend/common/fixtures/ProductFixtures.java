@@ -36,7 +36,6 @@ public class ProductFixtures {
 
     public static Product 상품1() {
         return Product.builder()
-                .id(1L)
                 .user(코코())
                 .productCategory(ProductCategory.DIGITAL_DEVICE)
                 .title(제목1)
@@ -48,7 +47,6 @@ public class ProductFixtures {
 
     public static Product 상품2() {
         return Product.builder()
-                .id(2L)
                 .user(춘식())
                 .productCategory(ProductCategory.CLOTHING)
                 .title(제목2)
@@ -60,7 +58,6 @@ public class ProductFixtures {
 
     public static Product 상품3() {
         return Product.builder()
-                .id(3L)
                 .user(고잉홈())
                 .productCategory(ProductCategory.PLANTS)
                 .title(제목3)
