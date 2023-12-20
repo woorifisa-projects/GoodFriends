@@ -57,21 +57,21 @@ public class ReportService {
         return newReport.getId();
     }
 
-    public boolean existProfile(final Long userId) {
+    private boolean existProfile(final Long userId) {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
 
-    public boolean duplicateReport(final Long productId, final Long userId) {
+    private boolean duplicateReport(final Long productId, final Long userId) {
         Report report = reportRepository.findByProductIdAndUserId(productId, userId);
         return report != null;
     }
-    public Report createReport(final User user, final Product product , final ReportCreateServiceRequest request) {
+    private Report createReport(final User user, final Product product , final ReportCreateServiceRequest request) {
         Report newReport = request.toEntity(user, product);
         return newReport;
     }
 
-    public void createOffenderForViolation(final Product productCreator) {
+    private void createOffenderForViolation(final Product productCreator) {
         int incrementedReportCount = productCreator.getUser().getBan() + REPORT_INCREMENT_COUNT;
         productCreator.getUser().updateBan(incrementedReportCount);
 
@@ -84,7 +84,7 @@ public class ReportService {
         userRepository.save(productCreator.getUser());
     }
 
-    public Offender createOffender(final User offenderUser) {
+    private Offender createOffender(final User offenderUser) {
         Offender existingOffender = findOffender(offenderUser);
         if(existingOffender != null) {
             return existingOffender;
