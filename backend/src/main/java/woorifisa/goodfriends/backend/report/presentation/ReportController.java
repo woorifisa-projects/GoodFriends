@@ -12,11 +12,11 @@ import java.net.URI;
 
 @RequestMapping("/api/report")
 @RestController
-public class BoardReportController {
+public class ReportController {
 
     private final ReportService reportService;
 
-    public BoardReportController(final ReportService reportService) {
+    public ReportController(final ReportService reportService) {
         this.reportService = reportService;
     }
 
@@ -24,7 +24,7 @@ public class BoardReportController {
     public ResponseEntity<Void> saveReport(@AuthenticationPrincipal LoginUser loginUser,
                                            @RequestParam final Long productId,
                                            @Valid @RequestBody final ReportCreateServiceRequest request) {
-        Long boardReportId = reportService.saveReport(loginUser, productId, request);
-        return ResponseEntity.created(URI.create("/report/" + productId + "/" + boardReportId)).build();
+        Long ReportId = reportService.saveReport(loginUser, productId, request);
+        return ResponseEntity.created(URI.create("/report/" + productId + "/" + ReportId)).build();
     }
 }
