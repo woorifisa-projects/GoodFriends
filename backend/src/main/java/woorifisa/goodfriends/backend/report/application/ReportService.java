@@ -10,7 +10,7 @@ import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
 import woorifisa.goodfriends.backend.report.domain.Report;
 import woorifisa.goodfriends.backend.report.domain.ReportRepository;
-import woorifisa.goodfriends.backend.report.dto.request.BoardReportCreateServiceRequest;
+import woorifisa.goodfriends.backend.report.dto.request.ReportCreateServiceRequest;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.report.exception.AlreadyReportedException;
@@ -42,7 +42,7 @@ public class ReportService {
     }
 
     @Transactional
-    public Long saveReport(final LoginUser loginUser, final Long productId, final BoardReportCreateServiceRequest request) {
+    public Long saveReport(final LoginUser loginUser, final Long productId, final ReportCreateServiceRequest request) {
         if(!existProfile(loginUser.getId()))
             throw new NotFoundProfile();
         if(duplicateReport(productId, loginUser.getId()))
@@ -66,7 +66,7 @@ public class ReportService {
         Report report = reportRepository.findByProductIdAndUserId(productId, userId);
         return report != null;
     }
-    public Report createReport(final User user, final Product product , final BoardReportCreateServiceRequest request) {
+    public Report createReport(final User user, final Product product , final ReportCreateServiceRequest request) {
         Report newReport = request.toEntity(user, product);
         return newReport;
     }

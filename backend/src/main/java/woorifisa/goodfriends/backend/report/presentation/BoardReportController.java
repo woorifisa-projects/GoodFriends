@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
 import woorifisa.goodfriends.backend.report.application.ReportService;
-import woorifisa.goodfriends.backend.report.dto.request.BoardReportCreateServiceRequest;
+import woorifisa.goodfriends.backend.report.dto.request.ReportCreateServiceRequest;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -23,7 +23,7 @@ public class BoardReportController {
     @PostMapping
     public ResponseEntity<Void> saveReport(@AuthenticationPrincipal LoginUser loginUser,
                                            @RequestParam final Long productId,
-                                           @Valid @RequestBody final BoardReportCreateServiceRequest request) {
+                                           @Valid @RequestBody final ReportCreateServiceRequest request) {
         Long boardReportId = reportService.saveReport(loginUser, productId, request);
         return ResponseEntity.created(URI.create("/report/" + productId + "/" + boardReportId)).build();
     }

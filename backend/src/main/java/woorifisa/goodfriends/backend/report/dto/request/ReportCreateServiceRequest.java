@@ -9,16 +9,16 @@ import woorifisa.goodfriends.backend.report.domain.ReportStatus;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 @Getter
-public class BoardReportCreateServiceRequest {
+public class ReportCreateServiceRequest {
 
     private ReportCategory reportCategory;
 
     private String content;
 
-    protected BoardReportCreateServiceRequest() {
+    protected ReportCreateServiceRequest() {
     }
 
-    public BoardReportCreateServiceRequest(final ReportCategory reportCategory, final String content) {
+    public ReportCreateServiceRequest(final ReportCategory reportCategory, final String content) {
         this.reportCategory = reportCategory;
         this.content = content;
     }

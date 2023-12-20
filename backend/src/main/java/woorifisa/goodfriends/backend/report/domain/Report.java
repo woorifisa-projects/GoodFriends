@@ -41,6 +41,7 @@ public class Report extends BaseCreateTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @Column(name = "report_category")
     @Enumerated(EnumType.STRING)
     private ReportCategory reportCategory;
 
