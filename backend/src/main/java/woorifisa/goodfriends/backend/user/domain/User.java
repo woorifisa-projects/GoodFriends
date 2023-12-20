@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.user.domain;
 
+import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
@@ -7,7 +8,6 @@ import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 import javax.persistence.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-@SuperBuilder
 @Table(name = "users")
 @Entity
 public class User extends BaseTimeEntity {
@@ -36,6 +36,7 @@ public class User extends BaseTimeEntity {
     protected User() {
     }
 
+    @Builder
     public User(String email, String nickname, String profileImageUrl) {
         validateEmail(email);
         validateNickname(nickname);

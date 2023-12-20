@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.order.domain;
 
+import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -9,7 +10,6 @@ import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
 
-@SuperBuilder
 @Table(name = "orders")
 @Entity
 public class Order extends BaseTimeEntity {
@@ -40,7 +40,18 @@ public class Order extends BaseTimeEntity {
 
     private String requirements;
 
-    public Order() {
+    protected Order() {
+    }
+
+    @Builder
+    public Order(final Product product, final User user, final ConfirmStatus confirmStatus
+            , final String possibleDate, final String possibleTime, final String requirements) {
+        this.product = product;
+        this.user = user;
+        this.confirmStatus = confirmStatus;
+        this.possibleDate = possibleDate;
+        this.possibleTime = possibleTime;
+        this.requirements = requirements;
     }
 
     public Long getId() {

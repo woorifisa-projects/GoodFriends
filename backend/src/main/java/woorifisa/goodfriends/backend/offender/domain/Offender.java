@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.offender.domain;
 
+import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -9,7 +10,6 @@ import woorifisa.goodfriends.backend.user.domain.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@SuperBuilder
 @Table(name = "offenders") // 부정행위자
 @Entity
 public class Offender extends BaseCreateTimeEntity {
@@ -25,6 +25,11 @@ public class Offender extends BaseCreateTimeEntity {
     protected Offender() {
     }
 
+    @Builder
+    public Offender(User user) {
+        this.user = user;
+    }
+    
     public Long getId() {
         return id;
     }

@@ -13,7 +13,7 @@ import java.util.Objects;
 @EqualsAndHashCode
 public class Content {
 
-    public static final int MAX_LENGTH = 300;
+    public static final int MAX_REPORT_CONTENT_LENGTH = 300;
 
     @Column(name = "content", nullable = false)
     @Lob
@@ -30,8 +30,8 @@ public class Content {
         if (Objects.isNull(value)) {
             throw new NullPointerException("신고 내용은 null일 수 없습니다.");
         }
-        if (value.length() > MAX_LENGTH) {
-            throw new ReportException.ContentLengthException(MAX_LENGTH, value);
+        if (value.length() > MAX_REPORT_CONTENT_LENGTH) {
+            throw new ReportException.ContentLengthException(MAX_REPORT_CONTENT_LENGTH, value);
         }
     }
 

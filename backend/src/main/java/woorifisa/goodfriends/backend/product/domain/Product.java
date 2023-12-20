@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.product.domain;
 
+import lombok.Builder;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -10,7 +11,6 @@ import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
 
-@SuperBuilder
 @Table(name = "products")
 @Entity
 public class Product extends BaseTimeEntity {
@@ -48,6 +48,18 @@ public class Product extends BaseTimeEntity {
             throw new InvalidDescriptionException();
         }
     }
+    @Builder
+    public Product(final User user, final Admin admin, final ProductCategory productCategory,
+                   final String title, final ProductStatus status, final String description, final int sellPrice) {
+        this.user = user;
+        this.admin = admin;
+        this.productCategory = productCategory;
+        this.title = title;
+        this.status = status;
+        this.description = description;
+        this.sellPrice = sellPrice;
+    }
+
     protected Product(){
     }
     public Long getId() {

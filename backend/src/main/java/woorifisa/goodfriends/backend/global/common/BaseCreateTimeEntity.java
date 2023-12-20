@@ -9,7 +9,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
-@SuperBuilder
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class) // 3, 4
 public abstract class BaseCreateTimeEntity {

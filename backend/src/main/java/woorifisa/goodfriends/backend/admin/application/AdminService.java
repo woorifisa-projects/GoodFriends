@@ -115,15 +115,11 @@ public class AdminService {
         User user = userRepository.getById(userId);
         Profile profile = profileRepository.getByUserId(userId);
         userRepository.save(User.builder()
-                .id(userId)
                 .email(user.getEmail())
                 .nickname(request.getNickname())
                 .profileImageUrl(user.getProfileImageUrl())
-                .ban(request.getBanCount())
-                .activated(true)
                 .build());
         profileRepository.save(Profile.builder()
-                .id(profile.getId())
                 .user(user)
                 .mobileNumber(request.getMobilePhone())
                 .address(request.getAddress())
@@ -258,7 +254,6 @@ public class AdminService {
         List<String> savedImageUrls = saveImages(id, request.getImageUrls());
 
         Product updateProduct = Product.builder()
-                .id(id)
                 .user(selectedProduct.getUser())
                 .admin(selectedProduct.getAdmin())
                 .title(request.getTitle())
@@ -266,7 +261,6 @@ public class AdminService {
                 .status(selectedProduct.getStatus())
                 .description(request.getDescription())
                 .sellPrice(request.getSellPrice())
-                .createdAt(selectedProduct.getCreatedAt())
                 .build();
 
         updateProduct.validDescription(updateProduct.getDescription());
