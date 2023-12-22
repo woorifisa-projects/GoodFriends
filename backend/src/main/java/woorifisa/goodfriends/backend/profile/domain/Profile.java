@@ -5,12 +5,17 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.common.BaseCreateTimeEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
+import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 
 import javax.persistence.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Table(name = "profiles")
 @Entity
 public class Profile extends BaseCreateTimeEntity {
+
+    private static final Pattern MOBILE_NUMBER = Pattern.compile("^\\d{3}-\\d{3,4}-\\d{4}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,12 +46,22 @@ public class Profile extends BaseCreateTimeEntity {
     public Profile(final User user, final String mobileNumber,
                    final String address, final AccountType accountType,
                    final String accountNumber) {
+        validateMobileNumber(mobileNumber);
+        
         this.user = user;
         this.mobileNumber = mobileNumber;
         this.address = address;
         this.accountType = accountType;
         this.accountNumber = accountNumber;
     }
+
+    private void validateMobileNumber(final String mobileNumber) {
+        Matcher matcher = MOBILE_NUMBER.matcher(mobileNumber);
+        if(mobileNumber.isEmpty() || !matcher.matches()) {
+            throw new InvalidUserException("핸드폰 형식이 올바르지 않습니다.");
+        }
+    }
+
     public Long getId() {
         return id;
     }
