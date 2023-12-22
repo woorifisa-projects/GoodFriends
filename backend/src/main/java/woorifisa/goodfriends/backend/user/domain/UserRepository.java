@@ -2,6 +2,7 @@ package woorifisa.goodfriends.backend.user.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import woorifisa.goodfriends.backend.user.exception.NotFoundUserException;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return findById(id)
                 .orElseThrow(NotFoundUserException::new);
     }
-    Optional<User> findById(Long id);
+    Optional<User> findById(final Long id);
 
     boolean existsByEmail(final String email);
 
@@ -32,5 +33,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<Object[]> getAllUserInfo();
 
     @Query("SELECT u.ban FROM User u WHERE u.id = :userId")
-    Long findBanById(Long userId);
+    Long findBanById(@Param("userId")final Long userId);
 }
