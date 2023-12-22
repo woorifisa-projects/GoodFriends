@@ -26,21 +26,16 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class ProfileService {
-
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
-
     private final ProductRepository productRepository;
-
     private final ProductImageRepository productImageRepository;
-
     private final OrderRepository orderRepository;
-
     private final OffenderRepository offenderRepository;
 
-    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository,
-                          ProductRepository productRepository, ProductImageRepository productImageRepository,
-                          OrderRepository orderRepository, OffenderRepository offenderRepository) {
+    public ProfileService(final ProfileRepository profileRepository, final UserRepository userRepository,
+                          final ProductRepository productRepository, final ProductImageRepository productImageRepository,
+                          final OrderRepository orderRepository, final OffenderRepository offenderRepository) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
@@ -49,7 +44,7 @@ public class ProfileService {
         this.offenderRepository = offenderRepository;
     }
 
-    public ProfileViewResponse viewProfile(Long userId) {
+    public ProfileViewResponse viewProfile(final Long userId) {
 
         User user = userRepository.getById(userId);
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
@@ -66,7 +61,7 @@ public class ProfileService {
         return profileViewResponse;
     }
 
-    public void update(Long userId, ProfileUpdateRequest request) {
+    public void update(final Long userId, final ProfileUpdateRequest request) {
 
         //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
         if(existOffender(userId)) {
@@ -108,7 +103,7 @@ public class ProfileService {
         return offender != null;
     }
 
-    public ProductViewsSellList sellProductList(Long userId, String productStatus) {
+    public ProductViewsSellList sellProductList(final Long userId, final String productStatus) {
         List<Product> products;
 
         if(productStatus.equals("ALL")) {
@@ -132,7 +127,7 @@ public class ProfileService {
         return new ProductViewsSellList(responses);
     }
 
-    public ProductViewsPurchaseList purchaseProductList(Long userId, String confirmStatus) {
+    public ProductViewsPurchaseList purchaseProductList(final Long userId, final String confirmStatus) {
         List<Order> orders;
 
         if(confirmStatus.equals("ALL")) {
@@ -156,7 +151,7 @@ public class ProfileService {
         return new ProductViewsPurchaseList(responses);
     }
 
-    public ProfileBannerResponse viewProfileBanner(Long userId) {
+    public ProfileBannerResponse viewProfileBanner(final Long userId) {
         boolean verifiedBadge = existMobileNumber(userId);
         Long dealCount = sellPurchaseCount(userId);
         Long banCount = userBanCount(userId);
@@ -166,12 +161,12 @@ public class ProfileService {
         return response;
     }
 
-    private boolean existMobileNumber(Long userId) {
+    private boolean existMobileNumber(final Long userId) {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
 
-    private Long sellPurchaseCount(Long userId) {
+    private Long sellPurchaseCount(final Long userId) {
         Long sellCount = productRepository.findCountByProductStatusAndUserId(ProductStatus.COMPLETED, userId);
         Long purchaseCount = orderRepository.findCountByConfirmStatusAndUserId(ConfirmStatus.COMPLETED, userId);
         Long dealCount = sellCount + purchaseCount;
@@ -179,7 +174,7 @@ public class ProfileService {
         return dealCount;
     }
 
-    private Long userBanCount(Long userId) {
+    private Long userBanCount(final Long userId) {
         Long banCount = userRepository.findBanById(userId);
 
         return banCount;

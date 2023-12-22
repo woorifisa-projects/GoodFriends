@@ -24,26 +24,26 @@ public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
 
-    public ProfileController(ProfileService profileService, UserService userService) {
+    public ProfileController(final ProfileService profileService, final UserService userService) {
         this.profileService = profileService;
         this.userService = userService;
     }
 
     @GetMapping("/me")  // 본인 프로필 조회
-    public ResponseEntity<ProfileViewResponse> viewProfile(@AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity<ProfileViewResponse> viewProfile(@AuthenticationPrincipal final LoginUser loginUser) {
         ProfileViewResponse profileViewResponse = profileService.viewProfile(loginUser.getId());
         return ResponseEntity.ok().body(profileViewResponse);
     }
 
     @PatchMapping("/me/info") // 닉네임, 핸드폰, 주소, 계좌종류 및 계좌번호
-    public ResponseEntity<Void> update(@AuthenticationPrincipal LoginUser loginUser,
+    public ResponseEntity<Void> update(@AuthenticationPrincipal final LoginUser loginUser,
                                        @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
         profileService.update(loginUser.getId(), profileUpdateRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/me/profile-image") // 프로필 이미지 수정
-    public ResponseEntity<Void> updateImage(@AuthenticationPrincipal LoginUser loginUser,
+    public ResponseEntity<Void> updateImage(@AuthenticationPrincipal final LoginUser loginUser,
                                             @RequestPart MultipartFile multipartFile) throws IOException {
         userService.saveProfileImage(loginUser.getId(), multipartFile);
 
@@ -51,23 +51,23 @@ public class ProfileController {
     }
 
     @GetMapping("/me/sell-list")
-    public ResponseEntity<ProductViewsSellList> sellProductList(@AuthenticationPrincipal LoginUser loginUser,
-                                                                @RequestParam String productStatus) {
+    public ResponseEntity<ProductViewsSellList> sellProductList(@AuthenticationPrincipal final LoginUser loginUser,
+                                                                @RequestParam final String productStatus) {
         ProductViewsSellList responses = profileService.sellProductList(loginUser.getId(), productStatus);
 
         return ResponseEntity.ok().body(responses);
     }
 
     @GetMapping("/me/purchase-list")
-    public ResponseEntity<ProductViewsPurchaseList> purchaseProductList(@AuthenticationPrincipal LoginUser loginUser,
-                                                                        @RequestParam String confirmStatus){
+    public ResponseEntity<ProductViewsPurchaseList> purchaseProductList(@AuthenticationPrincipal final LoginUser loginUser,
+                                                                        @RequestParam final String confirmStatus){
         ProductViewsPurchaseList responses = profileService.purchaseProductList(loginUser.getId(), confirmStatus);
 
         return ResponseEntity.ok().body(responses);
     }
 
     @GetMapping("/me/banner")
-    public ResponseEntity<ProfileBannerResponse> viewProfileBanner(@AuthenticationPrincipal LoginUser loginUser) {
+    public ResponseEntity<ProfileBannerResponse> viewProfileBanner(@AuthenticationPrincipal final LoginUser loginUser) {
 
         ProfileBannerResponse response = profileService.viewProfileBanner(loginUser.getId());
 

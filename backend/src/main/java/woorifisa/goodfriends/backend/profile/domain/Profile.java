@@ -1,10 +1,9 @@
 package woorifisa.goodfriends.backend.profile.domain;
 
 import lombok.Builder;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import woorifisa.goodfriends.backend.global.common.BaseCreateTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseCreateTimeEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
@@ -39,7 +38,9 @@ public class Profile extends BaseCreateTimeEntity {
     }
 
     @Builder
-    public Profile(User user, String mobileNumber, String address, AccountType accountType, String accountNumber) {
+    public Profile(final User user, final String mobileNumber,
+                   final String address, final AccountType accountType,
+                   final String accountNumber) {
         this.user = user;
         this.mobileNumber = mobileNumber;
         this.address = address;
