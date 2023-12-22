@@ -1,10 +1,9 @@
 package woorifisa.goodfriends.backend.order.domain;
 
 import lombok.Builder;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.user.domain.User;
 
