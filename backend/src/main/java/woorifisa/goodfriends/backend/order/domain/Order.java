@@ -3,7 +3,7 @@ package woorifisa.goodfriends.backend.order.domain;
 import lombok.Builder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import woorifisa.goodfriends.backend.common.BaseTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseEntity;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.user.domain.User;
 
@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 @Table(name = "orders")
 @Entity
-public class Order extends BaseTimeEntity {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

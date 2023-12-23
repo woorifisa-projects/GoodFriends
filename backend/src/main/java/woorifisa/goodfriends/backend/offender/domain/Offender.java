@@ -1,14 +1,14 @@
 package woorifisa.goodfriends.backend.offender.domain;
 
 import lombok.Builder;
-import woorifisa.goodfriends.backend.common.BaseCreateTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 import javax.persistence.*;
 
 @Table(name = "offenders") // 부정행위자
 @Entity
-public class Offender extends BaseCreateTimeEntity {
+public class Offender extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
