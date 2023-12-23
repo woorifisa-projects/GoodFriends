@@ -11,13 +11,13 @@ import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewsSellList;
 import woorifisa.goodfriends.backend.profile.application.ProfileService;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileBannerResponse;
-import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileDetailResponse;
 import woorifisa.goodfriends.backend.user.application.UserService;
 
 import javax.validation.Valid;
 import java.io.IOException;
 
-@RequestMapping("/api/profile")
+@RequestMapping("/api/profiles")
 @RestController
 public class ProfileController {
     private final ProfileService profileService;
@@ -29,9 +29,9 @@ public class ProfileController {
     }
 
     @GetMapping("/me")  // 본인 프로필 조회
-    public ResponseEntity<ProfileViewResponse> viewProfile(@AuthenticationPrincipal final LoginUser loginUser) {
-        ProfileViewResponse profileViewResponse = profileService.viewProfile(loginUser.getId());
-        return ResponseEntity.ok().body(profileViewResponse);
+    public ResponseEntity<ProfileDetailResponse> findMyProfile(@AuthenticationPrincipal final LoginUser loginUser) {
+        ProfileDetailResponse profileDetailResponse = profileService.findMyProfile(loginUser.getId());
+        return ResponseEntity.ok().body(profileDetailResponse);
     }
 
     @PatchMapping("/me/info") // 닉네임, 핸드폰, 주소, 계좌종류 및 계좌번호

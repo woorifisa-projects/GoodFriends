@@ -16,7 +16,7 @@ import woorifisa.goodfriends.backend.profile.dto.response.*;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
-import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewResponse;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileDetailResponse;
 import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfile;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
@@ -44,21 +44,11 @@ public class ProfileService {
         this.offenderRepository = offenderRepository;
     }
 
-    public ProfileViewResponse viewProfile(final Long userId) {
-
+    public ProfileDetailResponse findMyProfile(final Long userId) {
         User user = userRepository.getById(userId);
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
 
-        ProfileViewResponse profileViewResponse;
-
-        // profile 정보가 없을 경우 주소와 핸드폰 번호는 null 로 반환
-        if (profile == null) {
-            profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), null, null, null, null);
-        }else{
-            profileViewResponse = new ProfileViewResponse(user.getId(), user.getProfileImageUrl(), user.getNickname(), user.getEmail(), profile.getAddress(), profile.getMobileNumber(), profile.getAccountType(), profile.getAccountNumber());
-        }
-
-        return profileViewResponse;
+        return ProfileDetailResponse.of(user, profile);
     }
 
     public void update(final Long userId, final ProfileUpdateRequest request) {
@@ -76,7 +66,7 @@ public class ProfileService {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElse(null);
 
-        Boolean checkPhone = profileRepository.existsByMobileNumber(request.getMobileNumber());
+        boolean checkPhone = profileRepository.existsByMobileNumber(request.getMobileNumber());
 
         if (profile == null) { // 프로필을 등록하지 않은 경우 새로 생성해서 값을 넣어준다.
             if(checkPhone){
@@ -103,7 +93,7 @@ public class ProfileService {
         return offender != null;
     }
 
-    public ProductViewsSellList sellProductList(final Long userId, final String productStatus) {
+    public ProfileViewsSellList sellProductList(final Long userId, final String productStatus) {
         List<Product> products;
 
         if(productStatus.equals("ALL")) {
@@ -114,20 +104,20 @@ public class ProfileService {
             products = productRepository.findAllByProductStatusAndUserId(status, userId);
         }
 
-        List<ProductViewSellList> responses = products.stream()
+        List<ProfileViewSellList> responses = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
-                        ProductViewSellList response = new ProductViewSellList(
+                        ProfileViewSellList response = new ProfileViewSellList(
                                 product.getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
 
                         return response;
                 })
                 .collect(Collectors.toList());
 
-        return new ProductViewsSellList(responses);
+        return new ProfileViewsSellList(responses);
     }
 
-    public ProductViewsPurchaseList purchaseProductList(final Long userId, final String confirmStatus) {
+    public ProfileViewsPurchaseList purchaseProductList(final Long userId, final String confirmStatus) {
         List<Order> orders;
 
         if(confirmStatus.equals("ALL")) {
@@ -138,23 +128,31 @@ public class ProfileService {
             orders = orderRepository.findOrdersAndProductByUserIdAndConfirmStatus(userId, status);
         }
 
-        List<ProductViewPurchaseList> responses = orders.stream()
+        List<ProfileViewPurchaseList> responses = orders.stream()
                 .map(order -> {
                     String image = productImageRepository.findOneImageUrlByProductId(order.getProduct().getId());
-                    ProductViewPurchaseList response = new ProductViewPurchaseList(
-                            order.getProduct().getId(), order.getProduct().getTitle(), order.getConfirmStatus(), order.getProduct().getSellPrice(), image);
-
-                    return response;
+                    ProfileViewPurchaseList response;
+                    return getProductViewPurchaseList(order, image);
                 })
                 .collect(Collectors.toList());
 
-        return new ProductViewsPurchaseList(responses);
+        return new ProfileViewsPurchaseList(responses);
+    }
+
+    private ProfileViewPurchaseList getProductViewPurchaseList(Order order, String image) {
+        return new ProfileViewPurchaseList(
+                order.getProduct().getId(),
+                order.getProduct().getTitle(),
+                order.getConfirmStatus(),
+                order.getProduct().getSellPrice(),
+                image
+        );
     }
 
     public ProfileBannerResponse viewProfileBanner(final Long userId) {
         boolean verifiedBadge = existMobileNumber(userId);
         Long dealCount = sellPurchaseCount(userId);
-        Long banCount = userBanCount(userId);
+        Long banCount = userRepository.findBanById(userId);
 
         ProfileBannerResponse response = new ProfileBannerResponse(verifiedBadge, dealCount, banCount);
 
@@ -169,14 +167,6 @@ public class ProfileService {
     private Long sellPurchaseCount(final Long userId) {
         Long sellCount = productRepository.findCountByProductStatusAndUserId(ProductStatus.COMPLETED, userId);
         Long purchaseCount = orderRepository.findCountByConfirmStatusAndUserId(ConfirmStatus.COMPLETED, userId);
-        Long dealCount = sellCount + purchaseCount;
-
-        return dealCount;
-    }
-
-    private Long userBanCount(final Long userId) {
-        Long banCount = userRepository.findBanById(userId);
-
-        return banCount;
+        return sellCount + purchaseCount;
     }
 }
