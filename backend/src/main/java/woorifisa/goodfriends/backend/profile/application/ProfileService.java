@@ -2,7 +2,7 @@ package woorifisa.goodfriends.backend.profile.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import woorifisa.goodfriends.backend.order.domain.ConfirmStatus;
+import woorifisa.goodfriends.backend.order.domain.OrderStatus;
 import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.product.domain.Product;
@@ -99,12 +99,12 @@ public class ProfileService {
         }
 
         List<ProfileSellResponse> responses = products.stream()
-                .map(this::findProductToProfileSellResponse)
+                .map(this::findProductToProfileSellOne)
                 .collect(Collectors.toList());
         return new ProfileSellsResponse(responses);
     }
 
-    private ProfileSellResponse findProductToProfileSellResponse(final Product product) {
+    private ProfileSellResponse findProductToProfileSellOne(final Product product) {
         String image = productImageRepository.findOneImageUrlByProductId(product.getId());
         return ProfileSellResponse.builder()
                 .productId(product.getId())
@@ -119,31 +119,32 @@ public class ProfileService {
 
         if(confirmStatus.equals(PRODUCT_STATUS_ALL)) {
             orders = orderRepository.findOrdersAndProductByUserId(userId);
-        }
-        else {
-            ConfirmStatus status = ConfirmStatus.valueOf(confirmStatus);
+        } else {
+            OrderStatus status = OrderStatus.valueOf(confirmStatus);
             orders = orderRepository.findOrdersAndProductByUserIdAndConfirmStatus(userId, status);
         }
 
         List<ProfilePurchaseResponse> responses = orders.stream()
-                .map(order -> {
-                    String image = productImageRepository.findOneImageUrlByProductId(order.getProduct().getId());
-                    ProfilePurchaseResponse response;
-                    return getProductViewPurchaseList(order, image);
-                })
+                .map(order -> mapOrderToProfilePurchaseResponse(order))
                 .collect(Collectors.toList());
-
         return new ProfilePurchasesResponse(responses);
     }
 
-    private ProfilePurchaseResponse getProductViewPurchaseList(Order order, String image) {
-        return new ProfilePurchaseResponse(
-                order.getProduct().getId(),
-                order.getProduct().getTitle(),
-                order.getConfirmStatus(),
-                order.getProduct().getSellPrice(),
-                image
-        );
+    // 주문 정보를 기반으로 ProfilePurchaseResponse 객체를 생성하는 역할
+    private ProfilePurchaseResponse mapOrderToProfilePurchaseResponse(final Order order) {
+        String image = productImageRepository.findOneImageUrlByProductId(order.getProduct().getId());
+        return buildProfilePurchaseResponse(order, image);
+    }
+
+    // Order와 이미지 URL을 받아와서 해당 정보로 구매 정보를 표현하는 DTO 객체를 생성
+    private ProfilePurchaseResponse buildProfilePurchaseResponse(final Order order, final String image) {
+        return ProfilePurchaseResponse.builder()
+                .productId(order.getProduct().getId())
+                .title(order.getProduct().getTitle())
+                .status(order.getOrderStatus())
+                .sellPrice(order.getProduct().getSellPrice())
+                .imageUrl(image)
+                .build();
     }
 
     public ProfileBannerResponse viewProfileBanner(final Long userId) {
@@ -163,7 +164,7 @@ public class ProfileService {
 
     private Long sellPurchaseCount(final Long userId) {
         Long sellCount = productRepository.findCountByProductStatusAndUserId(ProductStatus.COMPLETED, userId);
-        Long purchaseCount = orderRepository.findCountByConfirmStatusAndUserId(ConfirmStatus.COMPLETED, userId);
+        Long purchaseCount = orderRepository.findCountByConfirmStatusAndUserId(OrderStatus.COMPLETED, userId);
         return sellCount + purchaseCount;
     }
 }
