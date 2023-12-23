@@ -22,7 +22,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query("UPDATE Order o " +
             "SET o.confirmStatus = :confirmStatus " +
             "WHERE o.id = :orderId")
-    void updateConfirmStatus(@Param("orderId") final Long orderId, @Param("confirmStatus") final ConfirmStatus confirmStatus);
+    void updateConfirmStatus(@Param("orderId") final Long orderId, @Param("confirmStatus") final OrderStatus orderStatus);
 
     default Order getById(final Long orderId) {
         return findById(orderId).orElseThrow(NotFoundOrderException::new);
@@ -39,17 +39,17 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
             "ON o.product.id = p.id " +
             "AND o.user.id = :userId " +
             "AND o.confirmStatus = :confirmStatus")
-    List<Order> findOrdersAndProductByUserIdAndConfirmStatus(@Param("userId")final Long userId, @Param("confirmStatus")final ConfirmStatus confirmStatus);
+    List<Order> findOrdersAndProductByUserIdAndConfirmStatus(@Param("userId")final Long userId, @Param("confirmStatus")final OrderStatus orderStatus);
 
     @Query("SELECT count(o) " +
             "FROM Order o " +
             "WHERE o.confirmStatus = :confirmStatus " +
             "AND o.user.id = :userId")
-    Long findCountByConfirmStatusAndUserId(@Param("confirmStatus") final ConfirmStatus confirmStatus, @Param("userId") final Long userId);
+    Long findCountByConfirmStatusAndUserId(@Param("confirmStatus") final OrderStatus orderStatus, @Param("userId") final Long userId);
 
     @Query("SELECT o " +
             "FROM Order o " +
             "WHERE o.product.id = :productId " +
             "AND o.confirmStatus = :confirmStatus")
-    Order findByProductIdAndConfirmStatus(@Param("productId") final Long productId, @Param("confirmStatus") final ConfirmStatus confirmStatus);
+    Order findByProductIdAndConfirmStatus(@Param("productId") final Long productId, @Param("confirmStatus") final OrderStatus orderStatus);
 }

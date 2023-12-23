@@ -3,7 +3,7 @@ package woorifisa.goodfriends.backend.order.application;
 import org.springframework.stereotype.Service;
 import woorifisa.goodfriends.backend.offender.domain.Offender;
 import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
-import woorifisa.goodfriends.backend.order.domain.ConfirmStatus;
+import woorifisa.goodfriends.backend.order.domain.OrderStatus;
 import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
@@ -101,7 +101,7 @@ public class OrderService {
         Order newOrder = Order.builder()
                         .product(product)
                         .user(user)
-                        .confirmStatus(ConfirmStatus.ORDERING)
+                        .confirmStatus(OrderStatus.ORDERING)
                         .possibleDate(request.getPossibleDateStart() + " ~ " + request.getPossibleDateEnd())
                         .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
                         .requirements(request.getRequirements())
@@ -124,10 +124,10 @@ public class OrderService {
         Product product = productRepository.getById(productId);
 
         if(product.getStatus() != ProductStatus.SELL) {
-            Order order = orderRepository.findByProductIdAndConfirmStatus(productId, ConfirmStatus.RESERVATION);
+            Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
 
             if(order == null) {
-                order = orderRepository.findByProductIdAndConfirmStatus(productId, ConfirmStatus.COMPLETED);
+                order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
             }
 
             OrderViewOneResponse response = new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
@@ -155,7 +155,7 @@ public class OrderService {
         Product product = productRepository.getById(order.getProduct().getId());
 
         if(product.getStatus() == ProductStatus.SELL) {
-            orderRepository.updateConfirmStatus(orderId, ConfirmStatus.RESERVATION);
+            orderRepository.updateConfirmStatus(orderId, OrderStatus.RESERVATION);
             productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
         }
 
@@ -169,8 +169,8 @@ public class OrderService {
     @Transactional
     public void confirmDeal(Long productId){
         productRepository.updateProductStatus(productId,ProductStatus.COMPLETED);
-        Order order = orderRepository.findByProductIdAndConfirmStatus(productId,ConfirmStatus.RESERVATION);
-        orderRepository.updateConfirmStatus(order.getId(),ConfirmStatus.COMPLETED);
+        Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
+        orderRepository.updateConfirmStatus(order.getId(), OrderStatus.COMPLETED);
     }
 
 }

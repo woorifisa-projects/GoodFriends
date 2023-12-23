@@ -29,7 +29,7 @@ public class Order extends BaseTimeEntity {
 
     @Column(name = "confirm_status")
     @Enumerated(EnumType.STRING)
-    private ConfirmStatus confirmStatus;
+    private OrderStatus orderStatus;
 
     @Column(nullable = false)
     private String possibleDate;
@@ -43,11 +43,11 @@ public class Order extends BaseTimeEntity {
     }
 
     @Builder
-    public Order(final Product product, final User user, final ConfirmStatus confirmStatus
+    public Order(final Product product, final User user, final OrderStatus orderStatus
             , final String possibleDate, final String possibleTime, final String requirements) {
         this.product = product;
         this.user = user;
-        this.confirmStatus = confirmStatus;
+        this.orderStatus = orderStatus;
         this.possibleDate = possibleDate;
         this.possibleTime = possibleTime;
         this.requirements = requirements;
@@ -65,8 +65,8 @@ public class Order extends BaseTimeEntity {
         return user;
     }
 
-    public ConfirmStatus getConfirmStatus() {
-        return confirmStatus;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
     public String getPossibleDate() {
