@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
-import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewsPurchaseList;
-import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewsSellList;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfilePurchasesResponse;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileSellsResponse;
 import woorifisa.goodfriends.backend.profile.application.ProfileService;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileBannerResponse;
@@ -49,17 +49,16 @@ public class ProfileController {
     }
 
     @GetMapping("/me/sell-list")
-    public ResponseEntity<ProfileViewsSellList> sellProductList(@AuthenticationPrincipal final LoginUser loginUser,
+    public ResponseEntity<ProfileSellsResponse> sellProductList(@AuthenticationPrincipal final LoginUser loginUser,
                                                                 @RequestParam final String productStatus) {
-        ProfileViewsSellList responses = profileService.sellProductList(loginUser.getId(), productStatus);
-
+        ProfileSellsResponse responses = profileService.findProfileSells(loginUser.getId(), productStatus);
         return ResponseEntity.ok().body(responses);
     }
 
     @GetMapping("/me/purchase-list")
-    public ResponseEntity<ProfileViewsPurchaseList> purchaseProductList(@AuthenticationPrincipal final LoginUser loginUser,
+    public ResponseEntity<ProfilePurchasesResponse> purchaseProductList(@AuthenticationPrincipal final LoginUser loginUser,
                                                                         @RequestParam final String confirmStatus){
-        ProfileViewsPurchaseList responses = profileService.purchaseProductList(loginUser.getId(), confirmStatus);
+        ProfilePurchasesResponse responses = profileService.findProfilePurchases(loginUser.getId(), confirmStatus);
 
         return ResponseEntity.ok().body(responses);
     }

@@ -2,8 +2,6 @@ package woorifisa.goodfriends.backend.profile.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import woorifisa.goodfriends.backend.offender.domain.Offender;
-import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.order.domain.ConfirmStatus;
 import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
@@ -25,6 +23,8 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class ProfileService {
+
+    private static final String PRODUCT_STATUS_ALL = "ALL"; // 판매 및 구매 목록 상태: 전체
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
@@ -70,7 +70,6 @@ public class ProfileService {
         }
     }
 
-
     private Profile createProfileInfo(final ProfileUpdateRequest request, final User user, final Profile profile) {
         return profileRepository.save(profile.builder()
                 .user(user)
@@ -89,34 +88,36 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
-    public ProfileViewsSellList sellProductList(final Long userId, final String productStatus) {
+    public ProfileSellsResponse findProfileSells(final Long userId, final String productStatus) {
         List<Product> products;
 
-        if(productStatus.equals("ALL")) {
+        if(productStatus.equals(PRODUCT_STATUS_ALL)) {
             products = productRepository.findAllByUserId(userId);
-        }
-        else {
+        } else {
             ProductStatus status = ProductStatus.valueOf(productStatus);
             products = productRepository.findAllByProductStatusAndUserId(status, userId);
         }
 
-        List<ProfileViewSellList> responses = products.stream()
-                .map(product -> {
-                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
-                        ProfileViewSellList response = new ProfileViewSellList(
-                                product.getId(), product.getTitle(), product.getStatus(), product.getSellPrice(), image);
-
-                        return response;
-                })
+        List<ProfileSellResponse> responses = products.stream()
+                .map(this::findProductToProfileSellResponse)
                 .collect(Collectors.toList());
-
-        return new ProfileViewsSellList(responses);
+        return new ProfileSellsResponse(responses);
     }
 
-    public ProfileViewsPurchaseList purchaseProductList(final Long userId, final String confirmStatus) {
+    private ProfileSellResponse findProductToProfileSellResponse(final Product product) {
+        String image = productImageRepository.findOneImageUrlByProductId(product.getId());
+        return ProfileSellResponse.builder()
+                .productId(product.getId())
+                .title(product.getTitle())
+                .status(product.getStatus())
+                .sellPrice(product.getSellPrice())
+                .imageUrl(image)
+                .build();
+    }
+    public ProfilePurchasesResponse findProfilePurchases(final Long userId, final String confirmStatus) {
         List<Order> orders;
 
-        if(confirmStatus.equals("ALL")) {
+        if(confirmStatus.equals(PRODUCT_STATUS_ALL)) {
             orders = orderRepository.findOrdersAndProductByUserId(userId);
         }
         else {
@@ -124,19 +125,19 @@ public class ProfileService {
             orders = orderRepository.findOrdersAndProductByUserIdAndConfirmStatus(userId, status);
         }
 
-        List<ProfileViewPurchaseList> responses = orders.stream()
+        List<ProfilePurchaseResponse> responses = orders.stream()
                 .map(order -> {
                     String image = productImageRepository.findOneImageUrlByProductId(order.getProduct().getId());
-                    ProfileViewPurchaseList response;
+                    ProfilePurchaseResponse response;
                     return getProductViewPurchaseList(order, image);
                 })
                 .collect(Collectors.toList());
 
-        return new ProfileViewsPurchaseList(responses);
+        return new ProfilePurchasesResponse(responses);
     }
 
-    private ProfileViewPurchaseList getProductViewPurchaseList(Order order, String image) {
-        return new ProfileViewPurchaseList(
+    private ProfilePurchaseResponse getProductViewPurchaseList(Order order, String image) {
+        return new ProfilePurchaseResponse(
                 order.getProduct().getId(),
                 order.getProduct().getTitle(),
                 order.getConfirmStatus(),
