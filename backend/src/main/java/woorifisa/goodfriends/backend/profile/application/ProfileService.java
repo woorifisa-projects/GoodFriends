@@ -130,13 +130,11 @@ public class ProfileService {
         return new ProfilePurchasesResponse(responses);
     }
 
-    // 주문 정보를 기반으로 ProfilePurchaseResponse 객체를 생성하는 역할
     private ProfilePurchaseResponse mapOrderToProfilePurchaseResponse(final Order order) {
         String image = productImageRepository.findOneImageUrlByProductId(order.getProduct().getId());
         return buildProfilePurchaseResponse(order, image);
     }
 
-    // Order와 이미지 URL을 받아와서 해당 정보로 구매 정보를 표현하는 DTO 객체를 생성
     private ProfilePurchaseResponse buildProfilePurchaseResponse(final Order order, final String image) {
         return ProfilePurchaseResponse.builder()
                 .productId(order.getProduct().getId())
@@ -147,13 +145,12 @@ public class ProfileService {
                 .build();
     }
 
-    public ProfileBannerResponse viewProfileBanner(final Long userId) {
-        boolean verifiedBadge = existMobileNumber(userId);
-        Long dealCount = sellPurchaseCount(userId);
-        Long banCount = userRepository.findBanById(userId);
+    public ProfileBannerResponse findMyProfileBanner(final Long userId) {
+        final boolean verifiedBadge = existMobileNumber(userId);
+        final Long orderDealCount = sellPurchaseCount(userId);
+        final Long reportBanCount = userRepository.findBanById(userId);
 
-        ProfileBannerResponse response = new ProfileBannerResponse(verifiedBadge, dealCount, banCount);
-
+        ProfileBannerResponse response = new ProfileBannerResponse(verifiedBadge, orderDealCount, reportBanCount);
         return response;
     }
 

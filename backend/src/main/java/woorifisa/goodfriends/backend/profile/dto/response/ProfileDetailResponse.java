@@ -29,7 +29,7 @@ public class ProfileDetailResponse {
     }
 
     public static ProfileDetailResponse of(final User user, final Profile profile) {
-        if(profile == null) {
+        if (profile == null) {
             return ProfileDetailResponse.builder()
                     .id(user.getId())
                     .email(user.getEmail())

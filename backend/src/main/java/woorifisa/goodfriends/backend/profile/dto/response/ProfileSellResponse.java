@@ -2,7 +2,6 @@ package woorifisa.goodfriends.backend.profile.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
 @Getter

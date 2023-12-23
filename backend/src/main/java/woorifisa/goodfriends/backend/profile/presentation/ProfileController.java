@@ -28,13 +28,13 @@ public class ProfileController {
         this.userService = userService;
     }
 
-    @GetMapping("/me")  // 본인 프로필 조회
+    @GetMapping("/me")
     public ResponseEntity<ProfileDetailResponse> findMyProfile(@AuthenticationPrincipal final LoginUser loginUser) {
         ProfileDetailResponse profileDetailResponse = profileService.findMyProfile(loginUser.getId());
         return ResponseEntity.ok().body(profileDetailResponse);
     }
 
-    @PatchMapping("/me/info") // 닉네임, 핸드폰, 주소, 계좌종류 및 계좌번호
+    @PatchMapping("/me/info") // 닉네임, 핸드폰, 주소, 계좌종류, 계좌번호
     public ResponseEntity<Void> update(@AuthenticationPrincipal final LoginUser loginUser,
                                        @Valid @RequestBody final ProfileUpdateRequest profileUpdateRequest) {
         profileService.update(loginUser.getId(), profileUpdateRequest);
@@ -49,25 +49,23 @@ public class ProfileController {
     }
 
     @GetMapping("/me/sell-list")
-    public ResponseEntity<ProfileSellsResponse> sellProductList(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                @RequestParam final String productStatus) {
+    public ResponseEntity<ProfileSellsResponse> findMySellProducts(@AuthenticationPrincipal final LoginUser loginUser,
+                                                                   @RequestParam final String productStatus) {
         ProfileSellsResponse responses = profileService.findProfileSells(loginUser.getId(), productStatus);
         return ResponseEntity.ok().body(responses);
     }
 
     @GetMapping("/me/purchase-list")
-    public ResponseEntity<ProfilePurchasesResponse> purchaseProductList(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                        @RequestParam final String confirmStatus){
+    public ResponseEntity<ProfilePurchasesResponse> findMyPurchaseProducts(@AuthenticationPrincipal final LoginUser loginUser,
+                                                                           @RequestParam final String confirmStatus) {
         ProfilePurchasesResponse responses = profileService.findProfilePurchases(loginUser.getId(), confirmStatus);
-
         return ResponseEntity.ok().body(responses);
     }
 
     @GetMapping("/me/banner")
-    public ResponseEntity<ProfileBannerResponse> viewProfileBanner(@AuthenticationPrincipal final LoginUser loginUser) {
+    public ResponseEntity<ProfileBannerResponse> findMyProfileBanner(@AuthenticationPrincipal final LoginUser loginUser) {
 
-        ProfileBannerResponse response = profileService.viewProfileBanner(loginUser.getId());
-
+        ProfileBannerResponse response = profileService.findMyProfileBanner(loginUser.getId());
         return ResponseEntity.ok().body(response);
     }
 }
