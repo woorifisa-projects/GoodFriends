@@ -20,7 +20,7 @@ import woorifisa.goodfriends.backend.user.domain.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class ProfileService {
 
@@ -41,6 +41,7 @@ public class ProfileService {
         this.orderRepository = orderRepository;
     }
 
+    @Transactional
     public ProfileDetailResponse findMyProfile(final Long userId) {
         User user = userRepository.getById(userId);
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
@@ -48,6 +49,7 @@ public class ProfileService {
         return ProfileDetailResponse.of(user, profile);
     }
 
+    @Transactional
     public void update(final Long userId, final ProfileUpdateRequest request) {
         User user = userRepository.getById(userId);
         user.updateNickname(request.getNickName());

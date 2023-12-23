@@ -30,6 +30,7 @@ public class UserService {
         return new UserResponse(user);
     }
 
+    @Transactional
     public void updateProfileImageToS3(final Long userId, final MultipartFile multipartFile) throws IOException {
         User foundUser = userRepository.getById(userId);
         String updateImageUrl =  updateProfileImageToS3(multipartFile);
