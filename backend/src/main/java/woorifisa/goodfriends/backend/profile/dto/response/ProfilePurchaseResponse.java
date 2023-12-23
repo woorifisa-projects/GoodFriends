@@ -4,7 +4,7 @@ import lombok.Getter;
 import woorifisa.goodfriends.backend.order.domain.ConfirmStatus;
 
 @Getter
-public class ProfileViewPurchaseList {
+public class ProfilePurchaseResponse {
     private final Long productId;
 
     private final String title;
@@ -15,7 +15,7 @@ public class ProfileViewPurchaseList {
 
     private final String imageUrl;
 
-    public ProfileViewPurchaseList(Long productId, String title, ConfirmStatus status, int sellPrice, String imageUrl) {
+    public ProfilePurchaseResponse(Long productId, String title, ConfirmStatus status, int sellPrice, String imageUrl) {
         this.productId = productId;
         this.title = title;
         this.status = status;
