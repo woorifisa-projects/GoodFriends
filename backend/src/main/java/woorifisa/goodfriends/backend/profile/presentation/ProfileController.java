@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
-import woorifisa.goodfriends.backend.profile.dto.response.ProductViewsPurchaseList;
-import woorifisa.goodfriends.backend.profile.dto.response.ProductViewsSellList;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewsPurchaseList;
+import woorifisa.goodfriends.backend.profile.dto.response.ProfileViewsSellList;
 import woorifisa.goodfriends.backend.profile.application.ProfileService;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileBannerResponse;
@@ -20,7 +20,6 @@ import java.io.IOException;
 @RequestMapping("/api/profile")
 @RestController
 public class ProfileController {
-
     private final ProfileService profileService;
     private final UserService userService;
 
@@ -51,17 +50,17 @@ public class ProfileController {
     }
 
     @GetMapping("/me/sell-list")
-    public ResponseEntity<ProductViewsSellList> sellProductList(@AuthenticationPrincipal final LoginUser loginUser,
+    public ResponseEntity<ProfileViewsSellList> sellProductList(@AuthenticationPrincipal final LoginUser loginUser,
                                                                 @RequestParam final String productStatus) {
-        ProductViewsSellList responses = profileService.sellProductList(loginUser.getId(), productStatus);
+        ProfileViewsSellList responses = profileService.sellProductList(loginUser.getId(), productStatus);
 
         return ResponseEntity.ok().body(responses);
     }
 
     @GetMapping("/me/purchase-list")
-    public ResponseEntity<ProductViewsPurchaseList> purchaseProductList(@AuthenticationPrincipal final LoginUser loginUser,
+    public ResponseEntity<ProfileViewsPurchaseList> purchaseProductList(@AuthenticationPrincipal final LoginUser loginUser,
                                                                         @RequestParam final String confirmStatus){
-        ProductViewsPurchaseList responses = profileService.purchaseProductList(loginUser.getId(), confirmStatus);
+        ProfileViewsPurchaseList responses = profileService.purchaseProductList(loginUser.getId(), confirmStatus);
 
         return ResponseEntity.ok().body(responses);
     }
