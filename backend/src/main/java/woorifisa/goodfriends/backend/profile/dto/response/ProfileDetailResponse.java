@@ -6,18 +6,18 @@ import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.user.domain.User;
 
 public class ProfileDetailResponse {
-    private final Long id;
-    private final String email;
-    private final String nickName;
-    private final String imageUrl;
-    private final String address;
-    private final String mobileNumber;
-    private final AccountType accountType;
-    private final String accountNumber;
+    private Long id;
+    private String email;
+    private String nickName;
+    private String imageUrl;
+    private String address;
+    private String mobileNumber;
+    private AccountType accountType;
+    private String accountNumber;
 
     @Builder
-    public ProfileDetailResponse(Long id, String email, String nickName, String imageUrl,
-                                 String address, String mobileNumber, AccountType accountType, String accountNumber) {
+    public ProfileDetailResponse(final Long id, final String email, final String nickName, final String imageUrl,
+                                 final String address, final String mobileNumber, final AccountType accountType, final String accountNumber) {
         this.id = id;
         this.email = email;
         this.nickName = nickName;
@@ -28,7 +28,7 @@ public class ProfileDetailResponse {
         this.accountNumber = accountNumber;
     }
 
-    public static ProfileDetailResponse of(User user, Profile profile) {
+    public static ProfileDetailResponse of(final User user, final Profile profile) {
         if(profile == null) {
             return ProfileDetailResponse.builder()
                     .id(user.getId())

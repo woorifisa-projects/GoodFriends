@@ -18,7 +18,7 @@ import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
-import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
@@ -63,7 +63,7 @@ public class ProductService {
 
         //프로필 등록해야 상품 등록 가능하도록
         if(!existProfile(userId)) {
-            throw new NotFoundProfile(); // 403
+            throw new NotFoundProfileException(); // 403
         }
 
         User foundUser = userRepository.getById(userId);
@@ -183,7 +183,7 @@ public class ProductService {
         }
 
         if(!existProfile(userId)) {
-            throw new NotFoundProfile(); // 403
+            throw new NotFoundProfileException(); // 403
         }
 
         Product product = productRepository.getById(productId);

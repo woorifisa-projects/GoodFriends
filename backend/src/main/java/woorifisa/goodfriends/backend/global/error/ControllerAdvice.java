@@ -19,8 +19,8 @@ import woorifisa.goodfriends.backend.order.exception.NotFoundOrderException;
 import woorifisa.goodfriends.backend.order.exception.NotOwnProductException;
 import woorifisa.goodfriends.backend.order.exception.OwnProductException;
 import woorifisa.goodfriends.backend.product.exception.*;
-import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfile;
-import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
+import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfileException;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.report.exception.AlreadyReportedException;
 import woorifisa.goodfriends.backend.report.exception.ReportException;
 import woorifisa.goodfriends.backend.user.exception.InvalidNicknameException;
@@ -62,11 +62,11 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({ // 클라이언테 에러: 403
-            NotFoundProfile.class,
+            NotFoundProfileException.class,
             NotAccessThisProduct.class,
             AuthorizationException.class,
             NotAccessProduct.class,
-            AlreadyExitPhoneProfile.class,
+            AlreadyExitPhoneProfileException.class,
             OwnProductException.class,
             NotOwnProductException.class
     })

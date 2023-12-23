@@ -11,7 +11,7 @@ import woorifisa.goodfriends.backend.order.exception.NotOwnProductException;
 import woorifisa.goodfriends.backend.order.exception.OwnProductException;
 import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
-import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
 import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
 import woorifisa.goodfriends.backend.order.dto.response.OrderViewOneResponse;
@@ -57,7 +57,7 @@ public class OrderService {
 
         // 프로필 미등록자 주문 불가
         if(!existProfile(userId)) {
-            throw new NotFoundProfile();
+            throw new NotFoundProfileException();
         }
 
         // 중복 주문 불가

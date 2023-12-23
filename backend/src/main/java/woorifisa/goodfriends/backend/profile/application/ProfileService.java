@@ -11,13 +11,12 @@ import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductImageRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
 import woorifisa.goodfriends.backend.profile.dto.response.*;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.dto.request.ProfileUpdateRequest;
 import woorifisa.goodfriends.backend.profile.dto.response.ProfileDetailResponse;
-import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfile;
+import woorifisa.goodfriends.backend.profile.exception.AlreadyExitPhoneProfileException;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 import java.util.List;
@@ -31,17 +30,15 @@ public class ProfileService {
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
     private final OrderRepository orderRepository;
-    private final OffenderRepository offenderRepository;
 
     public ProfileService(final ProfileRepository profileRepository, final UserRepository userRepository,
                           final ProductRepository productRepository, final ProductImageRepository productImageRepository,
-                          final OrderRepository orderRepository, final OffenderRepository offenderRepository) {
+                          final OrderRepository orderRepository) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
         this.orderRepository = orderRepository;
-        this.offenderRepository = offenderRepository;
     }
 
     public ProfileDetailResponse findMyProfile(final Long userId) {
@@ -52,45 +49,44 @@ public class ProfileService {
     }
 
     public void update(final Long userId, final ProfileUpdateRequest request) {
-
-        //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
-        if(existOffender(userId)) {
-            throw new NotAccessProduct();
-        }
-
         User user = userRepository.getById(userId);
-
         user.updateNickname(request.getNickName());
         userRepository.save(user);
 
-        Profile profile = profileRepository.findByUserId(userId)
-                .orElse(null);
-
-        boolean checkPhone = profileRepository.existsByMobileNumber(request.getMobileNumber());
-
-        if (profile == null) { // 프로필을 등록하지 않은 경우 새로 생성해서 값을 넣어준다.
-            if(checkPhone){
-                throw new AlreadyExitPhoneProfile();
-            }
-            profileRepository.save(profile.builder()
-                    .user(user)
-                    .mobileNumber(request.getMobileNumber())
-                    .address(request.getAddress())
-                    .accountType(request.getAccountType())
-                    .accountNumber(request.getAccountNumber())
-                    .build());
-        } else { // 기존에 프로필이 있는 경우, 프로필 정보(핸드폰, 주소, 계좌종류, 계좌번호)를 수정해서 저장한다.
-            profile.updateMobileNumber(request.getMobileNumber());
-            profile.updateAddress(request.getAddress());
-            profile.updateAccountType(request.getAccountType());
-            profile.updateAccountNumber(request.getAccountNumber());
-            profileRepository.save(profile);
+        Profile profile = profileRepository.getByUserId(userId);
+        if (profile == null) {
+            validateMobileNumber(request.getMobileNumber());
+            createProfileInfo(request, user, profile);
+        }
+        else {
+            updateProfileInfo(request, profile);
         }
     }
 
-    public boolean existOffender(final Long userId) {
-        Offender offender = offenderRepository.findByUserId(userId);
-        return offender != null;
+    private void validateMobileNumber(String mobileNumber) {
+        boolean checkPhone = profileRepository.existsByMobileNumber(mobileNumber);
+        if(checkPhone) {
+            throw new AlreadyExitPhoneProfileException();
+        }
+    }
+
+
+    private Profile createProfileInfo(final ProfileUpdateRequest request, final User user, final Profile profile) {
+        return profileRepository.save(profile.builder()
+                .user(user)
+                .mobileNumber(request.getMobileNumber())
+                .address(request.getAddress())
+                .accountType(request.getAccountType())
+                .accountNumber(request.getAccountNumber())
+                .build());
+    }
+
+    private void updateProfileInfo(final ProfileUpdateRequest request, final Profile profile) {
+        profile.updateMobileNumber(request.getMobileNumber());
+        profile.updateAddress(request.getAddress());
+        profile.updateAccountType(request.getAccountType());
+        profile.updateAccountNumber(request.getAccountNumber());
+        profileRepository.save(profile);
     }
 
     public ProfileViewsSellList sellProductList(final Long userId, final String productStatus) {

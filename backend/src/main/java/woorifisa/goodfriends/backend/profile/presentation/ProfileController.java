@@ -17,7 +17,7 @@ import woorifisa.goodfriends.backend.user.application.UserService;
 import javax.validation.Valid;
 import java.io.IOException;
 
-@RequestMapping("/api/profiles")
+@RequestMapping("/api/profile")
 @RestController
 public class ProfileController {
     private final ProfileService profileService;
