@@ -15,7 +15,6 @@ import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
-import woorifisa.goodfriends.backend.user.application.UserService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -29,7 +28,7 @@ public class ProductController {
     private static final int PAGE_SIZE = 12;
     private final ProductService productService;
 
-    public ProductController(ProductService productService, UserService userService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
