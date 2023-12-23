@@ -101,7 +101,7 @@ public class OrderService {
         Order newOrder = Order.builder()
                         .product(product)
                         .user(user)
-                        .confirmStatus(OrderStatus.ORDERING)
+                        .orderStatus(OrderStatus.ORDERING)
                         .possibleDate(request.getPossibleDateStart() + " ~ " + request.getPossibleDateEnd())
                         .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
                         .requirements(request.getRequirements())
@@ -155,7 +155,7 @@ public class OrderService {
         Product product = productRepository.getById(order.getProduct().getId());
 
         if(product.getStatus() == ProductStatus.SELL) {
-            orderRepository.updateConfirmStatus(orderId, OrderStatus.RESERVATION);
+            orderRepository.updateOrderStatus(orderId, OrderStatus.RESERVATION);
             productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
         }
 
@@ -170,7 +170,7 @@ public class OrderService {
     public void confirmDeal(Long productId){
         productRepository.updateProductStatus(productId,ProductStatus.COMPLETED);
         Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
-        orderRepository.updateConfirmStatus(order.getId(), OrderStatus.COMPLETED);
+        orderRepository.updateOrderStatus(order.getId(), OrderStatus.COMPLETED);
     }
 
 }
