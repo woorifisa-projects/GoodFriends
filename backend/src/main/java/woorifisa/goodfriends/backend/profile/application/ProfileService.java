@@ -55,7 +55,7 @@ public class ProfileService {
         user.updateNickname(request.getNickName());
         userRepository.save(user);
 
-        Profile profile = profileRepository.getByUserId(userId);
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
         if (profile == null) {
             validateMobileNumber(request.getMobileNumber());
             createProfileInfo(request, user, profile);
