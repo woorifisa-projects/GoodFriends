@@ -4,10 +4,8 @@ import lombok.Getter;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
 import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
-import java.util.List;
-
 @Getter
-public class ProductViewAllResponse {
+public class ProductResponse {
 
     private final Long id;
 
@@ -25,7 +23,7 @@ public class ProductViewAllResponse {
 
     private final boolean activated;
 
-    public ProductViewAllResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String imageUrl, String address, boolean activated) {
+    public ProductResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, int sellPrice, String imageUrl, String address, boolean activated) {
         this.id = id;
         this.productCategory = productCategory;
         this.title = title;

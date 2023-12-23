@@ -9,7 +9,7 @@ import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
 import woorifisa.goodfriends.backend.order.exception.NotOwnProductException;
 import woorifisa.goodfriends.backend.order.exception.OwnProductException;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
+import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
@@ -52,7 +52,7 @@ public class OrderService {
 
         // 부정행위자 주문 불가
         if(existOffender(userId)) {
-            throw new NotAccessProduct();
+            throw new NotAccessProductException();
         }
 
         // 프로필 미등록자 주문 불가
@@ -113,7 +113,7 @@ public class OrderService {
 
         // 부정행위자 본인이 등록한 상품 주문서 조회 불가
         if(existOffender(userId)) {
-            throw new NotAccessProduct();
+            throw new NotAccessProductException();
         }
 
         // 본인이 등록한 상품만 주문서 조회 가능

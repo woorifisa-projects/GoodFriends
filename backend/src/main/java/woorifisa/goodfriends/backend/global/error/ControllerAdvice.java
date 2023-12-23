@@ -63,9 +63,9 @@ public class ControllerAdvice {
 
     @ExceptionHandler({ // 클라이언테 에러: 403
             NotFoundProfileException.class,
-            NotAccessThisProduct.class,
+            NotAccessThisProductException.class,
             AuthorizationException.class,
-            NotAccessProduct.class,
+            NotAccessProductException.class,
             AlreadyExitPhoneProfileException.class,
             OwnProductException.class,
             NotOwnProductException.class

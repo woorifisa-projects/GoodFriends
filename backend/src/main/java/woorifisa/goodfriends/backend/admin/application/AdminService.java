@@ -17,12 +17,12 @@ import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.product.domain.*;
-import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductCreateRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.report.domain.ReportRepository;
@@ -133,7 +133,7 @@ public class AdminService {
     }
 
     // 상품 등록
-    public Long saveProduct(long adminId, ProductSaveRequest request) throws IOException {
+    public Long saveProduct(long adminId, ProductCreateRequest request) throws IOException {
         Admin foundAdmin = adminRepository.getById(adminId);
 
         // 상품 저장
@@ -145,7 +145,7 @@ public class AdminService {
         return newProduct.getId();
     }
 
-    private Product createProduct(Admin admin, ProductSaveRequest request) {
+    private Product createProduct(Admin admin, ProductCreateRequest request) {
         Product newProduct = Product.builder()
                 .admin(admin)
                 .title(request.getTitle())
@@ -178,40 +178,40 @@ public class AdminService {
     }
 
     // 상품 검색
-    public ProductViewsAllResponse viewSearchProduct(String keyword) {
+    public ProductsResponse viewSearchProduct(String keyword) {
         List<Product> products = productRepository.findByTitleContains(Pageable.unpaged(), keyword);
 
-        List<ProductViewAllResponse> responses = createViewList(products);
+        List<ProductResponse> responses = createViewList(products);
 
-        return new ProductViewsAllResponse(responses);
+        return new ProductsResponse(responses);
     }
 
     // 상품 전체 조회
-    public ProductViewsAllResponse viewAllProduct() {
+    public ProductsResponse viewAllProduct() {
         List<Product> products = productRepository.findAllOrderByIdDesc(Pageable.unpaged());
 
-        List<ProductViewAllResponse> responses = createViewList(products);
+        List<ProductResponse> responses = createViewList(products);
 
-        return new ProductViewsAllResponse(responses);
+        return new ProductsResponse(responses);
     }
 
-    private List<ProductViewAllResponse> createViewList(List<Product> products) {
-        List<ProductViewAllResponse> viewList = products.stream()
+    private List<ProductResponse> createViewList(List<Product> products) {
+        List<ProductResponse> viewList = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
-                        ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
+                        ProductResponse productResponse = new ProductResponse(
                                 product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null, true);
 
-                        return productViewAllResponse;
+                        return productResponse;
                     }
 
                     User user = userRepository.getById(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
-                    ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
+                    ProductResponse productResponse = new ProductResponse(
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress(), user.isActivated());
-                    return productViewAllResponse;
+                    return productResponse;
                 })
                 .collect(Collectors.toList());
 
@@ -219,19 +219,19 @@ public class AdminService {
     }
 
     // 상품 상세 조회
-    public ProductViewOneResponse viewOneProduct(Long id) {
+    public ProductDetailResponse viewOneProduct(Long id) {
         Product product = productRepository.getById(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if (product.getUser() == null) {
-            ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
+            ProductDetailResponse response = new ProductDetailResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
                     product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
 
             return response;
         }
 
         User user = userRepository.getById(product.getUser().getId());
-        ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
+        ProductDetailResponse response = new ProductDetailResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
                 product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
         return response;
     }

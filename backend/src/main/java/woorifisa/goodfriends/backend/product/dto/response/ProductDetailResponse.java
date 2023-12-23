@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class ProductViewOneResponse {
+public class ProductDetailResponse {
 
     private Long id;
 
@@ -40,10 +40,10 @@ public class ProductViewOneResponse {
 
     private String nickName;
 
-    public ProductViewOneResponse() {
+    public ProductDetailResponse() {
     }
 
-    public ProductViewOneResponse(Long id, Long userId, Long adminId, ProductCategory productCategory, String title, String description, ProductStatus status, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls, String profileImageUrl, String nickName) {
+    public ProductDetailResponse(Long id, Long userId, Long adminId, ProductCategory productCategory, String title, String description, ProductStatus status, int sellPrice, LocalDateTime createdDate, LocalDateTime lastModifiedDate, List<String> imageUrls, String profileImageUrl, String nickName) {
         this.id = id;
         this.userId = userId;
         this.adminId = adminId;

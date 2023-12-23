@@ -10,11 +10,11 @@ import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
 import woorifisa.goodfriends.backend.product.application.ProductService;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
-import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductCreateRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
 import woorifisa.goodfriends.backend.user.application.UserService;
 
 import java.io.IOException;
@@ -36,52 +36,52 @@ public class ProductController {
     // 상품 등록
     @PostMapping
     public ResponseEntity<Void> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                            @RequestPart ProductSaveRequest request,
+                                            @RequestPart ProductCreateRequest request,
                                             @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-            ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),
+            ProductCreateRequest productCreateRequest = new ProductCreateRequest(request.getTitle(), request.getProductCategory(),
                                                             request.getDescription(), request.getSellPrice(), multipartFiles);
-            Long productId = productService.saveProduct(loginUser.getId(), productSaveRequest);
+            Long productId = productService.saveProduct(loginUser.getId(), productCreateRequest);
             return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }
 
     // 상품 검색
     @GetMapping("/search")
-    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
-                                                                     @RequestParam String productCategory,
-                                                                     @RequestParam String keyword) {
-        ProductViewsAllResponse responses = productService.viewSearchProduct(pageable, productCategory, keyword);
+    public ResponseEntity<ProductsResponse> findSearchProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
+                                                              @RequestParam String productCategory,
+                                                              @RequestParam String keyword) {
+        ProductsResponse responses = productService.findSearchProduct(pageable, productCategory, keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
 
     // 상품 카테고리별 조회
     @GetMapping("/category")
-    public ResponseEntity<ProductViewsAllResponse> viewProductByCategory(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
-                                                                         @RequestParam String productCategory) {
+    public ResponseEntity<ProductsResponse> findProductByCategory(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
+                                                                  @RequestParam String productCategory) {
         ProductCategory category = ProductCategory.valueOf(productCategory);
-        ProductViewsAllResponse responses = productService.viewProductByCategory(pageable, category);
+        ProductsResponse responses = productService.findProductByCategory(pageable, category);
         return ResponseEntity.ok().body(responses); // 200
     }
 
     // 상품 전체 조회
     @GetMapping
-    public ResponseEntity<ProductViewsAllResponse> viewAllProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable) {
-        ProductViewsAllResponse responses = productService.viewAllProduct(pageable);
+    public ResponseEntity<ProductsResponse> findAllProducts(@PageableDefault(size=PAGE_SIZE) Pageable pageable) {
+        ProductsResponse responses = productService.findAllProducts(pageable);
         return ResponseEntity.ok().body(responses); // 200
     }
 
     // 상품 상세 조회
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductViewOneResponse> viewOneProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                 @PathVariable Long productId) {
-        ProductViewOneResponse response = productService.viewOneProduct(loginUser.getId(), productId);
+    public ResponseEntity<ProductDetailResponse> findProduct(@AuthenticationPrincipal final LoginUser loginUser,
+                                                                @PathVariable Long productId) {
+        ProductDetailResponse response = productService.findProduct(loginUser.getId(), productId);
         return ResponseEntity.ok().body(response); // 200
     }
 
     // 수정할 상품 상세 조회
     @GetMapping("/edit/{productId}")
-    public ResponseEntity<ProductUpdateResponse> showSelectedProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                     @PathVariable Long productId){
-            ProductUpdateResponse response = productService.showSelectedProduct(loginUser.getId(), productId);
+    public ResponseEntity<ProductUpdateResponse> findEditProduct(@AuthenticationPrincipal final LoginUser loginUser,
+                                                                 @PathVariable Long productId){
+            ProductUpdateResponse response = productService.findEditProduct(loginUser.getId(), productId);
             return ResponseEntity.ok().body(response); // 200
     }
 

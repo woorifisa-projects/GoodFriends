@@ -2,33 +2,34 @@ package woorifisa.goodfriends.backend.product.application;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.offender.domain.Offender;
 import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.product.domain.*;
-import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductCreateRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
-import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
+import woorifisa.goodfriends.backend.product.dto.response.ProductResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
+import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
+import woorifisa.goodfriends.backend.product.exception.NotAccessThisProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional(readOnly = true)
 @Service
 public class ProductService {
 
@@ -54,11 +55,12 @@ public class ProductService {
         this.offenderRepository = offenderRepository;
     }
 
-    public Long saveProduct(Long userId, ProductSaveRequest request) throws IOException {
+    @Transactional
+    public Long saveProduct(Long userId, ProductCreateRequest request) throws IOException {
 
         //부정행위자로 등록된 유저는 상품 등록 못하도록
         if(existOffender(userId)) {
-            throw new NotAccessProduct();
+            throw new NotAccessProductException();
         }
 
         //프로필 등록해야 상품 등록 가능하도록
@@ -75,17 +77,17 @@ public class ProductService {
 
         return newProduct.getId();
     }
-    public boolean existOffender(final Long userId) {
+    private boolean existOffender(final Long userId) {
         Offender offender = offenderRepository.findByUserId(userId);
         return offender != null;
     }
 
-    public boolean existProfile(Long userId) {
+    private boolean existProfile(Long userId) {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
 
-    private Product createProduct(User user, ProductSaveRequest request) {
+    private Product createProduct(User user, ProductCreateRequest request) {
         Product newProduct = Product.builder()
                 .user(user)
                 .title(request.getTitle())
@@ -117,7 +119,7 @@ public class ProductService {
         return savedImageUrl;
     }
 
-    public ProductViewsAllResponse viewSearchProduct(Pageable pageable, String productCategory, String keyword) {
+    public ProductsResponse findSearchProduct(Pageable pageable, String productCategory, String keyword) {
         List<Product> products;
 
         if(productCategory.equals("ALL")){
@@ -128,58 +130,58 @@ public class ProductService {
             products = productRepository.findByTitleContainsInCategory(pageable, category, keyword);
         }
 
-        List<ProductViewAllResponse> responses = createViewList(products);
+        List<ProductResponse> responses = createViewList(products);
 
-        return new ProductViewsAllResponse(responses);
+        return new ProductsResponse(responses);
     }
 
-    public ProductViewsAllResponse viewProductByCategory(Pageable pageable, ProductCategory productCategory) {
+    public ProductsResponse findProductByCategory(Pageable pageable, ProductCategory productCategory) {
         List<Product> products = productRepository.findByProductCategory(pageable, productCategory);
 
-        List<ProductViewAllResponse> responses = createViewList(products);
+        List<ProductResponse> responses = createViewList(products);
 
-        return new ProductViewsAllResponse(responses);
+        return new ProductsResponse(responses);
     }
 
-    public ProductViewsAllResponse viewAllProduct(Pageable pageable) {
+    public ProductsResponse findAllProducts(Pageable pageable) {
         List<Product> products = productRepository.findAllOrderByIdDesc(pageable);
 
-        List<ProductViewAllResponse> responses = createViewList(products);
+        List<ProductResponse> responses = createViewList(products);
 
-        return new ProductViewsAllResponse(responses);
+        return new ProductsResponse(responses);
     }
 
-    private List<ProductViewAllResponse> createViewList(List<Product> products) {
-        List<ProductViewAllResponse> viewList = products.stream()
+    private List<ProductResponse> createViewList(List<Product> products) {
+        List<ProductResponse> responses = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
-                        ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
+                        ProductResponse productResponse = new ProductResponse(
                                 product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null, true);
 
-                        return productViewAllResponse;
+                        return productResponse;
                     }
 
                     User user = userRepository.getById(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
-                    ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
+                    ProductResponse productResponse = new ProductResponse(
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress(), user.isActivated());
-                    return productViewAllResponse;
+                    return productResponse;
                 })
                 .filter(
-                    productViewAllResponse -> productViewAllResponse.isActivated()
+                        productResponse -> productResponse.isActivated()
                 )
                 .collect(Collectors.toList());
 
-        return viewList;
+        return responses;
     }
 
-    public ProductViewOneResponse viewOneProduct(Long userId, Long productId) {
+    public ProductDetailResponse findProduct(Long userId, Long productId) {
 
         //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
         if(existOffender(userId)) {
-            throw new NotAccessProduct();
+            throw new NotAccessProductException();
         }
 
         if(!existProfile(userId)) {
@@ -191,22 +193,22 @@ public class ProductService {
         List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if(product.getUser() == null){
-            ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
+            ProductDetailResponse response = new ProductDetailResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
                     product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
 
             return response;
         }
 
         User user = userRepository.getById(product.getUser().getId());
-        ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
+        ProductDetailResponse response = new ProductDetailResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
                 product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
 
         return response;
     }
 
-    public ProductUpdateResponse showSelectedProduct(Long userId, Long productId) {
+    public ProductUpdateResponse findEditProduct(Long userId, Long productId) {
         if(!verifyUser(userId, productId)){
-            throw new NotAccessThisProduct();
+            throw new NotAccessThisProductException();
         }
 
         Product selectedProduct = productRepository.getById(productId);
@@ -222,7 +224,7 @@ public class ProductService {
     @Transactional
     public void updateProduct(ProductUpdateRequest request, Long userId, Long productId) throws IOException {
         if(!verifyUser(userId, productId)){
-            throw new NotAccessThisProduct();
+            throw new NotAccessThisProductException();
         }
 
         Product selectedProduct = productRepository.getById(productId);
@@ -246,15 +248,16 @@ public class ProductService {
         Product updatedProduct = productRepository.save(updateProduct);
     }
 
+    @Transactional
     public void deleteById(Long userId, Long productId) throws MalformedURLException {
         if(!verifyUser(userId, productId)){
-            throw new NotAccessThisProduct();
+            throw new NotAccessThisProductException();
         }
         deleteImageByProductId(productId);
         productRepository.deleteById(productId);
     }
 
-    public void deleteImageByProductId(Long productId) throws MalformedURLException {
+    private void deleteImageByProductId(Long productId) throws MalformedURLException {
         List<ProductImage> productImages = productImageRepository.findByProductId(productId);
         for (ProductImage productImage : productImages) {
             s3Service.deleteFile(productImage.getImageUrl());

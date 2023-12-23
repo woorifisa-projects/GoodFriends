@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
-public class ProductSaveRequest {
+public class ProductCreateRequest {
 
     @NotBlank(message = "상품 제목을 입력해 주세요.")
     private String title;
@@ -23,17 +23,17 @@ public class ProductSaveRequest {
 
     private List<MultipartFile> imageUrls;
 
-    public ProductSaveRequest() {
+    public ProductCreateRequest() {
     }
 
-    public ProductSaveRequest(String title, ProductCategory productCategory, String description, int sellPrice) {
+    public ProductCreateRequest(String title, ProductCategory productCategory, String description, int sellPrice) {
         this.title = title;
         this.productCategory = productCategory;
         this.description = description;
         this.sellPrice = sellPrice;
     }
 
-    public ProductSaveRequest(String title, ProductCategory productCategory, String description, int sellPrice, List<MultipartFile> imageUrls) {
+    public ProductCreateRequest(String title, ProductCategory productCategory, String description, int sellPrice, List<MultipartFile> imageUrls) {
         this.title = title;
         this.productCategory = productCategory;
         this.description = description;
