@@ -22,7 +22,7 @@ public class S3Service {
         this.amazonS3 = amazonS3;
     }
 
-    public String saveFile(MultipartFile multipartFile, String uniqueFileName) throws IOException {
+    public String saveFile(final MultipartFile multipartFile, final String uniqueFileName) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -34,7 +34,7 @@ public class S3Service {
         return amazonS3.getUrl(bucket, uniqueFileName).toString();
     }
 
-    public void deleteFile(String imageUrl) throws MalformedURLException {
+    public void deleteFile(final String imageUrl) throws MalformedURLException {
         URL s3Url = new URL(imageUrl);
         String bucket = s3Url.getHost().split("\\.")[0];
         String objectFileName = s3Url.getPath().substring(1);
