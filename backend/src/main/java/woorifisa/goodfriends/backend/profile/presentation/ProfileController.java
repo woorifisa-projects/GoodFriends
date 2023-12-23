@@ -44,7 +44,7 @@ public class ProfileController {
     @PatchMapping("/me/profile-image") // 프로필 이미지 수정
     public ResponseEntity<Void> updateImage(@AuthenticationPrincipal final LoginUser loginUser,
                                             @RequestPart MultipartFile multipartFile) throws IOException {
-        userService.updateProfileImage(loginUser.getId(), multipartFile);
+        userService.updateProfileImageToS3(loginUser.getId(), multipartFile);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

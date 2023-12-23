@@ -30,14 +30,14 @@ public class UserService {
         return new UserResponse(user);
     }
 
-    public void updateProfileImage(final Long userId, final MultipartFile multipartFile) throws IOException {
+    public void updateProfileImageToS3(final Long userId, final MultipartFile multipartFile) throws IOException {
         User foundUser = userRepository.getById(userId);
-        String updateImageUrl =  updateProfileImage(multipartFile);
+        String updateImageUrl =  updateProfileImageToS3(multipartFile);
 
         foundUser.updateProfileImageUrl(updateImageUrl);
         userRepository.save(foundUser);
     }
-    private String updateProfileImage(final MultipartFile image) throws IOException {
+    private String updateProfileImageToS3(final MultipartFile image) throws IOException {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String updatedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
