@@ -1,8 +1,7 @@
 package woorifisa.goodfriends.backend.user.domain;
 
 import lombok.Builder;
-import lombok.experimental.SuperBuilder;
-import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 
 import javax.persistence.*;

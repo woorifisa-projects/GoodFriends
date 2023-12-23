@@ -9,10 +9,7 @@ public class ProfileUpdateResponse {
     private String mobileNumber;
     private String address;
 
-    protected ProfileUpdateResponse() {
-    }
-
-    public ProfileUpdateResponse(String email, String nickName, String profileImageUrl, String mobileNumber, String address) {
+    public ProfileUpdateResponse(final String email, final String nickName, final String profileImageUrl, final String mobileNumber, final String address) {
         this.email = email;
         this.nickName = nickName;
         this.profileImageUrl = profileImageUrl;

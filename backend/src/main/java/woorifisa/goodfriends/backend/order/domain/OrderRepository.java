@@ -3,27 +3,28 @@ package woorifisa.goodfriends.backend.order.domain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import woorifisa.goodfriends.backend.order.exception.NotFoundOrderException;
 
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order,Long> {
 
-    Order findByProductIdAndUserId(Long productId, Long userId);
+    Order findByProductIdAndUserId(final Long productId, final Long userId);
 
     @Query("SELECT o FROM Order o " +
             "JOIN FETCH User u " +
             "ON o.user.id = u.id " +
             "AND o.product.id = :productId")
-    List<Order> findOrdersAndUserByProductId(Long productId);
+    List<Order> findOrdersAndUserByProductId(@Param("productId") final Long productId);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Order o " +
-            "SET o.confirmStatus = :confirmStatus " +
+            "SET o.orderStatus = :orderStatus " +
             "WHERE o.id = :orderId")
-    void updateConfirmStatus(Long orderId, ConfirmStatus confirmStatus);
+    void updateOrderStatus(@Param("orderId") final Long orderId, @Param("orderStatus") final OrderStatus orderStatus);
 
-    default Order getById(Long orderId) {
+    default Order getById(final Long orderId) {
         return findById(orderId).orElseThrow(NotFoundOrderException::new);
     }
 
@@ -31,24 +32,24 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
             "JOIN FETCH Product p " +
             "ON o.product.id = p.id " +
             "AND o.user.id = :userId")
-    List<Order> findOrdersAndProductByUserId(Long userId);
+    List<Order> findOrdersAndProductByUserId(@Param("userId") final Long userId);
 
     @Query("SELECT o FROM Order o " +
             "JOIN FETCH Product p " +
             "ON o.product.id = p.id " +
             "AND o.user.id = :userId " +
-            "AND o.confirmStatus = :confirmStatus")
-    List<Order> findOrdersAndProductByUserIdAndConfirmStatus(Long userId, ConfirmStatus confirmStatus);
+            "AND o.orderStatus = :orderStatus")
+    List<Order> findOrdersAndProductByUserIdAndConfirmStatus(@Param("userId")final Long userId, @Param("orderStatus")final OrderStatus orderStatus);
 
     @Query("SELECT count(o) " +
             "FROM Order o " +
-            "WHERE o.confirmStatus = :confirmStatus " +
+            "WHERE o.orderStatus = :orderStatus " +
             "AND o.user.id = :userId")
-    Long findCountByConfirmStatusAndUserId(ConfirmStatus confirmStatus, Long userId);
+    Long findCountByConfirmStatusAndUserId(@Param("orderStatus") final OrderStatus orderStatus, @Param("userId") final Long userId);
 
     @Query("SELECT o " +
             "FROM Order o " +
             "WHERE o.product.id = :productId " +
-            "AND o.confirmStatus = :confirmStatus")
-    Order findByProductIdAndConfirmStatus(Long productId, ConfirmStatus confirmStatus);
+            "AND o.orderStatus = :orderStatus")
+    Order findByProductIdAndConfirmStatus(@Param("productId") final Long productId, @Param("orderStatus") final OrderStatus orderStatus);
 }

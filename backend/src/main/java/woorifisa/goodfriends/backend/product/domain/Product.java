@@ -1,11 +1,10 @@
 package woorifisa.goodfriends.backend.product.domain;
 
 import lombok.Builder;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
-import woorifisa.goodfriends.backend.global.common.BaseTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseTimeEntity;
 import woorifisa.goodfriends.backend.product.exception.InvalidDescriptionException;
 import woorifisa.goodfriends.backend.user.domain.User;
 

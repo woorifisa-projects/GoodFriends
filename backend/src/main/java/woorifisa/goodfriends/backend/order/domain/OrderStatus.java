@@ -1,15 +1,14 @@
-package woorifisa.goodfriends.backend.product.domain;
-
+package woorifisa.goodfriends.backend.order.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ProductStatus {
-    SELL("판매중"), // 기본값
+public enum OrderStatus {
+    ORDERING("주문중"),
     RESERVATION("예약중"),
-    COMPLETED("거래완료");
+    COMPLETED("주문완료");
 
     private final String text;
 }

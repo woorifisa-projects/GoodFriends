@@ -1,7 +1,8 @@
-package woorifisa.goodfriends.backend.global.common;
+package woorifisa.goodfriends.backend.common;
 
-import lombok.experimental.SuperBuilder;
+
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
@@ -11,16 +12,24 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class) // 3, 4
-public abstract class BaseCreateTimeEntity {
+public abstract class BaseTimeEntity {
 
     @CreatedDate // 1
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public BaseCreateTimeEntity() {
+    @LastModifiedDate // 1
+    @Column(name = "last_modified_at", nullable = false)
+    private LocalDateTime lastModifiedAt;
+
+    public BaseTimeEntity() {
     }
 
-    public LocalDateTime getCreatedDate() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getLastModifiedAt() {
+        return lastModifiedAt;
     }
 }

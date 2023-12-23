@@ -7,7 +7,7 @@ import woorifisa.goodfriends.backend.offender.domain.Offender;
 import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
-import woorifisa.goodfriends.backend.profile.exception.NotFoundProfile;
+import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.report.domain.Report;
 import woorifisa.goodfriends.backend.report.domain.ReportRepository;
 import woorifisa.goodfriends.backend.report.dto.request.ReportCreateServiceRequest;
@@ -44,7 +44,7 @@ public class ReportService {
     @Transactional
     public Long saveReport(final LoginUser loginUser, final Long productId, final ReportCreateServiceRequest request) {
         if(!existProfile(loginUser.getId()))
-            throw new NotFoundProfile();
+            throw new NotFoundProfileException();
         if(duplicateReport(productId, loginUser.getId()))
             throw new AlreadyReportedException();
 

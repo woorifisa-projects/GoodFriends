@@ -1,23 +1,19 @@
 package woorifisa.goodfriends.backend.profile.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
-import woorifisa.goodfriends.backend.product.domain.ProductCategory;
-import woorifisa.goodfriends.backend.product.domain.ProductStatus;
+import woorifisa.goodfriends.backend.order.domain.OrderStatus;
 
 @Getter
-public class ProductViewSellList {
-
+public class ProfilePurchaseResponse {
     private final Long productId;
-
     private final String title;
-
-    private final ProductStatus status;
-
+    private final OrderStatus status;
     private final int sellPrice;
-
     private final String imageUrl;
 
-    public ProductViewSellList(Long productId, String title, ProductStatus status, int sellPrice, String imageUrl) {
+    @Builder
+    public ProfilePurchaseResponse(final Long productId, final String title, final OrderStatus status, final int sellPrice, final String imageUrl) {
         this.productId = productId;
         this.title = title;
         this.status = status;
