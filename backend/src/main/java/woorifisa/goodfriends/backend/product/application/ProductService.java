@@ -62,26 +62,17 @@ public class ProductService {
         Product newProduct = productRepository.save(newRequest.toEntity(foundUser, newRequest));
 
         // 저장한 상품ID를 가져와서 상품 이미지 저장
-        saveImages(newProduct.getId(), newRequest.getImageUrls());
+        saveProductImages(newProduct.getId(), newRequest.getImageUrls());
         return newProduct.getId();
     }
 
     private void validateUser(final Long userId) {
-        if(existOffender(userId)) {
+        if (existOffender(userId)) {
             throw new NotAccessProductException();
         }
-        if(!existProfile(userId)) {
+        if (!existProfile(userId)) {
             throw new NotFoundProfileException();
         }
-    }
-
-    private static ProductCreateRequest createProductCreateRequest(final ProductCreateRequest request, final List<MultipartFile> multipartFiles) {
-        return new ProductCreateRequest(
-                request.getTitle(),
-                request.getProductCategory(),
-                request.getDescription(),
-                request.getSellPrice(),
-                multipartFiles);
     }
 
     private boolean existOffender(final Long userId) {
@@ -94,16 +85,25 @@ public class ProductService {
         return profile != null;
     }
 
-    private List<String> saveImages(final Long productId, final List<MultipartFile> images) throws IOException {
+    private static ProductCreateRequest createProductCreateRequest(final ProductCreateRequest request, final List<MultipartFile> multipartFiles) {
+        return new ProductCreateRequest(
+                request.getTitle(),
+                request.getProductCategory(),
+                request.getDescription(),
+                request.getSellPrice(),
+                multipartFiles);
+    }
+
+    private List<String> saveProductImages(final Long productId, final List<MultipartFile> images) throws IOException {
         List<String> savedImages = new ArrayList<>();
 
-        for(MultipartFile image : images)
-            if(!image.isEmpty())
-                savedImages.add(saveImage(productId, image));
+        for (MultipartFile image : images)
+            if (!image.isEmpty())
+                savedImages.add(saveProductImage(productId, image));
         return savedImages;
     }
 
-    private String saveImage(final Long productId, final MultipartFile image) throws IOException {
+    private String saveProductImage(final Long productId, final MultipartFile image) throws IOException {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
@@ -115,7 +115,7 @@ public class ProductService {
     public ProductsResponse findSearchProduct(Pageable pageable, final String productCategory, final String keyword) {
         List<Product> products;
 
-        if(productCategory.equals(PRODUCT_CATEGORY_ALL)){
+        if (productCategory.equals(PRODUCT_CATEGORY_ALL)) {
             products = productRepository.findByTitleContains(pageable, keyword);
         } else {
             ProductCategory category = ProductCategory.valueOf(productCategory);
@@ -155,18 +155,22 @@ public class ProductService {
 
     public ProductDetailResponse findProduct(final Long userId, final Long productId) {
         validateUser(userId);
-        Product product = productRepository.getByProductId(productId);
-        List<String> imageUrls = productImageRepository.findAllImageUrlByProductId(product.getId());
+        Product product = findProductObject(productId);
+        List<String> imageUrls = getImageUrls(product);
 
-        if(product.getUser() == null) {
+        if (product.getUser() == null) {
             return ProductDetailResponse.of(product, imageUrls);
         }
         User user = userRepository.getByUserId(product.getUser().getId());
         return ProductDetailResponse.of(product, imageUrls, user);
     }
 
+    private List<String> getImageUrls(final Product product) {
+        return productImageRepository.findAllImageUrlByProductId(product.getId());
+    }
+
     public ProductUpdateResponse findEditProduct(final Long userId, final Long productId) {
-        if(!checkUserIdAndProductIdEquals(userId, productId)){
+        if (!checkUserIdAndProductIdEquals(userId, productId)) {
             throw new NotAccessThisProductException();
         }
 
@@ -175,17 +179,10 @@ public class ProductService {
         return ProductUpdateResponse.of(selectedProduct, images);
     }
 
-    public boolean checkUserIdAndProductIdEquals(final Long userId, final Long productId) {
-        if(userId == null) {
-            return false;
-        }
-        Product product = productRepository.getByProductId(productId);
-        return userId.equals(product.getUser().getId());
-    }
 
     @Transactional
     public void updateProduct(final ProductUpdateRequest productUpdateRequest, final Long userId, final Long productId) throws IOException {
-        if(!checkUserIdAndProductIdEquals(userId, productId)){
+        if (!checkUserIdAndProductIdEquals(userId, productId)) {
             throw new NotAccessThisProductException();
         }
 
@@ -199,7 +196,15 @@ public class ProductService {
         product.updateProductCategory(productUpdateRequest.getProductCategory());
         product.updateDescription(productUpdateRequest.getDescription());
         product.updateSellPrice(productUpdateRequest.getSellPrice());
-        saveImages(productId, productUpdateRequest.getImageUrls());
+        saveProductImages(productId, productUpdateRequest.getImageUrls());
+    }
+
+    public boolean checkUserIdAndProductIdEquals(final Long userId, final Long productId) {
+        if (userId == null) {
+            return false;
+        }
+        Product product = productRepository.getByProductId(productId);
+        return userId.equals(product.getUser().getId());
     }
 
     private Product findProductObject(final Long productId) {
@@ -208,8 +213,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void deleteById(Long userId, Long productId) throws MalformedURLException {
-        if(!checkUserIdAndProductIdEquals(userId, productId)){
+    public void deleteById(final Long userId, final Long productId) throws MalformedURLException {
+        if (!checkUserIdAndProductIdEquals(userId, productId)) {
             throw new NotAccessThisProductException();
         }
         deleteImageByProductId(productId);
