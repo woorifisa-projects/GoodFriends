@@ -82,27 +82,26 @@ public class ProductService {
         return offender != null;
     }
 
-    private boolean existProfile(Long userId) {
+    private boolean existProfile(final Long userId) {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
 
-    private List<String> saveImages(Long productId, List<MultipartFile> images) throws IOException {
+    private List<String> saveImages(final Long productId, final List<MultipartFile> images) throws IOException {
         List<String> savedImages = new ArrayList<>();
-        for(MultipartFile image : images) {
-            if(!image.isEmpty()) {
+
+        for(MultipartFile image : images)
+            if(!image.isEmpty())
                 savedImages.add(saveImage(productId, image));
-            }
-        }
         return savedImages;
     }
 
-    private String saveImage(Long productId, MultipartFile image) throws IOException {
+    private String saveImage(final Long productId, final MultipartFile image) throws IOException {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
-        productImageRepository.save(new ProductImage(productRepository.getById(productId), savedImageUrl));
-
+        ProductImage productImage = new ProductImage(productRepository.getById(productId), savedImageUrl);
+        productImageRepository.save(productImage);
         return savedImageUrl;
     }
 
