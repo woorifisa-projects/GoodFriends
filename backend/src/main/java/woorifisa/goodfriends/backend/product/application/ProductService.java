@@ -56,7 +56,7 @@ public class ProductService {
     public Long saveProduct(final Long userId, final ProductCreateRequest request, final List<MultipartFile> multipartFiles) throws IOException {
         validateUser(userId);
 
-        User foundUser = userRepository.getById(userId);
+        User foundUser = userRepository.getByUserId(userId);
         ProductCreateRequest newRequest = createProductCreateRequest(request, multipartFiles);
         Product newProduct = productRepository.save(newRequest.toEntity(foundUser, newRequest));
 
@@ -106,7 +106,7 @@ public class ProductService {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
-        ProductImage productImage = new ProductImage(productRepository.getById(productId), savedImageUrl);
+        ProductImage productImage = new ProductImage(productRepository.getByProductId(productId), savedImageUrl);
         productImageRepository.save(productImage);
         return savedImageUrl;
     }
@@ -144,7 +144,7 @@ public class ProductService {
                     if (product.getUser() == null)
                         return ProductResponse.of(product, imageUrl);
 
-                    User user = userRepository.getById(product.getUser().getId());
+                    User user = userRepository.getByUserId(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
                     return ProductResponse.of(product, imageUrl, user, profile);
                 })
@@ -154,39 +154,41 @@ public class ProductService {
 
     public ProductDetailResponse findProduct(final Long userId, final Long productId) {
         validateUser(userId);
-
-        Product product = productRepository.getById(productId);
+        Product product = productRepository.getByProductId(productId);
         List<String> imageUrls = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if(product.getUser() == null) {
             return ProductDetailResponse.of(product, imageUrls);
         }
-        User user = userRepository.getById(product.getUser().getId());
+        User user = userRepository.getByUserId(product.getUser().getId());
         return ProductDetailResponse.of(product, imageUrls, user);
     }
 
-    public ProductUpdateResponse findEditProduct(Long userId, Long productId) {
-        if(!verifyUser(userId, productId)){
+    public ProductUpdateResponse findEditProduct(final Long userId, final Long productId) {
+        if(!checkUserIdAndProductIdEquals(userId, productId)){
             throw new NotAccessThisProductException();
         }
 
-        Product selectedProduct = productRepository.getById(productId);
+        Product selectedProduct = productRepository.getByProductId(productId);
         List<String> images = productImageRepository.findAllImageUrlByProductId(productId);
         return new ProductUpdateResponse(selectedProduct, images);
     }
 
-    public boolean verifyUser(Long userId, Long productId) {
-        Product product = productRepository.getById(productId);
-        return product.getUser().getId() == userId;
+    public boolean checkUserIdAndProductIdEquals(final Long userId, final Long productId) {
+        if(userId == null) {
+            return false;
+        }
+        Product product = productRepository.getByProductId(productId);
+        return userId.equals(product.getUser().getId());
     }
 
     @Transactional
     public void updateProduct(ProductUpdateRequest request, Long userId, Long productId) throws IOException {
-        if(!verifyUser(userId, productId)){
+        if(!checkUserIdAndProductIdEquals(userId, productId)){
             throw new NotAccessThisProductException();
         }
 
-        Product selectedProduct = productRepository.getById(productId);
+        Product selectedProduct = productRepository.getByProductId(productId);
 
         deleteImageByProductId(productId);
         productImageRepository.deleteByProductId(productId);
@@ -209,7 +211,7 @@ public class ProductService {
 
     @Transactional
     public void deleteById(Long userId, Long productId) throws MalformedURLException {
-        if(!verifyUser(userId, productId)){
+        if(!checkUserIdAndProductIdEquals(userId, productId)){
             throw new NotAccessThisProductException();
         }
         deleteImageByProductId(productId);
