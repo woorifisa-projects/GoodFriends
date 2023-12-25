@@ -112,58 +112,83 @@ public class ProductService {
 
         if(productCategory.equals(PRODUCT_CATEGORY_ALL)){
             products = productRepository.findByTitleContains(pageable, keyword);
-        }
-        else {
+        } else {
             ProductCategory category = ProductCategory.valueOf(productCategory);
             products = productRepository.findByTitleContainsInCategory(pageable, category, keyword);
         }
-
-        List<ProductResponse> responses = createViewList(products);
-
+        List<ProductResponse> responses = getProducts(products);
         return new ProductsResponse(responses);
     }
 
     public ProductsResponse findProductByCategory(Pageable pageable, ProductCategory productCategory) {
         List<Product> products = productRepository.findByProductCategory(pageable, productCategory);
-
-        List<ProductResponse> responses = createViewList(products);
-
+        List<ProductResponse> responses = getProducts(products);
         return new ProductsResponse(responses);
     }
 
     public ProductsResponse findAllProducts(Pageable pageable) {
         List<Product> products = productRepository.findAllOrderByIdDesc(pageable);
-
-        List<ProductResponse> responses = createViewList(products);
-
+        List<ProductResponse> responses = getProducts(products);
         return new ProductsResponse(responses);
     }
 
-    private List<ProductResponse> createViewList(List<Product> products) {
+    //  특정 상품 목록에 대한 응답값을 반환
+    private List<ProductResponse> getProducts(List<Product> products) {
         List<ProductResponse> responses = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
-                    if(product.getUser() == null) {
-                        ProductResponse productResponse = new ProductResponse(
-                                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null, true);
-
-                        return productResponse;
+                    if (product.getUser() == null) {
+                        return getProductsWithoutUser(product, image);
                     }
 
                     User user = userRepository.getById(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
-                    ProductResponse productResponse = new ProductResponse(
-                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress(), user.isActivated());
-                    return productResponse;
+                    return getProductsWithUser(product, image, user, profile);
                 })
-                .filter(
-                        productResponse -> productResponse.isActivated()
-                )
+                .filter(ProductResponse::isActivated)
                 .collect(Collectors.toList());
 
         return responses;
     }
+
+    private ProductResponse getProductsWithoutUser(Product product, String image) {
+        return new ProductResponse(
+                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(),
+                product.getSellPrice(), image, null, true);
+    }
+
+    private ProductResponse getProductsWithUser(Product product, String image, User user, Profile profile) {
+        return new ProductResponse(
+                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(),
+                product.getSellPrice(), image, profile.getAddress(), user.isActivated());
+    }
+
+//    private List<ProductResponse> getProducts(final List<Product> products) {
+//        List<ProductResponse> responses = products.stream()
+//                .map(product -> {
+//                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
+//                    if(product.getUser() == null) {
+//                        ProductResponse productResponse = new ProductResponse(
+//                                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null, true);
+//
+//                        return productResponse;
+//                    }
+//
+//                    User user = userRepository.getById(product.getUser().getId());
+//                    Profile profile = profileRepository.getByUserId(product.getUser().getId());
+//
+//                    ProductResponse productResponse = new ProductResponse(
+//                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress(), user.isActivated());
+//                    return productResponse;
+//                })
+//                .filter(
+//                        productResponse -> productResponse.isActivated()
+//                )
+//                .collect(Collectors.toList());
+//
+//        return responses;
+//    }
 
     public ProductDetailResponse findProduct(Long userId, Long productId) {
 
