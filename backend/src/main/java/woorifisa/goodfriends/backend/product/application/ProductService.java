@@ -171,7 +171,7 @@ public class ProductService {
 
         Product selectedProduct = productRepository.getByProductId(productId);
         List<String> images = productImageRepository.findAllImageUrlByProductId(productId);
-        return new ProductUpdateResponse(selectedProduct, images);
+        return ProductUpdateResponse.of(selectedProduct, images);
     }
 
     public boolean checkUserIdAndProductIdEquals(final Long userId, final Long productId) {
