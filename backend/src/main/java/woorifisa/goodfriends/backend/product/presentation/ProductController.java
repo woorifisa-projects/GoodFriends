@@ -42,8 +42,8 @@ public class ProductController {
     // 상품 검색
     @GetMapping("/search")
     public ResponseEntity<ProductsResponse> findSearchProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
-                                                              @RequestParam String productCategory,
-                                                              @RequestParam String keyword) {
+                                                              @RequestParam final String productCategory,
+                                                              @RequestParam final String keyword) {
         ProductsResponse responses = productService.findSearchProduct(pageable, productCategory, keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
@@ -51,7 +51,7 @@ public class ProductController {
     // 상품 카테고리별 조회
     @GetMapping("/category")
     public ResponseEntity<ProductsResponse> findProductByCategory(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
-                                                                  @RequestParam String productCategory) {
+                                                                  @RequestParam final String productCategory) {
         ProductCategory category = ProductCategory.valueOf(productCategory);
         ProductsResponse responses = productService.findProductByCategory(pageable, category);
         return ResponseEntity.ok().body(responses); // 200
@@ -67,7 +67,7 @@ public class ProductController {
     // 상품 상세 조회
     @GetMapping("/{productId}")
     public ResponseEntity<ProductDetailResponse> findProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                @PathVariable Long productId) {
+                                                                @PathVariable final Long productId) {
         ProductDetailResponse response = productService.findProduct(loginUser.getId(), productId);
         return ResponseEntity.ok().body(response); // 200
     }
@@ -75,7 +75,7 @@ public class ProductController {
     // 수정할 상품 상세 조회
     @GetMapping("/edit/{productId}")
     public ResponseEntity<ProductUpdateResponse> findEditProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                 @PathVariable Long productId){
+                                                                 @PathVariable final Long productId){
             ProductUpdateResponse response = productService.findEditProduct(loginUser.getId(), productId);
             return ResponseEntity.ok().body(response); // 200
     }
@@ -83,9 +83,9 @@ public class ProductController {
     // 상품 수정
     @PutMapping("/edit/{productId}")
     public ResponseEntity<Void> updateProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                              @PathVariable Long productId,
-                                              @RequestPart ProductUpdateRequest request,
-                                              @RequestPart List<MultipartFile> multipartFiles) throws IOException {
+                                              @PathVariable final Long productId,
+                                              @RequestPart final ProductUpdateRequest request,
+                                              @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
             ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategory(), request.getDescription(), request.getSellPrice(), multipartFiles);
             productService.updateProduct(productUpdateRequest, loginUser.getId(), productId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
@@ -94,7 +94,7 @@ public class ProductController {
     // 상품 삭제
     @DeleteMapping("/remove/{productId}")
     public ResponseEntity<Void> deleteProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                              @PathVariable Long productId) throws MalformedURLException {
+                                              @PathVariable final Long productId) throws MalformedURLException {
             productService.deleteById(loginUser.getId(), productId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
     }
