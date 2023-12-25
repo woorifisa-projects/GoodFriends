@@ -149,44 +149,6 @@ public class ProductService {
         return responses;
     }
 
-    private ProductResponse getProductsWithoutUser(Product product, String image) {
-        return new ProductResponse(
-                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(),
-                product.getSellPrice(), image, null, true);
-    }
-
-    private ProductResponse getProductsWithUser(Product product, String image, User user, Profile profile) {
-        return new ProductResponse(
-                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(),
-                product.getSellPrice(), image, profile.getAddress(), user.isActivated());
-    }
-
-//    private List<ProductResponse> getProducts(final List<Product> products) {
-//        List<ProductResponse> responses = products.stream()
-//                .map(product -> {
-//                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
-//                    if(product.getUser() == null) {
-//                        ProductResponse productResponse = new ProductResponse(
-//                                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null, true);
-//
-//                        return productResponse;
-//                    }
-//
-//                    User user = userRepository.getById(product.getUser().getId());
-//                    Profile profile = profileRepository.getByUserId(product.getUser().getId());
-//
-//                    ProductResponse productResponse = new ProductResponse(
-//                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress(), user.isActivated());
-//                    return productResponse;
-//                })
-//                .filter(
-//                        productResponse -> productResponse.isActivated()
-//                )
-//                .collect(Collectors.toList());
-//
-//        return responses;
-//    }
-
     public ProductDetailResponse findProduct(Long userId, Long productId) {
 
         //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
