@@ -17,6 +17,7 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
 import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
 import woorifisa.goodfriends.backend.product.exception.NotAccessThisProductException;
+import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
@@ -183,30 +184,27 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProduct(ProductUpdateRequest request, Long userId, Long productId) throws IOException {
+    public void updateProduct(final ProductUpdateRequest productUpdateRequest, final Long userId, final Long productId) throws IOException {
         if(!checkUserIdAndProductIdEquals(userId, productId)){
             throw new NotAccessThisProductException();
         }
 
-        Product selectedProduct = productRepository.getByProductId(productId);
-
         deleteImageByProductId(productId);
         productImageRepository.deleteByProductId(productId);
 
-        List<String> savedImageUrls = saveImages(productId, request.getImageUrls());
+        Product product = findProductObject(productId);
+        product.updateUser(product.getUser());
+        product.updateStatus(product.getStatus());
+        product.updateTitle(productUpdateRequest.getTitle());
+        product.updateProductCategory(productUpdateRequest.getProductCategory());
+        product.updateDescription(productUpdateRequest.getDescription());
+        product.updateSellPrice(productUpdateRequest.getSellPrice());
+        saveImages(productId, productUpdateRequest.getImageUrls());
+    }
 
-        Product updateProduct = Product.builder()
-                .user(selectedProduct.getUser())
-                .title(request.getTitle())
-                .productCategory(request.getProductCategory())
-                .status(selectedProduct.getStatus())
-                .description(request.getDescription())
-                .sellPrice(request.getSellPrice())
-                .build();
-
-        updateProduct.validDescription(updateProduct.getDescription());
-
-        Product updatedProduct = productRepository.save(updateProduct);
+    private Product findProductObject(final Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(NotFoundProductException::new);
     }
 
     @Transactional

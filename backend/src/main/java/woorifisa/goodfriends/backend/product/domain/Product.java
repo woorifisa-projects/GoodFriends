@@ -95,4 +95,28 @@ public class Product extends BaseEntity {
     public int getSellPrice() {
         return sellPrice;
     }
+
+    public void updateUser(final User user) {
+        this.user = user;
+    }
+
+    public void updateStatus(final ProductStatus status) {
+        this.status = status;
+    }
+
+    public void updateTitle(final String title) {
+        this.title = title;
+    }
+
+    public void updateProductCategory(final ProductCategory productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public void updateDescription(final String description) {
+        this.description = description;
+    }
+
+    public void updateSellPrice(final int sellPrice) {
+        this.sellPrice = sellPrice;
+    }
 }
