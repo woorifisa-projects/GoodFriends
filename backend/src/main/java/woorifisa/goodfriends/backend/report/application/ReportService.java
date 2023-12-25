@@ -48,7 +48,7 @@ public class ReportService {
         if(duplicateReport(productId, loginUser.getId()))
             throw new AlreadyReportedException();
 
-        User foundUser = userRepository.getById(loginUser.getId());
+        User foundUser = userRepository.getByUserId(loginUser.getId());
         Product productCreator = productRepository.getByProductIdAndUserId(productId);
         Report newReport = createReport(foundUser, productCreator, request);
         reportRepository.save(newReport);

@@ -112,7 +112,7 @@ public class AdminService {
 
     // 사용자 정보 수정
     public void updateUserInfo(Long userId, UserUpdateRequest request) {
-        User user = userRepository.getById(userId);
+        User user = userRepository.getByUserId(userId);
         Profile profile = profileRepository.getByUserId(userId);
         userRepository.save(User.builder()
                 .email(user.getEmail())
@@ -162,7 +162,7 @@ public class AdminService {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
-        productImageRepository.save(new ProductImage(productRepository.getById(productId), savedImageUrl));
+        productImageRepository.save(new ProductImage(productRepository.getByProductId(productId), savedImageUrl));
 
         return savedImageUrl;
     }
@@ -206,7 +206,7 @@ public class AdminService {
                         return productResponse;
                     }
 
-                    User user = userRepository.getById(product.getUser().getId());
+                    User user = userRepository.getByUserId(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
                     ProductResponse productResponse = new ProductResponse(
@@ -220,19 +220,19 @@ public class AdminService {
 
     // 상품 상세 조회
     public ProductDetailResponse viewOneProduct(Long id) {
-        Product product = productRepository.getById(id);
+        Product product = productRepository.getByProductId(id);
         List<String> imageUrls = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if (product.getUser() == null) {
             return ProductDetailResponse.of(product, imageUrls);
         }
-        User user = userRepository.getById(product.getUser().getId());
+        User user = userRepository.getByUserId(product.getUser().getId());
         return ProductDetailResponse.of(product, imageUrls, user);
     }
 
     // 수정할 상품
     public ProductUpdateResponse showSelectedProduct(Long id) {
-        Product selectedProduct = productRepository.getById(id);
+        Product selectedProduct = productRepository.getByProductId(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(id);
         return new ProductUpdateResponse(selectedProduct, images);
     }
@@ -240,7 +240,7 @@ public class AdminService {
     // 상품 수정
     @Transactional
     public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) throws IOException {
-        Product selectedProduct = productRepository.getById(id);
+        Product selectedProduct = productRepository.getByProductId(id);
 
         deleteImageByProductId(id);
         productImageRepository.deleteByProductId(id);

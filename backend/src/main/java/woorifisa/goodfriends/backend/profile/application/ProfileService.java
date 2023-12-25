@@ -43,7 +43,7 @@ public class ProfileService {
 
     @Transactional
     public ProfileDetailResponse findMyProfile(final Long userId) {
-        User user = userRepository.getById(userId);
+        User user = userRepository.getByUserId(userId);
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
 
         return ProfileDetailResponse.of(user, profile);
@@ -51,7 +51,7 @@ public class ProfileService {
 
     @Transactional
     public void update(final Long userId, final ProfileUpdateRequest request) {
-        User user = userRepository.getById(userId);
+        User user = userRepository.getByUserId(userId);
         user.updateNickname(request.getNickName());
         userRepository.save(user);
 
