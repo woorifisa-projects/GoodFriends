@@ -109,7 +109,7 @@ public class OrderService {
         return newOrder;
     }
 
-    public OrderViewAllResponse viewAllOrder(Long userId, Long productId) {
+    public OrderViewAllResponse findAllOrder(Long userId, Long productId) {
 
         // 부정행위자 본인이 등록한 상품 주문서 조회 불가
         if(existOffender(userId)) {
@@ -149,7 +149,7 @@ public class OrderService {
     }
 
     @Transactional
-    public UserDealResponse dealOrder(Long orderId) {
+    public UserDealResponse updateOrder(Long orderId) {
 
         Order order = orderRepository.getById(orderId);
         Product product = productRepository.getById(order.getProduct().getId());
@@ -167,7 +167,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void confirmDeal(Long productId){
+    public void updateOrderConfirmDeal(Long productId){
         productRepository.updateProductStatus(productId,ProductStatus.COMPLETED);
         Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
         orderRepository.updateOrderStatus(order.getId(), OrderStatus.COMPLETED);
