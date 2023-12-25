@@ -54,12 +54,7 @@ public class ProductService {
 
     @Transactional
     public Long saveProduct(final Long userId, final ProductCreateRequest request, final List<MultipartFile> multipartFiles) throws IOException {
-        if(existOffender(userId)) {
-            throw new NotAccessProductException();
-        }
-        if(!existProfile(userId)) {
-            throw new NotFoundProfileException();
-        }
+        validateUser(userId);
 
         User foundUser = userRepository.getById(userId);
         ProductCreateRequest newRequest = createProductCreateRequest(request, multipartFiles);
@@ -68,6 +63,15 @@ public class ProductService {
         // 저장한 상품ID를 가져와서 상품 이미지 저장
         saveImages(newProduct.getId(), newRequest.getImageUrls());
         return newProduct.getId();
+    }
+
+    private void validateUser(final Long userId) {
+        if(existOffender(userId)) {
+            throw new NotAccessProductException();
+        }
+        if(!existProfile(userId)) {
+            throw new NotFoundProfileException();
+        }
     }
 
     private static ProductCreateRequest createProductCreateRequest(final ProductCreateRequest request, final List<MultipartFile> multipartFiles) {
@@ -149,10 +153,7 @@ public class ProductService {
     }
 
     public ProductDetailResponse findProduct(final Long userId, final Long productId) {
-        if(existOffender(userId))
-            throw new NotAccessProductException();
-        if(!existProfile(userId))
-            throw new NotFoundProfileException();
+        validateUser(userId);
 
         Product product = productRepository.getById(productId);
         List<String> imageUrls = productImageRepository.findAllImageUrlByProductId(product.getId());
