@@ -17,7 +17,6 @@ public class Profile extends BaseEntity {
 
     private static final Pattern MOBILE_NUMBER = Pattern.compile("^\\d{3}-\\d{3,4}-\\d{4}$");
 
-    private static final Pattern MOBILE_NUMBER = Pattern.compile("^\\d{3}-\\d{3,4}-\\d{4}$");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

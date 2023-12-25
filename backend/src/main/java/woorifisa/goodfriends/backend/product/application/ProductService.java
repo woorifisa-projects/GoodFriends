@@ -57,7 +57,7 @@ public class ProductService {
     public Long saveProduct(final Long userId, final ProductCreateRequest request, final List<MultipartFile> multipartFiles) throws IOException {
         validateUser(userId);
 
-        User foundUser = userRepository.getByUserId(userId);
+        User foundUser = userRepository.getById(userId);
         ProductCreateRequest newRequest = createProductCreateRequest(request, multipartFiles);
         Product newProduct = productRepository.save(newRequest.toEntity(foundUser, newRequest));
 
@@ -107,7 +107,7 @@ public class ProductService {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
-        ProductImage productImage = new ProductImage(productRepository.getByProductId(productId), savedImageUrl);
+        ProductImage productImage = new ProductImage(productRepository.getById(productId), savedImageUrl);
         productImageRepository.save(productImage);
         return savedImageUrl;
     }
@@ -145,7 +145,7 @@ public class ProductService {
                     if (product.getUser() == null)
                         return ProductResponse.of(product, imageUrl);
 
-                    User user = userRepository.getByUserId(product.getUser().getId());
+                    User user = userRepository.getById(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
                     return ProductResponse.of(product, imageUrl, user, profile);
                 })
@@ -161,7 +161,7 @@ public class ProductService {
         if (product.getUser() == null) {
             return ProductDetailResponse.of(product, imageUrls);
         }
-        User user = userRepository.getByUserId(product.getUser().getId());
+        User user = userRepository.getById(product.getUser().getId());
         return ProductDetailResponse.of(product, imageUrls, user);
     }
 
@@ -174,7 +174,7 @@ public class ProductService {
             throw new NotAccessThisProductException();
         }
 
-        Product selectedProduct = productRepository.getByProductId(productId);
+        Product selectedProduct = productRepository.getById(productId);
         List<String> images = productImageRepository.findAllImageUrlByProductId(productId);
         return ProductUpdateResponse.of(selectedProduct, images);
     }
@@ -203,7 +203,7 @@ public class ProductService {
         if (userId == null) {
             return false;
         }
-        Product product = productRepository.getByProductId(productId);
+        Product product = productRepository.getById(productId);
         return userId.equals(product.getUser().getId());
     }
 

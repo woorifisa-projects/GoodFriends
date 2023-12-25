@@ -70,8 +70,8 @@ public class OrderService {
             throw new OwnProductException();
         }
 
-        Product foundProduct = productRepository.getByProductId(request.getProductId());
-        User foundUser = userRepository.getByUserId(userId);
+        Product foundProduct = productRepository.getById(request.getProductId());
+        User foundUser = userRepository.getById(userId);
 
         Order newOrder = orderRepository.save(createOrder(foundProduct, foundUser, request));
         return newOrder.getId();
@@ -93,7 +93,7 @@ public class OrderService {
     }
 
     public boolean ownProduct(Long productId, Long userId) {
-        Product product = productRepository.getByProductId(productId);
+        Product product = productRepository.getById(productId);
         return product.getUser().getId() == userId;
     }
 
@@ -121,7 +121,7 @@ public class OrderService {
             throw new NotOwnProductException();
         }
 
-        Product product = productRepository.getByProductId(productId);
+        Product product = productRepository.getById(productId);
 
         if(product.getStatus() != ProductStatus.SELL) {
             Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
@@ -152,14 +152,14 @@ public class OrderService {
     public UserDealResponse dealOrder(Long orderId) {
 
         Order order = orderRepository.getById(orderId);
-        Product product = productRepository.getByProductId(order.getProduct().getId());
+        Product product = productRepository.getById(order.getProduct().getId());
 
         if(product.getStatus() == ProductStatus.SELL) {
             orderRepository.updateOrderStatus(orderId, OrderStatus.RESERVATION);
             productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
         }
 
-        User user = userRepository.getByUserId(order.getUser().getId());
+        User user = userRepository.getById(order.getUser().getId());
 
         UserDealResponse response = new UserDealResponse(user.getNickname(), user.getProfileImageUrl(), user.getEmail());
 
