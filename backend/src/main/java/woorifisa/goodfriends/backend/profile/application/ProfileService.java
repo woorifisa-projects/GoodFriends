@@ -89,7 +89,6 @@ public class ProfileService {
         profile.updateAccountNumber(request.getAccountNumber());
         profileRepository.save(profile);
     }
-
     public ProfileSellsResponse findProfileSells(final Long userId, final String productStatus) {
         List<Product> products;
 
