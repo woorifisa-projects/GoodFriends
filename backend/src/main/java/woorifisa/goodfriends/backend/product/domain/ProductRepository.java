@@ -10,7 +10,7 @@ import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    default Product getByProductId(final Long id) {
+    default Product getById(final Long id) {
         return findById(id)
                 .orElseThrow(NotFoundProductException::new);
     }

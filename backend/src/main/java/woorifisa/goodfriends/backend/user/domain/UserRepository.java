@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    default User getByUserId(final Long id) {
+    default User getById(final Long id) {
         return findById(id)
                 .orElseThrow(NotFoundUserException::new);
     }
