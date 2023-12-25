@@ -132,9 +132,9 @@ public class ProductService {
         return new ProductsResponse(responses);
     }
 
-    //  특정 상품 목록에 대한 응답값을 반환
+    //  특정 상품 목록을 받아와서 해당 상품들에 대한 응답 객체를 생성하고, 활성화된 상품들만을 리스트로 반환하는 기능
     private List<ProductResponse> getProducts(List<Product> products) {
-        List<ProductResponse> responses = products.stream()
+        return products.stream()
                 .map(product -> {
                     String imageUrl = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if (product.getUser() == null)
@@ -146,7 +146,6 @@ public class ProductService {
                 })
                 .filter(ProductResponse::isActivated)
                 .collect(Collectors.toList());
-        return responses;
     }
 
     public ProductDetailResponse findProduct(Long userId, Long productId) {
