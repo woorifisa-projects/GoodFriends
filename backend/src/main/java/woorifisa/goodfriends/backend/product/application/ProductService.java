@@ -148,33 +148,20 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public ProductDetailResponse findProduct(Long userId, Long productId) {
-
-        //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
-        if(existOffender(userId)) {
+    public ProductDetailResponse findProduct(final Long userId, final Long productId) {
+        if(existOffender(userId))
             throw new NotAccessProductException();
-        }
-
-        if(!existProfile(userId)) {
-            throw new NotFoundProfileException(); // 403
-        }
+        if(!existProfile(userId))
+            throw new NotFoundProfileException();
 
         Product product = productRepository.getById(productId);
-        System.out.println(product.getCreatedAt());
-        List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
+        List<String> imageUrls = productImageRepository.findAllImageUrlByProductId(product.getId());
 
-        if(product.getUser() == null){
-            ProductDetailResponse response = new ProductDetailResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
-                    product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
-
-            return response;
+        if(product.getUser() == null) {
+            return ProductDetailResponse.of(product, imageUrls);
         }
-
         User user = userRepository.getById(product.getUser().getId());
-        ProductDetailResponse response = new ProductDetailResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
-                product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
-
-        return response;
+        return ProductDetailResponse.of(product, imageUrls, user);
     }
 
     public ProductUpdateResponse findEditProduct(Long userId, Long productId) {
