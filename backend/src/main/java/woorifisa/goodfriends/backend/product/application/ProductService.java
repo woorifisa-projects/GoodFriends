@@ -52,26 +52,19 @@ public class ProductService {
 
     @Transactional
     public Long saveProduct(final Long userId, final ProductCreateRequest request, final List<MultipartFile> multipartFiles) throws IOException {
-
-        ProductCreateRequest productCreateRequest = createProductCreateRequest(request, multipartFiles);
-
-        //부정행위자로 등록된 유저는 상품 등록 못하도록
         if(existOffender(userId)) {
             throw new NotAccessProductException();
         }
-
-        //프로필 등록해야 상품 등록 가능하도록
         if(!existProfile(userId)) {
-            throw new NotFoundProfileException(); // 403
+            throw new NotFoundProfileException();
         }
 
         User foundUser = userRepository.getById(userId);
-        // 상품 저장
-        Product newProduct = productRepository.save(createProduct(foundUser, productCreateRequest));
+        ProductCreateRequest newRequest = createProductCreateRequest(request, multipartFiles);
+        Product newProduct = productRepository.save(newRequest.toEntity(foundUser, newRequest));
 
-        // 저장한 상품 id를 가져와서 상품 이미지 저장
-        saveImages(newProduct.getId(), productCreateRequest.getImageUrls());
-
+        // 저장한 상품ID를 가져와서 상품 이미지 저장
+        saveImages(newProduct.getId(), newRequest.getImageUrls());
         return newProduct.getId();
     }
 
@@ -92,19 +85,6 @@ public class ProductService {
     private boolean existProfile(Long userId) {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
-    }
-
-    private Product createProduct(User user, ProductCreateRequest request) {
-        Product newProduct = Product.builder()
-                .user(user)
-                .title(request.getTitle())
-                .status(ProductStatus.SELL)
-                .productCategory(request.getProductCategory())
-                .description(request.getDescription())
-                .sellPrice(request.getSellPrice())
-                .build();
-        newProduct.validDescription(newProduct.getDescription());
-        return newProduct;
     }
 
     private List<String> saveImages(Long productId, List<MultipartFile> images) throws IOException {
