@@ -221,19 +221,13 @@ public class AdminService {
     // 상품 상세 조회
     public ProductDetailResponse viewOneProduct(Long id) {
         Product product = productRepository.getById(id);
-        List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
+        List<String> imageUrls = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if (product.getUser() == null) {
-            ProductDetailResponse response = new ProductDetailResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
-                    product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
-
-            return response;
+            return ProductDetailResponse.of(product, imageUrls);
         }
-
         User user = userRepository.getById(product.getUser().getId());
-        ProductDetailResponse response = new ProductDetailResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
-                product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
-        return response;
+        return ProductDetailResponse.of(product, imageUrls, user);
     }
 
     // 수정할 상품
