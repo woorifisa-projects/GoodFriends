@@ -44,13 +44,14 @@ public class Product extends BaseEntity {
     private int sellPrice;
 
     public void validDescription(final String description) {
-        if(description.length() < DESCRIPTION_MINIMUM_SIZE) {
+        if (description.length() < DESCRIPTION_MINIMUM_SIZE) {
             throw new InvalidDescriptionException();
         }
     }
 
-    protected Product(){
+    protected Product() {
     }
+
     @Builder
     public Product(final User user, final Admin admin, final ProductCategory productCategory,
                    final String title, final ProductStatus status, final String description, final int sellPrice) {
@@ -64,6 +65,7 @@ public class Product extends BaseEntity {
         this.description = description;
         this.sellPrice = sellPrice;
     }
+
     public Long getId() {
         return id;
     }

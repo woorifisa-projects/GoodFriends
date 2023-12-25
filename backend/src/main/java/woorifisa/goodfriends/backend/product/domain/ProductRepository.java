@@ -55,7 +55,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "FROM Product p " +
             "WHERE p.user.id = :userId " +
             "ORDER BY p.id DESC")
-    List<Product> findAllByUserId(@Param("userId")final Long userId);
+    List<Product> findAllByUserId(@Param("userId") final Long userId);
 
     @Query("SELECT p " +
             "FROM Product p " +
