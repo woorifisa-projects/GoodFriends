@@ -17,12 +17,12 @@ import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.product.domain.*;
-import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductCreateRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.report.domain.ReportRepository;
@@ -112,7 +112,7 @@ public class AdminService {
 
     // 사용자 정보 수정
     public void updateUserInfo(Long userId, UserUpdateRequest request) {
-        User user = userRepository.getById(userId);
+        User user = userRepository.getByUserId(userId);
         Profile profile = profileRepository.getByUserId(userId);
         userRepository.save(User.builder()
                 .email(user.getEmail())
@@ -133,7 +133,7 @@ public class AdminService {
     }
 
     // 상품 등록
-    public Long saveProduct(long adminId, ProductSaveRequest request) throws IOException {
+    public Long saveProduct(long adminId, ProductCreateRequest request) throws IOException {
         Admin foundAdmin = adminRepository.getById(adminId);
 
         // 상품 저장
@@ -145,7 +145,7 @@ public class AdminService {
         return newProduct.getId();
     }
 
-    private Product createProduct(Admin admin, ProductSaveRequest request) {
+    private Product createProduct(Admin admin, ProductCreateRequest request) {
         Product newProduct = Product.builder()
                 .admin(admin)
                 .title(request.getTitle())
@@ -162,7 +162,7 @@ public class AdminService {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
-        productImageRepository.save(new ProductImage(productRepository.getById(productId), savedImageUrl));
+        productImageRepository.save(new ProductImage(productRepository.getByProductId(productId), savedImageUrl));
 
         return savedImageUrl;
     }
@@ -178,40 +178,40 @@ public class AdminService {
     }
 
     // 상품 검색
-    public ProductViewsAllResponse viewSearchProduct(String keyword) {
+    public ProductsResponse viewSearchProduct(String keyword) {
         List<Product> products = productRepository.findByTitleContains(Pageable.unpaged(), keyword);
 
-        List<ProductViewAllResponse> responses = createViewList(products);
+        List<ProductResponse> responses = createViewList(products);
 
-        return new ProductViewsAllResponse(responses);
+        return new ProductsResponse(responses);
     }
 
     // 상품 전체 조회
-    public ProductViewsAllResponse viewAllProduct() {
+    public ProductsResponse viewAllProduct() {
         List<Product> products = productRepository.findAllOrderByIdDesc(Pageable.unpaged());
 
-        List<ProductViewAllResponse> responses = createViewList(products);
+        List<ProductResponse> responses = createViewList(products);
 
-        return new ProductViewsAllResponse(responses);
+        return new ProductsResponse(responses);
     }
 
-    private List<ProductViewAllResponse> createViewList(List<Product> products) {
-        List<ProductViewAllResponse> viewList = products.stream()
+    private List<ProductResponse> createViewList(List<Product> products) {
+        List<ProductResponse> viewList = products.stream()
                 .map(product -> {
                     String image = productImageRepository.findOneImageUrlByProductId(product.getId());
                     if(product.getUser() == null) {
-                        ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
+                        ProductResponse productResponse = new ProductResponse(
                                 product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null, true);
 
-                        return productViewAllResponse;
+                        return productResponse;
                     }
 
-                    User user = userRepository.getById(product.getUser().getId());
+                    User user = userRepository.getByUserId(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
 
-                    ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
+                    ProductResponse productResponse = new ProductResponse(
                             product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress(), user.isActivated());
-                    return productViewAllResponse;
+                    return productResponse;
                 })
                 .collect(Collectors.toList());
 
@@ -219,26 +219,20 @@ public class AdminService {
     }
 
     // 상품 상세 조회
-    public ProductViewOneResponse viewOneProduct(Long id) {
-        Product product = productRepository.getById(id);
-        List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
+    public ProductDetailResponse viewOneProduct(Long id) {
+        Product product = productRepository.getByProductId(id);
+        List<String> imageUrls = productImageRepository.findAllImageUrlByProductId(product.getId());
 
         if (product.getUser() == null) {
-            ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
-                    product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
-
-            return response;
+            return ProductDetailResponse.of(product, imageUrls);
         }
-
-        User user = userRepository.getById(product.getUser().getId());
-        ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
-                product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
-        return response;
+        User user = userRepository.getByUserId(product.getUser().getId());
+        return ProductDetailResponse.of(product, imageUrls, user);
     }
 
     // 수정할 상품
     public ProductUpdateResponse showSelectedProduct(Long id) {
-        Product selectedProduct = productRepository.getById(id);
+        Product selectedProduct = productRepository.getByProductId(id);
         List<String> images = productImageRepository.findAllImageUrlByProductId(id);
         return new ProductUpdateResponse(selectedProduct, images);
     }
@@ -246,7 +240,7 @@ public class AdminService {
     // 상품 수정
     @Transactional
     public ProductUpdateResponse updateProduct(ProductUpdateRequest request, Long id) throws IOException {
-        Product selectedProduct = productRepository.getById(id);
+        Product selectedProduct = productRepository.getByProductId(id);
 
         deleteImageByProductId(id);
         productImageRepository.deleteByProductId(id);

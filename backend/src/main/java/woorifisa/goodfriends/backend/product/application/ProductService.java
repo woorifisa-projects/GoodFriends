@@ -2,50 +2,49 @@ package woorifisa.goodfriends.backend.product.application;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.global.application.S3Service;
 import woorifisa.goodfriends.backend.global.config.utils.FileUtils;
 import woorifisa.goodfriends.backend.offender.domain.Offender;
 import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.product.domain.*;
-import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductCreateRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
-import woorifisa.goodfriends.backend.product.exception.NotAccessThisProduct;
+import woorifisa.goodfriends.backend.product.dto.response.ProductResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
+import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
+import woorifisa.goodfriends.backend.product.exception.NotAccessThisProductException;
+import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional(readOnly = true)
 @Service
 public class ProductService {
 
+    private static final String PRODUCT_CATEGORY_ALL = "ALL";
     private final UserRepository userRepository;
-
     private final ProductRepository productRepository;
-
     private final ProductImageRepository productImageRepository;
-
     private final S3Service s3Service;
-
     private final ProfileRepository profileRepository;
     private final OffenderRepository offenderRepository;
 
-    public ProductService(UserRepository userRepository, ProductRepository productRepository,
-                          ProductImageRepository productImageRepository, S3Service s3Service,
-                          ProfileRepository profileRepository, OffenderRepository offenderRepository) {
+    public ProductService(final UserRepository userRepository, final ProductRepository productRepository,
+                          final ProductImageRepository productImageRepository, final S3Service s3Service,
+                          final ProfileRepository profileRepository, final OffenderRepository offenderRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
@@ -54,207 +53,175 @@ public class ProductService {
         this.offenderRepository = offenderRepository;
     }
 
-    public Long saveProduct(Long userId, ProductSaveRequest request) throws IOException {
+    @Transactional
+    public Long saveProduct(final Long userId, final ProductCreateRequest request, final List<MultipartFile> multipartFiles) throws IOException {
+        validateUser(userId);
 
-        //부정행위자로 등록된 유저는 상품 등록 못하도록
-        if(existOffender(userId)) {
-            throw new NotAccessProduct();
-        }
+        User foundUser = userRepository.getByUserId(userId);
+        ProductCreateRequest newRequest = createProductCreateRequest(request, multipartFiles);
+        Product newProduct = productRepository.save(newRequest.toEntity(foundUser, newRequest));
 
-        //프로필 등록해야 상품 등록 가능하도록
-        if(!existProfile(userId)) {
-            throw new NotFoundProfileException(); // 403
-        }
-
-        User foundUser = userRepository.getById(userId);
-        // 상품 저장
-        Product newProduct = productRepository.save(createProduct(foundUser, request));
-
-        // 저장한 상품 id를 가져와서 상품 이미지 저장
-        saveImages(newProduct.getId(), request.getImageUrls());
-
+        // 저장한 상품ID를 가져와서 상품 이미지 저장
+        saveProductImages(newProduct.getId(), newRequest.getImageUrls());
         return newProduct.getId();
     }
-    public boolean existOffender(final Long userId) {
+
+    private void validateUser(final Long userId) {
+        if (existOffender(userId)) {
+            throw new NotAccessProductException();
+        }
+        if (!existProfile(userId)) {
+            throw new NotFoundProfileException();
+        }
+    }
+
+    private boolean existOffender(final Long userId) {
         Offender offender = offenderRepository.findByUserId(userId);
         return offender != null;
     }
 
-    public boolean existProfile(Long userId) {
+    private boolean existProfile(final Long userId) {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
 
-    private Product createProduct(User user, ProductSaveRequest request) {
-        Product newProduct = Product.builder()
-                .user(user)
-                .title(request.getTitle())
-                .status(ProductStatus.SELL)
-                .productCategory(request.getProductCategory())
-                .description(request.getDescription())
-                .sellPrice(request.getSellPrice())
-                .build();
-        newProduct.validDescription(newProduct.getDescription());
-        return newProduct;
+    private static ProductCreateRequest createProductCreateRequest(final ProductCreateRequest request, final List<MultipartFile> multipartFiles) {
+        return new ProductCreateRequest(
+                request.getTitle(),
+                request.getProductCategory(),
+                request.getDescription(),
+                request.getSellPrice(),
+                multipartFiles);
     }
 
-    private List<String> saveImages(Long productId, List<MultipartFile> images) throws IOException {
+    private List<String> saveProductImages(final Long productId, final List<MultipartFile> images) throws IOException {
         List<String> savedImages = new ArrayList<>();
-        for(MultipartFile image : images) {
-            if(!image.isEmpty()) {
-                savedImages.add(saveImage(productId, image));
-            }
-        }
+
+        for (MultipartFile image : images)
+            if (!image.isEmpty())
+                savedImages.add(saveProductImage(productId, image));
         return savedImages;
     }
 
-    private String saveImage(Long productId, MultipartFile image) throws IOException {
+    private String saveProductImage(final Long productId, final MultipartFile image) throws IOException {
         String uniqueFileName = FileUtils.generateUniqueFileName(image.getOriginalFilename());
         String savedImageUrl = s3Service.saveFile(image, uniqueFileName);
 
-        productImageRepository.save(new ProductImage(productRepository.getById(productId), savedImageUrl));
-
+        ProductImage productImage = new ProductImage(productRepository.getByProductId(productId), savedImageUrl);
+        productImageRepository.save(productImage);
         return savedImageUrl;
     }
 
-    public ProductViewsAllResponse viewSearchProduct(Pageable pageable, String productCategory, String keyword) {
+    public ProductsResponse findSearchProduct(Pageable pageable, final String productCategory, final String keyword) {
         List<Product> products;
 
-        if(productCategory.equals("ALL")){
+        if (productCategory.equals(PRODUCT_CATEGORY_ALL)) {
             products = productRepository.findByTitleContains(pageable, keyword);
-        }
-        else {
+        } else {
             ProductCategory category = ProductCategory.valueOf(productCategory);
             products = productRepository.findByTitleContainsInCategory(pageable, category, keyword);
         }
-
-        List<ProductViewAllResponse> responses = createViewList(products);
-
-        return new ProductViewsAllResponse(responses);
+        List<ProductResponse> responses = getProducts(products);
+        return new ProductsResponse(responses);
     }
 
-    public ProductViewsAllResponse viewProductByCategory(Pageable pageable, ProductCategory productCategory) {
+    public ProductsResponse findProductByCategory(Pageable pageable, ProductCategory productCategory) {
         List<Product> products = productRepository.findByProductCategory(pageable, productCategory);
-
-        List<ProductViewAllResponse> responses = createViewList(products);
-
-        return new ProductViewsAllResponse(responses);
+        List<ProductResponse> responses = getProducts(products);
+        return new ProductsResponse(responses);
     }
 
-    public ProductViewsAllResponse viewAllProduct(Pageable pageable) {
+    public ProductsResponse findAllProducts(Pageable pageable) {
         List<Product> products = productRepository.findAllOrderByIdDesc(pageable);
-
-        List<ProductViewAllResponse> responses = createViewList(products);
-
-        return new ProductViewsAllResponse(responses);
+        List<ProductResponse> responses = getProducts(products);
+        return new ProductsResponse(responses);
     }
 
-    private List<ProductViewAllResponse> createViewList(List<Product> products) {
-        List<ProductViewAllResponse> viewList = products.stream()
+    //  특정 상품 목록을 받아와서 해당 상품들에 대한 응답 객체를 생성하고, 활성화된 상품들만을 리스트로 반환하는 기능
+    private List<ProductResponse> getProducts(List<Product> products) {
+        return products.stream()
                 .map(product -> {
-                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
-                    if(product.getUser() == null) {
-                        ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
-                                product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, null, true);
+                    String imageUrl = productImageRepository.findOneImageUrlByProductId(product.getId());
+                    if (product.getUser() == null)
+                        return ProductResponse.of(product, imageUrl);
 
-                        return productViewAllResponse;
-                    }
-
-                    User user = userRepository.getById(product.getUser().getId());
+                    User user = userRepository.getByUserId(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
-
-                    ProductViewAllResponse productViewAllResponse = new ProductViewAllResponse(
-                            product.getId(), product.getProductCategory(), product.getTitle(), product.getStatus(), product.getSellPrice(), image, profile.getAddress(), user.isActivated());
-                    return productViewAllResponse;
+                    return ProductResponse.of(product, imageUrl, user, profile);
                 })
-                .filter(
-                    productViewAllResponse -> productViewAllResponse.isActivated()
-                )
+                .filter(ProductResponse::isActivated)
                 .collect(Collectors.toList());
-
-        return viewList;
     }
 
-    public ProductViewOneResponse viewOneProduct(Long userId, Long productId) {
+    public ProductDetailResponse findProduct(final Long userId, final Long productId) {
+        validateUser(userId);
+        Product product = findProductObject(productId);
+        List<String> imageUrls = getImageUrls(product);
 
-        //부정행위자로 등록된 유저는 상품 상세 페이지 들어가지 못하도록
-        if(existOffender(userId)) {
-            throw new NotAccessProduct();
+        if (product.getUser() == null) {
+            return ProductDetailResponse.of(product, imageUrls);
         }
-
-        if(!existProfile(userId)) {
-            throw new NotFoundProfileException(); // 403
-        }
-
-        Product product = productRepository.getById(productId);
-        System.out.println(product.getCreatedAt());
-        List<String> images = productImageRepository.findAllImageUrlByProductId(product.getId());
-
-        if(product.getUser() == null){
-            ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), null, product.getAdmin().getId(), product.getProductCategory(), product.getTitle(), product.getDescription(),
-                    product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, null, "관리자");
-
-            return response;
-        }
-
-        User user = userRepository.getById(product.getUser().getId());
-        ProductViewOneResponse response = new ProductViewOneResponse(product.getId(), product.getUser().getId(), null, product.getProductCategory(), product.getTitle(), product.getDescription(),
-                product.getStatus(), product.getSellPrice(), product.getCreatedAt(), product.getLastModifiedAt(), images, user.getProfileImageUrl(), user.getNickname());
-
-        return response;
+        User user = userRepository.getByUserId(product.getUser().getId());
+        return ProductDetailResponse.of(product, imageUrls, user);
     }
 
-    public ProductUpdateResponse showSelectedProduct(Long userId, Long productId) {
-        if(!verifyUser(userId, productId)){
-            throw new NotAccessThisProduct();
+    private List<String> getImageUrls(final Product product) {
+        return productImageRepository.findAllImageUrlByProductId(product.getId());
+    }
+
+    public ProductUpdateResponse findEditProduct(final Long userId, final Long productId) {
+        if (!checkUserIdAndProductIdEquals(userId, productId)) {
+            throw new NotAccessThisProductException();
         }
 
-        Product selectedProduct = productRepository.getById(productId);
+        Product selectedProduct = productRepository.getByProductId(productId);
         List<String> images = productImageRepository.findAllImageUrlByProductId(productId);
-        return new ProductUpdateResponse(selectedProduct, images);
+        return ProductUpdateResponse.of(selectedProduct, images);
     }
 
-    public boolean verifyUser(Long userId, Long productId) {
-        Product product = productRepository.getById(productId);
-        return product.getUser().getId() == userId;
-    }
 
     @Transactional
-    public void updateProduct(ProductUpdateRequest request, Long userId, Long productId) throws IOException {
-        if(!verifyUser(userId, productId)){
-            throw new NotAccessThisProduct();
+    public void updateProduct(final ProductUpdateRequest productUpdateRequest, final Long userId, final Long productId) throws IOException {
+        if (!checkUserIdAndProductIdEquals(userId, productId)) {
+            throw new NotAccessThisProductException();
         }
-
-        Product selectedProduct = productRepository.getById(productId);
 
         deleteImageByProductId(productId);
         productImageRepository.deleteByProductId(productId);
 
-        List<String> savedImageUrls = saveImages(productId, request.getImageUrls());
-
-        Product updateProduct = Product.builder()
-                .user(selectedProduct.getUser())
-                .title(request.getTitle())
-                .productCategory(request.getProductCategory())
-                .status(selectedProduct.getStatus())
-                .description(request.getDescription())
-                .sellPrice(request.getSellPrice())
-                .build();
-
-        updateProduct.validDescription(updateProduct.getDescription());
-
-        Product updatedProduct = productRepository.save(updateProduct);
+        Product product = findProductObject(productId);
+        product.updateUser(product.getUser());
+        product.updateStatus(product.getStatus());
+        product.updateTitle(productUpdateRequest.getTitle());
+        product.updateProductCategory(productUpdateRequest.getProductCategory());
+        product.updateDescription(productUpdateRequest.getDescription());
+        product.updateSellPrice(productUpdateRequest.getSellPrice());
+        saveProductImages(productId, productUpdateRequest.getImageUrls());
     }
 
-    public void deleteById(Long userId, Long productId) throws MalformedURLException {
-        if(!verifyUser(userId, productId)){
-            throw new NotAccessThisProduct();
+    public boolean checkUserIdAndProductIdEquals(final Long userId, final Long productId) {
+        if (userId == null) {
+            return false;
+        }
+        Product product = productRepository.getByProductId(productId);
+        return userId.equals(product.getUser().getId());
+    }
+
+    private Product findProductObject(final Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(NotFoundProductException::new);
+    }
+
+    @Transactional
+    public void deleteById(final Long userId, final Long productId) throws MalformedURLException {
+        if (!checkUserIdAndProductIdEquals(userId, productId)) {
+            throw new NotAccessThisProductException();
         }
         deleteImageByProductId(productId);
         productRepository.deleteById(productId);
     }
 
-    public void deleteImageByProductId(Long productId) throws MalformedURLException {
+    private void deleteImageByProductId(Long productId) throws MalformedURLException {
         List<ProductImage> productImages = productImageRepository.findByProductId(productId);
         for (ProductImage productImage : productImages) {
             s3Service.deleteFile(productImage.getImageUrl());

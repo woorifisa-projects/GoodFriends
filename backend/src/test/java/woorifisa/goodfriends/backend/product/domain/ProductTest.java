@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import woorifisa.goodfriends.backend.product.exception.InvalidDescriptionException;
-import woorifisa.goodfriends.backend.user.domain.User;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,7 +19,7 @@ class ProductTest {
         assertDoesNotThrow(() -> Product.builder()
                 .user(팬시())
                 .productCategory(ProductCategory.DIGITAL_DEVICE)
-                .title(제목1)
+                .title(상품제목1)
                 .status(ProductStatus.SELL)
                 .description(상세_설명1)
                 .sellPrice(판매_가격1)
@@ -36,7 +35,7 @@ class ProductTest {
             Product product = Product.builder()
                     .user(팬시())
                     .productCategory(ProductCategory.DIGITAL_DEVICE)
-                    .title(제목1)
+                    .title(상품제목1)
                     .status(ProductStatus.SELL)
                     .description(description)
                     .sellPrice(판매_가격1)

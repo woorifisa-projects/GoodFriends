@@ -11,19 +11,17 @@ import woorifisa.goodfriends.backend.admin.dto.request.UserUpdateRequest;
 import woorifisa.goodfriends.backend.admin.dto.response.UserInfoResponse;
 import woorifisa.goodfriends.backend.admin.dto.response.UserLogRecordsResponse;
 import woorifisa.goodfriends.backend.auth.dto.response.AccessTokenResponse;
-import woorifisa.goodfriends.backend.product.dto.request.ProductSaveRequest;
+import woorifisa.goodfriends.backend.product.dto.request.ProductCreateRequest;
 import woorifisa.goodfriends.backend.product.dto.request.ProductUpdateRequest;
 import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewAllResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewOneResponse;
-import woorifisa.goodfriends.backend.product.dto.response.ProductViewsAllResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
+import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
 import woorifisa.goodfriends.backend.report.dto.response.ReportsResponse;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -76,32 +74,32 @@ public class AdminController {
     // 상품 등록
     @PostMapping("/products")
     public ResponseEntity<Void> saveProduct(Authentication authentication,
-                                                           @RequestPart ProductSaveRequest request,
+                                                           @RequestPart ProductCreateRequest request,
                                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
         long adminId = Long.parseLong(authentication.getName());
-        ProductSaveRequest productSaveRequest = new ProductSaveRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
-        Long productId = adminService.saveProduct(adminId, productSaveRequest);
+        ProductCreateRequest productCreateRequest = new ProductCreateRequest(request.getTitle(), request.getProductCategory(),request.getDescription(), request.getSellPrice(), multipartFiles);
+        Long productId = adminService.saveProduct(adminId, productCreateRequest);
         return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }
 
     // 상품 검색
     @GetMapping("/products/search")
-    public ResponseEntity<ProductViewsAllResponse> viewSearchProduct(@RequestParam String keyword) {
-        ProductViewsAllResponse responses = adminService.viewSearchProduct(keyword);
+    public ResponseEntity<ProductsResponse> viewSearchProduct(@RequestParam String keyword) {
+        ProductsResponse responses = adminService.viewSearchProduct(keyword);
         return ResponseEntity.ok().body(responses); // 200
     }
 
     // 상품 전체 조회
     @GetMapping("/products")
-    public ResponseEntity<ProductViewsAllResponse> viewAllProduct() {
-        ProductViewsAllResponse responses = adminService.viewAllProduct();
+    public ResponseEntity<ProductsResponse> viewAllProduct() {
+        ProductsResponse responses = adminService.viewAllProduct();
         return ResponseEntity.ok().body(responses);
     }
 
     // 상품 상세 조회
     @GetMapping("/products/{productId}")
-    public ResponseEntity<ProductViewOneResponse> viewOneProduct(@PathVariable Long productId) {
-        ProductViewOneResponse response = adminService.viewOneProduct(productId);
+    public ResponseEntity<ProductDetailResponse> viewOneProduct(@PathVariable Long productId) {
+        ProductDetailResponse response = adminService.viewOneProduct(productId);
         return ResponseEntity.ok().body(response);
     }
 

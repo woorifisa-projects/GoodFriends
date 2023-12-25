@@ -48,7 +48,7 @@ public class ReportService {
         if(duplicateReport(productId, loginUser.getId()))
             throw new AlreadyReportedException();
 
-        User foundUser = userRepository.getById(loginUser.getId());
+        User foundUser = userRepository.getByUserId(loginUser.getId());
         Product productCreator = productRepository.getByProductIdAndUserId(productId);
         Report newReport = createReport(foundUser, productCreator, request);
         reportRepository.save(newReport);
@@ -67,8 +67,7 @@ public class ReportService {
         return report != null;
     }
     private Report createReport(final User user, final Product product , final ReportCreateServiceRequest request) {
-        Report newReport = request.toEntity(user, product);
-        return newReport;
+        return request.toEntity(user, product);
     }
 
     private void createOffenderForViolation(final Product productCreator) {
@@ -90,10 +89,9 @@ public class ReportService {
             return existingOffender;
         }
 
-        Offender newOffender =  Offender.builder()
+        return Offender.builder()
                 .user(offenderUser)
                 .build();
-        return newOffender;
     }
 
     private Offender findOffender(final User offenderUser) {

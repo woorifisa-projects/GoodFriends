@@ -9,7 +9,7 @@ import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
 import woorifisa.goodfriends.backend.order.exception.NotOwnProductException;
 import woorifisa.goodfriends.backend.order.exception.OwnProductException;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProduct;
+import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
@@ -52,7 +52,7 @@ public class OrderService {
 
         // 부정행위자 주문 불가
         if(existOffender(userId)) {
-            throw new NotAccessProduct();
+            throw new NotAccessProductException();
         }
 
         // 프로필 미등록자 주문 불가
@@ -70,8 +70,8 @@ public class OrderService {
             throw new OwnProductException();
         }
 
-        Product foundProduct = productRepository.getById(request.getProductId());
-        User foundUser = userRepository.getById(userId);
+        Product foundProduct = productRepository.getByProductId(request.getProductId());
+        User foundUser = userRepository.getByUserId(userId);
 
         Order newOrder = orderRepository.save(createOrder(foundProduct, foundUser, request));
         return newOrder.getId();
@@ -93,7 +93,7 @@ public class OrderService {
     }
 
     public boolean ownProduct(Long productId, Long userId) {
-        Product product = productRepository.getById(productId);
+        Product product = productRepository.getByProductId(productId);
         return product.getUser().getId() == userId;
     }
 
@@ -113,7 +113,7 @@ public class OrderService {
 
         // 부정행위자 본인이 등록한 상품 주문서 조회 불가
         if(existOffender(userId)) {
-            throw new NotAccessProduct();
+            throw new NotAccessProductException();
         }
 
         // 본인이 등록한 상품만 주문서 조회 가능
@@ -121,7 +121,7 @@ public class OrderService {
             throw new NotOwnProductException();
         }
 
-        Product product = productRepository.getById(productId);
+        Product product = productRepository.getByProductId(productId);
 
         if(product.getStatus() != ProductStatus.SELL) {
             Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
@@ -152,14 +152,14 @@ public class OrderService {
     public UserDealResponse dealOrder(Long orderId) {
 
         Order order = orderRepository.getById(orderId);
-        Product product = productRepository.getById(order.getProduct().getId());
+        Product product = productRepository.getByProductId(order.getProduct().getId());
 
         if(product.getStatus() == ProductStatus.SELL) {
             orderRepository.updateOrderStatus(orderId, OrderStatus.RESERVATION);
             productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
         }
 
-        User user = userRepository.getById(order.getUser().getId());
+        User user = userRepository.getByUserId(order.getUser().getId());
 
         UserDealResponse response = new UserDealResponse(user.getNickname(), user.getProfileImageUrl(), user.getEmail());
 

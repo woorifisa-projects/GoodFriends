@@ -3,7 +3,7 @@ package woorifisa.goodfriends.backend.profile.domain;
 import lombok.Builder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import woorifisa.goodfriends.backend.common.BaseCreateTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseEntity;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 
@@ -13,7 +13,9 @@ import java.util.regex.Pattern;
 
 @Table(name = "profiles")
 @Entity
-public class Profile extends BaseCreateTimeEntity {
+public class Profile extends BaseEntity {
+
+    private static final Pattern MOBILE_NUMBER = Pattern.compile("^\\d{3}-\\d{3,4}-\\d{4}$");
 
     private static final Pattern MOBILE_NUMBER = Pattern.compile("^\\d{3}-\\d{3,4}-\\d{4}$");
 

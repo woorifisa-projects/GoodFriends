@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 public class ReportResponse {
 
     private Long id;
-    private String email; // 피해자 이메일
-    private String nickname; // 피해자 닉네임
-    private String title; // 상품 이름
-    private ReportCategory reportCategory; // 상품 카테고리
-    private LocalDateTime createAt; // 신고날짜
-    private ReportStatus reportStatus; // 처리상태
+    private String email;
+    private String nickname;
+    private String title;
+    private ReportCategory reportCategory;
+    private LocalDateTime createAt;
+    private ReportStatus reportStatus;
 
     public ReportResponse(final String email, final String nickname,
                                final String title, final ReportCategory reportCategory,
@@ -34,7 +34,7 @@ public class ReportResponse {
         this.nickname = report.getUser().getNickname();
         this.title = report.getProduct().getTitle();
         this.reportCategory = report.getReportCategory();
-        this.createAt = report.getCreatedDate();
+        this.createAt = report.getCreatedAt();
         this.reportStatus = report.getReportStatus();
     }
 }

@@ -1,7 +1,7 @@
 package woorifisa.goodfriends.backend.user.domain;
 
 import lombok.Builder;
-import woorifisa.goodfriends.backend.common.BaseTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseEntity;
 import woorifisa.goodfriends.backend.user.exception.InvalidUserException;
 
 import javax.persistence.*;
@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 @Table(name = "users")
 @Entity
-public class User extends BaseTimeEntity {
+public class User extends BaseEntity {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-z0-9._-]+@[a-z]+[.]+[a-z]{2,3}$");
 

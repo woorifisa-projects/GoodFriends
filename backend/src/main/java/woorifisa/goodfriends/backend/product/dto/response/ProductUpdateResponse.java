@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.product.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
@@ -11,23 +12,17 @@ import java.util.List;
 public class ProductUpdateResponse {
 
     private Long id;
-
     private ProductCategory productCategory;
-
     private String title;
-
     private ProductStatus status;
-
     private String description;
-
     private int sellPrice;
-
     private List<String> imageUrls;
 
-    public ProductUpdateResponse() {
-    }
-
-    public ProductUpdateResponse(Long id, ProductCategory productCategory, String title, ProductStatus status, String description, int sellPrice, List<String> imageUrls) {
+    @Builder
+    public ProductUpdateResponse(final Long id, final ProductCategory productCategory,
+                                 final String title, final ProductStatus status,
+                                 final String description, final int sellPrice, final List<String> imageUrls) {
         this.id = id;
         this.productCategory = productCategory;
         this.title = title;
@@ -37,7 +32,7 @@ public class ProductUpdateResponse {
         this.imageUrls = imageUrls;
     }
 
-    public ProductUpdateResponse(Product product, List<String> imageUrls){
+    public ProductUpdateResponse(final Product product, final List<String> imageUrls) {
         this.id = product.getId();
         this.productCategory = product.getProductCategory();
         this.title = product.getTitle();
@@ -47,4 +42,15 @@ public class ProductUpdateResponse {
         this.imageUrls = imageUrls;
     }
 
+    public static ProductUpdateResponse of(final Product product, final List<String> imagesUrls) {
+        return ProductUpdateResponse.builder()
+                .id(product.getId())
+                .productCategory(product.getProductCategory())
+                .title(product.getTitle())
+                .status(product.getStatus())
+                .description(product.getDescription())
+                .sellPrice(product.getSellPrice())
+                .imageUrls(imagesUrls)
+                .build();
+    }
 }

@@ -4,7 +4,7 @@ import lombok.Builder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import woorifisa.goodfriends.backend.admin.domain.Admin;
-import woorifisa.goodfriends.backend.common.BaseTimeEntity;
+import woorifisa.goodfriends.backend.common.BaseEntity;
 import woorifisa.goodfriends.backend.product.exception.InvalidDescriptionException;
 import woorifisa.goodfriends.backend.user.domain.User;
 
@@ -12,8 +12,9 @@ import javax.persistence.*;
 
 @Table(name = "products")
 @Entity
-public class Product extends BaseTimeEntity {
-    // 상품 id, 유저 id(외래키), 카데고리 id(외래키), 상품 제목, 상품 상태 여부, 상품 설명, 판매 가격, 생성 일자, 수정 일자
+public class Product extends BaseEntity {
+    private static final int DESCRIPTION_MINIMUM_SIZE = 10;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,13 +44,19 @@ public class Product extends BaseTimeEntity {
     private int sellPrice;
 
     public void validDescription(final String description) {
-        if(description.length() < 10) {
+        if (description.length() < DESCRIPTION_MINIMUM_SIZE) {
             throw new InvalidDescriptionException();
         }
     }
+
+    protected Product() {
+    }
+
     @Builder
     public Product(final User user, final Admin admin, final ProductCategory productCategory,
                    final String title, final ProductStatus status, final String description, final int sellPrice) {
+        validDescription(description);
+
         this.user = user;
         this.admin = admin;
         this.productCategory = productCategory;
@@ -59,8 +66,6 @@ public class Product extends BaseTimeEntity {
         this.sellPrice = sellPrice;
     }
 
-    protected Product(){
-    }
     public Long getId() {
         return id;
     }
@@ -91,5 +96,29 @@ public class Product extends BaseTimeEntity {
 
     public int getSellPrice() {
         return sellPrice;
+    }
+
+    public void updateUser(final User user) {
+        this.user = user;
+    }
+
+    public void updateStatus(final ProductStatus status) {
+        this.status = status;
+    }
+
+    public void updateTitle(final String title) {
+        this.title = title;
+    }
+
+    public void updateProductCategory(final ProductCategory productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public void updateDescription(final String description) {
+        this.description = description;
+    }
+
+    public void updateSellPrice(final int sellPrice) {
+        this.sellPrice = sellPrice;
     }
 }

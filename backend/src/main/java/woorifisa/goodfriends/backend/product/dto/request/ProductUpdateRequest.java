@@ -3,7 +3,6 @@ package woorifisa.goodfriends.backend.product.dto.request;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
-import woorifisa.goodfriends.backend.product.domain.ProductStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

@@ -21,6 +21,7 @@ public class GoogleOAuthUri implements OAuthUri {
                 + "response_type=code&"
                 + "scope=" + String.join(" ", properties.getScopes()) + "&"
                 + "access_type=" + properties.getAccessType();
+//                + "prompt=consent"; // 추가된 부분
     }
 
 }
