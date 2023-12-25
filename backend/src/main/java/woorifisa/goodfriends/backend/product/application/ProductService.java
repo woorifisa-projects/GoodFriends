@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Service
 public class ProductService {
+
+    private static final String PRODUCT_CATEGORY_ALL = "ALL";
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final ProductImageRepository productImageRepository;
@@ -105,10 +107,10 @@ public class ProductService {
         return savedImageUrl;
     }
 
-    public ProductsResponse findSearchProduct(Pageable pageable, String productCategory, String keyword) {
+    public ProductsResponse findSearchProduct(Pageable pageable, final String productCategory, final String keyword) {
         List<Product> products;
 
-        if(productCategory.equals("ALL")){
+        if(productCategory.equals(PRODUCT_CATEGORY_ALL)){
             products = productRepository.findByTitleContains(pageable, keyword);
         }
         else {
