@@ -1,5 +1,6 @@
 package woorifisa.goodfriends.backend.product.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 import woorifisa.goodfriends.backend.product.domain.ProductCategory;
@@ -18,22 +19,19 @@ public class ProductCreateRequest {
 
     @NotBlank(message = "상품 설명을 입력해 주세요.")
     private String description;
+
     @NotNull(message = "상품 가격을 입력해 주세요.")
     private int sellPrice;
 
     private List<MultipartFile> imageUrls;
 
-    public ProductCreateRequest() {
+    protected ProductCreateRequest() {
     }
 
-    public ProductCreateRequest(String title, ProductCategory productCategory, String description, int sellPrice) {
-        this.title = title;
-        this.productCategory = productCategory;
-        this.description = description;
-        this.sellPrice = sellPrice;
-    }
-
-    public ProductCreateRequest(String title, ProductCategory productCategory, String description, int sellPrice, List<MultipartFile> imageUrls) {
+    @Builder
+    public ProductCreateRequest(final String title, final ProductCategory productCategory,
+                                final String description, final int sellPrice,
+                                final List<MultipartFile> imageUrls) {
         this.title = title;
         this.productCategory = productCategory;
         this.description = description;

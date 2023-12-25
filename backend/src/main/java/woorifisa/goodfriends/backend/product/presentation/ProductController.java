@@ -24,22 +24,18 @@ import java.util.List;
 @RequestMapping("/api/products")
 @RestController
 public class ProductController {
-
     private static final int PAGE_SIZE = 12;
     private final ProductService productService;
-
-    public ProductController(ProductService productService) {
+    public ProductController(final ProductService productService) {
         this.productService = productService;
     }
 
     // 상품 등록
     @PostMapping
     public ResponseEntity<Void> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                            @RequestPart ProductCreateRequest request,
-                                            @RequestPart List<MultipartFile> multipartFiles) throws IOException {
-            ProductCreateRequest productCreateRequest = new ProductCreateRequest(request.getTitle(), request.getProductCategory(),
-                                                            request.getDescription(), request.getSellPrice(), multipartFiles);
-            Long productId = productService.saveProduct(loginUser.getId(), productCreateRequest);
+                                            @RequestPart final ProductCreateRequest request,
+                                            @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
+            Long productId = productService.saveProduct(loginUser.getId(), request, multipartFiles);
             return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }
 

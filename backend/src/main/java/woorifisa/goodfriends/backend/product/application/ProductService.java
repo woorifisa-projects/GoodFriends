@@ -32,21 +32,16 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Service
 public class ProductService {
-
     private final UserRepository userRepository;
-
     private final ProductRepository productRepository;
-
     private final ProductImageRepository productImageRepository;
-
     private final S3Service s3Service;
-
     private final ProfileRepository profileRepository;
     private final OffenderRepository offenderRepository;
 
-    public ProductService(UserRepository userRepository, ProductRepository productRepository,
-                          ProductImageRepository productImageRepository, S3Service s3Service,
-                          ProfileRepository profileRepository, OffenderRepository offenderRepository) {
+    public ProductService(final UserRepository userRepository, final ProductRepository productRepository,
+                          final ProductImageRepository productImageRepository, final S3Service s3Service,
+                          final ProfileRepository profileRepository, final OffenderRepository offenderRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.productImageRepository = productImageRepository;
@@ -56,7 +51,9 @@ public class ProductService {
     }
 
     @Transactional
-    public Long saveProduct(Long userId, ProductCreateRequest request) throws IOException {
+    public Long saveProduct(final Long userId, final ProductCreateRequest request, final List<MultipartFile> multipartFiles) throws IOException {
+
+        ProductCreateRequest productCreateRequest = createProductCreateRequest(request, multipartFiles);
 
         //부정행위자로 등록된 유저는 상품 등록 못하도록
         if(existOffender(userId)) {
@@ -70,13 +67,23 @@ public class ProductService {
 
         User foundUser = userRepository.getById(userId);
         // 상품 저장
-        Product newProduct = productRepository.save(createProduct(foundUser, request));
+        Product newProduct = productRepository.save(createProduct(foundUser, productCreateRequest));
 
         // 저장한 상품 id를 가져와서 상품 이미지 저장
-        saveImages(newProduct.getId(), request.getImageUrls());
+        saveImages(newProduct.getId(), productCreateRequest.getImageUrls());
 
         return newProduct.getId();
     }
+
+    private static ProductCreateRequest createProductCreateRequest(final ProductCreateRequest request, final List<MultipartFile> multipartFiles) {
+        return new ProductCreateRequest(
+                request.getTitle(),
+                request.getProductCategory(),
+                request.getDescription(),
+                request.getSellPrice(),
+                multipartFiles);
+    }
+
     private boolean existOffender(final Long userId) {
         Offender offender = offenderRepository.findByUserId(userId);
         return offender != null;
