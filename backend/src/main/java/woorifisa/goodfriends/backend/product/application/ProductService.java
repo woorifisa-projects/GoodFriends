@@ -136,19 +136,16 @@ public class ProductService {
     private List<ProductResponse> getProducts(List<Product> products) {
         List<ProductResponse> responses = products.stream()
                 .map(product -> {
-                    String image = productImageRepository.findOneImageUrlByProductId(product.getId());
-                    if (product.getUser() == null) {
-                        return getProductsWithoutUser(product, image);
-                    }
+                    String imageUrl = productImageRepository.findOneImageUrlByProductId(product.getId());
+                    if (product.getUser() == null)
+                        return ProductResponse.of(product, imageUrl);
 
                     User user = userRepository.getById(product.getUser().getId());
                     Profile profile = profileRepository.getByUserId(product.getUser().getId());
-
-                    return getProductsWithUser(product, image, user, profile);
+                    return ProductResponse.of(product, imageUrl, user, profile);
                 })
                 .filter(ProductResponse::isActivated)
                 .collect(Collectors.toList());
-
         return responses;
     }
 
