@@ -24,8 +24,9 @@ import java.util.List;
 @RequestMapping("/api/products")
 @RestController
 public class ProductController {
-    private static final int PAGE_SIZE = 12;
+    private static final int MAX_PAGE_SIZE = 12;
     private final ProductService productService;
+
     public ProductController(final ProductService productService) {
         this.productService = productService;
     }
@@ -35,13 +36,13 @@ public class ProductController {
     public ResponseEntity<Void> saveProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                             @RequestPart final ProductCreateRequest request,
                                             @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
-            Long productId = productService.saveProduct(loginUser.getId(), request, multipartFiles);
-            return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
+        Long productId = productService.saveProduct(loginUser.getId(), request, multipartFiles);
+        return ResponseEntity.created(URI.create("/products/" + productId)).build(); // 201
     }
 
     // 상품 검색
     @GetMapping("/search")
-    public ResponseEntity<ProductsResponse> findSearchProduct(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
+    public ResponseEntity<ProductsResponse> findSearchProduct(@PageableDefault(size = MAX_PAGE_SIZE) Pageable pageable,
                                                               @RequestParam final String productCategory,
                                                               @RequestParam final String keyword) {
         ProductsResponse responses = productService.findSearchProduct(pageable, productCategory, keyword);
@@ -50,34 +51,34 @@ public class ProductController {
 
     // 상품 카테고리별 조회
     @GetMapping("/category")
-    public ResponseEntity<ProductsResponse> findProductByCategory(@PageableDefault(size=PAGE_SIZE) Pageable pageable,
+    public ResponseEntity<ProductsResponse> findProductByCategory(@PageableDefault(size = MAX_PAGE_SIZE) Pageable pageable,
                                                                   @RequestParam final String productCategory) {
         ProductCategory category = ProductCategory.valueOf(productCategory);
         ProductsResponse responses = productService.findProductByCategory(pageable, category);
-        return ResponseEntity.ok().body(responses); // 200
+        return ResponseEntity.ok().body(responses);
     }
 
     // 상품 전체 조회
     @GetMapping
-    public ResponseEntity<ProductsResponse> findAllProducts(@PageableDefault(size=PAGE_SIZE) Pageable pageable) {
+    public ResponseEntity<ProductsResponse> findAllProducts(@PageableDefault(size = MAX_PAGE_SIZE) Pageable pageable) {
         ProductsResponse responses = productService.findAllProducts(pageable);
-        return ResponseEntity.ok().body(responses); // 200
+        return ResponseEntity.ok().body(responses);
     }
 
     // 상품 상세 조회
     @GetMapping("/{productId}")
     public ResponseEntity<ProductDetailResponse> findProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                @PathVariable final Long productId) {
+                                                             @PathVariable final Long productId) {
         ProductDetailResponse response = productService.findProduct(loginUser.getId(), productId);
-        return ResponseEntity.ok().body(response); // 200
+        return ResponseEntity.ok().body(response);
     }
 
     // 수정할 상품 상세 조회
     @GetMapping("/edit/{productId}")
     public ResponseEntity<ProductUpdateResponse> findEditProduct(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                 @PathVariable final Long productId){
-            ProductUpdateResponse response = productService.findEditProduct(loginUser.getId(), productId);
-            return ResponseEntity.ok().body(response); // 200
+                                                                 @PathVariable final Long productId) {
+        ProductUpdateResponse response = productService.findEditProduct(loginUser.getId(), productId);
+        return ResponseEntity.ok().body(response);
     }
 
     // 상품 수정
@@ -86,17 +87,17 @@ public class ProductController {
                                               @PathVariable final Long productId,
                                               @RequestPart final ProductUpdateRequest request,
                                               @RequestPart final List<MultipartFile> multipartFiles) throws IOException {
-            ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategory(), request.getDescription(), request.getSellPrice(), multipartFiles);
-            productService.updateProduct(productUpdateRequest, loginUser.getId(), productId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+        ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(request.getTitle(), request.getProductCategory(), request.getDescription(), request.getSellPrice(), multipartFiles);
+        productService.updateProduct(productUpdateRequest, loginUser.getId(), productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // 상품 삭제
     @DeleteMapping("/remove/{productId}")
     public ResponseEntity<Void> deleteProduct(@AuthenticationPrincipal final LoginUser loginUser,
                                               @PathVariable final Long productId) throws MalformedURLException {
-            productService.deleteById(loginUser.getId(), productId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204
+        productService.deleteById(loginUser.getId(), productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
