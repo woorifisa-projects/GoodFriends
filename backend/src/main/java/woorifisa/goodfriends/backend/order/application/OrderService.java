@@ -113,12 +113,16 @@ public class OrderService {
         return new OrdersProductResponse(responses, IS_DEAL_STATUS_SELL);
     }
 
-    private List<OrderProductResponse> getOrderProductResponses(final Long productId) {
-        List<OrderProductResponse> responses = orderRepository.findOrdersAndUserByProductId(productId)
-                .stream()
-                .map(order -> OrderProductResponse.of(order))
-                .collect(Collectors.toList());
-        return responses;
+    private void validateOffenderAndMyProduct(final Long userId, final Long productId) {
+        // 부정행위자 본인이 등록한 상품 주문서 조회 불가
+        if (doesOffenderExist(userId)) {
+            throw new InactiveUserAccessException();
+        }
+
+        // 본인이 등록한 상품이 아니면 주문서 조회 불가
+        if (!isProductOwnedByUser(productId, userId)) {
+            throw new InvalidProductOrderAccessException();
+        }
     }
 
     private OrdersProductResponse beginDealForOrder(final Long productId) {
@@ -133,16 +137,12 @@ public class OrderService {
         return new OrdersProductResponse(responses, IS_NON_DEAL_STATUS_SELL);
     }
 
-    private void validateOffenderAndMyProduct(final Long userId, final Long productId) {
-        // 부정행위자 본인이 등록한 상품 주문서 조회 불가
-        if (doesOffenderExist(userId)) {
-            throw new InactiveUserAccessException();
-        }
-
-        // 본인이 등록한 상품만 주문서 조회 가능
-        if (!isProductOwnedByUser(productId, userId)) {
-            throw new InvalidProductOrderAccessException();
-        }
+    private List<OrderProductResponse> getOrderProductResponses(final Long productId) {
+        List<OrderProductResponse> responses = orderRepository.findOrdersAndUserByProductId(productId)
+                .stream()
+                .map(order -> OrderProductResponse.of(order))
+                .collect(Collectors.toList());
+        return responses;
     }
 
     @Transactional
