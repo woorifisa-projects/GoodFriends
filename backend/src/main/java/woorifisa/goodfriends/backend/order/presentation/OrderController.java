@@ -8,7 +8,7 @@ import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
 import woorifisa.goodfriends.backend.order.application.OrderService;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
 import woorifisa.goodfriends.backend.order.dto.response.OrdersProductResponse;
-import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
+import woorifisa.goodfriends.backend.user.dto.response.OrderWithUserResponse;
 
 import java.net.URI;
 
@@ -38,17 +38,14 @@ public class OrderController {
     }
 
     @PatchMapping("/deal/{orderId}")
-    public ResponseEntity<UserDealResponse> updateOrder(@PathVariable final Long orderId) {
-        UserDealResponse response = orderService.updateOrder(orderId);
+    public ResponseEntity<OrderWithUserResponse> updateOrder(@PathVariable final Long orderId) {
+        OrderWithUserResponse response = orderService.updateOrder(orderId);
         return ResponseEntity.ok().body(response);
     }
 
     @PatchMapping("/deal/complete/{productId}")
-    public ResponseEntity<Void> updateOrderConfirmDeal(@PathVariable final Long productId){
-        orderService.updateOrderConfirmDeal(productId);
-
+    public ResponseEntity<Void> updateOrderComplete(@PathVariable final Long productId){
+        orderService.updateOrderComplete(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
     }
-
 }

@@ -13,7 +13,7 @@ import woorifisa.goodfriends.backend.order.exception.ProductOwnerNotRegisterOrde
 import woorifisa.goodfriends.backend.product.exception.InactiveUserAccessException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
-import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
+import woorifisa.goodfriends.backend.user.dto.response.OrderWithUserResponse;
 import woorifisa.goodfriends.backend.order.dto.response.OrdersProductResponse;
 import woorifisa.goodfriends.backend.order.dto.response.OrderProductResponse;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
@@ -146,25 +146,20 @@ public class OrderService {
     }
 
     @Transactional
-    public UserDealResponse updateOrder(final Long orderId) {
-
+    public OrderWithUserResponse updateOrder(final Long orderId) {
         Order order = orderRepository.getById(orderId);
         Product product = productRepository.getById(order.getProduct().getId());
 
-        if (product.getStatus() == ProductStatus.SELL) {
+        if (product.getStatus().equals(ProductStatus.SELL)) {
             orderRepository.updateOrderStatus(orderId, OrderStatus.RESERVATION);
             productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
         }
-
         User user = userRepository.getById(order.getUser().getId());
-
-        UserDealResponse response = new UserDealResponse(user.getNickname(), user.getProfileImageUrl(), user.getEmail());
-
-        return response;
+        return OrderWithUserResponse.of(user);
     }
 
     @Transactional
-    public void updateOrderConfirmDeal(final Long productId) {
+    public void updateOrderComplete(final Long productId) {
         productRepository.updateProductStatus(productId, ProductStatus.COMPLETED);
         Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
         orderRepository.updateOrderStatus(order.getId(), OrderStatus.COMPLETED);
