@@ -1,20 +1,21 @@
 package woorifisa.goodfriends.backend.order.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import woorifisa.goodfriends.backend.offender.domain.Offender;
 import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.order.domain.OrderStatus;
 import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
-import woorifisa.goodfriends.backend.order.exception.NotOwnProductException;
-import woorifisa.goodfriends.backend.order.exception.OwnProductException;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
+import woorifisa.goodfriends.backend.order.exception.InvalidProductOrderAccessException;
+import woorifisa.goodfriends.backend.order.exception.ProductOwnerNotRegisterOrderException;
+import woorifisa.goodfriends.backend.product.exception.InactiveUserAccessException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
-import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
-import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
-import woorifisa.goodfriends.backend.order.dto.response.OrderViewOneResponse;
+import woorifisa.goodfriends.backend.user.dto.response.OrderWithUserResponse;
+import woorifisa.goodfriends.backend.order.dto.response.OrdersProductResponse;
+import woorifisa.goodfriends.backend.order.dto.response.OrderProductResponse;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
@@ -23,24 +24,24 @@ import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional(readOnly = true)
 @Service
 public class OrderService {
 
+    private static final boolean IS_NON_DEAL_STATUS_SELL = true; // 거래 시작 후
+    private static final boolean IS_DEAL_STATUS_SELL = false; // 거래 시작 전
     public final OrderRepository orderRepository;
-
     public final ProductRepository productRepository;
-
     public final UserRepository userRepository;
-
     public final ProfileRepository profileRepository;
-
     public final OffenderRepository offenderRepository;
 
-    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository, ProfileRepository profileRepository, OffenderRepository offenderRepository) {
+    public OrderService(final OrderRepository orderRepository, final ProductRepository productRepository,
+                        final UserRepository userRepository, final ProfileRepository profileRepository,
+                        final OffenderRepository offenderRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
@@ -48,127 +49,118 @@ public class OrderService {
         this.offenderRepository = offenderRepository;
     }
 
-    public Long saveOrder(Long userId, OrderSaveRequest request) {
-
-        // 부정행위자 주문 불가
-        if(existOffender(userId)) {
-            throw new NotAccessProductException();
-        }
-
-        // 프로필 미등록자 주문 불가
-        if(!existProfile(userId)) {
-            throw new NotFoundProfileException();
-        }
-
-        // 중복 주문 불가
-        if(duplicateOrder(request.getProductId(), userId)) {
-            throw new AlreadyOrderedException();
-        }
-
-        // 본인 상품 주문서 제출 불가
-        if(ownProduct(request.getProductId(), userId)) {
-            throw new OwnProductException();
-        }
+    @Transactional
+    public Long saveOrder(final Long userId, final OrderSaveRequest request) {
+        validateUser(userId);
+        validateOrder(request, userId);
 
         Product foundProduct = productRepository.getById(request.getProductId());
         User foundUser = userRepository.getById(userId);
 
-        Order newOrder = orderRepository.save(createOrder(foundProduct, foundUser, request));
+        Order newOrder = orderRepository.save(request.toEntity(foundProduct, foundUser, request));
         return newOrder.getId();
     }
 
-    public boolean existProfile(Long userId) {
-        Profile profile = profileRepository.findByUserId(userId).orElse(null);
-        return profile != null;
+
+    private void validateUser(final Long userId) {
+        if (doesOffenderExist(userId)) {
+            throw new InactiveUserAccessException();
+        }
+        if (!doesProfileExist(userId)) {
+            throw new NotFoundProfileException();
+        }
     }
 
-    public boolean existOffender(final Long userId) {
+    private boolean doesOffenderExist(final Long userId) {
         Offender offender = offenderRepository.findByUserId(userId);
         return offender != null;
     }
 
-    public boolean duplicateOrder(Long productId, Long userId) {
+    private boolean doesProfileExist(final Long userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        return profile != null;
+    }
+
+    private void validateOrder(final OrderSaveRequest request, final Long userId) {
+        if (isOrderDuplicated(request.getProductId(), userId)) {
+            throw new AlreadyOrderedException();
+        }
+
+        if (isProductOwnedByUser(request.getProductId(), userId)) {
+            throw new ProductOwnerNotRegisterOrderException();
+        }
+    }
+
+    private boolean isOrderDuplicated(final Long productId, final Long userId) {
         Order order = orderRepository.findByProductIdAndUserId(productId, userId);
         return order != null;
     }
 
-    public boolean ownProduct(Long productId, Long userId) {
+    private boolean isProductOwnedByUser(final Long productId, final Long userId) {
         Product product = productRepository.getById(productId);
-        return product.getUser().getId() == userId;
+        return product.getUser().getId().equals(userId);
     }
 
-    private Order createOrder(Product product, User user, OrderSaveRequest request) {
-        Order newOrder = Order.builder()
-                        .product(product)
-                        .user(user)
-                        .orderStatus(OrderStatus.ORDERING)
-                        .possibleDate(request.getPossibleDateStart() + " ~ " + request.getPossibleDateEnd())
-                        .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
-                        .requirements(request.getRequirements())
-                        .build();
-        return newOrder;
+    public OrdersProductResponse findAllMyProductOrders(final Long userId, final Long productId) {
+        validateOffenderAndMyProduct(userId, productId);
+
+        Product product = productRepository.getById(productId);
+        if (!product.getStatus().equals(ProductStatus.SELL)) {
+            return beginDealForOrder(productId);
+        }
+
+        List<OrderProductResponse> responses = getOrderProductResponses(productId);
+        return new OrdersProductResponse(responses, IS_DEAL_STATUS_SELL);
     }
 
-    public OrderViewAllResponse viewAllOrder(Long userId, Long productId) {
-
+    private void validateOffenderAndMyProduct(final Long userId, final Long productId) {
         // 부정행위자 본인이 등록한 상품 주문서 조회 불가
-        if(existOffender(userId)) {
-            throw new NotAccessProductException();
+        if (doesOffenderExist(userId)) {
+            throw new InactiveUserAccessException();
         }
 
-        // 본인이 등록한 상품만 주문서 조회 가능
-        if(!ownProduct(productId, userId)){
-            throw new NotOwnProductException();
+        // 본인이 등록한 상품이 아니면 주문서 조회 불가
+        if (!isProductOwnedByUser(productId, userId)) {
+            throw new InvalidProductOrderAccessException();
         }
+    }
 
-        Product product = productRepository.getById(productId);
+    private OrdersProductResponse beginDealForOrder(final Long productId) {
+        Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
 
-        if(product.getStatus() != ProductStatus.SELL) {
-            Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
-
-            if(order == null) {
-                order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
-            }
-
-            OrderViewOneResponse response = new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
-                                                    order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
-            List<OrderViewOneResponse> responses = List.of(response);
-
-            return new OrderViewAllResponse(responses, true);
+        if (order == null) {
+            order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
         }
+        OrderProductResponse response = OrderProductResponse.of(order);
+        List<OrderProductResponse> responses = List.of(response);
 
-        List<OrderViewOneResponse> responses = orderRepository.findOrdersAndUserByProductId(productId).stream()
-                .map(order -> {
-                    OrderViewOneResponse response =  new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
-                                                        order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
-                    return response;
-                })
+        return new OrdersProductResponse(responses, IS_NON_DEAL_STATUS_SELL);
+    }
+
+    private List<OrderProductResponse> getOrderProductResponses(final Long productId) {
+        List<OrderProductResponse> responses = orderRepository.findOrdersAndUserByProductId(productId)
+                .stream()
+                .map(order -> OrderProductResponse.of(order))
                 .collect(Collectors.toList());
-
-        return new OrderViewAllResponse(responses, false);
+        return responses;
     }
 
     @Transactional
-    public UserDealResponse dealOrder(Long orderId) {
-
+    public OrderWithUserResponse updateOrder(final Long orderId) {
         Order order = orderRepository.getById(orderId);
         Product product = productRepository.getById(order.getProduct().getId());
 
-        if(product.getStatus() == ProductStatus.SELL) {
+        if (product.getStatus().equals(ProductStatus.SELL)) {
             orderRepository.updateOrderStatus(orderId, OrderStatus.RESERVATION);
             productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
         }
-
         User user = userRepository.getById(order.getUser().getId());
-
-        UserDealResponse response = new UserDealResponse(user.getNickname(), user.getProfileImageUrl(), user.getEmail());
-
-        return response;
+        return OrderWithUserResponse.of(user);
     }
 
     @Transactional
-    public void confirmDeal(Long productId){
-        productRepository.updateProductStatus(productId,ProductStatus.COMPLETED);
+    public void updateOrderComplete(final Long productId) {
+        productRepository.updateProductStatus(productId, ProductStatus.COMPLETED);
         Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
         orderRepository.updateOrderStatus(order.getId(), OrderStatus.COMPLETED);
     }
