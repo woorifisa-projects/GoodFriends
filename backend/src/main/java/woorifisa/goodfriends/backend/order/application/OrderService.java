@@ -106,7 +106,7 @@ public class OrderService {
 
         Product product = productRepository.getById(productId);
         if (!product.getStatus().equals(ProductStatus.SELL)) {
-            return handleNonSellProduct(productId);
+            return beginDealForOrder(productId);
         }
 
         List<OrderProductResponse> responses = getOrderProductResponses(productId);
@@ -121,7 +121,7 @@ public class OrderService {
         return responses;
     }
 
-    private OrdersProductResponse handleNonSellProduct(final Long productId) {
+    private OrdersProductResponse beginDealForOrder(final Long productId) {
         Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
 
         if (order == null) {
