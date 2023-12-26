@@ -8,7 +8,7 @@ import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
 import woorifisa.goodfriends.backend.order.exception.NotOwnProductException;
-import woorifisa.goodfriends.backend.order.exception.OwnProductException;
+import woorifisa.goodfriends.backend.order.exception.ProductOwnerNotRegisterOrderException;
 import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
@@ -59,20 +59,20 @@ public class OrderService {
 
 
     private void validateUser(final Long userId) {
-        if (existOffender(userId)) {
+        if (doesOffenderExist(userId)) {
             throw new NotAccessProductException();
         }
-        if (!existProfile(userId)) {
+        if (!doesProfileExist(userId)) {
             throw new NotFoundProfileException();
         }
     }
 
-    private boolean existOffender(final Long userId) {
+    private boolean doesOffenderExist(final Long userId) {
         Offender offender = offenderRepository.findByUserId(userId);
         return offender != null;
     }
 
-    private boolean existProfile(final Long userId) {
+    private boolean doesProfileExist(final Long userId) {
         Profile profile = profileRepository.findByUserId(userId).orElse(null);
         return profile != null;
     }
@@ -83,7 +83,7 @@ public class OrderService {
         }
 
         if (isProductOwnedByUser(request.getProductId(), userId)) {
-            throw new OwnProductException();
+            throw new ProductOwnerNotRegisterOrderException();
         }
     }
 
@@ -112,7 +112,7 @@ public class OrderService {
     public OrderViewAllResponse findAllOrder(final Long userId, final Long productId) {
 
         // 부정행위자 본인이 등록한 상품 주문서 조회 불가
-        if (existOffender(userId)) {
+        if (doesOffenderExist(userId)) {
             throw new NotAccessProductException();
         }
 
