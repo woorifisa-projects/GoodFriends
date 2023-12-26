@@ -3,7 +3,7 @@ package woorifisa.goodfriends.backend.order.dto.response;
 import lombok.Getter;
 
 @Getter
-public class OrderViewOneResponse {
+public class OrderProductResponse {
 
     private Long id;
 
@@ -19,10 +19,10 @@ public class OrderViewOneResponse {
 
     private String requirements;
 
-    public OrderViewOneResponse() {
+    public OrderProductResponse() {
     }
 
-    public OrderViewOneResponse(Long id, Long userId, String profileImageUrl, String nickName, String possibleDate, String possibleTime, String requirements) {
+    public OrderProductResponse(Long id, Long userId, String profileImageUrl, String nickName, String possibleDate, String possibleTime, String requirements) {
         this.id = id;
         this.userId = userId;
         this.profileImageUrl = profileImageUrl;

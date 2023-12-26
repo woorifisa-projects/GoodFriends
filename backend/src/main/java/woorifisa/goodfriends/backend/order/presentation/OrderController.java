@@ -7,7 +7,7 @@ import woorifisa.goodfriends.backend.auth.dto.LoginUser;
 import woorifisa.goodfriends.backend.auth.presentation.AuthenticationPrincipal;
 import woorifisa.goodfriends.backend.order.application.OrderService;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
-import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
+import woorifisa.goodfriends.backend.order.dto.response.OrdersProductResponse;
 import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
 
 import java.net.URI;
@@ -29,10 +29,10 @@ public class OrderController {
         return ResponseEntity.created(URI.create("/orders/" + orderId)).build();
     }
 
-    @GetMapping("/{productId}")
-    public ResponseEntity<OrderViewAllResponse> findAllMyProductOrders(@AuthenticationPrincipal final LoginUser loginUser,
-                                                                   @PathVariable final Long productId) {
-        OrderViewAllResponse responses = orderService.findAllMyProductOrders(loginUser.getId(),productId);
+    @GetMapping("/{productId}") // 본인이 판매 등록한 물품에 들어온 주문서 전체를 조회하는데 사용됨
+    public ResponseEntity<OrdersProductResponse> findAllMyProductOrders(@AuthenticationPrincipal final LoginUser loginUser,
+                                                                        @PathVariable final Long productId) {
+        OrdersProductResponse responses = orderService.findAllMyProductOrders(loginUser.getId(),productId);
 
         return ResponseEntity.ok().body(responses);
     }

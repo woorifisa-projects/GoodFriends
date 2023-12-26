@@ -14,8 +14,8 @@ import woorifisa.goodfriends.backend.product.exception.InactiveUserAccessExcepti
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
-import woorifisa.goodfriends.backend.order.dto.response.OrderViewAllResponse;
-import woorifisa.goodfriends.backend.order.dto.response.OrderViewOneResponse;
+import woorifisa.goodfriends.backend.order.dto.response.OrdersProductResponse;
+import woorifisa.goodfriends.backend.order.dto.response.OrderProductResponse;
 import woorifisa.goodfriends.backend.order.exception.AlreadyOrderedException;
 import woorifisa.goodfriends.backend.product.domain.Product;
 import woorifisa.goodfriends.backend.product.domain.ProductRepository;
@@ -99,36 +99,41 @@ public class OrderService {
         return product.getUser().getId().equals(userId);
     }
 
-    public OrderViewAllResponse findAllMyProductOrders(final Long userId, final Long productId) {
+    public OrdersProductResponse findAllMyProductOrders(final Long userId, final Long productId) {
 
         validateOffenderAndMyProduct(userId, productId);
 
         Product product = productRepository.getById(productId);
 
         if (product.getStatus() != ProductStatus.SELL) {
-            Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
-
-            if (order == null) {
-                order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
-            }
-
-            OrderViewOneResponse response = new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
-                    order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
-            List<OrderViewOneResponse> responses = List.of(response);
-
-            return new OrderViewAllResponse(responses, true);
+            return handleNonSellProduct(productId);
         }
 
-        List<OrderViewOneResponse> responses = orderRepository.findOrdersAndUserByProductId(productId).stream()
+        List<OrderProductResponse> responses = orderRepository.findOrdersAndUserByProductId(productId).stream()
                 .map(order -> {
-                    OrderViewOneResponse response = new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
+                    OrderProductResponse response = new OrderProductResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
                             order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
                     return response;
                 })
                 .collect(Collectors.toList());
 
-        return new OrderViewAllResponse(responses, false);
+        return new OrdersProductResponse(responses, false);
     }
+
+    private OrdersProductResponse handleNonSellProduct(final Long productId) {
+        Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
+
+        if(order == null) {
+            order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
+        }
+        OrderProductResponse response = new OrderProductResponse(order.getId(), order.getUser().getId(),
+                order.getUser().getProfileImageUrl(), order.getUser().getNickname(), order.getPossibleDate(),
+                order.getPossibleTime(), order.getRequirements());
+
+        List<OrderProductResponse> responses = List.of(response);
+        return new OrdersProductResponse(responses, true);
+    }
+
     private void validateOffenderAndMyProduct(final Long userId, final Long productId) {
         // 부정행위자 본인이 등록한 상품 주문서 조회 불가
         if (doesOffenderExist(userId)) {

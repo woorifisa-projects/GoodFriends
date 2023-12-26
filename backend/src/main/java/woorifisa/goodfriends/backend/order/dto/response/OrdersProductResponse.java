@@ -5,13 +5,13 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class OrderViewAllResponse {
+public class OrdersProductResponse {
 
-    private List<OrderViewOneResponse> responses;
+    private List<OrderProductResponse> responses;
 
     private boolean dealStatus;
 
-    public OrderViewAllResponse(List<OrderViewOneResponse> responses, boolean dealStatus) {
+    public OrdersProductResponse(List<OrderProductResponse> responses, boolean dealStatus) {
         this.responses = responses;
         this.dealStatus = dealStatus;
     }
