@@ -1,6 +1,7 @@
 package woorifisa.goodfriends.backend.order.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import woorifisa.goodfriends.backend.offender.domain.Offender;
 import woorifisa.goodfriends.backend.offender.domain.OffenderRepository;
 import woorifisa.goodfriends.backend.order.domain.OrderStatus;
@@ -23,10 +24,10 @@ import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
 import woorifisa.goodfriends.backend.user.domain.User;
 import woorifisa.goodfriends.backend.user.domain.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional(readOnly = true)
 @Service
 public class OrderService {
 
@@ -46,6 +47,7 @@ public class OrderService {
         this.offenderRepository = offenderRepository;
     }
 
+    @Transactional
     public Long saveOrder(final Long userId, final OrderSaveRequest request) {
         validateUser(userId);
         validateOrder(request, userId);
@@ -147,7 +149,6 @@ public class OrderService {
 
         return new OrderViewAllResponse(responses, false);
     }
-
     @Transactional
     public UserDealResponse updateOrder(final Long orderId) {
 
