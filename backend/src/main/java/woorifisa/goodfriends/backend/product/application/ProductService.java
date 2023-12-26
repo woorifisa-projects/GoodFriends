@@ -15,8 +15,8 @@ import woorifisa.goodfriends.backend.product.dto.response.ProductUpdateResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductDetailResponse;
 import woorifisa.goodfriends.backend.product.dto.response.ProductsResponse;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
-import woorifisa.goodfriends.backend.product.exception.NotAccessThisProductException;
+import woorifisa.goodfriends.backend.product.exception.InactiveUserAccessException;
+import woorifisa.goodfriends.backend.product.exception.InvalidProductAccessPermissionException;
 import woorifisa.goodfriends.backend.product.exception.NotFoundProductException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.domain.ProfileRepository;
@@ -68,7 +68,7 @@ public class ProductService {
 
     private void validateUser(final Long userId) {
         if (existOffender(userId)) {
-            throw new NotAccessProductException();
+            throw new InactiveUserAccessException();
         }
         if (!existProfile(userId)) {
             throw new NotFoundProfileException();
@@ -171,7 +171,7 @@ public class ProductService {
 
     public ProductUpdateResponse findEditProduct(final Long userId, final Long productId) {
         if (!checkUserIdAndProductIdEquals(userId, productId)) {
-            throw new NotAccessThisProductException();
+            throw new InvalidProductAccessPermissionException();
         }
 
         Product selectedProduct = productRepository.getById(productId);
@@ -183,7 +183,7 @@ public class ProductService {
     @Transactional
     public void updateProduct(final ProductUpdateRequest productUpdateRequest, final Long userId, final Long productId) throws IOException {
         if (!checkUserIdAndProductIdEquals(userId, productId)) {
-            throw new NotAccessThisProductException();
+            throw new InvalidProductAccessPermissionException();
         }
 
         deleteImageByProductId(productId);
@@ -215,7 +215,7 @@ public class ProductService {
     @Transactional
     public void deleteById(final Long userId, final Long productId) throws MalformedURLException {
         if (!checkUserIdAndProductIdEquals(userId, productId)) {
-            throw new NotAccessThisProductException();
+            throw new InvalidProductAccessPermissionException();
         }
         deleteImageByProductId(productId);
         productRepository.deleteById(productId);

@@ -8,9 +8,9 @@ import woorifisa.goodfriends.backend.order.domain.OrderStatus;
 import woorifisa.goodfriends.backend.order.domain.Order;
 import woorifisa.goodfriends.backend.order.domain.OrderRepository;
 import woorifisa.goodfriends.backend.order.dto.request.OrderSaveRequest;
-import woorifisa.goodfriends.backend.order.exception.NotOwnProductException;
+import woorifisa.goodfriends.backend.order.exception.InvalidProductOrderAccessException;
 import woorifisa.goodfriends.backend.order.exception.ProductOwnerNotRegisterOrderException;
-import woorifisa.goodfriends.backend.product.exception.NotAccessProductException;
+import woorifisa.goodfriends.backend.product.exception.InactiveUserAccessException;
 import woorifisa.goodfriends.backend.profile.domain.Profile;
 import woorifisa.goodfriends.backend.profile.exception.NotFoundProfileException;
 import woorifisa.goodfriends.backend.user.dto.response.UserDealResponse;
@@ -62,7 +62,7 @@ public class OrderService {
 
     private void validateUser(final Long userId) {
         if (doesOffenderExist(userId)) {
-            throw new NotAccessProductException();
+            throw new InactiveUserAccessException();
         }
         if (!doesProfileExist(userId)) {
             throw new NotFoundProfileException();
@@ -99,17 +99,9 @@ public class OrderService {
         return product.getUser().getId().equals(userId);
     }
 
-    public OrderViewAllResponse findAllOrder(final Long userId, final Long productId) {
+    public OrderViewAllResponse findAllMyProductOrders(final Long userId, final Long productId) {
 
-        // 부정행위자 본인이 등록한 상품 주문서 조회 불가
-        if (doesOffenderExist(userId)) {
-            throw new NotAccessProductException();
-        }
-
-        // 본인이 등록한 상품만 주문서 조회 가능
-        if (!isProductOwnedByUser(productId, userId)) {
-            throw new NotOwnProductException();
-        }
+        validateOffenderAndMyProduct(userId, productId);
 
         Product product = productRepository.getById(productId);
 
@@ -137,6 +129,18 @@ public class OrderService {
 
         return new OrderViewAllResponse(responses, false);
     }
+    private void validateOffenderAndMyProduct(final Long userId, final Long productId) {
+        // 부정행위자 본인이 등록한 상품 주문서 조회 불가
+        if (doesOffenderExist(userId)) {
+            throw new InactiveUserAccessException();
+        }
+
+        // 본인이 등록한 상품만 주문서 조회 가능
+        if (!isProductOwnedByUser(productId, userId)) {
+            throw new InvalidProductOrderAccessException();
+        }
+    }
+
     @Transactional
     public UserDealResponse updateOrder(final Long orderId) {
 

@@ -30,9 +30,9 @@ public class OrderController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<OrderViewAllResponse> findAllOrder(@AuthenticationPrincipal final LoginUser loginUser,
+    public ResponseEntity<OrderViewAllResponse> findAllMyProductOrders(@AuthenticationPrincipal final LoginUser loginUser,
                                                                    @PathVariable final Long productId) {
-        OrderViewAllResponse responses = orderService.findAllOrder(loginUser.getId(),productId);
+        OrderViewAllResponse responses = orderService.findAllMyProductOrders(loginUser.getId(),productId);
 
         return ResponseEntity.ok().body(responses);
     }
