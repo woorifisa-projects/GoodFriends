@@ -31,16 +31,14 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     public final OrderRepository orderRepository;
-
     public final ProductRepository productRepository;
-
     public final UserRepository userRepository;
-
     public final ProfileRepository profileRepository;
-
     public final OffenderRepository offenderRepository;
 
-    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, UserRepository userRepository, ProfileRepository profileRepository, OffenderRepository offenderRepository) {
+    public OrderService(final OrderRepository orderRepository, final ProductRepository productRepository,
+                        final UserRepository userRepository, final ProfileRepository profileRepository,
+                        final OffenderRepository offenderRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
@@ -48,17 +46,8 @@ public class OrderService {
         this.offenderRepository = offenderRepository;
     }
 
-    public Long saveOrder(Long userId, OrderSaveRequest request) {
-
-        // 부정행위자 주문 불가
-        if(existOffender(userId)) {
-            throw new NotAccessProductException();
-        }
-
-        // 프로필 미등록자 주문 불가
-        if(!existProfile(userId)) {
-            throw new NotFoundProfileException();
-        }
+    public Long saveOrder(final Long userId, final OrderSaveRequest request) {
+        validateUser(userId);
 
         // 중복 주문 불가
         if(duplicateOrder(request.getProductId(), userId)) {
@@ -77,27 +66,37 @@ public class OrderService {
         return newOrder.getId();
     }
 
-    public boolean existProfile(Long userId) {
-        Profile profile = profileRepository.findByUserId(userId).orElse(null);
-        return profile != null;
-    }
 
-    public boolean existOffender(final Long userId) {
+    private void validateUser(final Long userId) {
+        if (existOffender(userId)) {
+            throw new NotAccessProductException();
+        }
+        if (!existProfile(userId)) {
+            throw new NotFoundProfileException();
+        }
+    }
+    private boolean existOffender(final Long userId) {
         Offender offender = offenderRepository.findByUserId(userId);
         return offender != null;
     }
 
-    public boolean duplicateOrder(Long productId, Long userId) {
+    private boolean existProfile(final Long userId) {
+        Profile profile = profileRepository.findByUserId(userId).orElse(null);
+        return profile != null;
+    }
+
+
+    private boolean duplicateOrder(final Long productId, final Long userId) {
         Order order = orderRepository.findByProductIdAndUserId(productId, userId);
         return order != null;
     }
 
-    public boolean ownProduct(Long productId, Long userId) {
+    private boolean ownProduct(final Long productId, final Long userId) {
         Product product = productRepository.getById(productId);
         return product.getUser().getId() == userId;
     }
 
-    private Order createOrder(Product product, User user, OrderSaveRequest request) {
+    private Order createOrder(final Product product, final User user, final OrderSaveRequest request) {
         Order newOrder = Order.builder()
                         .product(product)
                         .user(user)
@@ -109,7 +108,7 @@ public class OrderService {
         return newOrder;
     }
 
-    public OrderViewAllResponse findAllOrder(Long userId, Long productId) {
+    public OrderViewAllResponse findAllOrder(final Long userId, final Long productId) {
 
         // 부정행위자 본인이 등록한 상품 주문서 조회 불가
         if(existOffender(userId)) {
@@ -149,7 +148,7 @@ public class OrderService {
     }
 
     @Transactional
-    public UserDealResponse updateOrder(Long orderId) {
+    public UserDealResponse updateOrder(final Long orderId) {
 
         Order order = orderRepository.getById(orderId);
         Product product = productRepository.getById(order.getProduct().getId());
@@ -167,7 +166,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void updateOrderConfirmDeal(Long productId){
+    public void updateOrderConfirmDeal(final Long productId){
         productRepository.updateProductStatus(productId,ProductStatus.COMPLETED);
         Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
         orderRepository.updateOrderStatus(order.getId(), OrderStatus.COMPLETED);
