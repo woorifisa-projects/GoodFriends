@@ -11,7 +11,7 @@ public class OrdersProductResponse {
 
     private boolean dealStatus;
 
-    public OrdersProductResponse(List<OrderProductResponse> responses, boolean dealStatus) {
+    public OrdersProductResponse(final List<OrderProductResponse> responses, final boolean dealStatus) {
         this.responses = responses;
         this.dealStatus = dealStatus;
     }

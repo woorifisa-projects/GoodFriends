@@ -110,11 +110,7 @@ public class OrderService {
         }
 
         List<OrderProductResponse> responses = orderRepository.findOrdersAndUserByProductId(productId).stream()
-                .map(order -> {
-                    OrderProductResponse response = new OrderProductResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
-                            order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
-                    return response;
-                })
+                .map(order -> OrderProductResponse.of(order))
                 .collect(Collectors.toList());
 
         return new OrdersProductResponse(responses, false);
@@ -126,9 +122,7 @@ public class OrderService {
         if(order == null) {
             order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
         }
-        OrderProductResponse response = new OrderProductResponse(order.getId(), order.getUser().getId(),
-                order.getUser().getProfileImageUrl(), order.getUser().getNickname(), order.getPossibleDate(),
-                order.getPossibleTime(), order.getRequirements());
+        OrderProductResponse response = OrderProductResponse.of(order);
 
         List<OrderProductResponse> responses = List.of(response);
         return new OrdersProductResponse(responses, true);
