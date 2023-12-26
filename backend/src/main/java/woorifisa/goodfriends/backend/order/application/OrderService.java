@@ -48,16 +48,7 @@ public class OrderService {
 
     public Long saveOrder(final Long userId, final OrderSaveRequest request) {
         validateUser(userId);
-
-        // 중복 주문 불가
-        if(duplicateOrder(request.getProductId(), userId)) {
-            throw new AlreadyOrderedException();
-        }
-
-        // 본인 상품 주문서 제출 불가
-        if(ownProduct(request.getProductId(), userId)) {
-            throw new OwnProductException();
-        }
+        validateOrder(request, userId);
 
         Product foundProduct = productRepository.getById(request.getProductId());
         User foundUser = userRepository.getById(userId);
@@ -75,6 +66,7 @@ public class OrderService {
             throw new NotFoundProfileException();
         }
     }
+
     private boolean existOffender(final Long userId) {
         Offender offender = offenderRepository.findByUserId(userId);
         return offender != null;
@@ -85,6 +77,17 @@ public class OrderService {
         return profile != null;
     }
 
+    private void validateOrder(final OrderSaveRequest request, final Long userId) {
+        // 중복 주문 불가
+        if (duplicateOrder(request.getProductId(), userId)) {
+            throw new AlreadyOrderedException();
+        }
+
+        // 본인 상품 주문서 제출 불가
+        if (ownProduct(request.getProductId(), userId)) {
+            throw new OwnProductException();
+        }
+    }
 
     private boolean duplicateOrder(final Long productId, final Long userId) {
         Order order = orderRepository.findByProductIdAndUserId(productId, userId);
@@ -93,44 +96,47 @@ public class OrderService {
 
     private boolean ownProduct(final Long productId, final Long userId) {
         Product product = productRepository.getById(productId);
-        return product.getUser().getId() == userId;
+        if(product.getUser().getId() == userId) {
+            return true;
+        }
+        return false;
     }
 
     private Order createOrder(final Product product, final User user, final OrderSaveRequest request) {
         Order newOrder = Order.builder()
-                        .product(product)
-                        .user(user)
-                        .orderStatus(OrderStatus.ORDERING)
-                        .possibleDate(request.getPossibleDateStart() + " ~ " + request.getPossibleDateEnd())
-                        .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
-                        .requirements(request.getRequirements())
-                        .build();
+                .product(product)
+                .user(user)
+                .orderStatus(OrderStatus.ORDERING)
+                .possibleDate(request.getPossibleDateStart() + " ~ " + request.getPossibleDateEnd())
+                .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
+                .requirements(request.getRequirements())
+                .build();
         return newOrder;
     }
 
     public OrderViewAllResponse findAllOrder(final Long userId, final Long productId) {
 
         // 부정행위자 본인이 등록한 상품 주문서 조회 불가
-        if(existOffender(userId)) {
+        if (existOffender(userId)) {
             throw new NotAccessProductException();
         }
 
         // 본인이 등록한 상품만 주문서 조회 가능
-        if(!ownProduct(productId, userId)){
+        if (!ownProduct(productId, userId)) {
             throw new NotOwnProductException();
         }
 
         Product product = productRepository.getById(productId);
 
-        if(product.getStatus() != ProductStatus.SELL) {
+        if (product.getStatus() != ProductStatus.SELL) {
             Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
 
-            if(order == null) {
+            if (order == null) {
                 order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
             }
 
             OrderViewOneResponse response = new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
-                                                    order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+                    order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
             List<OrderViewOneResponse> responses = List.of(response);
 
             return new OrderViewAllResponse(responses, true);
@@ -138,8 +144,8 @@ public class OrderService {
 
         List<OrderViewOneResponse> responses = orderRepository.findOrdersAndUserByProductId(productId).stream()
                 .map(order -> {
-                    OrderViewOneResponse response =  new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
-                                                        order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
+                    OrderViewOneResponse response = new OrderViewOneResponse(order.getId(), order.getUser().getId(), order.getUser().getProfileImageUrl(),
+                            order.getUser().getNickname(), order.getPossibleDate(), order.getPossibleTime(), order.getRequirements());
                     return response;
                 })
                 .collect(Collectors.toList());
@@ -153,7 +159,7 @@ public class OrderService {
         Order order = orderRepository.getById(orderId);
         Product product = productRepository.getById(order.getProduct().getId());
 
-        if(product.getStatus() == ProductStatus.SELL) {
+        if (product.getStatus() == ProductStatus.SELL) {
             orderRepository.updateOrderStatus(orderId, OrderStatus.RESERVATION);
             productRepository.updateProductStatus(order.getProduct().getId(), ProductStatus.RESERVATION);
         }
@@ -166,8 +172,8 @@ public class OrderService {
     }
 
     @Transactional
-    public void updateOrderConfirmDeal(final Long productId){
-        productRepository.updateProductStatus(productId,ProductStatus.COMPLETED);
+    public void updateOrderConfirmDeal(final Long productId) {
+        productRepository.updateProductStatus(productId, ProductStatus.COMPLETED);
         Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
         orderRepository.updateOrderStatus(order.getId(), OrderStatus.COMPLETED);
     }
