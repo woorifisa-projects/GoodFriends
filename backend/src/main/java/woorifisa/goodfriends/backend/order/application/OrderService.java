@@ -78,28 +78,23 @@ public class OrderService {
     }
 
     private void validateOrder(final OrderSaveRequest request, final Long userId) {
-        // 중복 주문 불가
-        if (duplicateOrder(request.getProductId(), userId)) {
+        if (isOrderDuplicated(request.getProductId(), userId)) {
             throw new AlreadyOrderedException();
         }
 
-        // 본인 상품 주문서 제출 불가
-        if (ownProduct(request.getProductId(), userId)) {
+        if (isProductOwnedByUser(request.getProductId(), userId)) {
             throw new OwnProductException();
         }
     }
 
-    private boolean duplicateOrder(final Long productId, final Long userId) {
+    private boolean isOrderDuplicated(final Long productId, final Long userId) {
         Order order = orderRepository.findByProductIdAndUserId(productId, userId);
         return order != null;
     }
 
-    private boolean ownProduct(final Long productId, final Long userId) {
+    private boolean isProductOwnedByUser(final Long productId, final Long userId) {
         Product product = productRepository.getById(productId);
-        if(product.getUser().getId() == userId) {
-            return true;
-        }
-        return false;
+        return product.getUser().getId().equals(userId);
     }
 
     private Order createOrder(final Product product, final User user, final OrderSaveRequest request) {
@@ -122,7 +117,7 @@ public class OrderService {
         }
 
         // 본인이 등록한 상품만 주문서 조회 가능
-        if (!ownProduct(productId, userId)) {
+        if (!isProductOwnedByUser(productId, userId)) {
             throw new NotOwnProductException();
         }
 
