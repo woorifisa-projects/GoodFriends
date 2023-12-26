@@ -9,7 +9,7 @@ public class OrdersProductResponse {
 
     private List<OrderProductResponse> responses;
 
-    private boolean isDealStatus;
+    private boolean isDealStatus; // 거래시작 여부
 
     public OrdersProductResponse(final List<OrderProductResponse> responses, final boolean isDealStatus) {
         this.responses = responses;

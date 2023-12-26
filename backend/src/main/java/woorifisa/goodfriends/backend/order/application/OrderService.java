@@ -102,27 +102,29 @@ public class OrderService {
     }
 
     public OrdersProductResponse findAllMyProductOrders(final Long userId, final Long productId) {
-
         validateOffenderAndMyProduct(userId, productId);
 
         Product product = productRepository.getById(productId);
-
         if (!product.getStatus().equals(ProductStatus.SELL)) {
             return handleNonSellProduct(productId);
         }
 
+        List<OrderProductResponse> responses = getOrderProductResponses(productId);
+        return new OrdersProductResponse(responses, IS_DEAL_STATUS_SELL);
+    }
+
+    private List<OrderProductResponse> getOrderProductResponses(final Long productId) {
         List<OrderProductResponse> responses = orderRepository.findOrdersAndUserByProductId(productId)
                 .stream()
                 .map(order -> OrderProductResponse.of(order))
                 .collect(Collectors.toList());
-
-        return new OrdersProductResponse(responses, IS_DEAL_STATUS_SELL);
+        return responses;
     }
 
     private OrdersProductResponse handleNonSellProduct(final Long productId) {
         Order order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.RESERVATION);
 
-        if(order == null) {
+        if (order == null) {
             order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
         }
         OrderProductResponse response = OrderProductResponse.of(order);
