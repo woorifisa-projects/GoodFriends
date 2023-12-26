@@ -55,7 +55,7 @@ public class OrderService {
         Product foundProduct = productRepository.getById(request.getProductId());
         User foundUser = userRepository.getById(userId);
 
-        Order newOrder = orderRepository.save(createOrder(foundProduct, foundUser, request));
+        Order newOrder = orderRepository.save(request.toEntity(foundProduct, foundUser, request));
         return newOrder.getId();
     }
 
@@ -97,18 +97,6 @@ public class OrderService {
     private boolean isProductOwnedByUser(final Long productId, final Long userId) {
         Product product = productRepository.getById(productId);
         return product.getUser().getId().equals(userId);
-    }
-
-    private Order createOrder(final Product product, final User user, final OrderSaveRequest request) {
-        Order newOrder = Order.builder()
-                .product(product)
-                .user(user)
-                .orderStatus(OrderStatus.ORDERING)
-                .possibleDate(request.getPossibleDateStart() + " ~ " + request.getPossibleDateEnd())
-                .possibleTime(request.getPossibleTimeStart() + " ~ " + request.getPossibleTimeEnd())
-                .requirements(request.getRequirements())
-                .build();
-        return newOrder;
     }
 
     public OrderViewAllResponse findAllOrder(final Long userId, final Long productId) {
