@@ -9,11 +9,11 @@ public class OrdersProductResponse {
 
     private List<OrderProductResponse> responses;
 
-    private boolean dealStatus;
+    private boolean isDealStatus;
 
-    public OrdersProductResponse(final List<OrderProductResponse> responses, final boolean dealStatus) {
+    public OrdersProductResponse(final List<OrderProductResponse> responses, final boolean isDealStatus) {
         this.responses = responses;
-        this.dealStatus = dealStatus;
+        this.isDealStatus = isDealStatus;
     }
 
 }

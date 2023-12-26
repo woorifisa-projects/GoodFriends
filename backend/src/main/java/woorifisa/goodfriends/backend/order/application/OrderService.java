@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
+    private static final boolean IS_NON_DEAL_STATUS_SELL = true; // 거래 시작 후
+    private static final boolean IS_DEAL_STATUS_SELL = false; // 거래 시작 전
     public final OrderRepository orderRepository;
     public final ProductRepository productRepository;
     public final UserRepository userRepository;
@@ -105,15 +107,16 @@ public class OrderService {
 
         Product product = productRepository.getById(productId);
 
-        if (product.getStatus() != ProductStatus.SELL) {
+        if (!product.getStatus().equals(ProductStatus.SELL)) {
             return handleNonSellProduct(productId);
         }
 
-        List<OrderProductResponse> responses = orderRepository.findOrdersAndUserByProductId(productId).stream()
+        List<OrderProductResponse> responses = orderRepository.findOrdersAndUserByProductId(productId)
+                .stream()
                 .map(order -> OrderProductResponse.of(order))
                 .collect(Collectors.toList());
 
-        return new OrdersProductResponse(responses, false);
+        return new OrdersProductResponse(responses, IS_DEAL_STATUS_SELL);
     }
 
     private OrdersProductResponse handleNonSellProduct(final Long productId) {
@@ -123,9 +126,9 @@ public class OrderService {
             order = orderRepository.findByProductIdAndConfirmStatus(productId, OrderStatus.COMPLETED);
         }
         OrderProductResponse response = OrderProductResponse.of(order);
-
         List<OrderProductResponse> responses = List.of(response);
-        return new OrdersProductResponse(responses, true);
+
+        return new OrdersProductResponse(responses, IS_NON_DEAL_STATUS_SELL);
     }
 
     private void validateOffenderAndMyProduct(final Long userId, final Long productId) {
