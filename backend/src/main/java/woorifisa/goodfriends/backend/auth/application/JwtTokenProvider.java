@@ -37,11 +37,6 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public String createAdminAccessToken(final String payload) {
-        return createToken(payload, TimeUnit.MINUTES.toMillis(accessTokenValidityInMinutes));
-    }
-
-    @Override
     public String createAccessToken(final String payload) {
         return createToken(payload, TimeUnit.MINUTES.toMillis(accessTokenValidityInMinutes));
     }

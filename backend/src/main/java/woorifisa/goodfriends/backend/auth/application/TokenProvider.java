@@ -10,5 +10,4 @@ public interface TokenProvider {
 
     String createRefreshToken(final String payload);
 
-    String createAdminAccessToken(final String payload);
 }

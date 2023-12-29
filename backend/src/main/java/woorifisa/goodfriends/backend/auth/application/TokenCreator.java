@@ -10,5 +10,4 @@ public interface TokenCreator {
 
     AuthToken renewAuthToken(final String refreshToken);
 
-    AuthToken createAdminToken(final Long adminId);
 }
