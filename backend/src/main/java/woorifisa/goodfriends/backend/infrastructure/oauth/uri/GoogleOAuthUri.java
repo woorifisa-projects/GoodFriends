@@ -20,8 +20,8 @@ public class GoogleOAuthUri implements OAuthUri {
                 + "redirect_uri=" + redirectUri + "&"
                 + "response_type=code&"
                 + "scope=" + String.join(" ", properties.getScopes()) + "&"
-                + "access_type=" + properties.getAccessType();
-//                + "prompt=consent"; // 추가된 부분
+                + "access_type=" + properties.getAccessType() + "&"
+                + "prompt=consent"; // 추가된 부분
     }
 
 }
