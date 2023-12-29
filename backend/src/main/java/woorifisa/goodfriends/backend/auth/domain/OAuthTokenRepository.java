@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import woorifisa.goodfriends.backend.auth.exception.NotFoundOAuthTokenException;
 
 import javax.transaction.Transactional;
@@ -18,8 +17,15 @@ public interface OAuthTokenRepository extends JpaRepository<OAuthToken, Long> {
                 .orElseThrow(NotFoundOAuthTokenException::new);
     }
 
+    // MySQL 쿼리를 사용
     @Query("SELECT o "
             + "FROM OAuthToken o "
             + "WHERE o.user.id = :userId")
-    Optional<OAuthToken> findByUserId(@Param("userId") final Long userId);
+    Optional<OAuthToken> findByUserId(final Long userId);
+
+    // MySQL 쿼리를 사용
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM OAuthToken o WHERE o.user.id = :userId")
+    void deleteAllByUserId(Long userId);
 }
