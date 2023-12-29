@@ -57,6 +57,7 @@ public class ProductDetailResponse {
                 .userId(null)
                 .nickName("관리자")
                 .profileImageUrl(null)
+                .adminId(product.getAdmin().getId())
                 .productCategory(product.getProductCategory())
                 .title(product.getTitle())
                 .status(product.getStatus())
