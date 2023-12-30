@@ -9,7 +9,6 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import woorifisa.goodfriends.backend.admin.exception.NotFoundAdminException;
 import woorifisa.goodfriends.backend.auth.exception.*;
 import woorifisa.goodfriends.backend.global.error.dto.ErrorReportRequest;
 import woorifisa.goodfriends.backend.global.error.dto.ErrorResponse;
@@ -76,7 +75,6 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler({ // 클라이언트 에러: 404
-            NotFoundAdminException.class,
             NotFoundOAuthTokenException.class,
             NotFoundTokenException.class,
             NotFoundProductException.class,

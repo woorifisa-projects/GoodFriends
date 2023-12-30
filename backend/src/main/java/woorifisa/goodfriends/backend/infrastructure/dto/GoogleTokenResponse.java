@@ -14,6 +14,9 @@ public class GoogleTokenResponse {
     private String tokenType;
     private String scope;
 
+    protected GoogleTokenResponse() {
+    }
+
     public GoogleTokenResponse(final String accessToken, final String refreshToken, final String idToken,
                                final String expiresIn, final String scope, final String tokenType) {
         this.accessToken = accessToken;
