@@ -7,7 +7,7 @@
  <h2> 친구처럼 안전한 중고 거래 서비스, 굿프렌즈 🤹🏻‍♀️ </h2>
 
 [![wiki](http://img.shields.io/badge/-GitHub%20WiKi-black?style=flat&logo=github&logoColor=white&link=https://github.com/woorifisa-projects/GoodFriends/wiki)](https://github.com/woorifisa-projects/GoodFriends/wiki)
-[![Release](https://img.shields.io/github/v/release/woorifisa-projects/GoodFriends?color=blue)](https://github.com/woorifisa-projects/GoodFriends/releases/tag/v1.1.0)
+[![Release](https://img.shields.io/github/v/release/woorifisa-projects/GoodFriends?color=blue)](https://github.com/woorifisa-projects/GoodFriends/releases/tag/v1.2.0)
 [![tistory](http://img.shields.io/badge/-Tistory-3db39e?style=flat&logo=tistory&logoColor=white&link=https://goodfriends-team.tistory.com//)](https://goodfriends-team.tistory.com/)
 
 </div>
@@ -81,7 +81,7 @@
 
 ### 🧑🏻‍🚀 Back-end
 
-![](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/b5c822bd-4959-4833-880d-c2e46f1beb59)
+![](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/5cc1c3a7-7355-4920-b9e1-23951149f4c9)
 
 ## ☁️ Infrastructure
 
