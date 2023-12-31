@@ -81,7 +81,7 @@
 
 ### 🧑🏻‍🚀 Back-end
 
-![](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/a3970af5-704e-4b7a-8c70-f20ca7dd3438)
+![](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/b5c822bd-4959-4833-880d-c2e46f1beb59)
 
 ## ☁️ Infrastructure
 
