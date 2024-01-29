@@ -89,7 +89,7 @@
 
 ## ⛓ CI/CD pipeline
 
-![ci/cd](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/7aab9d68-8970-45a0-b451-f3ed0543e59d)
+![ci/cd](https://github.com/woorifisa-projects/GoodFriends/assets/83820185/61c5cc85-a72e-480b-9208-6743544b278b)
 
 
 ## 🙌🏻 팀원
